@@ -57,5 +57,6 @@ class HomeController extends Controller
         return view('user_management');
     }
 
+//nothing to worry about
 
 }
