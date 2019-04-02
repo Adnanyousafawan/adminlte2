@@ -10,7 +10,7 @@
           <h3 class="box-title">Manage Manager</h3>
         </div>
         <div class="col-sm-4">
-          <a class="btn btn-primary"  href="{{ route('employee-management.add_labor') }}">Add New Manager</a>
+          <a class="btn btn-primary"  href="{{ route('add_labor') }}">Add New Manager</a>
         </div>
     </div>
   </div>
@@ -20,7 +20,7 @@
         <div class="col-sm-6"></div>
         <div class="col-sm-6"></div>
       </div>
-      <form method="POST" action="{{ route('employee-management.add_labor') }}">
+      <form method="POST" action="{{ route('add_labor') }}">
          {{ csrf_field() }}
        {{--   @component('layouts.search', ['title' => 'Search'])
           @component('layouts.two-cols-search-row', ['items' => ['First Name', 'Department_Name'], 
