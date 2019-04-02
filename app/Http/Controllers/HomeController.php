@@ -28,7 +28,7 @@ class HomeController extends Controller
 
     public function addproject()
     {
-        return view('add_project');
+        return view('project.create');
     }
 
     public function addcontractor()
@@ -57,6 +57,5 @@ class HomeController extends Controller
         return view('user_management');
     }
 
-//nothing to worry about
 
 }
