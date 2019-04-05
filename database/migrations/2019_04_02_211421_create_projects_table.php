@@ -17,8 +17,17 @@ class CreateProjectsTable extends Migration
             $table->bigIncrements('id');
             $table->string('proj_title');
             $table->string('proj_location');
-            $table->string('proj_area');
+            $table->string('proj_dimension');
             $table->string('proj_city');
+            $table->string('cust_name');
+            $table->string('cust_CNIC');
+            $table->string('cust_contact');
+            $table->string('proj_contractor');
+            $table->string('proj_completion_time');
+            $table->string('zipcode');
+            $table->string('proj_cost');
+            $table->string('proj_description');
+            //$table->string('upload_contract');
             $table->timestamps();
         });
     }

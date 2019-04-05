@@ -9,7 +9,15 @@ class Project extends Model
     protected $fillable = [
     	"proj_title",
     	"proj_location",
+    	"proj_dimension",
     	"proj_city",
-    	"proj_area"
+    	"cust_name",
+    	"cust_CNIC",
+    	"cust_contact",
+    	"proj_contractor",
+    	"proj_completion_time",
+    	"zipcode",
+    	"proj_cost",
+    	"proj_description"
     ];
 }

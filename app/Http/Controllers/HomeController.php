@@ -26,27 +26,29 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function addproject()
+    public function createproject()
     {
-        return view('project.create');
+        return view('projects/create');
     }
 
     public function addcontractor()
     {
-        return view('add_contractor');
+        return view('contractors/add_contractor');
     }
 
     public function addlabor()
     {
-        return view('add_labor');
+        return view('labors/add_labor');
     }
+
     public function addmanager()
     {
-        return view('add_manager');
+        return view('managers/add_manager');
     }
-     public function addvendor()
+
+     public function addsupplier()
     {
-        return view('add_vendor');
+        return view('suppliers/add_supplier');
     }
      public function starter()
     {
@@ -56,6 +58,4 @@ class HomeController extends Controller
     {
         return view('user_management');
     }
-
-
 }

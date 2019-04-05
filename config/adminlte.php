@@ -92,15 +92,14 @@ return [
     'logout_method' => null,
 
     'login_url' => 'login',
-
     'register_url' => 'register',
+
     'mng_manager_url' => 'usr',
     'mng_contractor_url' => 'usr',
     'mng_labor_url' => 'usr',
     'mng_supplier_url' => 'usr',
-    'mng_project_url' => 'addproject',
-    'addlabor_url' => 'addlabor',
-
+    'mng_project_url' => 'project/create',
+    'addlabor_url' => 'labors/addlabor',
 
 
 
@@ -129,7 +128,7 @@ return [
             'text'        => 'Profile',
             'url'         => 'admin/pages',
             'icon'        => 'user',
-            'label'       => 4,
+            'label'       =>  4,
             'label_color' => 'success',
         ],
         'General links',
@@ -139,8 +138,8 @@ return [
             'icon' => 'file',
         ],
         [
-            'text' => 'Add Project',
-            'url'  => 'addproject',
+            'text' => 'Create Project',
+            'url'  => 'project/create',
             'icon' => 'lock',
         ],
         'Manage',
@@ -150,19 +149,19 @@ return [
             'submenu' => [
                 [
                     'text' => 'Manager',
-                    'url'  => 'usr',
+                    'url'  => 'managers/addmanager',
                 ],
                 [
                     'text'    => 'Contractor',
-                    'url'     => 'usr',
+                    'url'     => 'contractors/addcontractor',
                 ],
                 [
                     'text' => 'Labor',
-                    'url' => 'usr',
+                    'url' => 'labors/addlabor',
                 ],
                 [
                     'text' => 'supplier',
-                    'url' => 'usr',
+                    'url' => 'suppliers/addsupplier',
                 ], 
             ],
         ],
@@ -184,8 +183,8 @@ return [
             'icon_color' => 'red',
         ],
         [
-            'text'       => 'Warning',
-            'icon_color' => 'yellow',
+            'text'       => 'User',
+            'icon_color' => 'usr',
         ],
         [
             'text'       => 'Information',

@@ -5,7 +5,6 @@
     <h1>Add Project</h1>
 @stop
 @section('content')
-
 @if ($errors->any())
   <div class="alert alert-danger">
        <ul>
@@ -15,8 +14,6 @@
         </ul>
   </div><br/>
 @endif
-
-
 <div class="box box-primary" style="padding-bottom: 85px;">
             <div class="box-header">
               <h2 class="text-center">Add Project</h2>
@@ -36,8 +33,8 @@
                   " placeholder="Project Location">
                 </div>
                 <div class="form-group">
-                  <label for="proj_area">Project Area</label>
-                  <input type="text" class="form-control" name="proj_area" id="proj_area" placeholder="Project Area">
+                  <label for="proj_dimension">Project Dimension</label>
+                  <input type="text" class="form-control" name="proj_dimension" id="proj_dimension" placeholder="Project Dimension">
                 </div>
                 <div class="form-group">
                   <label for="proj_city">Project City</label>
@@ -48,16 +45,24 @@
                   <input type="text" class="form-control" name="cust_name" id="cust_name" placeholder="Customer Name">
                 </div>
                 <div class="form-group">
-                  <label for="cust_cnic">Customer CNIC</label>
-                  <input type="text" class="form-control" name="cust_cnic" id="cus_cnic" placeholder="Customer CNIC">
+                  <label for="cust_CNIC">Customer CNIC</label>
+                  <input type="text" class="form-control" name="cust_CNIC" id="cus_CNIC" placeholder="Customer CNIC">
                 </div>
                 <div class="form-group">
+                <label>US phone mask:</label>
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-phone"></i>
+                  </div>
+                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;" data-mask="">
+                </div>
+            
                   <label for="cus_contact">Customer Contact</label>
                   <input type="text" class="form-control" name="cust_contact" id="cust_contact" placeholder="Customer Contact">
                 </div>
                 <div class="form-group">
                 <label>Select Contractor</label>
-                <select class="form-control">
+                <select class="form-control" id="proj_contractor" name="proj_contractor">
                     <option>Contractor 1</option>
                     <option>Contractor 2</option>
                     <option>Contractor 3</option>
@@ -65,10 +70,9 @@
                     <option>Contractor 5</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Estimated Completion Time</label>
-                <select class="form-control">
+                <select class="form-control" id="proj_completion_time" name="proj_completion_time">
                     <option>1 year</option>
                     <option>2 year</option>
                     <option>3 year</option>
@@ -76,12 +80,10 @@
                     <option>5 year</option>
                 </select>
             </div>
-
-
             <div class="form-group">
                <div class="row">
                 <div class="col-xs-5">
-                  <input type="text" name="zipcode" id=" zipcode" class="form-control" placeholder="Zip Code">
+                  <input type="text" name="zipcode" id="zipcode" class="form-control" placeholder="Zip Code">
                 </div>
                 <div class="col-xs-5">
                   <input type="text" name="proj_cost" id="proj_cost" class="form-control" placeholder="Estimated Cost(in Rupees)">
@@ -89,12 +91,12 @@
                </div>
               </div>
               <div class="form-group">
-			    <label for="exampleFormControlTextarea1">Add Description</label>
-			    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+			    <label for="proj_description">Add Description</label>
+			    <textarea class="form-control" id="proj_description" name="proj_description" rows="5"></textarea>
 			  </div>
               <div class="form-group">
-                  <label for="uploadcontract">Upload Contract</label>
-                  <input type="file" id="uploadcontract">
+                  <label for="upload_contract">Upload Contract</label>
+                  <input type="file" id="upload_contract">
               </div> 
 
             <button type="submit" class="btn btn-block btn-primary btn-xs form-control">Add Project</button>

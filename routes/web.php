@@ -19,18 +19,25 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('project/create', 'HomeController@addproject');
-
-Route::get('addcontractor','HomeController@addcontractor')->name('add_contractor');
-
-//Route::resource('employee-management', 'HomeController');
-
-Route::get('addlabor','HomeController@addlabor')->name('add_labor');
-
-Route::get('addmanager','HomeController@addmanager')->name('add_manager');
-Route::get('addvendor','HomeController@addvendor')->name('add_vendor');
-Route::get('starter','HomeController@starter')->name('starter');
-
-Route::get('usr','HomeController@usermanagement')->name('user_management');
-
+//-----------------------------------Project------------------------------------//
 Route::resource('projects','ProjectController');
+Route::get('project/create', 'HomeController@createproject');
+
+//_______________________________User Management___________________________________//
+Route::get('usr','HomeController@usermanagement');
+//-----------------------------------Manager------------------------------------//
+Route::get('managers/addmanager','HomeController@addmanager');
+Route::resource('managers','ManagerController');
+//-----------------------------------Contractor---------------------------------//
+Route::get('contractors/addcontractor','HomeController@addcontractor');
+Route::resource('contractors','ContractorController');
+//-----------------------------------Supplier-----------------------------------//
+Route::get('suppliers/addsupplier','HomeController@addsupplier');
+Route::resource('suppliers','SupplierController');
+//-----------------------------------Labor--------------------------------------//
+Route::get('labors/addlabor','HomeController@addlabor');
+Route::resource('labors','LaborController');
+//________________________________User Management___________________________________//
+
+
+Route::get('starter','HomeController@starter')->name('starter');
