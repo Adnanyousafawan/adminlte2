@@ -41,3 +41,8 @@ Route::resource('labors','LaborController');
 
 
 Route::get('starter','HomeController@starter')->name('starter');
+
+
+
+Route::get('profile','HomeController@profile')->name('profile');
+Route::post('profile/image','HomeController@updateImage')->name('profile.image');
