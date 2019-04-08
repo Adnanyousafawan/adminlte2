@@ -40,8 +40,7 @@ class ContractorController extends Controller
             'cont_cnic' => 'required',
             'cont_contact' => 'required',
             'cont_address' => 'required',
-            'cont_city' => 'required',
-            'cont_past_projects' => 'required'
+            'cont_city' => 'required'
         ]);
 
         $contractor = new Contractor([
@@ -50,7 +49,6 @@ class ContractorController extends Controller
             'cont_contact' => $request->get('cont_contact'),
             'cont_address' => $request->get('cont_address'),
             'cont_city' => $request->get('cont_city'),
-            'cont_past_projects' => $request->get('cont_past_projects'),
             'zipcode' => $request->get('zipcode')
         ]);
         $contractor->save();

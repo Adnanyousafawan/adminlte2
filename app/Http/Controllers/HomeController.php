@@ -46,7 +46,7 @@ class HomeController extends Controller
 
     public function addcontractor()
     {
-        return view('contractors/add_contractor');
+        return view('contractors/add_contractor')->with('success', 'New Contractor has been added');
     }
 
     public function addlabor()

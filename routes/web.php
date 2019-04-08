@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -20,29 +22,35 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 //-----------------------------------Project------------------------------------//
-Route::resource('projects','ProjectController');
+Route::resource('projects', 'ProjectController');
 Route::get('project/create', 'HomeController@createproject');
 
 //_______________________________User Management___________________________________//
-Route::get('usr','HomeController@usermanagement');
+Route::get('usr', 'HomeController@usermanagement');
 //-----------------------------------Manager------------------------------------//
-Route::get('managers/addmanager','HomeController@addmanager');
-Route::resource('managers','ManagerController');
+Route::get('managers/addmanager', 'HomeController@addmanager');
+Route::resource('managers', 'ManagerController');
 //-----------------------------------Contractor---------------------------------//
-Route::get('contractors/addcontractor','HomeController@addcontractor');
-Route::resource('contractors','ContractorController');
+Route::get('contractors/addcontractor', 'HomeController@addcontractor');
+Route::resource('contractors', 'ContractorController');
 //-----------------------------------Supplier-----------------------------------//
-Route::get('suppliers/addsupplier','HomeController@addsupplier');
-Route::resource('suppliers','SupplierController');
+Route::get('suppliers/addsupplier', 'HomeController@addsupplier');
+Route::resource('suppliers', 'SupplierController');
 //-----------------------------------Labor--------------------------------------//
-Route::get('labors/addlabor','HomeController@addlabor');
-Route::resource('labors','LaborController');
+Route::get('labors/addlabor', 'HomeController@addlabor');
+Route::resource('labors', 'LaborController');
 //________________________________User Management___________________________________//
 
 
-Route::get('starter','HomeController@starter')->name('starter');
+Route::get('starter', 'HomeController@starter')->name('starter');
 
 
+Route::get('profile', 'HomeController@profile')->name('profile');
+Route::post('profile/image', 'HomeController@updateImage')->name('profile.image');
 
-Route::get('profile','HomeController@profile')->name('profile');
-Route::post('profile/image','HomeController@updateImage')->name('profile.image');
+
+//RESTFUL APIs
+
+Route::post('/api/login', 'APIController@api_login');
+Route::post('/api/logout', 'APIController@api_logout');
+Route::post('/api/contractors/all', 'APIController@api_all_contractors');

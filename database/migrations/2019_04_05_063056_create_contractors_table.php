@@ -20,7 +20,6 @@ class CreateContractorsTable extends Migration
             $table->string('cont_contact');
             $table->string('cont_address');
             $table->string('cont_city');
-            $table->string('cont_past_projects');
             $table->string('zipcode');
             $table->timestamps();
         });
