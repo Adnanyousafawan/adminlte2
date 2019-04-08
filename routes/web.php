@@ -23,7 +23,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //-----------------------------------Project------------------------------------//
 Route::resource('projects', 'ProjectController');
-Route::get('project/create', 'HomeController@createproject');
+Route::get('project/create', 'ProjectController@index');
+
+
 
 //_______________________________User Management___________________________________//
 Route::get('usr', 'HomeController@usermanagement');

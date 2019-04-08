@@ -2,11 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests;
 use App\Project;
+use App\Traits\UploadTrait;
+use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Redirect;
+use Validator;
+use View;
 
 class ProjectController extends Controller
 {
+    use UploadTrait;
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +28,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        return view('projects.create');
     }
 
     /**
@@ -30,67 +44,56 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-         $request->validate([ $request, 
-            'proj_title' => 'required',
-            'proj_location' => 'required',
-            'proj_dimension' => 'required',
-            'proj_city' => 'required',
-            'cust_name' => 'required',
-            'cust_CNIC' => 'required',
-            'cust_contact' => 'required',
-            'proj_cost' => 'required',
-            'proj_description' => 'required'
-            //'upload_contract' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
-            
+
+        $request->validate([
+            'title' => 'required',
+            'area' => 'required',
+            'city' => 'required',
+            'description' => 'required',
+            '' => 'required',
+            'title' => 'required',
+
+            'contract_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
         ]);
 
         $project = new Project([
-            'proj_title' => $request->get('proj_title'),
-            'proj_location' => $request->get('proj_location'),
-            'proj_dimension' => $request->get('proj_dimension'),
-            'proj_city' => $request->get('proj_city'),
-            'cust_name' => $request->get('cust_name'),
-            'cust_CNIC' => $request->get('cust_CNIC'),
-            'cust_contact' => $request->get('cust_contact'),
-            'proj_contractor' => $request->get('proj_contractor'),
-            'proj_completion_time' => $request->get('proj_completion_time'),
-            'zipcode' => $request->get('zipcode'),
-            'proj_cost' => $request->get('proj_cost'),
-            'proj_description' => $request->get('proj_description')
-            //'upload_contract' => $request->get('upload_contract')
-              
+            'title' => $request->input('title'),
+            'contract_image'=> $request->input('contract_image')
         ]);
-/*    ........for image ............... getclientOriginalExtension on null error()....
-        if( $request->hasFile('frontimage')){ 
-        $image = $request->file('frontimage'); 
-        $fileName = $image->getClientOriginalName();
-    $fileExtension = $image->getClientOriginalExtension();
-        dd($fileExtension); 
-    } else {
-        dd('No image was found');
-}
 
-*/
-/*
-          $image = $request->file('upload_contract');
-               // $new_name = rand() . ' . ' . $image->getClientOriginlExtension();
-                $request->image->getClientOriginalExtension();
-                $image->move(public_path("images"),$new_name);
-        */
+
+        if ($request->has('contract_image')) {
+            // Get image file
+            $image = $request->file('contract_image');
+            // Make a image name based on user name and current timestamp
+            $name = Str::slug($project->title . '-' . time());
+            // Define folder path
+            $folder = '/images/';
+            // Make a file path where image will be stored [ folder path + file name + file extension]
+            $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+            //delete previously stored image
+//            $this->deleteOne( 'public', $project->contract_image);
+            // Upload image
+            $this->uploadOne($image, $folder, 'public', $name);
+            // Set user profile image path in database to filePath
+            $project->contract_image = $filePath;
+        }
+        // Persist user record to database
         $project->save();
 
-        return redirect('/home')->with('success', 'New project has created');
+        // Return user back and show a flash message
+        return redirect()->back()->with(['status' => 'Project added successfully.']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Project  $project
+     * @param  \App\Project $project
      * @return \Illuminate\Http\Response
      */
     public function show(Project $project)
@@ -101,7 +104,7 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Project  $project
+     * @param  \App\Project $project
      * @return \Illuminate\Http\Response
      */
     public function edit(Project $project)
@@ -112,8 +115,8 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Project  $project
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Project $project
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Project $project)
@@ -124,11 +127,18 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Project  $project
+     * @param  \App\Project $project
      * @return \Illuminate\Http\Response
      */
     public function destroy(Project $project)
     {
         //
+    }
+
+
+    public function updateImage(Request $request)
+    {
+
+
     }
 }

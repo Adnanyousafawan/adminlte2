@@ -15,11 +15,26 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('profile')->nullable();
+            $table->string('name')->nullable();
+            $table->string('profile_image')->nullable();
             $table->string('email')->unique();
+            $table->string('gender')->nullable();
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('cnic')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->unsignedBigInteger('role_id')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+
+            //adding foreign key constraint on role_id
+            $table->foreign('role_id')
+                ->references('id')
+                ->on('roles');
+
+
+
             $table->rememberToken();
             $table->timestamps();
         });

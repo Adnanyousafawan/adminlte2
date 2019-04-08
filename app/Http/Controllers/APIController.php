@@ -41,7 +41,6 @@ class APIController extends Controller
 
     }
 
-
     public function api_logout(Request $request)
     {
         $this->guard()->logout();
@@ -55,6 +54,8 @@ class APIController extends Controller
 
     public function api_all_contractors(){
         $contractors = Contractor::all();
+
+        $contractor['success'] = 1;
 
         return response()->json($contractors);
     }

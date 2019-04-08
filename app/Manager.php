@@ -12,7 +12,6 @@ class Manager extends Model
     	"man_contact",
     	"man_address",
     	"man_city",
-    	"zipcode"
     	
     ];
 }

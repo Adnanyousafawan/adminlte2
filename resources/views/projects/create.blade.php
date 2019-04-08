@@ -5,104 +5,104 @@
     <h1>Add Project</h1>
 @stop
 @section('content')
-@if ($errors->any())
-  <div class="alert alert-danger">
-       <ul>
-        @foreach ($errors->all() as $error)
-          <li>{{ $error }}</li>
-        @endforeach
-        </ul>
-  </div><br/>
-@endif
-<div class="box box-primary" style="padding-bottom: 85px;">
-            <div class="box-header">
-              <h2 class="text-center">Add Project</h2>
-            </div>
-<div class="box-body">
-	<form method="post" action="{{ route('projects.store') }}">
-		<div class="col-lg-8 col-lg-offset-2">
-      			<div class="form-group">
-                @csrf
-                  <label for="proj_title">Project Title</label>
-                  <input type="text" class="form-control" name="proj_title" id="proj_title" placeholder="Project Title">
-                </div>
-
-                <div class="form-group">
-                  <label for="proj_location">Project Location</label>
-                  <input type="text" class="form-control" name="proj_location" id="proj_location
-                  " placeholder="Project Location">
-                </div>
-                <div class="form-group">
-                  <label for="proj_dimension">Project Dimension</label>
-                  <input type="text" class="form-control" name="proj_dimension" id="proj_dimension" placeholder="Project Dimension">
-                </div>
-                <div class="form-group">
-                  <label for="proj_city">Project City</label>
-                  <input type="text" class="form-control" name="proj_city" id="proj_city" placeholder="Project City">
-                </div>
-                <div class="form-group">
-                  <label for="cust_name">Customer Name</label>
-                  <input type="text" class="form-control" name="cust_name" id="cust_name" placeholder="Customer Name">
-                </div>
-                <div class="form-group">
-                  <label for="cust_CNIC">Customer CNIC</label>
-                  <input type="text" class="form-control" name="cust_CNIC" id="cus_CNIC" placeholder="Customer CNIC">
-                </div>
-                <div class="form-group">
-                <label>US phone mask:</label>
-                <div class="input-group">
-                  <div class="input-group-addon">
-                    <i class="fa fa-phone"></i>
-                  </div>
-                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;" data-mask="">
-                </div>
-            
-                  <label for="cus_contact">Customer Contact</label>
-                  <input type="text" class="form-control" name="cust_contact" id="cust_contact" placeholder="Customer Contact">
-                </div>
-                <div class="form-group">
-                <label>Select Contractor</label>
-                <select class="form-control" id="proj_contractor" name="proj_contractor">
-                    <option>Contractor 1</option>
-                    <option>Contractor 2</option>
-                    <option>Contractor 3</option>
-                    <option>Contractor 4</option>
-                    <option>Contractor 5</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Estimated Completion Time</label>
-                <select class="form-control" id="proj_completion_time" name="proj_completion_time">
-                    <option>1 year</option>
-                    <option>2 year</option>
-                    <option>3 year</option>
-                    <option>4 year</option>
-                    <option>5 year</option>
-                </select>
-            </div>
-            <div class="form-group">
-               <div class="row">
-                <div class="col-xs-5">
-                  <input type="text" name="zipcode" id="zipcode" class="form-control" placeholder="Zip Code">
-                </div>
-                <div class="col-xs-5">
-                  <input type="text" name="proj_cost" id="proj_cost" class="form-control" placeholder="Estimated Cost(in Rupees)">
-                </div>
-               </div>
-              </div>
-              <div class="form-group">
-			    <label for="proj_description">Add Description</label>
-			    <textarea class="form-control" id="proj_description" name="proj_description" rows="5"></textarea>
-			  </div>
-              <div class="form-group">
-                  <label for="upload_contract">Upload Contract</label>
-                  <input type="file" id="upload_contract">
-              </div> 
-
-            <button type="submit" class="btn btn-block btn-primary btn-xs form-control">Add Project</button>
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>
+                        {{ $error }}
+                    </li>
+                @endforeach
+            </ul>
         </div>
-    </form>
+    @endif
+
+    @if (session('status'))
+        <div class="alert alert-success" role="alert">
+            {{ session('status') }}
+        </div>
+    @endif
+    <div class="box box-primary" style="padding-bottom: 85px;">
+        <div class="box-header">
+            <h2 class="text-center">Add Project</h2>
+        </div>
+        <div class="box-body">
+            <form method="post" action="{{ route('projects.create') }}" role="form" enctype="multipart/form-data">
+                @csrf
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="form-group">
+
+                        <label for="title">Project Title</label>
+                        <input type="text" class="form-control" name="title" id="title"
+                               placeholder="Project Title">
+                    </div>
+                    <div class="form-group">
+                        <label for="area">Project Location</label>
+                        <input type="text" class="form-control" name="area" id="area"
+                               placeholder="Project Location">
+                    </div>
+                    <div class="form-group">
+                        <label for="plot_size">Project Size</label>
+                        <input type="text" class="form-control" name="plot_size" id="plot_size"
+                               placeholder="Project plot size">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="floor">Project Floors</label>
+                        <input type="text" class="form-control" name="floor" id="floor"
+                               placeholder="Enter number of floors">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city">Project City</label>
+                        <input type="text" class="form-control" name="city" id="city"
+                               placeholder="Project City">
+                    </div>
+                    <div class="form-group">
+                        <label for="assigned_to">Select Contractor</label>
+                        <select class="form-control" id="assigned_to" name="assigned_to">
+                            <option>Contractor 1</option>
+                            <option>Contractor 2</option>
+                            <option>Contractor 3</option>
+                            <option>Contractor 4</option>
+                            <option>Contractor 5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="estimated_completion_time">Estimated Completion Time</label>
+                        <select class="form-control" id="estimated_completion_time" name="estimated_completion_time">
+                            <option>1 year</option>
+                            <option>2 year</option>
+                            <option>3 year</option>
+                            <option>4 year</option>
+                            <option>5 year</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="estimated_budget">Estimated Budget</label>
+                        <input type="text" name="estimated_budget" id="estimated_budget" class="form-control"
+                               placeholder="Estimated budget cost(in Millions)">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Add Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="5">
+
+                        </textarea>
+                    </div>
+
+                    <div class="custom-file form-group">
+                        <label class="contract_image " for="contract_image">Upload Contract</label>
+                        <input type="file" class="form-control custom-file-input" id="contract_image"
+                               name="contract_image">
+                    </div>
+
+                    <button type="submit" class="btn btn-block btn-primary btn-xs form-control">Add Project</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-            
+
 @stop

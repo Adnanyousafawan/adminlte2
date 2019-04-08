@@ -39,10 +39,7 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function createproject()
-    {
-        return view('projects/create');
-    }
+
 
     public function addcontractor()
     {
@@ -82,14 +79,6 @@ class HomeController extends Controller
 
     public function updateImage(Request $request)
     {
-//        if ($files = $request->file('images')) {
-//            $name = $files->getClientOriginalName();
-//            $files->move('image', $name);
-//            DB::table('img')->insert([
-//                'image' => $name
-//            ]);
-//        }
-//        return redirect()->back()->with('message', 'Successfully Save Your Image file.');
 
         $user = User::findOrFail(auth()->user()->id);
         $user->name = Auth::user()->name;
