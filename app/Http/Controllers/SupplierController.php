@@ -46,13 +46,13 @@ class SupplierController extends Controller
         ]);
 
         $supplier = new Supplier([
-            'sup_name' => $request->get('sup_name'),
-            'sup_inic' => $request->get('sup_inic'),
-            'sup_contact' => $request->get('sup_contact'),
-            'sup_address' => $request->get('sup_address'),
-            'sup_city' => $request->get('sup_city'),
-            'sup_material' => $request->get('sup_material'),
-            'mat_price' => $request->get('mat_price')
+            'name' => $request->get('sup_name'),
+            'inic' => $request->get('sup_inic'),
+            'contact' => $request->get('sup_contact'),
+            'address' => $request->get('sup_address'),
+            'city' => $request->get('sup_city'),
+            'material' => $request->get('sup_material'),
+            'price' => $request->get('mat_price')
         ]);
         $supplier->save();
 

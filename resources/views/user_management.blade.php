@@ -10,7 +10,7 @@
           <h3 class="box-title">Manage Manager</h3>
         </div>
         <div class="col-sm-4">
-          <a class="btn btn-primary"  href="{{ route('add_labor') }}">Add New Manager</a>
+          <a class="btn btn-primary"  href="{{ route('users.user') }}">Add New User</a>
         </div>
     </div>
   </div>
@@ -20,13 +20,13 @@
         <div class="col-sm-6"></div>
         <div class="col-sm-6"></div>
       </div>
-      <form method="POST" action="{{ route('add_labor') }}">
+      <form method="POST" action="{{ route('users.user') }}">
          {{ csrf_field() }}
-       {{--   @component('layouts.search', ['title' => 'Search'])
+        @component('layouts.search', ['title' => 'Search'])
           @component('layouts.two-cols-search-row', ['items' => ['First Name', 'Department_Name'], 
           'oldVals' => [isset($searchingVals) ? $searchingVals['firstname'] : '', isset($searchingVals) ? $searchingVals['department_name'] : '']])
           @endcomponent
-        @end component--}}
+        @end component 
       </form>
     <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
       <div class="row">

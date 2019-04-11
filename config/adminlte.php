@@ -98,7 +98,7 @@ return [
     'mng_contractor_url' => 'usr',
     'mng_labor_url' => 'usr',
     'mng_supplier_url' => 'usr',
-    'mng_project_url' => 'project/create',
+    //'mng_project_url' => 'project/create',
     'addlabor_url' => 'labors/addlabor',
 
 
@@ -139,7 +139,7 @@ return [
         ],
         [
             'text' => 'Create Project',
-            'url'  => 'project/create',
+            'url'  => 'projects',
             'icon' => 'lock',
         ],
         'Manage',
@@ -174,6 +174,11 @@ return [
                 [
                     'text' => 'Day Book',
                     'url' => 'home',
+                    'icon' => 'file'
+                ],
+                [
+                    'text' => 'Users',
+                    'url' => 'users',
                     'icon' => 'file'
                 ],
         'LABELS',

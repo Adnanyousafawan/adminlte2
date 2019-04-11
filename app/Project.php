@@ -12,7 +12,10 @@ class Project extends Model
     	"area",
     	"plot_size",
     	"city",
-    	"name",
+    	"customer_name",
+        "customer_phone_number",
+        "customer_cnic",
+        "customer_address",
     	"assigned_to",
     	"estimated_completion_time",
     	"estimated_budget",
@@ -21,6 +24,7 @@ class Project extends Model
         "customer_id",
         "floor",
         "contract_image",
+        "status",
     ];
 
     public function getImageAttribute()

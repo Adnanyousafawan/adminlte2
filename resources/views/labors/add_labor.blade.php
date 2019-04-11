@@ -34,7 +34,7 @@
                   <div class="input-group-addon">
                     <i class="fa fa-phone"></i>
                   </div>
-                  <input type="text" class="form-control" placeholder="Contact Number" data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']" data-mask="" id="lab_contact" name="lab_contact">
+                  <input type="text" class="form-control" placeholder="Contact Number" data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']" data-mask="" id="lab_contact" name="lab_phone">
                 </div>
                 </div>
                 <div class="form-group">
@@ -49,11 +49,11 @@
                   <label for="lab_rate">Labor Price</label>
                   <input type="text" class="form-control" id="lab_rate" placeholder="Labor Rate(per Day)" name="lab_rate">
                 </div>
-
-                     <div class="form-group">
+                  <div class="form-group">
                   <label for="cont_picture">Upload Picture</label>
                   <input type="file" id="cont_picture" name="cont_picture">
-                </div> 
+                </div>
+                 
           <button type="submit" class="btn btn-block btn-primary btn-xs form-control">Add Labor</button>           
 </div>
 </form>

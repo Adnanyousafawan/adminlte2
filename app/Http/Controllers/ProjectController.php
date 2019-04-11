@@ -54,16 +54,36 @@ class ProjectController extends Controller
             'title' => 'required',
             'area' => 'required',
             'city' => 'required',
+            'plot_size' => 'required',
+            'floor' => 'required',
+            'cust_name' => 'required',
+            'cust_cnic' => 'required',
+            'cust_phone' => 'required',
+            'cust_address' => 'required',
+           // 'assigned_to' => 'required',
+            'estimated_completion_time' => 'required',
+            'estimated_budget' => 'required',
             'description' => 'required',
-            '' => 'required',
-            'title' => 'required',
-
             'contract_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
+
         ]);
 
         $project = new Project([
             'title' => $request->input('title'),
+            'area' => $request->input('area'),
+            'city' => $request->input('city'),
+            'plot_size' => $request->input('plot_size'),
+            'floor' => $request->input('floor'),
+            'customer_name' => $request->input('cust_name'),
+            'customer_cnic' => $request->input('cust_cnic'),
+            'customer_phone_number' => $request->input('cust_phone'),
+            'customer_address' => $request->input('cust_address'),
+            //'assigned_to' => $request->input('assigned_to'),
+            'estimated_completion_time' => $request->input('estimated_completion_time'),
+            'estimated_budget' => $request->input('estimated_budget'),
+            'description' => $request->input('description'),
             'contract_image'=> $request->input('contract_image')
+
         ]);
 
 
