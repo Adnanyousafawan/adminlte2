@@ -54,6 +54,7 @@ class ProjectController extends Controller
             'title' => 'required',
             'area' => 'required',
             'city' => 'required',
+<<<<<<< HEAD
             'plot_size' => 'required',
             'floor' => 'required',
             'cust_name' => 'required',
@@ -64,12 +65,20 @@ class ProjectController extends Controller
             'estimated_completion_time' => 'required',
             'estimated_budget' => 'required',
             'description' => 'required',
+=======
+            'estimated_budget' => 'required',
+            'description' => 'required',
+//            'contact' => 'required',
+//            'title' => 'required',
+
+>>>>>>> 2fce750640665ce31dc47ab2476e690f1c71f508
             'contract_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
 
         ]);
 
         $project = new Project([
             'title' => $request->input('title'),
+<<<<<<< HEAD
             'area' => $request->input('area'),
             'city' => $request->input('city'),
             'plot_size' => $request->input('plot_size'),
@@ -84,6 +93,15 @@ class ProjectController extends Controller
             'description' => $request->input('description'),
             'contract_image'=> $request->input('contract_image')
 
+=======
+            'contract_image'=> $request->input('contract_image'),
+            'city' => $request->input('city'),
+            'area' => $request->input('area'),
+            'estimated_budget' => $request->input('estimated_budget'),
+            'description' => $request->input('description'),
+            'plot_size' => $request->input('plot_size'),
+            'floor' => $request->input('floor'),
+>>>>>>> 2fce750640665ce31dc47ab2476e690f1c71f508
         ]);
 
 
