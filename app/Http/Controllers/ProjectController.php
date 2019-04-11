@@ -63,6 +63,8 @@ class ProjectController extends Controller
             'estimated_completion_time' => 'required',
             'estimated_budget' => 'required',
             'description' => 'required',
+            'estimated_budget' => 'required',
+            'description' => 'required',
             'contract_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
 
         ]);
@@ -81,8 +83,7 @@ class ProjectController extends Controller
             'estimated_completion_time' => $request->input('estimated_completion_time'),
             'estimated_budget' => $request->input('estimated_budget'),
             'description' => $request->input('description'),
-            'contract_image'=> $request->input('contract_image')
-
+            'contract_image'=> $request->input('contract_image'),
         ]);
 
 
