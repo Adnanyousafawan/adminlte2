@@ -54,16 +54,23 @@ class ProjectController extends Controller
             'title' => 'required',
             'area' => 'required',
             'city' => 'required',
+            'estimated_budget' => 'required',
             'description' => 'required',
-            '' => 'required',
-            'title' => 'required',
+//            'contact' => 'required',
+//            'title' => 'required',
 
             'contract_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
         ]);
 
         $project = new Project([
             'title' => $request->input('title'),
-            'contract_image'=> $request->input('contract_image')
+            'contract_image'=> $request->input('contract_image'),
+            'city' => $request->input('city'),
+            'area' => $request->input('area'),
+            'estimated_budget' => $request->input('estimated_budget'),
+            'description' => $request->input('description'),
+            'plot_size' => $request->input('plot_size'),
+            'floor' => $request->input('floor'),
         ]);
 
 
