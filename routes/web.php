@@ -80,3 +80,4 @@ Route::post('profile/image', 'HomeController@updateImage')->name('profile.image'
 Route::post('/api/login', 'APIController@api_login');
 Route::post('/api/logout', 'APIController@api_logout');
 Route::post('/api/contractors/all', 'APIController@api_all_contractors');
+Route::post('/api/projects/all', 'APIController@api_all_projects');
