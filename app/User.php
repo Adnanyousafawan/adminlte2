@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','profile'
+        'name', 'email', 'password','profile_image','gender','age','city','address','cnic','phone_number','role_id','salary'
     ];
 
     /**
@@ -38,6 +38,6 @@ class User extends Authenticatable
 
     public function getImageAttribute()
     {
-        return $this->profile;
+        return $this->profile_image;
     }
 }

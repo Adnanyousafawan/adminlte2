@@ -19,7 +19,13 @@ class CreateProjectsTable extends Migration
             $table->string('area')->nullable();
             $table->string('city')->nullable();
             $table->string('plot_size')->nullable();
+              //customer details
             $table->unsignedBigInteger('customer_id')->nullable();
+            $table->string('customer_name')->nullable();
+            $table->string('customer_address')->nullable();
+            $table->string('customer_cnic')->nullable();
+            $table->string('customer_phone_number')->nullable();
+
             $table->string('estimated_completion_time')->nullable();
             $table->string('estimated_budget')->nullable();
             $table->string('floor')->nullable();
@@ -27,16 +33,8 @@ class CreateProjectsTable extends Migration
             $table->string('contract_image')->nullable();
             $table->unsignedBigInteger('assigned_to')->nullable();
             $table->unsignedBigInteger('assigned_by')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
-
-
-            //customer details
-            $table->string('customer_name');
-            $table->string('customer_address');
-            $table->string('customer_cnic');
-            $table->string('customer_phone_number');
-
-
 
 
             //adding foreign key constraint on assigned_to which tells about to whom this project is assigned

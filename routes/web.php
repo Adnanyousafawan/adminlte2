@@ -19,16 +19,35 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 //-----------------------------------Project------------------------------------//
 Route::resource('projects', 'ProjectController');
-Route::get('project/create', 'ProjectController@index');
+
+//-----------------------------------User------------------------------------//
+Route::resource('users', 'UserController');
+Route::get('/search', 'UserController@search_user');
+Route::get('users/index', 'UserController@index')->name('users.index');
+
+//-----------------------------------Labor--------------------------------------//
+
+Route::resource('labors', 'LaborController');
+Route::get('/search', 'LaborController@search_labor');
+Route::get('labors/index','LaborController@index')->name('labors.index');
 
 
+
+
+
+
+//Route::get('users/index', 'HomeController@userindex')->name('user.index');
+
+
+Route::get('user/table','HomeController@datatable');
 
 //_______________________________User Management___________________________________//
-Route::get('usr', 'HomeController@usermanagement');
+Route::get('useer', 'HomeController@usermanagement');
 //-----------------------------------Manager------------------------------------//
 Route::get('managers/addmanager', 'HomeController@addmanager');
 Route::resource('managers', 'ManagerController');
@@ -38,9 +57,8 @@ Route::resource('contractors', 'ContractorController');
 //-----------------------------------Supplier-----------------------------------//
 Route::get('suppliers/addsupplier', 'HomeController@addsupplier');
 Route::resource('suppliers', 'SupplierController');
-//-----------------------------------Labor--------------------------------------//
-Route::get('labors/addlabor', 'HomeController@addlabor');
-Route::resource('labors', 'LaborController');
+
+
 //________________________________User Management___________________________________//
 
 

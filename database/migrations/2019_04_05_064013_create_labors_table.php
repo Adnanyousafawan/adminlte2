@@ -15,12 +15,13 @@ class CreateLaborsTable extends Migration
     {
         Schema::create('labors', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('lab_name');
-            $table->string('lab_cnic');
-            $table->string('lab_contact');
-            $table->string('lab_address');
-            $table->string('lab_city');
-            $table->string('lab_rate');
+            $table->string('name');
+            $table->string('cnic');
+            $table->string('phone');
+            $table->string('address');
+            $table->string('city');
+            $table->string('rate');
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

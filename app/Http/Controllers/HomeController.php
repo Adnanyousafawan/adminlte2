@@ -34,13 +34,11 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+
     public function index()
     {
         return view('home');
     }
-
-
-
     public function addcontractor()
     {
         return view('contractors/add_contractor')->with('success', 'New Contractor has been added');
@@ -77,6 +75,10 @@ class HomeController extends Controller
         return view('profile');
     }
 
+ public function datatable()
+    {
+        return view('datatable');
+    }
     public function updateImage(Request $request)
     {
 
