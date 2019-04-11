@@ -15,4 +15,7 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .idea
+<<<<<<< HEAD
 .env
+=======
+>>>>>>> 28e69e0aa441ff4b3d699338df7b1de7fcd795f4
