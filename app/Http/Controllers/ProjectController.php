@@ -28,7 +28,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return view('projects.create');
+        return view('projects/index');
     }
 
     /**
@@ -38,7 +38,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('projects/create');
     }
 
     /**
@@ -49,7 +49,6 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'title' => 'required',
             'area' => 'required',
@@ -60,7 +59,7 @@ class ProjectController extends Controller
             'cust_cnic' => 'required',
             'cust_phone' => 'required',
             'cust_address' => 'required',
-           // 'assigned_to' => 'required',
+            //'assigned_to' => 'required',
             'estimated_completion_time' => 'required',
             'estimated_budget' => 'required',
             'description' => 'required',
@@ -78,7 +77,7 @@ class ProjectController extends Controller
             'customer_cnic' => $request->input('cust_cnic'),
             'customer_phone_number' => $request->input('cust_phone'),
             'customer_address' => $request->input('cust_address'),
-            //'assigned_to' => $request->input('assigned_to'),
+           // 'assigned_to' => $request->input('assigned_to'),
             'estimated_completion_time' => $request->input('estimated_completion_time'),
             'estimated_budget' => $request->input('estimated_budget'),
             'description' => $request->input('description'),
@@ -107,7 +106,7 @@ class ProjectController extends Controller
         $project->save();
 
         // Return user back and show a flash message
-        return redirect()->back()->with(['status' => 'Project added successfully.']);
+       return redirect()->route('projects.index')->with('success','Project Added Succesfully');
     }
 
     /**
@@ -116,9 +115,10 @@ class ProjectController extends Controller
      * @param  \App\Project $project
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show()
     {
-        //
+        $projects = Project::paginate(10);
+        return view('projects.index',compact('projects'));
     }
 
     /**
@@ -126,10 +126,39 @@ class ProjectController extends Controller
      *
      * @param  \App\Project $project
      * @return \Illuminate\Http\Response
-     */
-    public function edit(Project $project)
+     */    
+public function search_project(Request $request)
     {
-        //
+        //$users = User::all();
+        $search = $request->get('search_title');
+        $search_customer = $request->get('search_customer');
+        if (!is_null($search)) 
+        {
+            $projects = DB::table('projects')->where('title','like','%'.$search.'%')->paginate(20);
+            return view('projects/index', ['projects' => $projects]);
+        }
+        if (!is_null($search_customer)) 
+        {
+            $projects = DB::table('projects')->where('customer_name','like','%'.$search_customer.'%')->paginate(20);
+            return view('projects/index', ['projects' => $projects]);
+        }
+        else
+        {
+            $projects = Project::paginate(20);
+            return view('projects/index', ['projects' => $projects]);
+        }  
+    }
+
+    public function edit($id)
+    {
+        $projects = Project::find($id);
+        // Redirect to user list if updating user wasn't existed
+        if ($projects == null || count($projects) == 0)
+         {
+            return redirect()->intended('projects/index');
+        }
+        //$users = User::paginate(10);
+        return view('projects/edit', ['projects' => $projects]);
     }
 
     /**
@@ -139,9 +168,44 @@ class ProjectController extends Controller
      * @param  \App\Project $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'area' => 'required',
+            'city' => 'required',
+            'plot_size' => 'required',
+            'floor' => 'required',
+            'cust_name' => 'required',
+            'cust_cnic' => 'required',
+            'cust_phone' => 'required',
+            'cust_address' => 'required',
+            //'assigned_to' => 'required',
+            'estimated_completion_time' => 'required',
+            'estimated_budget' => 'required',
+           // 'description' => 'required',
+           // 'contract_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
+
+        ]);
+
+            $projects = Project::find($id);
+            $projects->title = $request->input('title');
+            $projects->area = $request->input('area');
+            $projects->city = $request->input('city');
+            $projects->plot_size = $request->input('plot_size');
+            $projects->floor = $request->input('floor');
+            $projects->customer_name = $request->input('cust_name');
+            $projects->customer_cnic = $request->input('cust_cnic');
+            $projects->customer_phone_number = $request->input('cust_phone');
+            $projects->customer_address = $request->input('cust_address');
+            //$projects->assigned_to = $request->input('assigned_to');
+            $projects->estimated_completion_time = $request->input('estimated_completion_time');
+            $projects->estimated_budget = $request->input('estimated_budget');
+          //  $projects->description = $request->input('description');
+           // $projects->contract_image = $request->input('contract_image');
+            $projects->save();
+            // Return user back and show a flash message
+            return redirect()->route('projects.index')->with('success','Data Updated');
     }
 
     /**
@@ -150,9 +214,10 @@ class ProjectController extends Controller
      * @param  \App\Project $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy($id)
     {
-        //
+        Project::where('id', $id)->delete();
+        return redirect()->intended('projects/index');
     }
 
 

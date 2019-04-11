@@ -2,6 +2,27 @@
 @section('title', 'AdminLTE')
 @section('content')
 
+@section('content')
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>
+                        {{ $error }}
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+@if (session('status'))
+        <div class="alert alert-success" role="alert">
+            {{ session('status') }}
+        </div>
+    @endif
     <!-- Main content -->
     <section class="content">
       <div class="box" style="background-color:rgb(236, 240, 245);">
@@ -19,7 +40,7 @@
   <div class="box-body">
     <h3 for="search_area">Search Labor</h3>
   <div id="search_area" style="padding: 30px; background-color: rgb(53, 124, 165);">   
-    <form action="/search" method="get">
+    <form action="/search_labor" method="get">
     @csrf
       <div class="row" >
         <div class="form-group">
@@ -39,11 +60,11 @@
     </div>
  </form>
 </div>
-    {{--   <form method="POST" action="{{ route('employee-management.search') }}">
+    {{--   <form method="POST" action="{{ route('labors.search') }}">
          {{ csrf_field() }}
          @component('layouts.search', ['title' => 'Search'])
-          @component('layouts.two-cols-search-row', ['items' => ['First Name', 'Department_Name'], 
-          'oldVals' => [isset($searchingVals) ? $searchingVals['firstname'] : '', isset($searchingVals) ? $searchingVals['department_name'] : '']])
+          @component('layouts.two-cols-search-row', ['items' => ['name', 'name'], 
+          'oldVals' => [isset($searchingVals) ? $searchingVals['name'] : '', isset($searchingVals) ? $searchingVals['name'] : '']])
           @endcomponent
         @endcomponent
       </form> --}}
@@ -55,7 +76,6 @@
           <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
             <thead>
               <tr role="row">
-                <th width="8%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Picture: activate to sort column descending" aria-sort="ascending">Picture</th>
                 <th width="10%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Name: activate to sort column descending" aria-sort="ascending">Name</th>  
                 <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Phone#: activate to sort column ascending">Phone#</th>     
                 <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="City: activate to sort column ascending">City</th> 
@@ -66,8 +86,7 @@
             <tbody>
             @foreach ($labors as $labor)
                 <tr role="row" class="odd">
-                  <td><img src="../{{$labor->profile_image }}" width="50px" height="50px"/></td>
-                  <td class="hidden-xs">{{ $labor->name }}</td>
+                  <td>{{ $labor->name }}</td>
                   <td class="hidden-xs">{{ $labor->phone }}</td>
                   <td class="hidden-xs">{{ $labor->city }}</td>
                   <td style="background-color: rgb(236, 240, 245);">
@@ -90,7 +109,6 @@
 
             <tfoot>
              <tr role="row">
-                <th width="8%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Picture: activate to sort column descending" aria-sort="ascending">Picture</th>
                 <th width="10%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Name: activate to sort column descending" aria-sort="ascending">Name</th>  
                 <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Phone#: activate to sort column ascending">Phone#</th>     
                 <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="City: activate to sort column ascending">City</th> 
