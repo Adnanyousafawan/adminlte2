@@ -8,7 +8,7 @@
   <div class="box-body">
     <div class="row">
         <div class="col-sm-8">
-          
+
         </div>
         <div class="col-sm-4">
           <a class="btn btn-primary  form-control" href="{{ route('projects.create') }}">Add new Project</a>
@@ -18,7 +18,7 @@
   <!-- /.box-header -->
   <div class="box-body">
   <h3 for="search_area">Search Project</h3>
-  <div id="search_area" style="padding: 30px; background-color: rgb(53, 124, 165);">   
+  <div id="search_area" style="padding: 30px; background-color: rgb(53, 124, 165);">
     <form action="/search_project" method="get">
     @csrf
       <div class="row" >
@@ -30,10 +30,10 @@
           <div class="col-sm-3">
             <input type="search" name="search_customer" id="search_customer" placeholder="Search By Customer" class="form-control">
           </div>
-        
-        <div 
+
+        <div
         <div class="col-sm-3">
-          <button type="submit" class="btn btn-btn-primary ">Search</button> 
+          <button type="submit" class="btn btn-btn-primary ">Search</button>
       </div>
     </div>
     </div>
@@ -42,7 +42,7 @@
     {{--   <form method="POST" action="{{ route('employee-management.search') }}">
          {{ csrf_field() }}
          @component('layouts.search', ['title' => 'Search'])
-          @component('layouts.two-cols-search-row', ['items' => ['First Name', 'Department_Name'], 
+          @component('layouts.two-cols-search-row', ['items' => ['First Name', 'Department_Name'],
           'oldVals' => [isset($searchingVals) ? $searchingVals['firstname'] : '', isset($searchingVals) ? $searchingVals['department_name'] : '']])
           @endcomponent
         @endcomponent
@@ -56,11 +56,11 @@
             <thead>
               <tr role="row">
                 <th width="10%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Name: activate to sort column descending" aria-sort="ascending">Title</th>
-                <th width="8%" class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending">Owner Name</th>    
-                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Phone Number: activate to sort column ascending">Location</th>     
-                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending">Assigned To</th> 
+                <th width="8%" class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending">Owner Name</th>
+                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Phone Number: activate to sort column ascending">Location</th>
+                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending">Assigned To</th>
                 <th width="10%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Action: activate to sort column descending" aria-sort="ascending">Action</th>
-               
+
               </tr>
             </thead>
             <tbody>
@@ -87,17 +87,17 @@
                   </td>
               </tr> </tbody>
             @endforeach
-           
+
             <tfoot>
               <tr>
                 <tr role="row">
                 <th width="8%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Picture: activate to sort column descending" aria-sort="ascending">Picture</th>
                 <th width="10%" class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Name: activate to sort column descending" aria-sort="ascending">Name</th>
-                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending">Email</th>    
-                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Phone Number: activate to sort column ascending">Number</th>     
-                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending">Role</th> 
+                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending">Email</th>
+                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Phone Number: activate to sort column ascending">Number</th>
+                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending">Role</th>
                 <th width="10%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Action: activate to sort column descending" aria-sort="ascending">Action</th>
-               
+
               </tr>
               </tr>
               </tr>

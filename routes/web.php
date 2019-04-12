@@ -56,9 +56,15 @@ Route::get('user/table','HomeController@datatable');
 
 //_______________________________User Management___________________________________//
 Route::get('useer', 'HomeController@usermanagement');
+
+
+
 //-----------------------------------Manager------------------------------------//
 Route::get('managers/addmanager', 'HomeController@addmanager');
 Route::resource('managers', 'ManagerController');
+
+
+
 //-----------------------------------Contractor---------------------------------//
 Route::get('contractors/addcontractor', 'HomeController@addcontractor');
 Route::resource('contractors', 'ContractorController');
@@ -69,8 +75,6 @@ Route::resource('contractors', 'ContractorController');
 
 
 Route::get('starter', 'HomeController@starter')->name('starter');
-
-
 Route::get('profile', 'HomeController@profile')->name('profile');
 Route::post('profile/image', 'HomeController@updateImage')->name('profile.image');
 

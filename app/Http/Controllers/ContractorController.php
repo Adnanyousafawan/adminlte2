@@ -49,11 +49,10 @@ class ContractorController extends Controller
             'cont_contact' => $request->get('cont_contact'),
             'cont_address' => $request->get('cont_address'),
             'cont_city' => $request->get('cont_city'),
-            'zipcode' => $request->get('zipcode')
         ]);
         $contractor->save();
 
-        return redirect('/home')->with('success', 'New project has created');
+        return redirect('/home')->with('success', 'New Contractor has added');
     }
 
     /**
