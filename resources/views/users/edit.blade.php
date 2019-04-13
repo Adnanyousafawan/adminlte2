@@ -23,9 +23,9 @@
    <input type="hidden" name="_token" value="{{ csrf_token() }}"> --}}
    <div class="col-lg-8 col-lg-offset-2">
 
-                <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                   <label for="user_name">User Name</label>
-                  <input type="text" class="form-control" id="user_name" name="user_name" value="{{ $users->name }}" required>
+                  <input type="text" class="form-control" id="user_name" name="user_name" value="{{ $users->name }}">
                     @if ($errors->has('name'))
                       <span class="help-block">
                         <strong>{{ $errors->first('name') }}</strong>                              

@@ -27,6 +27,7 @@
             {{ session('status') }}
         </div>
     @endif
+    
     <div class="box box-primary" style="padding-bottom: 85px;">
         <div class="box-header">
             <h2 class="text-center">Add Project</h2>
@@ -99,11 +100,11 @@
                     <div class="form-group">
                         <label for="assigned_to">Select Contractor</label>
                         <select class="form-control" id="assigned_to" name="assigned_to">
-                            <option>Contractor 1</option>
-                            <option>Contractor 2</option>
-                            <option>Contractor 3</option>
-                            <option>Contractor 4</option>
-                            <option>Contractor 5</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
                         </select>
                     </div>
 

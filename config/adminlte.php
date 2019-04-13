@@ -139,7 +139,7 @@ return [
         ],
         [
             'text' => 'Create Project',
-            'url'  => 'projects',
+            'url'  => 'projects/create',
             'icon' => 'lock',
         ],
         'Manage',

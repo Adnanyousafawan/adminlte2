@@ -122,9 +122,7 @@ public function search_user(Request $request)
         {
             $users = User::paginate(20);
             return view('users/index', ['users' => $users]);
-
-        }
-        
+        }   
     }
 
     /**

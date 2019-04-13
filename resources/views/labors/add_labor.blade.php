@@ -22,7 +22,7 @@
                 @csrf
                   <label for="lab_name">Labor Name</label>
                   <input type="text" class="form-control" id="lab_name" placeholder="Labor Name" name="lab_name">
-                  <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                
                 </div>
                 <div class="form-group">
                   <label for="lab_cnic">Labor CNIC</label>
