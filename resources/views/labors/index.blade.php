@@ -1,6 +1,5 @@
 @extends('adminlte::page')
 @section('title', 'AdminLTE')
-@section('content')
 
 @section('content')
     @if ($errors->any())
@@ -23,6 +22,8 @@
             {{ session('status') }}
         </div>
     @endif
+
+
     <!-- Main content -->
     <section class="content">
         <div class="box" style="background-color:rgb(236, 240, 245);">
@@ -54,7 +55,6 @@
                                            placeholder="Search By Phone" class="form-control">
                                 </div>
 
-                                <div
                                 <div class="col-sm-3">
                                     <button type="submit" class="btn btn-btn-primary ">Search</button>
                                 </div>
@@ -169,5 +169,6 @@
             <!-- /.box-body -->
         </div>
     </section>
+
     <!-- /.content -->
 @stop
