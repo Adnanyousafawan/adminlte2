@@ -31,4 +31,8 @@ class Project extends Model
     {
         return $this->contract_image;
     }
+
+    public function labors(){
+        return $this->hasMany('App\Labor');
+    }
 }
