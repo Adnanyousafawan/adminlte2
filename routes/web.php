@@ -93,5 +93,4 @@ Route::post('/api/projects/all', 'APIController@api_all_projects');
 
 Route::get('/testing', function () {
     $projects = Project::all();
-    dd($projects);
 });
