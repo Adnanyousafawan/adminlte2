@@ -31,7 +31,7 @@
             <input type="search" name="search_email" id="search_email" placeholder="Search By Email" class="form-control">
           </div>
         
-        <div 
+        <div>
         <div class="col-sm-3">
           <button type="submit" class="btn btn-btn-primary ">Search</button> 
       </div>
@@ -60,7 +60,7 @@
                 <th width="8%" class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending">Email</th>    
                 <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Phone Number: activate to sort column ascending">Number</th>     
                 <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending">Role</th> 
-                <th width="10%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Action: activate to sort column descending" aria-sort="ascending">Action</th>
+                <th width="12%"  tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Action: activate to sort column descending" aria-sort="ascending">Action</th>
                
               </tr>
             </thead>
@@ -82,7 +82,7 @@
                          <button type="submit" class="btn btn-danger col-xs" style="margin-left: 5px; margin-top: 5px;">
                           Delete
                         </button>
-                        <a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-primary col-xs" style="margin-left: 5px; margin-top: 5px;">
+                        <a href="{{ route('users.view', ['id' => $user->id]) }}" class="btn btn-primary col-xs" style="margin-left: 5px; margin-top: 5px;">
                         View
                         </a>
                     </form>

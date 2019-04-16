@@ -28,7 +28,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return view('projects/index');
+        
+        return view('projects.index');
     }
 
     /**
@@ -118,7 +119,8 @@ class ProjectController extends Controller
     public function show()
     {
         $projects = Project::paginate(10);
-        return view('projects.index',compact('projects'));
+        $projectstotal = Project::all();
+        return view('projects.index',compact('projects'), ['projectstotal' => $projectstotal]);
     }
 
     /**

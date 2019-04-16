@@ -31,7 +31,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Htt p\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -190,6 +190,13 @@ public function search_user(Request $request)
     {
         User::where('id', $id)->delete();
         return redirect()->intended('users/index');
+    }
+    public function view_user(id)
+    {
+        /*$userbyid = DB::table('users')
+        ->join('roles','users.role_id','=','roles.id')
+        ->select('users.*','')*/
+
     }
     
 }

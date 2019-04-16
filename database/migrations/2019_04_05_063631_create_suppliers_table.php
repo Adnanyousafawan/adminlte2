@@ -17,7 +17,7 @@ class CreateSuppliersTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('inic');
-            $table->string('contact');
+            $table->string('phone_number');
             $table->string('address');
             $table->string('city');
             $table->string('material');

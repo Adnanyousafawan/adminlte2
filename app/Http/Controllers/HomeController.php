@@ -75,10 +75,7 @@ class HomeController extends Controller
         return view('profile');
     }
 
- public function datatable()
-    {
-        return view('datatable');
-    }
+
     public function updateImage(Request $request)
     {
 

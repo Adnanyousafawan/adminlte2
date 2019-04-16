@@ -9,7 +9,7 @@ class Supplier extends Model
     protected $fillable = [
     	"name",
     	"inic",
-    	"contact",
+    	"phone_number",
     	"address",
     	"city",
     	"material",

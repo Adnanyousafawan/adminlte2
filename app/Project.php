@@ -21,7 +21,6 @@ class Project extends Model
     	"estimated_budget",
     	"description",
         "assigned_by",
-        "customer_id",
         "floor",
         "contract_image",
         "status",

@@ -39,11 +39,11 @@ Route::resource('labors', 'LaborController');
 Route::get('/search_labor', 'LaborController@search_labor');
 Route::get('labors/index','LaborController@index')->name('labors.index');
 
-//-----------------------------------Supplier-----------------------------------//
+//-----------------------------------Supplier Management-----------------------------------//
+
 Route::resource('suppliers', 'SupplierController');
 Route::get('/search_supplier', 'SupplierController@search_supplier');
 Route::get('suppliers/index','SupplierController@index')->name('suppliers.index');
-
 
 
 

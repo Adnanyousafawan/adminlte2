@@ -20,7 +20,6 @@ class CreateProjectsTable extends Migration
             $table->string('city')->nullable();
             $table->string('plot_size')->nullable();
               //customer details
-            $table->unsignedBigInteger('customer_id')->nullable();
             $table->string('customer_name')->nullable();
             $table->string('customer_address')->nullable();
             $table->string('customer_cnic')->nullable();
@@ -46,9 +45,6 @@ class CreateProjectsTable extends Migration
                 ->references('id')
                 ->on('managers');
 
-            $table->foreign('customer_id')
-                ->references('id')
-                ->on('customers');
         });
     }
 

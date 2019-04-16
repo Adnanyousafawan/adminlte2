@@ -139,7 +139,7 @@ return [
         ],
         [
             'text' => 'Create Project',
-            'url'  => 'projects',
+            'url'  => 'projects/create',
             'icon' => 'lock',
         ],
         'Manage',
@@ -148,20 +148,16 @@ return [
             'icon'    => 'share',
             'submenu' => [
                 [
-                    'text' => 'Manager',
-                    'url'  => 'managers/addmanager',
-                ],
-                [
-                    'text'    => 'Contractor',
-                    'url'     => 'contractors/addcontractor',
+                    'text' => 'Users',
+                    'url'  => 'users/index',
                 ],
                 [
                     'text' => 'Labor',
-                    'url' => 'labors/addlabor',
+                    'url' => 'labors/index',
                 ],
                 [
                     'text' => 'supplier',
-                    'url' => 'suppliers/addsupplier',
+                    'url' => 'suppliers/index',
                 ], 
             ],
         ],
