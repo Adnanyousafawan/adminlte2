@@ -13,6 +13,9 @@ class Contractor extends Model
     	"cont_address",
     	"cont_city",
     	"cont_past_projects",
-    	"zipcode"
     ];
+
+     public function projects(){
+         return $this->hasMany(Project::class);
+     }
 }

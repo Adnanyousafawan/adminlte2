@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contractor;
 use App\Http\Requests;
 use App\Project;
 use App\Traits\UploadTrait;
@@ -106,7 +107,7 @@ class ProjectController extends Controller
         $project->save();
 
         // Return user back and show a flash message
-       return redirect()->route('projects.index')->with('success','Project Added Succesfully');
+       return redirect()->route('projects.index')->with('success','Project Added Successfully');
     }
 
     /**
@@ -118,7 +119,8 @@ class ProjectController extends Controller
     public function show()
     {
         $projects = Project::paginate(10);
-        return view('projects.index',compact('projects'));
+        $contractors = Contractor::paginate(10);
+        return view('projects.index',compact('projects', 'contractors'));
     }
 
     /**

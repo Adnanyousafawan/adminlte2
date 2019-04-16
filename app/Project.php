@@ -32,7 +32,23 @@ class Project extends Model
         return $this->contract_image;
     }
 
-    public function labors(){
-        return $this->hasMany('App\Labor');
+//    public function labors(){
+//        return $this->hasMany('App\Labor');
+//    }
+
+
+
+// gives labor count
+    public function labors()
+    {
+        return $this->hasMany(Labor::class);
     }
+    public function getLaborCountAttribute()
+    {
+        return $this->labors()->count();
+    }
+//    public function contractors(){
+//        return $this->belongsTo(Contractor::class);
+//    }
+
 }
