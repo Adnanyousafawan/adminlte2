@@ -51,14 +51,6 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="row">
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" placeholder="Zip Code" id="zipcode"
-                                       name="zipcode">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label for="cont_picture">Upload Picture</label>
                         <input type="file" id="cont_picture">
                     </div>

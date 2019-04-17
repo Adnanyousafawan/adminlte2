@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contractor;
 use App\Http\Requests;
 use App\Project;
 use App\Traits\UploadTrait;
@@ -125,7 +126,7 @@ class ProjectController extends Controller
 
 
         // Return user back and show a flash message
-       return redirect()->route('projects.index')->with('success','Project Added Succesfully');
+       return redirect()->route('projects.index')->with('success','Project Added Successfully');
     }
 
     /**

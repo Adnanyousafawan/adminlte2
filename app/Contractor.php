@@ -12,5 +12,6 @@ class Contractor extends Model
     	"contact",
     	"address",
     	"city",
-    ];
+        ];
+
 }
