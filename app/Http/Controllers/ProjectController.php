@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Contractor;
+use App\Customer;
 use App\Http\Requests;
 use App\Project;
 use App\Traits\UploadTrait;
@@ -29,7 +29,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        
+
         return view('projects.index');
     }
 
@@ -40,15 +40,15 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        $contractors = DB::table('users')->where('role_id' ,'=','3')->get();
-        return View::make('test')->with('contractors',$contractors);
+        $contractors = DB::table('users')->where('role_id', '=', '3')->get();
+        return View::make('projects/create')->with('contractors', $contractors);
         //return view('projects/create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -72,13 +72,13 @@ class ProjectController extends Controller
         ]);
 
         $contractor = DB::table('users')
-        ->where('name','=', $request->input('assigned_to'))
-        ->select('id')
-        ->get();
+            ->where('name', '=', $request->input('assigned_to'))
+            ->select('id')
+            ->get();
 
-       // dd($contractor[0]->id);
+        // dd($contractor[0]->id);
 
-         $customer = new \App\Customer([
+        $customer = new Customer([
             'name' => $request->input('name'),
             'cnic' => $request->input('cnic'),
             'phone' => $request->input('phone'),
@@ -86,6 +86,9 @@ class ProjectController extends Controller
         ]);
         $customer->save();
 
+        $customerId = DB::table('customers')
+            ->where('id', '=', $customer->id)
+            ->get();
 
         $project = new Project([
             'title' => $request->input('title'),
@@ -93,12 +96,12 @@ class ProjectController extends Controller
             'city' => $request->input('city'),
             'plot_size' => $request->input('plot_size'),
             'floor' => $request->input('floor'),
-            'customer_id' => $customer->id,
-            'assigned_to' => $contractor[0]->id, 
+            'customer_id' => $customerId[0]->id,
+            'assigned_to' => $contractor[0]->id,
             'estimated_completion_time' => $request->input('estimated_completion_time'),
             'estimated_budget' => $request->input('estimated_budget'),
             'description' => $request->input('description'),
-            'contract_image'=> $request->input('contract_image')
+            'contract_image' => $request->input('contract_image')
 
         ]);
 
@@ -119,65 +122,58 @@ class ProjectController extends Controller
             // Set user profile image path in database to filePath
             $project->contract_image = $filePath;
         }
-        // Persist user record to database
-        $project->save();
 
-       
+        $project->save();
 
 
         // Return user back and show a flash message
-       return redirect()->route('projects.index')->with('success','Project Added Successfully');
+        return redirect()->route('projects.index')->with('success', 'Project Added Successfully');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Project $project
+     * @param \App\Project $project
      * @return \Illuminate\Http\Response
      */
     public function show()
     {
         $projects = DB::table('projects')->take(10)->get();  //Project::paginate(10);
-        $projectstotal =  DB::table('projects')->get();//Project::all();
-        $contractors = DB::table('users')->where('role_id','=','3')->get();
-        $customers =  DB::table('customers')->get();// \App\Customer::all();
-        return view('projects/index',compact('projects', 'contractors', 'customers'), ['projectstotal' => $projectstotal]);
+        $projectstotal = DB::table('projects')->get();//Project::all();
+        $contractors = DB::table('users')->where('role_id', '=', '3')->get();
+        $customers = DB::table('customers')->get();// \App\Customer::all();
+        return view('projects/index', compact('projects', 'contractors', 'customers'), ['projectstotal' => $projectstotal]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Project $project
+     * @param \App\Project $project
      * @return \Illuminate\Http\Response
-     */    
-public function search_project(Request $request)
+     */
+    public function search_project(Request $request)
     {
         //$users = User::all();
         $search = $request->get('search_title');
         $search_customer = $request->get('search_customer');
-        if (!is_null($search)) 
-        {
-            $projects = DB::table('projects')->where('title','like','%'.$search.'%')->paginate(20);
+        if (!is_null($search)) {
+            $projects = DB::table('projects')->where('title', 'like', '%' . $search . '%')->paginate(20);
             return view('projects/index', ['projects' => $projects]);
         }
-        if (!is_null($search_customer)) 
-        {
-            $projects = DB::table('projects')->where('customer_name','like','%'.$search_customer.'%')->paginate(20);
+        if (!is_null($search_customer)) {
+            $projects = DB::table('projects')->where('customer_name', 'like', '%' . $search_customer . '%')->paginate(20);
             return view('projects/index', ['projects' => $projects]);
-        }
-        else
-        {
+        } else {
             $projects = Project::paginate(20);
             return view('projects/index', ['projects' => $projects]);
-        }  
+        }
     }
 
     public function edit($id)
     {
         $projects = Project::find($id);
         // Redirect to user list if updating user wasn't existed
-        if ($projects == null || count($projects) == 0)
-         {
+        if ($projects == null || count($projects) == 0) {
             return redirect()->intended('projects/index');
         }
         //$users = User::paginate(10);
@@ -187,8 +183,8 @@ public function search_project(Request $request)
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Project $project
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Project $project
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -199,42 +195,35 @@ public function search_project(Request $request)
             'city' => 'required',
             'plot_size' => 'required',
             'floor' => 'required',
-            'cust_name' => 'required',
-            'cust_cnic' => 'required',
-            'cust_phone' => 'required',
-            'cust_address' => 'required',
+
             //'assigned_to' => 'required',
             'estimated_completion_time' => 'required',
             'estimated_budget' => 'required',
-           // 'description' => 'required',
-           // 'contract_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
+            // 'description' => 'required',
+            // 'contract_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
 
         ]);
 
-            $projects = Project::find($id);
-            $projects->title = $request->input('title');
-            $projects->area = $request->input('area');
-            $projects->city = $request->input('city');
-            $projects->plot_size = $request->input('plot_size');
-            $projects->floor = $request->input('floor');
-            $projects->customer_name = $request->input('cust_name');
-            $projects->customer_cnic = $request->input('cust_cnic');
-            $projects->customer_phone_number = $request->input('cust_phone');
-            $projects->customer_address = $request->input('cust_address');
-            //$projects->assigned_to = $request->input('assigned_to');
-            $projects->estimated_completion_time = $request->input('estimated_completion_time');
-            $projects->estimated_budget = $request->input('estimated_budget');
-          //  $projects->description = $request->input('description');
-           // $projects->contract_image = $request->input('contract_image');
-            $projects->save();
-            // Return user back and show a flash message
-            return redirect()->route('projects.index')->with('success','Data Updated');
+        $projects = Project::find($id);
+        $projects->title = $request->input('title');
+        $projects->area = $request->input('area');
+        $projects->city = $request->input('city');
+        $projects->plot_size = $request->input('plot_size');
+        $projects->floor = $request->input('floor');
+        //$projects->assigned_to = $request->input('assigned_to');
+        $projects->estimated_completion_time = $request->input('estimated_completion_time');
+        $projects->estimated_budget = $request->input('estimated_budget');
+        //  $projects->description = $request->input('description');
+        // $projects->contract_image = $request->input('contract_image');
+        $projects->save();
+        // Return user back and show a flash message
+        return redirect()->route('projects.index')->with('success', 'Data Updated');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Project $project
+     * @param \App\Project $project
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

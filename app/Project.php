@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
     protected $fillable = [
-    	"title",
-    	"location",
-    	"area",
-    	"plot_size",
-    	"city",
-    	"assigned_to",
-    	"estimated_completion_time",
-    	"estimated_budget",
-    	"description",
+        "title",
+        "location",
+        "area",
+        "plot_size",
+        "city",
+        "customer_id",
+        "assigned_to",
+        "estimated_completion_time",
+        "estimated_budget",
+        "description",
         "assigned_by",
         "floor",
         "contract_image",
@@ -32,12 +33,12 @@ class Project extends Model
 //    }
 
 
-
 // gives labor count
     public function labors()
     {
         return $this->hasMany(Labor::class);
     }
+
     public function getLaborCountAttribute()
     {
         return $this->labors()->count();
