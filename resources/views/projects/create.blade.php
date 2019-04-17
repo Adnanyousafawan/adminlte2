@@ -68,43 +68,41 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="cust_name">Customer Name</label>
-                        <input type="text" class="form-control" id="cust_name" placeholder="Customer Name"
-                               name="cust_name">
+                        <label for="name">Customer Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Customer Name"
+                               name="name">
                     </div>
 
                     <div class="form-group">
-                        <label for="cust_cnic">Customer CNIC</label>
-                        <input type="text" class="form-control" id="cust_cnic" placeholder="Customer CNIC"
-                               name="cust_cnic">
+                        <label for="cnic">Customer CNIC</label>
+                        <input type="text" class="form-control" id="cnic" placeholder="Customer CNIC"
+                               name="cnic">
                     </div>
 
                     <div class="form-group">
-                        <label for="cust_phone">Customer Contact</label>
+                        <label for="phone">Customer Contact</label>
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-phone"></i>
                             </div>
                             <input type="text" class="form-control" placeholder="Contact Number"
                                    data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']"
-                                   data-mask="" id="cust_phone" name="cust_phone">
+                                   data-mask="" id="phone" name="phone">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="cust_address">Home Address</label>
-                        <input type="text" class="form-control" id="cust_address" name="cust_address"
+                        <label for="address">Home Address</label>
+                        <input type="text" class="form-control" id="address" name="address"
                                placeholder="Home Address">
                     </div>
 
                     <div class="form-group">
                         <label for="assigned_to">Select Contractor</label>
                         <select class="form-control" id="assigned_to" name="assigned_to">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            @foreach($contractors as $contractor)
+                            <option>{{ $contractor->name}}</option>
+                            @endforeach
                         </select>
                     </div>
 

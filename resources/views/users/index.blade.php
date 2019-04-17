@@ -71,7 +71,6 @@
                   <td class="hidden-xs">{{ $user->name }}</td>
                   <td class="hidden_xs">{{ $user->email }}</td>
                   <td class="hidden-xs">{{ $user->phone_number }}</td>
-                  <td class="hidden-xs">{{ $user->phone_number }}</td>
                   <td style="background-color: rgb(236, 240, 245);">
                  <form class="row" method="POST" action="{{ route('users.destroy', ['id' => $user->id]) }}" onsubmit = "return confirm('Are you sure?')">
                         <input type="hidden" name="_method" value="DELETE">
@@ -82,7 +81,7 @@
                          <button type="submit" class="btn btn-danger col-xs" style="margin-left: 5px; margin-top: 5px;">
                           Delete
                         </button>
-                        <a href="{{ route('users.view', ['id' => $user->id]) }}" class="btn btn-primary col-xs" style="margin-left: 5px; margin-top: 5px;">
+                        <a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-primary col-xs" style="margin-left: 5px; margin-top: 5px;">
                         View
                         </a>
                     </form>

@@ -39,7 +39,9 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('projects/create');
+        $contractors = DB::table('users')->where('role_id' ,'=','3')->get();
+        return View::make('test')->with('contractors',$contractors);
+        //return view('projects/create');
     }
 
     /**
@@ -56,11 +58,11 @@ class ProjectController extends Controller
             'city' => 'required',
             'plot_size' => 'required',
             'floor' => 'required',
-            'cust_name' => 'required',
-            'cust_cnic' => 'required',
-            'cust_phone' => 'required',
-            'cust_address' => 'required',
-            //'assigned_to' => 'required',
+            'name' => 'required',
+            'cnic' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'assigned_to' => 'required',
             'estimated_completion_time' => 'required',
             'estimated_budget' => 'required',
             'description' => 'required',
@@ -68,17 +70,30 @@ class ProjectController extends Controller
 
         ]);
 
+        $contractor = DB::table('users')
+        ->where('name','=', $request->input('assigned_to'))
+        ->select('id')
+        ->get();
+
+       // dd($contractor[0]->id);
+
+         $customer = new \App\Customer([
+            'name' => $request->input('name'),
+            'cnic' => $request->input('cnic'),
+            'phone' => $request->input('phone'),
+            'address' => $request->input('address'),
+        ]);
+        $customer->save();
+
+
         $project = new Project([
             'title' => $request->input('title'),
             'area' => $request->input('area'),
             'city' => $request->input('city'),
             'plot_size' => $request->input('plot_size'),
             'floor' => $request->input('floor'),
-            'customer_name' => $request->input('cust_name'),
-            'customer_cnic' => $request->input('cust_cnic'),
-            'customer_phone_number' => $request->input('cust_phone'),
-            'customer_address' => $request->input('cust_address'),
-           // 'assigned_to' => $request->input('assigned_to'),
+            'customer_id' => $customer->id,
+            'assigned_to' => $contractor[0]->id, 
             'estimated_completion_time' => $request->input('estimated_completion_time'),
             'estimated_budget' => $request->input('estimated_budget'),
             'description' => $request->input('description'),
@@ -106,6 +121,9 @@ class ProjectController extends Controller
         // Persist user record to database
         $project->save();
 
+       
+
+
         // Return user back and show a flash message
        return redirect()->route('projects.index')->with('success','Project Added Succesfully');
     }
@@ -118,9 +136,11 @@ class ProjectController extends Controller
      */
     public function show()
     {
-        $projects = Project::paginate(10);
-        $projectstotal = Project::all();
-        return view('projects.index',compact('projects'), ['projectstotal' => $projectstotal]);
+        $projects = DB::table('projects')->take(10)->get();  //Project::paginate(10);
+        $projectstotal =  DB::table('projects')->get();//Project::all();
+        $contractors = DB::table('users')->where('role_id','=','3')->get();
+        $customers =  DB::table('customers')->get();// \App\Customer::all();
+        return view('projects/index',compact('projects', 'contractors', 'customers'), ['projectstotal' => $projectstotal]);
     }
 
     /**

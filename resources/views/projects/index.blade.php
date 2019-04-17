@@ -54,50 +54,47 @@
     <div id="table_all" class="dataTables_wrapper form-inline dt-bootstrap" style="background-color:rgb(247, 248, 249);">
       <div class="row">
         <div class="col-sm-12">
-          <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+          <table id="example2" class="table table-bordered table-responsive table-hover dataTable" role="grid" aria-describedby="example2_info">
             <thead>
               <tr role="row">
-                <th width="5%" class="sorting" tabindex="0" aria-controls="example2" rowspan="2" colspan="1" aria-label="Name: activate to sort column descending" aria-sort="ascending">Title</th>
-                <th width="5%" class="sorting" tabindex="0" aria-controls="example2" rowspan="2" colspan="1" aria-label="Email: activate to sort column ascending">Owner Name</th>    
-                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="2" colspan="1" aria-label="Phone Number: activate to sort column ascending">Location</th>     
-                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="2" colspan="1" aria-label="Role: activate to sort column ascending">Assigned To</th> 
-                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="2" colspan="1" aria-label="Role: activate to sort column ascending">Estimated Budget</th>     
-                <th width="10%" tabindex="0" aria-controls="example2" rowspan="2" colspan="1" aria-label="Action: activate to sort column descending" aria-sort="ascending">Action</th>
-               
+                <th class="sorting" tabindex="0"  rowspan="2" colspan="1" aria-label="Name: activate to sort column descending" aria-sort="ascending">Title</th>
+                <th  rowspan="2" colspan="1">Owner Name</th>    
+                <th class="sorting hidden-xs hidden-sm " tabindex="0" aria-controls="example2" rowspan="2" colspan="1" aria-label="Phone Number: activate to sort column ascending">Location</th>     
+                <th  class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="2" colspan="1" aria-label="Role: activate to sort column ascending">Assigned To</th> 
+                <th  class="sorting hidden-xs hidden-sm " tabindex="0" aria-controls="example2" rowspan="2" colspan="1" aria-label="Role: activate to sort column ascending">Estimated Budget</th>     
+                <th tabindex="0" aria-controls="example2" rowspan="2" colspan="1" aria-label="Action: activate to sort column descending" aria-sort="ascending">Action</th>
               </tr>
             </thead>
             <tbody>
             @foreach ($projects as $project)
                 <tr role="row" class="odd">
                   <td>{{ $project->title }}</td>
-                  <td>{{ $project->customer_name }}</td>
-                  <td class="hidden-xs text-uppercase text-danger">{{ $project->area }}</td>
-                  <td class="hidden-xs">{{ $project->assigned_to }}</td>
-                  <td class="hidden-xs">{{ $project->estimated_budget }}</td>
-                  <td style="background-color: rgb(236, 240, 245);">
+                  <td></td>
+                  <td class="hidden-xs hidden-sm text-uppercase text-danger">{{ $project->area }}</td>
+                  <td class="hidden-xs "> {{$customers[$project->customer_id -1]->name}} </td>
+                  <td class="hidden-xs hidden-sm  ">{{ $project->estimated_budget }}</td>
+                  <td {{-- style="background-color: rgb(236, 240, 245); "--}}>
                  <form class="row" method="POST" action="{{ route('projects.destroy', ['id' => $project->id]) }}" onsubmit = "return confirm('Are you sure?')">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        @method('DELETE')
+                        @csrf
                         
-                        <a href="{{ route('projects.edit', ['id' => $project->id]) }}" type="links" {{-- class="btn btn-primary col-xs" --}} style="margin-left: 5px; margin-top: 5px;">
+                        <a href="{{ route('projects.edit', ['id' => $project->id]) }}" type="links" class="btn btn-primary"  style="margin-left: 5px; margin-top: 5px;">
                         View
                         </a>
-                        <a href="{{ route('projects.edit', ['id' => $project->id]) }}" style="color: #437FE6; text-decoration: underline;  margin-left: 5px; margin-top: 5px;">
+                        <a href="{{ route('projects.edit', ['id' => $project->id]) }}" class="btn btn-warning" style="margin-left: 5px; margin-top: 5px;">
                         Edit
                         </a> 
                         {{-- <a href="{{ route('projects.destroy', ['id' => $project->id]) }}" type="links" onclick="return confirm('Are you sure?')"  class="btn btn-danger col-xs" style="margin-left: 5px; margin-top: 5px;"> 
                           Delete</a>--}} 
 
                        
-                        <button type="submit" class="bg-transparent btn-danger col-xs"  style="margin-left: 5px; margin-top: 5px;">
-                          Delete
-                        </button>
+                        <button type="submit" class="btn btn-danger" style="margin-left: 5px; margin-top: 5px;">Delete </button>
                     </form>
                   </td>
               </tr> </tbody>
             @endforeach
            
-            <tfoot>
+           {{--  <tfoot>
               <tr>
                 <tr role="row">
                 <th width="8%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Picture: activate to sort column descending" aria-sort="ascending">Picture</th>
@@ -110,7 +107,7 @@
               </tr>
               </tr>
               </tr>
-            </tfoot>
+            </tfoot> --}}
           </table>
         </div>
       </div>
@@ -120,7 +117,7 @@
         </div>
         <div class="col-sm-7">
           <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-            {{ $projects->links() }}
+           {{--  {{ $projects->links() }} --}}
           </div>
         </div>
       </div>
@@ -128,6 +125,6 @@
   </div>
   <!-- /.box-body -->
 </div>
- </div>s
+ </div>
     <!-- /.content -->
 @stop

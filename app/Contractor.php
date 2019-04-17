@@ -12,6 +12,5 @@ class Contractor extends Model
     	"contact",
     	"address",
     	"city",
-    	"cont_past_projects",
     ];
 }
