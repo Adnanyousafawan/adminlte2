@@ -30,6 +30,7 @@ class CreateProjectsTable extends Migration
             $table->unsignedBigInteger('assigned_to')->nullable();
             $table->unsignedBigInteger('assigned_by')->nullable();
             $table->string('status')->nullable();
+            $table->unsignedBigInteger('phase_id')->nullable();
             $table->timestamps();
 
 
@@ -45,6 +46,10 @@ class CreateProjectsTable extends Migration
                 $table->foreign('customer_id')
                 ->references('id')
                 ->on('customers');
+
+            $table->foreign('phase_id')
+                ->references('id')
+                ->on('phases');
 
         });
     }
