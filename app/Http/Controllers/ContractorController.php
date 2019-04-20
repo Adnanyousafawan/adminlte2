@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\contractor;
+use App\User;
 use Illuminate\Http\Request;
 
 class ContractorController extends Controller
@@ -43,12 +44,15 @@ class ContractorController extends Controller
             'cont_city' => 'required'
         ]);
 
-        $contractor = new Contractor([
-            'cont_name' => $request->get('cont_name'),
-            'cont_cnic' => $request->get('cont_cnic'),
-            'cont_contact' => $request->get('cont_contact'),
-            'cont_address' => $request->get('cont_address'),
-            'cont_city' => $request->get('cont_city'),
+        $contractor = new User([
+            'name' => $request->get('cont_name'),
+            'cnic' => $request->get('cont_cnic'),
+            'contact' => $request->get('cont_contact'),
+            'address' => $request->get('cont_address'),
+            'city' => $request->get('cont_city'),
+            'email' => "hammxah@hamza.com",
+            'password' =>'$2y$10$SRZbHvWspEfbU08j2C6TreU2H8rjJsI702XIkSXHn8PIBpeB8FkPy',
+            'role_id' => 3
         ]);
         $contractor->save();
 

@@ -15,13 +15,13 @@ class CreateLaborsTable extends Migration
     {
         Schema::create('labors', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('cnic');
-            $table->string('phone');
-            $table->string('address');
-            $table->string('city');
-            $table->string('rate');
-            $table->unsignedBigInteger('project_id');
+            $table->string('name')->nullable();
+            $table->string('cnic')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('rate')->nullable();
+            $table->unsignedBigInteger('project_id')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
 

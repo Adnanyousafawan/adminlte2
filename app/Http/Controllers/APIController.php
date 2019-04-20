@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Contractor;
+use App\Labor;
+use App\Project;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -56,8 +58,6 @@ class APIController extends Controller
     {
         $contractors = Contractor::all();
 
-        $contractor['success'] = 1;
-
         return response()->json($contractors);
     }
 
@@ -66,10 +66,37 @@ class APIController extends Controller
 //        $projects = DB::raw('select contractors.cont_name, contractors.cont_contact from projects inner JOIN
 //                contractors on projects.assigned_to = contractors.id where contractors.cont_name="Sibrah Batool" ');
 
-        $projects = DB::table('projects')
-            ->join('contractors', 'assigned_to', '=', 'contractors.id')
-            ->get();
+//        $projects = DB::table('projects')
+//            ->join('contractors', 'assigned_to', '=', 'contractors.id')
+//            ->get();
+
+        $projects = Project::all();
 
         return response()->json($projects);
     }
+
+    public function api_project_list(Request $request)
+    {
+        if ($request->input("check") == "1") {
+
+            $id = DB::table('projects')
+                ->where('title', '=', $request->input('project') )
+                ->get('id');
+            $labor = new Labor([
+                'name' => $request->input('name'),
+                'rate' => $request->input('rate'),
+                'project_id' => $id[0]->id
+            ]);
+
+            $labor->save();
+
+            return "Record added";
+        } else {
+            $project = Project::all();
+            return response()->json($project);
+        }
+
+    }
+
+
 }

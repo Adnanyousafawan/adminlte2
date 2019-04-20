@@ -11,9 +11,10 @@
 |
 */
 
-use App\Contractor;
 use App\Customer;
 use App\Project;
+use App\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -81,6 +82,8 @@ Route::post('/api/login', 'APIController@api_login');
 Route::post('/api/logout', 'APIController@api_logout');
 Route::post('/api/contractors/all', 'APIController@api_all_contractors');
 Route::post('/api/projects/all', 'APIController@api_all_projects');
+Route::post('/api/projects/list', 'APIController@api_project_list');
+Route::post('/api/labors/add', 'APIController@api_add_labor');
 
 
 //testing queries routes
@@ -92,12 +95,10 @@ Route::get('/testing', function () {
     return response()->json($projects);
 });
 
-Route::get('/testing-project-table', function () {
+Route::get('/api/testing-project-table', function () {
     $projects = Project::all();
-    $contractors = Contractor::all();
+    $contractors = DB::table('users')->where('role_id', '=', '3')->get();
     $customers = Customer::all();
-
-
 
 
 //    return View::make('testing')->with(compact('projects', 'contractors', 'customers'));
