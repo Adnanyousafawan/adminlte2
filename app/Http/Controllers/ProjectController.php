@@ -179,8 +179,21 @@ class ProjectController extends Controller
             return redirect()->intended('projects/index');
         }
         //$users = User::paginate(10);
-        return view('projects/edit', ['projects' => $projects]);
+        return view('projects/view', ['projects' => $projects]);
     }
+    /*
+
+     public function viewuser($id)
+    {
+        $projects = Project::find($id);
+        // Redirect to user list if updating user wasn't existed
+        if ($projects == null || count($projects) == 0) {
+            return redirect()->intended('projects/index');
+        }
+        //$users = User::paginate(10);
+        return view('projects/viewuser', ['projects' => $projects]);
+    }
+*/
 
     /**
      * Update the specified resource in storage.

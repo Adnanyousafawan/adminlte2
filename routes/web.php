@@ -28,6 +28,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('projects', 'ProjectController');
 Route::get('/search_project', 'ProjectController@search_project');
 Route::get('projects/index', 'ProjectController@index')->name('projects.index');
+Route::get('projects/view', 'ProjectController@viewuser')->name('projects.view');
 
 //-----------------------------------User Management------------------------------------//
 
