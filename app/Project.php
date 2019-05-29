@@ -23,6 +23,11 @@ class Project extends Model
         "status",
     ];
 
+    protected $hidden = [
+        "created_at",
+        "updated_at"
+    ] ;
+
     public function getImageAttribute()
     {
         return $this->contract_image;

@@ -191,6 +191,7 @@ public function search_user(Request $request)
         User::where('id', $id)->delete();
         return redirect()->intended('users/index');
     }
+
     public function view_user($id)
     {
         /*$userbyid = DB::table('users')

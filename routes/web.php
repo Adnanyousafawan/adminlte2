@@ -11,9 +11,7 @@
 |
 */
 
-use App\Customer;
 use App\Project;
-use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -77,16 +75,6 @@ Route::get('profile', 'HomeController@profile')->name('profile');
 Route::post('profile/image', 'HomeController@updateImage')->name('profile.image');
 
 
-//RESTFUL APIs
-
-Route::post('/api/login', 'APIController@api_login');
-Route::post('/api/logout', 'APIController@api_logout');
-Route::post('/api/contractors/all', 'APIController@api_all_contractors');
-Route::post('/api/projects/all', 'APIController@api_all_projects');
-Route::post('/api/projects/list', 'APIController@api_project_list');
-Route::post('/api/labors/add', 'APIController@api_add_labor');
-
-
 //testing queries routes
 
 Route::get('/testing', function () {
@@ -98,10 +86,65 @@ Route::get('/testing', function () {
 
 Route::post('/api/testing-project-table', function () {
     $projects = Project::all();
-    $contractors = DB::table('users')->where('role_id', '=', '3')->get();
-    $customers = Customer::all();
+
+//        $managerId = $project->get("assigned_by");
+//        $phaseId = $project->get("phase_id");
+//        $customerId = $project->get("customer_id");
+////    $contractor = DB::table('users')->where('role_id', '=', '3')->get();
+////    $contractor = DB::table('users')->find($contractorId);
+//        $contractor = DB::table('users')->where('id', '=', $contractorId)->get();
+//        $customer = DB::table('customers')->find($customerId);
+//        $manager = DB::table('users')->find($managerId);
+//        $phase = DB::table('phases')->find($phaseId);
+
+    $contractorID = $projects->pluck("assigned_to");
+    $customerID = $projects->pluck("customer_id");
+    $managerID = $projects->pluck("assigned_by");
+    $phaseID = $projects->pluck("phase_id");
+    $check = [];
+    for ($i = 0; $i < $projects->count(); $i++) {
+
+        $check[$i] = [
+            "id" => DB::table("projects")->pluck("id")->get($i),
+            "title" => DB::table("projects")->pluck("title")->get($i),
+            "area" => DB::table("projects")->pluck("area")->get($i),
+            "city" => DB::table("projects")->pluck("city")->get($i),
+            "plot_size" => DB::table("projects")->pluck("plot_size")->get($i),
+            "customer" => DB::table('customers')->where('id', '=', $customerID->first())->get(),
+            "estimated_completion_time" => DB::table("projects")->pluck("estimated_completion_time")->get($i),
+            "estimated_budget" => DB::table("projects")->pluck("estimated_budget")->get($i),
+            "floor" => DB::table("projects")->pluck("floor")->get($i),
+            "description" => DB::table("projects")->pluck("description")->get($i),
+            "contract_image" => DB::table("projects")->pluck("contract_image")->get($i),
+            "assigned_to" => DB::table('users')->where('id', '=', $contractorID->first())->get(),
+            "assigned_by" => DB::table('users')->where('id', '=', $managerID->first())->get(),
+            "status" => DB::table("projects")->pluck("status")->get($i),
+            "phase" => DB::table('phases')->where('id', '=', $phaseID->first())->get(),
+        ];
+
+    }
+
+
+//    for ($i = 0; $i < $projects->count(); $i++) {
+//        $check["id"] = DB::table("projects")->pluck("id");
+//        $check["title"] = DB::table("projects")->pluck("title");
+//        $check["area"] = DB::table("projects")->pluck("area");
+//        $check["city"] = DB::table("projects")->pluck("city");
+//        $check["plot_size"] = DB::table("projects")->pluck("plot_size");
+//        $check["customer"] = DB::table('customers')->where('id', '=', $customerID->first())->get();
+//        $check["estimated_completion_time"] = DB::table("projects")->pluck("estimated_completion_time");
+//        $check["estimated_budget"] = DB::table("projects")->pluck("estimated_budget");
+//        $check["floor"] = DB::table("projects")->pluck("floor");
+//        $check["description"] = DB::table("projects")->pluck("description");
+//        $check["contract_image"] = DB::table("projects")->pluck("contract_image");
+//        $check["assigned_to"] = DB::table('users')->where('id', '=', $contractorID->first())->get();
+//        $check["assigned_by"] = DB::table('users')->where('id', '=', $managerID->first())->get();
+//        $check["status"] = DB::table("projects")->pluck("status");
+//        $check["phase"] = DB::table('phases')->where('id', '=', $phaseID->first())->get();
+//    }
 
 
 //    return View::make('testing')->with(compact('projects', 'contractors', 'customers'));
-    return response()->json(compact('projects', 'contractors', 'customers'));
+//    return response()->json(compact('projects', 'contractors', 'customers'));
+    return response()->json($check);
 });

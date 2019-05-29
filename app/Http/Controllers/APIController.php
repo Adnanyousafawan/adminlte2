@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contractor;
+use App\Customer;
 use App\Labor;
 use App\Project;
 use App\User;
@@ -80,7 +81,7 @@ class APIController extends Controller
         if ($request->input("check") == "1") {
 
             $id = DB::table('projects')
-                ->where('title', '=', $request->input('project') )
+                ->where('title', '=', $request->input('project'))
                 ->get('id');
             $labor = new Labor([
                 'name' => $request->input('name'),
