@@ -13,4 +13,6 @@ class Customer extends Model
     	'address',
     	'phone',
     ];
+
+    public $timestamps = false;
 }

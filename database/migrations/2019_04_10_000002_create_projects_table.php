@@ -41,7 +41,7 @@ class CreateProjectsTable extends Migration
 
             $table->foreign('assigned_by')
                 ->references('id')
-                ->on('managers');
+                ->on('users');
 
                 $table->foreign('customer_id')
                 ->references('id')
