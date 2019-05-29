@@ -8,6 +8,7 @@ use App\Project;
 use App\Traits\UploadTrait;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Redirect;
 use Validator;
@@ -98,6 +99,7 @@ class ProjectController extends Controller
             'floor' => $request->input('floor'),
             'customer_id' => $customerId[0]->id,
             'assigned_to' => $contractor[0]->id,
+            'assigned_by' => Auth::id(),
             'estimated_completion_time' => $request->input('estimated_completion_time'),
             'estimated_budget' => $request->input('estimated_budget'),
             'description' => $request->input('description'),
