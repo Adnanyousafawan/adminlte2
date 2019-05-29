@@ -88,7 +88,6 @@ Route::post('/api/testing-project-table', function () {
     $projects = Project::all();
 
 
-
     $check = [];
     for ($i = 0; $i < $projects->count(); $i++) {
 
@@ -116,26 +115,6 @@ Route::post('/api/testing-project-table', function () {
         ];
 
     }
-
-
-//    for ($i = 0; $i < $projects->count(); $i++) {
-//        $check["id"] = DB::table("projects")->pluck("id");
-//        $check["title"] = DB::table("projects")->pluck("title");
-//        $check["area"] = DB::table("projects")->pluck("area");
-//        $check["city"] = DB::table("projects")->pluck("city");
-//        $check["plot_size"] = DB::table("projects")->pluck("plot_size");
-//        $check["customer"] = DB::table('customers')->where('id', '=', $customerID->first())->get();
-//        $check["estimated_completion_time"] = DB::table("projects")->pluck("estimated_completion_time");
-//        $check["estimated_budget"] = DB::table("projects")->pluck("estimated_budget");
-//        $check["floor"] = DB::table("projects")->pluck("floor");
-//        $check["description"] = DB::table("projects")->pluck("description");
-//        $check["contract_image"] = DB::table("projects")->pluck("contract_image");
-//        $check["assigned_to"] = DB::table('users')->where('id', '=', $contractorID->first())->get();
-//        $check["assigned_by"] = DB::table('users')->where('id', '=', $managerID->first())->get();
-//        $check["status"] = DB::table("projects")->pluck("status");
-//        $check["phase"] = DB::table('phases')->where('id', '=', $phaseID->first())->get();
-//    }
-
 
 //    return View::make('testing')->with(compact('projects', 'contractors', 'customers'));
 //    return response()->json(compact('projects', 'contractors', 'customers'));

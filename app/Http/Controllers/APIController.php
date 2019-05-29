@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Contractor;
-use App\Customer;
 use App\Labor;
 use App\Project;
 use App\User;
@@ -64,16 +63,40 @@ class APIController extends Controller
 
     public function api_all_projects()
     {
-//        $projects = DB::raw('select contractors.cont_name, contractors.cont_contact from projects inner JOIN
-//                contractors on projects.assigned_to = contractors.id where contractors.cont_name="Sibrah Batool" ');
-
-//        $projects = DB::table('projects')
-//            ->join('contractors', 'assigned_to', '=', 'contractors.id')
-//            ->get();
-
         $projects = Project::all();
 
-        return response()->json($projects);
+
+        $check = [];
+        for ($i = 0; $i < $projects->count(); $i++) {
+
+            $contractorID = $projects->pluck("assigned_to")->get($i);
+            $customerID = $projects->pluck("customer_id")->get($i);
+            $managerID = $projects->pluck("assigned_by")->get($i);
+            $phaseID = $projects->pluck("phase_id")->get($i);
+
+            $check[$i] = [
+                "id" => DB::table("projects")->pluck("id")->get($i),
+                "title" => DB::table("projects")->pluck("title")->get($i),
+                "area" => DB::table("projects")->pluck("area")->get($i),
+                "city" => DB::table("projects")->pluck("city")->get($i),
+                "plot_size" => DB::table("projects")->pluck("plot_size")->get($i),
+                "customer" => DB::table('customers')->where('id', '=', $customerID)->get("name")->first(),
+                "estimated_completion_time" => DB::table("projects")->pluck("estimated_completion_time")->get($i),
+                "estimated_budget" => DB::table("projects")->pluck("estimated_budget")->get($i),
+                "floor" => DB::table("projects")->pluck("floor")->get($i),
+                "description" => DB::table("projects")->pluck("description")->get($i),
+                "contract_image" => DB::table("projects")->pluck("contract_image")->get($i),
+                "assigned_to" => DB::table('users')->where('id', '=', $contractorID)->get("name")->first(),
+                "assigned_by" => DB::table('users')->where('id', '=', $managerID)->get("name")->first(),
+                "status" => DB::table("projects")->pluck("status")->get($i),
+                "phase" => DB::table('phases')->where('id', '=', $phaseID)->get("name")->first(),
+            ];
+
+        }
+
+//    return View::make('testing')->with(compact('projects', 'contractors', 'customers'));
+//    return response()->json(compact('projects', 'contractors', 'customers'));
+        return response()->json($check);
     }
 
     public function api_project_list(Request $request)
