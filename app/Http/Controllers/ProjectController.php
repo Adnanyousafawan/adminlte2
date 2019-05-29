@@ -77,6 +77,7 @@ class ProjectController extends Controller
             ->select('id')
             ->get();
 
+
         // dd($contractor[0]->id);
 
         $customer = new Customer([
@@ -100,6 +101,8 @@ class ProjectController extends Controller
             'customer_id' => $customerId[0]->id,
             'assigned_to' => $contractor[0]->id,
             'assigned_by' => Auth::id(),
+            'status' => "pending",
+            'phase_id' =>"0",
             'estimated_completion_time' => $request->input('estimated_completion_time'),
             'estimated_budget' => $request->input('estimated_budget'),
             'description' => $request->input('description'),
