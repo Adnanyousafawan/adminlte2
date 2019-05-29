@@ -88,7 +88,7 @@ class UserController extends Controller
         $User->save();
 
         // Return user back and show a flash message
-        return redirect()->route('users/index')->with(['status' => 'Project added successfully.']);
+        return redirect()->route('users.index')->with(['status' => 'Project added successfully.']);
     }
 
     /**

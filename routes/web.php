@@ -30,6 +30,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('projects', 'ProjectController');
 Route::get('/search_project', 'ProjectController@search_project');
 Route::get('projects/index', 'ProjectController@index')->name('projects.index');
+Route::get('projects/view', 'ProjectController@viewuser')->name('projects.view');
 
 //-----------------------------------User Management------------------------------------//
 
@@ -95,7 +96,7 @@ Route::get('/testing', function () {
     return response()->json($projects);
 });
 
-Route::get('/api/testing-project-table', function () {
+Route::post('/api/testing-project-table', function () {
     $projects = Project::all();
     $contractors = DB::table('users')->where('role_id', '=', '3')->get();
     $customers = Customer::all();

@@ -10,7 +10,7 @@
         </ul>
   </div><br/>
 @endif
-<div class="box box-primary" style="padding-bottom: 85px;">
+<div class="box box-primary" style="padding-bottom: 85px; max-width: 80%; margin-left: 10%;">
             <div class="box-header">
               <h2 class="text-center">Add User</h2>
             </div>
