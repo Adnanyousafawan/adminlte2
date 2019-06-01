@@ -54,7 +54,7 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="table no-margin">
+                        <table class="table no-margin table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th>Project ID</th>
