@@ -125,7 +125,7 @@ class APIController extends Controller
 
     public function api_add_labor(Request $request)
     {
-       $request->validate([
+        $request->validate([
             'name' => 'required',
             'rate' => 'required',
             'address' => 'required',
@@ -139,7 +139,7 @@ class APIController extends Controller
         $id = DB::table('projects')
             ->where('title', '=', $request->input('project_id'));
 
-        if ($id->pluck('title')->first() != $request->input('project_id')){
+        if ($id->pluck('title')->first() != $request->input('project_id')) {
             return "Error";
         }
 
@@ -167,19 +167,21 @@ class APIController extends Controller
     {
         $projects = Project::all();
         $check = [];
+        $index = 0;
         for ($i = 0; $i < $projects->count(); $i++) {
             $projectID = DB::table('projects')->pluck('id')->get($i);
             if (DB::table("projects")->pluck("status")->get($i) == "Completed" ||
-                DB::table("projects")->pluck("status")->get($i) == "Stopped"){
+                DB::table("projects")->pluck("status")->get($i) == "Stopped") {
                 continue;
             } else {
-                $labors = DB::table('labors')->where('project_id','=', $projectID)->count();
-                $check[$i] = [
+                $labors = DB::table('labors')->where('project_id', '=', $projectID)->count();
+                $check[$index] = [
                     "id" => DB::table("projects")->pluck("id")->get($i),
                     "title" => DB::table("projects")->pluck("title")->get($i),
                     "status" => DB::table("projects")->pluck("status")->get($i),
                     "labors" => $labors
                 ];
+                $index++;
             }
         }
         return response()->json($check);
@@ -189,22 +191,25 @@ class APIController extends Controller
     {
         $projects = Project::all();
         $check = [];
+
+
+        $index = 0;
         for ($i = 0; $i < $projects->count(); $i++) {
             $projectID = DB::table('projects')->pluck('id')->get($i);
-            if (DB::table("projects")->pluck("status")->get($i) != "Completed"){
+            if (DB::table("projects")->pluck("status")->get($i) != "Completed") {
                 continue;
             } else {
-                $labors = DB::table('labors')->where('project_id','=', $projectID)->count();
-                $check[$i] = [
+                $labors = DB::table('labors')->where('project_id', '=', $projectID)->count();
+                $check[$index] = [
                     "id" => DB::table("projects")->pluck("id")->get($i),
                     "title" => DB::table("projects")->pluck("title")->get($i),
                     "status" => DB::table("projects")->pluck("status")->get($i),
                     "labors" => $labors
                 ];
+                $index++;
             }
         }
         return response()->json($check);
     }
-
 
 }
