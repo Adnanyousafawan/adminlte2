@@ -59,7 +59,7 @@
                             <tr>
                                 <th>Project ID</th>
                                 <th>Title</th>
-                                <th>Labor</th>                               
+                                <th>Labor</th>
                                 <th>Cost</th>
                                 <th>Contractor</th>
                             </tr>
@@ -67,64 +67,64 @@
                             <tbody>
                             <tr>
                                 <td><a href="pages/examples/invoice.html" type="links">OR9842</a></td>
-                                <td>Tulip</td>                              
+                                <td>Tulip</td>
                                 <td>
                                     <div class="sparkbar" data-color="#00a65a" data-height="20">111</div>
                                 </td>
                                  <td>
                                     <div class="label label-warning col-md-8">10,000</div>
                                 </td>
-                                <td>ALI</td> 
+                                <td>ALI</td>
 
                             </tr>
                             <tr>
                                 <td><a href="pages/examples/invoice.html">OR1848</a></td>
                                 <td>Bahria</td>
-                               
+
                                 <td>
                                     <div class="sparkbar" data-color="#f39c12" data-height="20">22</div>
                                 </td>
                                 <td>
                                     <div class="label label-warning col-md-8">11,000</div>
                                 </td>
-                                <td>ALI</td> 
+                                <td>ALI</td>
                             </tr>
                             <tr>
                                 <td><a href="pages/examples/invoice.html">OR7429</a></td>
                                 <td>pindi</td>
-                                
+
                                 <td>
                                     <div class="sparkbar" data-color="#f56954" data-height="20">333</div>
                                 </td>
                                 <td>
                                     <div class="label label-warning col-md-8">12,000</div>
                                 </td>
-                                <td>ALI</td> 
+                                <td>ALI</td>
                             </tr>
                             <tr>
                                 <td><a href="pages/examples/invoice.html">OR7429</a></td>
                                 <td>Sialkot</td>
-                                
+
                                 <td>
                                     <div class="sparkbar" data-color="#00c0ef" data-height="20">222</div>
                                 </td>
                                 <td>
                                     <div class="label label-warning col-md-8">15,000</div>
                                 </td>
-                                <td>ALI</td> 
+                                <td>ALI</td>
                             </tr>
 
                             <tr>
                                 <td><a href="pages/examples/invoice.html">OR9842</a></td>
                                 <td>Peshawar</td>
-                                
+
                                 <td>
                                     <div class="sparkbar" data-color="#00a65a" data-height="20">555</div>
                                 </td>
                                 <td>
                                     <div class="label label-warning col-md-8">110,001</div>
                                 </td>
-                                <td>ALI</td> 
+                                <td>ALI</td>
                             </tr>
                             </tbody>
                         </table>
@@ -133,7 +133,7 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer clearfix">
-                    
+
                     <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Requests</a><div class="row">
                     <div class="col-sm-5">
                         <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">Showing 1
@@ -179,7 +179,7 @@
                 <!-- /.info-box-content -->
             <!-- /.info-box -->
         </div>
-       
+
         <div class="col-md-2 col-sm-4 col-lg-4">
            <div class="box box-primary border-primary">
             <div class="box-header">
@@ -238,9 +238,9 @@
 
 
            </div>
-     
+
     <div id="search_area" class="collapse col-md-8 col-lg-8 col-lg-offset-2 col-md-offset-2 col-sm-8 col-sm-offset-2" style="padding: 30px; background-color: rgb(53, 124, 165);">
-                    
+
         <form action="/search_labor" method="get">
         @csrf
             <div class="row">
@@ -266,25 +266,25 @@
 
 
 
-   
+
  <div class="col-md-10 col-sm-10 col-lg-10 col-md-offset-1 col-lg-offset-1 col-sm-offset-1 ">
             <div class="box box-primary" style="margin-bottom: 10px; margin-top: 1%;">
-               
+
                 <div class="box-header with-border ">
                     <strong><i class="box-title col-md-8">Labor Record</i></strong>
 
                     <div class="box-tools pull-right">
-                    
-                  
+
+
                        <a href="{{ route('labors.create') }}" class="btn btn-primary pul-right">Add Labor</a>
 
-                    
+
                      </div>
                        {{--  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
                                     class="fa fa-minus"></i>
                         </button> --}}
                     </div>
-              
+
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="table-responsive">
@@ -321,10 +321,10 @@
                                                    style="margin-left: 5px; margin-top: 5px;">
                                                     View
                                                 </a> --}}
-                                      
+
                                         </td>
                                     </tr>
-                                    
+
                                 </tbody>
 
                                     <div id="applicantDeleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
@@ -353,9 +353,9 @@
 
                                     </form>
                                     </div>
-                                    </div>  
+                                    </div>
                                 </div>
-                            
+
                                 @endforeach
                            </table>
                     </div>
@@ -363,7 +363,7 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer clearfix">
-                   
+
                     {{-- <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a> --}}
                     <div class="row">
                     <div class="col-sm-6">
@@ -374,7 +374,7 @@
 
                 <div class="col-md-6">
                     <div class="dataTables_paginate paging_simple_numbers pull-right" id="example2_paginate">
-                        {{ $labors->links() }} 
+                        {{ $labors->links() }}
                     </div>
                 </div>
 
@@ -386,7 +386,7 @@
             <!-- /.box -->
     </div>
 
-</div>     
+</div>
 </div>
     <!-- /.content -->
 @stop
