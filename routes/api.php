@@ -25,3 +25,5 @@ Route::post('/contractors/all', 'APIController@api_all_contractors');
 Route::post('/projects/all', 'APIController@api_all_projects');
 Route::post('/projects/list', 'APIController@api_project_list');
 Route::post('/labors/add', 'APIController@api_add_labor');
+Route::post('/projects/ongoing', 'APIController@api_ongoing_projects');
+Route::post('/projects/completed', 'APIController@api_completed_projects');

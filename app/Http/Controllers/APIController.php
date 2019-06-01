@@ -99,27 +99,111 @@ class APIController extends Controller
         return response()->json($check);
     }
 
-    public function api_project_list(Request $request)
+    public function api_project_list()
     {
-        if ($request->input("check") == "1") {
+//        if ($request->input("check") == "1") {
+//
+//            $id = DB::table('projects')
+//                ->where('title', '=', $request->input('project'))
+//                ->get('id');
+//            $labor = new Labor([
+//                'name' => $request->input('name'),
+//                'rate' => $request->input('rate'),
+//                'project_id' => $id[0]->id
+//            ]);
+//
+//            $labor->save();
+//
+//            return "Record added";
+//        } else {
+        $project = Project::all();
+        return response()->json($project);
+//        }
 
-            $id = DB::table('projects')
-                ->where('title', '=', $request->input('project'))
-                ->get('id');
-            $labor = new Labor([
-                'name' => $request->input('name'),
-                'rate' => $request->input('rate'),
-                'project_id' => $id[0]->id
-            ]);
+    }
 
-            $labor->save();
 
-            return "Record added";
-        } else {
-            $project = Project::all();
-            return response()->json($project);
+    public function api_add_labor(Request $request)
+    {
+       $request->validate([
+            'name' => 'required',
+            'rate' => 'required',
+            'address' => 'required',
+            'city' => 'required',
+            'phone' => 'required',
+            'cnic' => 'required',
+            'project_id' => 'required'
+        ]);
+
+
+        $id = DB::table('projects')
+            ->where('title', '=', $request->input('project_id'));
+
+        if ($id->pluck('title')->first() != $request->input('project_id')){
+            return "Error";
         }
 
+        $labor = new Labor([
+            'name' => $request->input('name'),
+            'rate' => $request->input('rate'),
+            'address' => $request->input('address'),
+            'city' => $request->input('city'),
+            'phone' => $request->input('phone'),
+            'cnic' => $request->input('cnic'),
+            'project_id' => $id->pluck('id')->first()
+        ]);
+
+
+        if ($labor->save()) {
+            return "Record added";
+        } else {
+            return "Labor record not added";
+        }
+
+
+    }
+
+    public function api_ongoing_projects()
+    {
+        $projects = Project::all();
+        $check = [];
+        for ($i = 0; $i < $projects->count(); $i++) {
+            $projectID = DB::table('projects')->pluck('id')->get($i);
+            if (DB::table("projects")->pluck("status")->get($i) == "Completed" ||
+                DB::table("projects")->pluck("status")->get($i) == "Stopped"){
+                continue;
+            } else {
+                $labors = DB::table('labors')->where('project_id','=', $projectID)->count();
+                $check[$i] = [
+                    "id" => DB::table("projects")->pluck("id")->get($i),
+                    "title" => DB::table("projects")->pluck("title")->get($i),
+                    "status" => DB::table("projects")->pluck("status")->get($i),
+                    "labors" => $labors
+                ];
+            }
+        }
+        return response()->json($check);
+    }
+
+    public function api_completed_projects()
+    {
+        $projects = Project::all();
+        $check = [];
+        for ($i = 0; $i < $projects->count(); $i++) {
+            $projectID = DB::table('projects')->pluck('id')->get($i);
+            if (DB::table("projects")->pluck("status")->get($i) != "Completed"){
+                continue;
+            } else {
+                $labors = DB::table('labors')->where('project_id','=', $projectID)->count();
+                $check[$i] = [
+                    "id" => DB::table("projects")->pluck("id")->get($i),
+                    "title" => DB::table("projects")->pluck("title")->get($i),
+                    "status" => DB::table("projects")->pluck("status")->get($i),
+                    "labors" => $labors
+                ];
+            }
+        }
+        return response()->json($check);
     }
 
 
