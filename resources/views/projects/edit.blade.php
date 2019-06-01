@@ -1,12 +1,8 @@
 @extends('adminlte::page')
 @section('title', 'AdminLTE')
-
-@section('content_header')
-    <h1>Add Project</h1>
-@stop
-
-
 @section('content')
+{{-- 
+
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -20,7 +16,7 @@
                 @endforeach
             </ul>
         </div>
-    @endif
+    @endif --}}
 
     @if (session('status'))
         <div class="alert alert-success" role="alert">
@@ -42,10 +38,10 @@
                     <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                         <label for="title">Project Title</label>
                         <input type="text" class="form-control" name="title" id="title" value="{{ $projects->title }}"
-                               placeholder="Project Title">
+                               placeholder="Project Title" required="alert-danger">
                         @if ($errors->has('title'))
                             <span class="help-block">
-                            <strong>{{ $errors->first('title') }}</strong>                              
+                            <strong style="color: red; float: right;">{{ $errors->first('title') }}</strong>
                           </span>
                         @endif
                     </div>
@@ -56,7 +52,7 @@
                                placeholder="Project Location">
                         @if ($errors->has('area'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('area') }}</strong>                              
+                                <strong style="color: red; float: right;">{{ $errors->first('area') }}</strong>                              
                                 </span>
                         @endif
                     </div>
@@ -67,7 +63,7 @@
                                placeholder="Project City">
                         @if ($errors->has('city'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('city') }}</strong>                              
+                                <strong style="color: red; float: right;">{{ $errors->first('city') }}</strong>                              
                                 </span>
                         @endif
                     </div>
@@ -79,7 +75,7 @@
                                placeholder="Project plot size">
                         @if ($errors->has('plot_size'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('plot_size') }}</strong>                              
+                                <strong style="color: red; float: right;">{{ $errors->first('plot_size') }}</strong>                              
                                 </span>
                         @endif
                     </div>
@@ -90,7 +86,7 @@
                                placeholder="Enter number of floors">
                         @if ($errors->has('floor'))
                             <span class="help-block">
-                            <strong>{{ $errors->first('floor') }}</strong>                              
+                            <strong style="color: red; float: right;">{{ $errors->first('floor') }}</strong>                              
                             </span>
                         @endif
 
@@ -103,7 +99,7 @@
                                name="name">
                         @if ($errors->has('cust_name'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('came') }}</strong>
+                                <strong style="color: red; float: right;">{{ $errors->first('came') }}</strong>
                                 </span>
                         @endif
                     </div>
@@ -115,7 +111,7 @@
                                name="cnic">
                         @if ($errors->has('cnic'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('cnic') }}</strong>
+                                <strong style="color: red; float: right;">{{ $errors->first('cnic') }}</strong>
                                 </span>
                         @endif
 
@@ -133,7 +129,7 @@
                                    data-mask="" id="phone" name="phone">
                             @if ($errors->has('phone_number'))
                                 <span class="help-block">
-                                <strong>{{ $errors->first('phone') }}</strong>
+                                <strong style="color: red; float: right;">{{ $errors->first('phone') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -146,7 +142,7 @@
                                placeholder="Home Address">
                         @if ($errors->has('address'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('address') }}</strong>
+                                <strong style="color: red; float: right;">{{ $errors->first('address') }}</strong>
                                 </span>
                         @endif
                     </div>
@@ -163,7 +159,7 @@
                         </select>
                         @if ($errors->has('assigned_to'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('assigned_to') }}</strong>                              
+                                <strong style="color: red; float: right;">{{ $errors->first('assigned_to') }}</strong>                              
                                 </span>
                         @endif
                     </div>
@@ -180,7 +176,7 @@
                         </select>
                         @if ($errors->has('estimated_completion_time'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('estimated_completion_time') }}</strong>                              
+                                <strong style="color: red; float: right;">{{ $errors->first('estimated_completion_time') }}</strong>                              
                                 </span>
                         @endif
                     </div>
@@ -192,7 +188,7 @@
                                value="{{ $projects->estimated_budget }}">
                         @if ($errors->has('estimated_budget'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('estimated_budget') }}</strong>                              
+                                <strong style="color: red; float: right;">{{ $errors->first('estimated_budget') }}</strong>                              
                                 </span>
                         @endif
                     </div>

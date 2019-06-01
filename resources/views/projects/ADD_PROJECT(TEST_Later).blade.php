@@ -33,76 +33,104 @@
         </div>
     @endif
     
-    <div class="box box-primary" style="padding-bottom: 50px; max-width: 90%; margin-left: 5%;">
+    <div class="container well form-horizontal" style="padding-bottom: 50px;">
         
-    <div class="row" style="margin-top: 30px;">
+    
+<legend>Add Project Details</legend>
+           {{-- <div class="box-header">
+            <h2 class="text-center">Add Project Details</h2>
+        </div> --}}
+
     <form method="post" action="{{ route('projects.store') }}" role="form" enctype="multipart/form-data">
     @csrf
-       <div class="col-md-3 col-md-offset-1 col-xs-offset-1 col-xs-10">
+    
+       {{-- <div class="col-md-3 col-md-offset-1 col-xs-offset-1 col-xs-10"> --}}
           <!-- Profile Image -->
-          <div class="box box-primary">
-            <div class="box-body box-profile">
+          {{-- <div class="box box-primary"> --}}
+            {{-- <div class="box-body box-profile"> --}}
+               <div class="row" style="margin-top: 30px;">
+                <div class="form-group col-md-3">
+               
+
+                <div class="input-group col-md-10 col-xs-10 col-xs-offset-1">
                 <head><h4>Upload Contract</h4></head>
                 <hr>
-             <img class="img-fluid img-responsive"  style="min-width: 100%; min-height: 200px;">
+             <img class="img-fluid img-responsive col-md-10 col-xs-10" style="min-width: 100%; min-height: 200px; margin-bottom: 10px;">
               <hr>
               <div class="form-group">
-              <input type="file" class="btn btn-primary col-md-12 col-xs-12" id="contract_image"
+              <input type="file" class="btn btn-primary col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1" id="contract_image"
                                name="contract_image">
             </div>
           </div>
-      </div>
-  </div>
-<div class="box box-primary col-md-7 col-md-offset-0 col-xs-10 col-xs-offset-1" {{-- style="max-width: 90%; margin-left: 5%; --}}>
-        <div class="box-body" >
-                <div class="col-md-9 col-md-offset-2">
-                    <div class="box-header">
-            <h2 class="text-center">Add Project Details</h2>
+         
         </div>
-
-                    <div class="form-group">
+         
+        {{--   </div>
+      </div>
+  </div> --}}
+{{-- <div class="box box-primary col-md-7 col-md-offset-0 col-xs-10 col-xs-offset-1" style="max-width: 90%; margin-left: 5%;>
+        <div class="box-body" > --}}
+             
+                
+               <div class="form-group">
+                    <div class="form-group col-md-8">
+                      <div class="input-group col-md-10 col-md-offset-2" >
                         <label for="title">Project Title</label>
                         <input type="text" class="form-control" name="title" id="title"
                                placeholder="Project Title" required>     
                     </div>
+                  </div>
 
-                    <div class="form-group">
+                    <div class="form-group col-md-8">
+                      <div class="input-group col-md-10 col-md-offset-2" >
                         <label for="area">Project Location</label>
                         <input type="text" class="form-control" name="area" id="area"
                                placeholder="Project Location" required>
+                    </div>
                     </div> 
 
-                    <div class="form-group">
+                    <div class="form-group col-md-8">
+                      <div class="input-group col-md-10 col-md-offset-2" >
                         <label for="city">Project City</label>
                         <input type="text" class="form-control" name="city" id="city"
                                placeholder="Project City" required>
                     </div>
+                  </div>
 
-                    <div class="form-group">
+                    <div class="form-group col-md-8">
+                      <div class="input-group col-md-10 col-md-offset-2" >
                         <label for="plot_size">Project Size</label>
                         <input type="text" class="form-control" name="plot_size" id="plot_size"
                                placeholder="Project plot size" required>
                     </div>
+                  </div>
 
-                    <div class="form-group">
+                    <div class="form-group col-md-8">
+                      <div class="input-group col-md-10 col-md-offset-2" >
                         <label for="floor">Project Floors</label>
                         <input type="text" class="form-control" name="floor" id="floor"
                                placeholder="Enter number of floors" required>
                     </div>
+                  </div>
 
-                    <div class="form-group">
+                    <div class="form-group col-md-8">
+                      <div class="input-group col-md-10 col-md-offset-2" >
                         <label for="name">Customer Name</label>
                         <input type="text" class="form-control" id="name" placeholder="Customer Name"
                                name="name" required>
                     </div>
+                  </div>
 
-                    <div class="form-group">
+                    <div class="form-group col-md-8">
+                      <div class="input-group col-md-10 col-md-offset-2" >
                         <label for="cnic">Customer CNIC</label>
                         <input type="text" class="form-control" id="cnic" placeholder="Customer CNIC"
                                name="cnic" required>
                     </div>
+                  </div>
 
-                    <div class="form-group">
+                    <div class="form-group col-md-8">
+                      <div class="input-group col-md-10 col-md-offset-2" >
                         <label for="phone">Customer Contact</label>
                         <div class="input-group">
                             <div class="input-group-addon">
@@ -114,7 +142,7 @@
                                    data-mask="" id="phone" name="phone" required> --}}
                         </div>
                     </div>
-                   
+                   </div>
 
                     <div class="form-group">
                         <label for="address">Home Address</label>
@@ -165,5 +193,6 @@
     </div>
     </div>
 </form>
-
+</div>
+  </div>
 @stop

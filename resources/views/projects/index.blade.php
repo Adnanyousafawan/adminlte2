@@ -86,16 +86,17 @@
                             </tr>
                             </thead>
                             <tbody>
-                              
+                              {{--  --}}
                             @foreach ($projects as $project)
+                            
                                 <tr role="row" class="odd">
                                     <td>{{ $project->title }}</td>
-                                    <td class="hidden-xs "> {{$customers[0]->name}} </td>
+                                    <td class="hidden-xs "> {{$customers[0]->name }}</td>
                                     <td class="hidden-xs hidden-sm text-uppercase text-danger">{{ $project->area }}</td>
-                                    <td> {{ $contractors[0]->name }}</td>
+                                    <td> {{ $contractors[1]->name }}</td>
                                     <td class="hidden-xs hidden-sm  ">{{ $project->estimated_budget }}</td>
-                                    <td {{-- style="background-color: rgb(236, 240, 245); "--}}>
-                                       
+                                     {{-- style="background-color: rgb(236, 240, 245); "--}}
+                                  <td>
                                         <form class="row" method="POST"
                                               action="{{ route('projects.destroy', ['id' => $project->id]) }}"
                                               onsubmit="return confirm('Are you sure?')">
@@ -117,6 +118,7 @@
                                             
                                         </form>
                                     </td>
+
                                 </tr></tbody>
                             @endforeach
 

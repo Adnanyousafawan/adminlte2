@@ -8,6 +8,7 @@
 
 @section('content')
 
+
     @if (session('status'))
         <div class="alert alert-success alert-dismissable fade show" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">

@@ -10,15 +10,15 @@
         </ul>
   </div><br/>
 @endif
-<div class="box box-primary" style="padding-bottom: 85px; max-width: 80%; margin-left: 10%;">
+
+<div class="box-body col-md-8 col-lg-offset-1">
+<div class="box box-primary" style="padding-bottom: 85px;">
             <div class="box-header">
               <h2 class="text-center">Add User</h2>
             </div>
-<div class="box-body" >
-  <form method="post" action="{{ route('users.store') }}">
-	 @csrf
-   <div class="col-lg-8 col-lg-offset-2">
 
+  <form method="post" action="{{ route('users.store') }}" style="max-width: 80%; margin-left: 10%;">
+	 @csrf
                 <div class="form-group">
                   <label for="user_name">User Name</label>
                   <input type="text" class="form-control" id="user_name" name="user_name" placeholder="User Name">
@@ -84,11 +84,10 @@
                     </div>    
  --}}
                     <button type="submit" class="btn btn-block btn-primary btn-xs form-control">Add User</button>
-                     </div>
+                     
                    </form>
                  </div>  
          </div>   
-   </div>
 
 
 @stop
