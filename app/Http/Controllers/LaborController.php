@@ -38,21 +38,23 @@ class LaborController extends Controller
     public function store(Request $request)
     {
         $request->validate([ $request, 
-            'lab_name' => 'required',
-            'lab_cnic' => 'required',
-            'lab_phone' => 'required',
-            'lab_address' => 'required',
-            'lab_city' => 'required',
-            'lab_rate' => 'required'
+            'name' => 'required',
+            'rate' => 'required',
+            'address' => 'required',
+            'city' => 'required',
+            'phone' => 'required',
+            'cnic' => 'required',
+            'project_id' => 'required',
         ]);
 
         $labors = new Labor([
-            'name' => $request->get('lab_name'),
-            'cnic' => $request->get('lab_cnic'),
-            'phone' => $request->get('lab_phone'),
-            'address' => $request->get('lab_address'),
-            'city' => $request->get('lab_city'),
-            'rate' => $request->get('lab_rate')
+            'name' => $request->get('name'),
+            'rate' => $request->get('rate'),
+            'address' => $request->get('address'),
+            'city' => $request->get('city'),
+            'phone' => $request->get('phone'),
+            'cnic' => $request->get('cnic'),
+            'project_id' => $request->get('project_id'),
         ]);
         $labors->save();
 
