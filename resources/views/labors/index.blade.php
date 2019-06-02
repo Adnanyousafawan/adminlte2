@@ -1,11 +1,20 @@
 @extends('adminlte::page')
 @section('title', 'AdminLTE')
 @section('header')
-<meta charset="utf-8">
+{{-- <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+ --}}
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 @endsection
 </head>
 </html>
@@ -39,22 +48,22 @@
  --}}
  <div class="box-body " style="max-width: 94%; margin-left: 3%; margin-top: 1%; padding: 0px; background-color: #f4f4f487;" >
 
-  <div class="box box-primary" style=" background-color: #f4f4f487; ">
-    <div class="row" style="padding: 20px;">
+  <div class="box box-primary" style=" background-color: #f4f4f487; padding: 5px; ">
+    <div class="row" style="padding: 0px;">
     <!-- Main content -->
-    <h2 class="text-center"><strong><i>Labor Details</i></strong></h2>
+    <h2><span class="col-md-5 col-lg-5 col-sm-4 col-sm-offset-1 col-md-offset-1 col-lg-offset-1" style="margin-bottom: 20px;">Labor Details</span></h2>
 
 
-<div class="row" style="margin-top: 30px;">
+{{-- <div class="row" style="margin-top: 30px;"> --}}
  <div class="col-md-6 col-sm-6 col-lg-6 col-md-offset-1 col-lg-offset-1 col-sm-offset-1">
-            <div class="box box-primary" style="margin-bottom: 10px;">
+            <div class="box" style="margin-bottom: 20px;">
                 <div class="box-header with-border">
                     <h3 class="box-title">Labor at Projects</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="table no-margin table-bordered table-striped">
+                        <table class="table no-margin table-bordered table-striped table-dark">
                             <thead>
                             <tr>
                                 <th>Project ID</th>
@@ -154,11 +163,11 @@
 
 
 
-        <div class="col-md-2 col-sm-4 col-lg-4">
-           <div class="box box-primary border-primary">
+        <div class="col-md-2 col-sm-4 col-lg-4" >
+           <div class="box" style="margin-top: 2px;">
             <div class="box-header">
               <h2 class="box-title">Total Labor</h2>
-               <span class="info-box-number label label-primary pull-right" style="margin-top: 5px;">112</span>
+               <span class="info-box-number label label-primary pull-right" style="margin-top: 3px;">112</span>
             </div>
             <!-- /.box-header -->
                    <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -168,10 +177,10 @@
         </div>
         <!-- /.col -->
         <div class="col-md-2 col-sm-4 col-lg-4">
-           <div class="box box-primary border-primary">
+           <div class="box">
             <div class="box-header">
               <h2 class="box-title">Working Labor</h2>
-               <span class="info-box-number label label-warning pull-right" style="margin-top: 5px;">80</span>
+               <span class="info-box-number label label-warning pull-right" style="margin-top: 3px;">80</span>
             </div>
             <!-- /.box-header -->
                    <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -181,10 +190,10 @@
         </div>
        
         <div class="col-md-2 col-sm-4 col-lg-4">
-           <div class="box box-primary border-primary">
+           <div class="box">
             <div class="box-header">
               <h2 class="box-title">Available Labor</h2>
-               <span class="info-box-number label label-success pull-right" style="margin-top: 5px;">32</span>
+               <span class="info-box-number label label-success pull-right" style="margin-top: 3px;">32</span>
             </div>
             <!-- /.box-header -->
                    <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -194,10 +203,10 @@
         </div>
         <!-- /.col -->
          <div class="col-md-2 col-sm-4 col-lg-4">
-           <div class="box box-primary border-primary">
+           <div class="box">
             <div class="box-header">
               <h2 class="box-title">Total Cost</h2>
-               <span class="info-box-number label label-danger pull-right" style="margin-top: 5px;">20,0000</span>
+               <span class="info-box-number label label-danger pull-right" style="margin-top: 3px;">20,0000</span>
             </div>
             <!-- /.box-header -->
                    <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -206,10 +215,10 @@
             <!-- /.info-box -->
         </div>
         <div class="col-md-2 col-sm-4 col-lg-4">
-           <div class="box box-primary border-primary">
+           <div class="box  border-primary">
             <div class="box-header">
               <h2 class="box-title">Total Projects</h2>
-               <span class="info-box-number label label-info pull-right" style="margin-top: 5px;">20</span>
+               <span class="info-box-number label label-info pull-right" style="margin-top: 3px;">20</span>
             </div>
             <!-- /.box-header -->
                    <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -268,10 +277,10 @@
 
    
  <div class="col-md-10 col-sm-10 col-lg-10 col-md-offset-1 col-lg-offset-1 col-sm-offset-1 ">
-            <div class="box box-primary" style="margin-bottom: 10px; margin-top: 1%;">
+            <div class="box" style="margin-bottom: 10px; margin-top: 3%;">
                
                 <div class="box-header with-border ">
-                    <strong><i class="box-title col-md-8">Labor Record</i></strong>
+                    <strong><span class="box-title col-md-8">Labor Record</span></strong>
 
                     <div class="box-tools pull-right">
                     
@@ -288,7 +297,7 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="table no-margin">
+                        <table class="table table-striped no-margin table-bordered ">
                             <thead>
                             <tr>
                                 <th>Labor ID</th>
@@ -303,32 +312,23 @@
                             <tbody>
                             @foreach ($labors as $labor)
                             <tr>
-                                        <td>lb0000{{ $labor->id }}</td>
-                                        <td>{{ $labor->name }}</td>
-                                        <td>PR000011</td>
-                                        <td>23</td>
-                                        <td>{{ $labor->rate }}</td>
-                                        <td>25000</td>
-                                        <td style="max-width: 50px; min-width: 30">
+                                        <td class="info">lb0000{{ $labor->id }}</td>
+                                        <td class="active">{{ $labor->name }}</td>
+                                        <td class="info">PR000011</td>
+                                        <td class="warning">23</td>
+                                        <td class="warning">{{ $labor->rate }}</td>
+                                        <td class="danger">25000</td>
+                                        <td style="max-width: 95px; min-width: 30">
                                             <a type="links" href="{{ route('labors.edit', ['id' => $labor->id]) }}"
-                                            class="btn-link" style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">
-                                            Edit</a>
-                                            <button type="button" class="btn-link" data-toggle="modal" data-target="#applicantDeleteModal"style="color: red; margin-left: 3px;  margin-top: 0px;">
-                                             Delete
-                                            </button>
-                                                {{-- <a href="{{ route('labors.edit', ['id' => $labor->id]) }}"
-                                                   class="btn btn-primary col-xs"
-                                                   style="margin-left: 5px; margin-top: 5px;">
-                                                    View
-                                                </a> --}}
-                                      
+                                             style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">Edit</a>
+                                            <a type="button" data-toggle="modal" data-target="#applicantDeleteModal"style="color: red; margin-left: 3px;  margin-top: 0px;">Delete</a>
                                         </td>
                                     </tr>
                                     
                                 </tbody>
 
                                     <div id="applicantDeleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
-                                    <div class="modal-dialog" style="min-width:50%; align-content: center; text-align: center;">
+                                    <div class="modal-dialog" style="min-width:40%; align-content: center; text-align: center;">
                                     <div class="modal-content">
                                         <form class="row" method="POST"
                                                   action="{{ route('labors.destroy', ['id' => $labor->id]) }}">
@@ -343,7 +343,7 @@
                                                 <h4 class="modal-title text-center" id="custom-width-modalLabel" >Delete Applicant Record</h4>
                                     </div>
                                             <div class="modal-body">
-                                                <strong><b><h2>Are You Sure? You Want Delete This Record?</h2></b></strong>
+                                                <strong><b><h3>Are You Sure? You Want Delete This Record?</h3></b></strong>
                                                 <input type="hidden", name="applicant_id" id="app_id">
                                     </div>
                                     <div class="modal-footer">
@@ -384,9 +384,9 @@
                 <!-- /.box-footer -->
             </div>
             <!-- /.box -->
-    </div>
-
 </div>     
 </div>
+</div>
+
     <!-- /.content -->
 @stop
