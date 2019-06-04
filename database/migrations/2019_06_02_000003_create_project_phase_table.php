@@ -15,23 +15,7 @@ class CreateProjectPhaseTable extends Migration
     {
         Schema::create('project_phase', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('project_id');
-            $table->unsignedBigInteger('phase_id');
-            $table->timestamps();
-
-
-
-
-
-            $table->foreign('project_id')
-                ->references('id')
-                ->on('projects');
-
-            $table->foreign('phase_id')
-                ->references('id')
-                ->on('phases');
-
-
+            $table->string('name');
         });
     }
 

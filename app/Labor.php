@@ -17,4 +17,6 @@ class Labor extends Model
         "project_id"
     ];
 
+    public  $timestamps = false;
+
 }

@@ -27,3 +27,8 @@ Route::post('/projects/list', 'APIController@api_project_list');
 Route::post('/labors/add', 'APIController@api_add_labor');
 Route::post('/projects/ongoing', 'APIController@api_ongoing_projects');
 Route::post('/projects/completed', 'APIController@api_completed_projects');
+Route::post('/labors/all', 'APIController@api_all_labors');
+Route::post('/project/id', 'APIController@api_project_details');
+Route::post('/labor/id', 'APIController@api_update_labor_status');
+Route::post('/projects/longpress/dialog', 'APIController@api_projects_longpress_dialog');
+Route::post('/projects/longpress/dialog/update', 'APIController@api_projects_longpress_dialog_update');
