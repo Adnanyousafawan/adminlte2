@@ -98,6 +98,11 @@
                         <input type="text" class="form-control" id="rate" placeholder="Labor Rate(per Day)"
                                name="rate">
                     </div>
+                     <div class="form-group">
+                        <label for="project_id">Project ID</label>
+                        <input type="number" class="form-control" id="project_id" placeholder="Proect ID"
+                               name="project_id" required>
+                    </div>
                   
 
                     <button type="submit" class="btn btn-block btn-primary btn-xs form-control" style="margin-top: 20px;">Add Labor</button>
