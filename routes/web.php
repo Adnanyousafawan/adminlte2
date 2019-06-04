@@ -16,10 +16,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function () {
+
+
+
+/*function () {
     return view('welcome');
 });
-
+*/
 Auth::routes();
 
 
@@ -41,8 +44,8 @@ Route::get('users/index', 'UserController@index')->name('users.index');
 
 Route::resource('labors', 'LaborController');
 Route::get('/search_labor', 'LaborController@search_labor');
-Route::get('labors/index', 'LaborController@index')->name('labors.index');
-
+//Route::get('labors/index', 'LaborController@index')->name('labors.index');
+Route::get('/labors/index',array('as'=>'viewLabor','uses'=>'LaborController@index'));
 //-----------------------------------Supplier Management-----------------------------------//
 
 Route::resource('suppliers', 'SupplierController');

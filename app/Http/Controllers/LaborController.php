@@ -15,7 +15,8 @@ class LaborController extends Controller
      */
     public function index()
     {
-        return view('labors/index');
+        $labors=DB::table('labors')->get();
+        return view('labors/index',compact('labors'));
         // return view('labors/index', compact('labors'));
     }
 
@@ -69,8 +70,10 @@ class LaborController extends Controller
      */
     public function show()
     {
-        $labors = Labor::paginate(10);
-        return view('labors.index',compact('labors'));
+        $labors=DB::table('labors')->get();
+        return view('labors/index',compact('labors'));
+       // $labors = Labor::paginate(10);
+        //return view('labors.index',compact('labors'));
     }
 
     /**

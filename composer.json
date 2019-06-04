@@ -2,6 +2,7 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
+
     "keywords": [
         "framework",
         "laravel"
@@ -12,7 +13,9 @@
         "fideloper/proxy": "^4.0",
         "jeroennoten/laravel-adminlte": "^1.25",
         "laravel/framework": "5.8.*",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "laravelcollective/html": "^5.8",
+        "yajra/laravel-datatables-oracle": "^9.3"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -59,5 +62,12 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    }
+    },
+    "repositories": [
+    {
+         "type": "composer", 
+         "url": "https://packagist.org"
+    },
+    { "packagist": false }
+]
 }
