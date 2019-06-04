@@ -22,7 +22,7 @@ class CreateLaborsTable extends Migration
             $table->string('city')->nullable();
             $table->string('rate')->nullable();
             $table->unsignedBigInteger('project_id')->nullable();
-            $table->unsignedBigInteger('status_id')->nullable();
+            $table->unsignedBigInteger('status_id')->nullable()->default(0);
 //            $table->timestamps();
 
 

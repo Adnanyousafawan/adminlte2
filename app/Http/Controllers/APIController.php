@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contractor;
 use App\Labor;
+use App\LaborStatus;
 use App\Project;
 use App\ProjectPhase;
 use App\ProjectStatus;
@@ -222,6 +223,13 @@ class APIController extends Controller
         return response()->json($result);
     }
 
+    public function api_update_labor_status_dialog()
+    {
+        $laborStatus = LaborStatus::all();
+        return response()->json(['labor_status' => $laborStatus]);
+
+    }
+
     public function api_update_labor_status(Request $request)
     {
         $labor_name = $request->get("labor_name");
@@ -267,24 +275,16 @@ class APIController extends Controller
             ->get('id')
             ->first();
 
-
         $project = Project::find($projectID->id);
 
-//        dd($statusID->id);
+        $project->status_id = $statusID->id;
+        $project->phase_id = $phaseID->id;
 
-       $project->status_id = $statusID->id;
-       $project->phase_id = $phaseID->id;
-
-       if ($project->save()){
-           return "success";
-       } else {
-           return "failed";
-       }
-
-
-
-
-
+        if ($project->save()) {
+            return "success";
+        } else {
+            return "failed";
+        }
 
     }
 }
