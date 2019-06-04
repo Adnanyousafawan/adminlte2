@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Contractor;
 use App\Labor;
 use App\Project;
+use App\ProjectPhase;
+use App\ProjectStatus;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -72,7 +74,8 @@ class APIController extends Controller
             $contractorID = $projects->pluck("assigned_to")->get($i);
             $customerID = $projects->pluck("customer_id")->get($i);
             $managerID = $projects->pluck("assigned_by")->get($i);
-            $phaseID = $projects->pluck("phase_id")->get($i);
+            $project_phaseID = $projects->pluck("phase_id")->get($i);
+            $project_statusID = $projects->pluck("status_id")->get($i);
 
             $check[$i] = [
                 "id" => DB::table("projects")->pluck("id")->get($i),
@@ -88,8 +91,8 @@ class APIController extends Controller
                 "contract_image" => DB::table("projects")->pluck("contract_image")->get($i),
                 "assigned_to" => DB::table('users')->where('id', '=', $contractorID)->get("name")->first(),
                 "assigned_by" => DB::table('users')->where('id', '=', $managerID)->get("name")->first(),
-                "status" => DB::table("projects")->pluck("status")->get($i),
-                "phase" => DB::table('phases')->where('id', '=', $phaseID)->get("name")->first(),
+                "status" => DB::table("project_status")->where('id', '=', $project_statusID)->get("name")->first(),
+                "phase" => DB::table('project_phase')->where('id', '=', $project_phaseID)->get("name")->first(),
             ];
 
         }
@@ -101,24 +104,8 @@ class APIController extends Controller
 
     public function api_project_list()
     {
-//        if ($request->input("check") == "1") {
-//
-//            $id = DB::table('projects')
-//                ->where('title', '=', $request->input('project'))
-//                ->get('id');
-//            $labor = new Labor([
-//                'name' => $request->input('name'),
-//                'rate' => $request->input('rate'),
-//                'project_id' => $id[0]->id
-//            ]);
-//
-//            $labor->save();
-//
-//            return "Record added";
-//        } else {
         $project = Project::all();
         return response()->json($project);
-//        }
 
     }
 
@@ -170,15 +157,18 @@ class APIController extends Controller
         $index = 0;
         for ($i = 0; $i < $projects->count(); $i++) {
             $projectID = DB::table('projects')->pluck('id')->get($i);
-            if (DB::table("projects")->pluck("status")->get($i) == "Completed" ||
-                DB::table("projects")->pluck("status")->get($i) == "Stopped") {
+            $statusID = DB::table('projects')->pluck('status_id')->get($i);
+            if ($statusID == 2) {
                 continue;
             } else {
                 $labors = DB::table('labors')->where('project_id', '=', $projectID)->count();
                 $check[$index] = [
                     "id" => DB::table("projects")->pluck("id")->get($i),
                     "title" => DB::table("projects")->pluck("title")->get($i),
-                    "status" => DB::table("projects")->pluck("status")->get($i),
+                    "status" => DB::table("project_status")
+                        ->where('id', '=', $statusID)
+                        ->get('name')
+                        ->first(),
                     "labors" => $labors
                 ];
                 $index++;
@@ -196,14 +186,18 @@ class APIController extends Controller
         $index = 0;
         for ($i = 0; $i < $projects->count(); $i++) {
             $projectID = DB::table('projects')->pluck('id')->get($i);
-            if (DB::table("projects")->pluck("status")->get($i) != "Completed") {
+            $statusID = DB::table('projects')->pluck('status_id')->get($i);
+            if ($statusID != 2) {
                 continue;
             } else {
                 $labors = DB::table('labors')->where('project_id', '=', $projectID)->count();
                 $check[$index] = [
                     "id" => DB::table("projects")->pluck("id")->get($i),
                     "title" => DB::table("projects")->pluck("title")->get($i),
-                    "status" => DB::table("projects")->pluck("status")->get($i),
+                    "status" => DB::table("project_status")
+                        ->where('id', '=', $statusID)
+                        ->get('name')
+                        ->first(),
                     "labors" => $labors
                 ];
                 $index++;
@@ -212,4 +206,85 @@ class APIController extends Controller
         return response()->json($check);
     }
 
+    public function api_all_labors()
+    {
+        $labors = Labor::all();
+
+        return response()->json($labors);
+    }
+
+    public function api_project_details(Request $request)
+    {
+        $title = $request->get("title");
+
+        $result = DB::table('projects')->where('title', '=', $title)->first();
+
+        return response()->json($result);
+    }
+
+    public function api_update_labor_status(Request $request)
+    {
+        $labor_name = $request->get("labor_name");
+
+        $labor_id = DB::table('labors')
+            ->where('name', '=', $labor_name)
+            ->get("id")
+            ->first();
+
+        $status = $request->get("status");
+
+        $labor = Labor::findOrFail($labor_id->id);
+
+        $labor->status = $status;
+
+        if ($labor->save()) {
+            return "status updated";
+        } else {
+            return "status not updated";
+        }
+
+    }
+
+    public function api_projects_longpress_dialog()
+    {
+        $phase = ProjectPhase::all();
+        $status = ProjectStatus::all();
+
+        return response()->json(['phases' => $phase, 'status' => $status]);
+    }
+
+    public function api_projects_longpress_dialog_update(Request $request)
+    {
+        $status = $request->get("status");
+        $phase = $request->get("phase");
+        $project_title = $request->get("project_title");
+
+        $statusID = DB::table('project_status')->where('name', '=', $status)->get('id')->first();
+        $phaseID = DB::table('project_phase')->where('name', '=', $phase)->get('id')->first();
+
+        $projectID = DB::table('projects')
+            ->where('title', '=', $project_title)
+            ->get('id')
+            ->first();
+
+
+        $project = Project::find($projectID->id);
+
+//        dd($statusID->id);
+
+       $project->status_id = $statusID->id;
+       $project->phase_id = $phaseID->id;
+
+       if ($project->save()){
+           return "success";
+       } else {
+           return "failed";
+       }
+
+
+
+
+
+
+    }
 }

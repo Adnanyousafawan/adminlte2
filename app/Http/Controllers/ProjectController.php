@@ -6,9 +6,9 @@ use App\Customer;
 use App\Http\Requests;
 use App\Project;
 use App\Traits\UploadTrait;
-use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Redirect;
 use Validator;
@@ -92,6 +92,10 @@ class ProjectController extends Controller
             ->where('id', '=', $customer->id)
             ->get();
 
+
+        $project_status = DB::table('project_status')->pluck('id')->first();
+        $project_phase = DB::table('project_phase')->pluck('id')->first();
+
         $project = new Project([
             'title' => $request->input('title'),
             'area' => $request->input('area'),
@@ -100,9 +104,9 @@ class ProjectController extends Controller
             'floor' => $request->input('floor'),
             'customer_id' => $customerId[0]->id,
             'assigned_to' => $contractor[0]->id,
+            'status_id' => $project_status,
+            'phase_id' => $project_phase,
             'assigned_by' => Auth::id(),
-            'status' => "pending",
-            'phase_id' =>"0",
             'estimated_completion_time' => $request->input('estimated_completion_time'),
             'estimated_budget' => $request->input('estimated_budget'),
             'description' => $request->input('description'),

@@ -22,14 +22,19 @@ class CreateLaborsTable extends Migration
             $table->string('city')->nullable();
             $table->string('rate')->nullable();
             $table->unsignedBigInteger('project_id')->nullable();
-            $table->string('status')->nullable();
-            $table->timestamps();
+            $table->unsignedBigInteger('status_id')->nullable();
+//            $table->timestamps();
 
 
             $table
                 ->foreign('project_id')
                 ->references('id')
                 ->on('projects');
+
+            $table
+                ->foreign('status_id')
+                ->references('id')
+                ->on('labor_status');
 
         });
     }

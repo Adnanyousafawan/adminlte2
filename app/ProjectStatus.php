@@ -4,7 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Phase extends Model
+class ProjectStatus extends Model
 {
     public $timestamps = false;
+    protected $table = "project_status";
 }

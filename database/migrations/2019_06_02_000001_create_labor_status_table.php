@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePhasesTable extends Migration
+class CreateLaborStatusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreatePhasesTable extends Migration
      */
     public function up()
     {
-        Schema::create('phases', function (Blueprint $table) {
+        Schema::create('labor_status', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+
         });
     }
 
@@ -26,6 +27,6 @@ class CreatePhasesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('phases');
+        Schema::dropIfExists('labor_status');
     }
 }
