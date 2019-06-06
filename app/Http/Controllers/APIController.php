@@ -166,9 +166,8 @@ class APIController extends Controller
                 $check[$index] = [
                     "id" => DB::table("projects")->pluck("id")->get($i),
                     "title" => DB::table("projects")->pluck("title")->get($i),
-                    "status" => DB::table("project_status")
-                        ->where('id', '=', $statusID)
-                        ->get('name')
+                    "status" => DB::table('project_status')->where('name', '!=', "Completed")
+                        ->pluck('name')
                         ->first(),
                     "labors" => $labors
                 ];
@@ -181,29 +180,51 @@ class APIController extends Controller
     public function api_completed_projects()
     {
         $projects = Project::all();
-        $check = [];
-
 
         $index = 0;
-        for ($i = 0; $i < $projects->count(); $i++) {
-            $projectID = DB::table('projects')->pluck('id')->get($i);
-            $statusID = DB::table('projects')->pluck('status_id')->get($i);
-            if ($statusID != 2) {
-                continue;
-            } else {
-                $labors = DB::table('labors')->where('project_id', '=', $projectID)->count();
+        $check = [];
+        foreach ($projects as $project) {
+            if ($project->status_id == 2) {
+                $labors = DB::table('labors')->where('project_id', '=', $project->id)->count();
                 $check[$index] = [
-                    "id" => DB::table("projects")->pluck("id")->get($i),
-                    "title" => DB::table("projects")->pluck("title")->get($i),
-                    "status" => DB::table("project_status")
-                        ->where('id', '=', $statusID)
-                        ->get('name')
+                    "id" => $project->id,
+                    "title" => $project->title,
+                    "status" => DB::table('project_status')->where('name', '=', "Completed")
+                        ->pluck('name')
                         ->first(),
                     "labors" => $labors
                 ];
                 $index++;
+            } else {
+                continue;
             }
         }
+//        $check = [];
+//
+//        $index = 0;
+//        for ($i = 0; $i < $projects->count(); $i++) {
+//            $projectID = DB::table('projects')->pluck('id')->get($i);
+//            $projectTitle = DB::table('projects')->pluck('title')->get($i);
+//            $statusID = DB::table('projects')->pluck('status_id')->get($i);
+//            $statusName = DB::table("project_status")
+//                ->where('id','=', $statusID)
+//                ->pluck('name')->first();
+//            if ($statusID == 2) {
+//                dd($statusID ."   ". $statusName. "    ". $projectID);
+//
+//                $labors = DB::table('labors')->where('project_id', '=', $projectID)->count();
+//                $check[$index] = [
+//                    "id" => $projectID,
+//                    "title" => $projectTitle,
+//                    "status" => $statusName,
+//                    "labors" => $labors
+//                ];
+//
+//                $index++;
+//            } else {
+//                continue;
+//            }
+//        }
         return response()->json($check);
     }
 
