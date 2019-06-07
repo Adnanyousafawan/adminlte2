@@ -308,4 +308,40 @@ class APIController extends Controller
         }
 
     }
+
+    public function api_contractor_profile(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->email)
+            ->where('role_id', '=', 3)
+            ->pluck('id')
+            ->first();
+
+       if ($id != null){
+           $user = DB::table('users')
+               ->where('id', '=', $id)
+               ->first();
+
+
+           $projects = DB::table('projects')
+               ->where('assigned_to', '=', $user->id)
+               ->get('*');
+
+//        $labors = DB::table('labors')->where('project_id', '')
+
+           foreach ($projects as $project){
+               $project->labor = DB::table('labors')
+                   ->where('project_id', '=', $project->id)
+                   ->count();
+           }
+
+           return response()->json(['profile' => $user, 'projects' => $projects]);
+       } else {
+           return "Unauthorized User";
+       }
+
+
+
+    }
+
 }
