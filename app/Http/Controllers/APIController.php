@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Contractor;
+use App\Http\Requests;
 use App\Labor;
 use App\LaborStatus;
 use App\Project;
@@ -109,7 +109,6 @@ class APIController extends Controller
         return response()->json($project);
 
     }
-
 
     public function api_add_labor(Request $request)
     {

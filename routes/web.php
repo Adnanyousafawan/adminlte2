@@ -12,11 +12,9 @@
 */
 
 use App\Project;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-
-
-
 
 
 /*function () {
@@ -87,7 +85,6 @@ Route::get('/testing', function () {
 //    return View::make('testing')->with('projects', $projects);
     return response()->json($projects);
 });
-
 Route::post('/api/testing-project-table', function () {
     $projects = Project::all();
 
@@ -124,3 +121,4 @@ Route::post('/api/testing-project-table', function () {
 //    return response()->json(compact('projects', 'contractors', 'customers'));
     return response()->json($check);
 });
+

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Illuminate\Http\Request;
 use DB;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -31,13 +31,13 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Htt p\Request  $request
+     * @param \Illuminate\Htt p\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-    
-         $request->validate([
+
+        $request->validate([
             'user_name' => 'required',
             'user_email' => 'required',
             'user_gender' => 'required',
@@ -47,7 +47,7 @@ class UserController extends Controller
             'user_cnic' => 'required',
             'user_phone_number' => 'required',
             'user_role' => 'required',
-           // 'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
+            // 'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
 
         ]);
 
@@ -62,28 +62,28 @@ class UserController extends Controller
             'phone_number' => $request->input('user_phone_number'),
             'password' => $request->input('user_pass')
             //'role_id' => $request->input('user_role'),
-           // 'profile_image'=> $request->input('profile_image')
+            // 'profile_image'=> $request->input('profile_image')
 
         ]);
 
-/*
-        if ($request->has('profile_image')) {
-            // Get image file
-            $image = $request->file('profile_image');
-            // Make a image name based on user name and current timestamp
-            $name = Str::slug($create_users_table->name . '-' . time());
-            // Define folder path
-            $folder = '/images/';
-            // Make a file path where image will be stored [ folder path + file name + file extension]
-            $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
-            //delete previously stored image
-//            $this->deleteOne( 'public', $project->contract_image);
-            // Upload image
-            $this->uploadOne($image, $folder, 'public', $name);
-            // Set user profile image path in database to filePath
-            $create_users_table->upload_profile = $filePath;
-        }
-        */
+        /*
+                if ($request->has('profile_image')) {
+                    // Get image file
+                    $image = $request->file('profile_image');
+                    // Make a image name based on user name and current timestamp
+                    $name = Str::slug($create_users_table->name . '-' . time());
+                    // Define folder path
+                    $folder = '/images/';
+                    // Make a file path where image will be stored [ folder path + file name + file extension]
+                    $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+                    //delete previously stored image
+        //            $this->deleteOne( 'public', $project->contract_image);
+                    // Upload image
+                    $this->uploadOne($image, $folder, 'public', $name);
+                    // Set user profile image path in database to filePath
+                    $create_users_table->upload_profile = $filePath;
+                }
+                */
         // Persist user record to database
         $User->save();
 
@@ -94,49 +94,44 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\create_users_table  $create_users_table
+     * @param \App\create_users_table $create_users_table
      * @return \Illuminate\Http\Response
      */
     public function show()
     {
         $users = User::paginate(10);
-        return view('users.index',compact('users'));
+        return view('users.index', compact('users'));
     }
 
-public function search_user(Request $request)
+    public function search_user(Request $request)
     {
         //$users = User::all();
         $search = $request->get('search_name');
         $search_email = $request->get('search_email');
-        if (!is_null($search)) 
-        {
-            $users = DB::table('users')->where('name','like','%'.$search.'%')->paginate(20);
+        if (!is_null($search)) {
+            $users = DB::table('users')->where('name', 'like', '%' . $search . '%')->paginate(20);
             return view('users/index', ['users' => $users]);
         }
-        if (!is_null($search_email)) 
-        {
-            $users = DB::table('users')->where('email','like','%'.$search_email.'%')->paginate(20);
+        if (!is_null($search_email)) {
+            $users = DB::table('users')->where('email', 'like', '%' . $search_email . '%')->paginate(20);
             return view('users/index', ['users' => $users]);
-        }
-        else
-        {
+        } else {
             $users = User::paginate(20);
             return view('users/index', ['users' => $users]);
-        }   
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\create_users_table  $create_users_table
+     * @param \App\create_users_table $create_users_table
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $users = User::find($id);
         // Redirect to user list if updating user wasn't existed
-        if ($users == null || count($users) == 0)
-         {
+        if ($users == null || count($users) == 0) {
             return redirect()->intended('/users/index');
         }
         //$users = User::paginate(10);
@@ -146,13 +141,13 @@ public function search_user(Request $request)
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\create_users_table  $create_users_table
+     * @param \Illuminate\Http\Request $request
+     * @param \App\create_users_table $create_users_table
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-         $request->validate([
+        $request->validate([
             'user_name' => 'required',
             'user_email' => 'required',
             'user_gender' => 'required',
@@ -162,7 +157,7 @@ public function search_user(Request $request)
             'user_cnic' => 'required',
             'user_phone_number' => 'required',
             'user_role' => 'required',
-           // 'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
+            // 'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
         ]);
         $users = User::find($id);
         $users->name = $request->input('user_name');
@@ -174,16 +169,16 @@ public function search_user(Request $request)
         $users->cnic = $request->input('user_cnic');
         $users->phone_number = $request->input('user_phone_number');
         $users->password = $request->input('user_pass');
-            //'role_id' => $request->input('user_role'),
-           // 'profile_image'=> $request->input('profile_image')
+        //'role_id' => $request->input('user_role'),
+        // 'profile_image'=> $request->input('profile_image')
         $users->save();
-        return redirect()->route('users.index')->with('success','Data Updated');
+        return redirect()->route('users.index')->with('success', 'Data Updated');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\create_users_table  $create_users_table
+     * @param \App\create_users_table $create_users_table
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -199,5 +194,6 @@ public function search_user(Request $request)
         ->select('users.*','')*/
 
     }
-    
+
+
 }
