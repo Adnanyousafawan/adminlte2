@@ -37,9 +37,12 @@ class APIController extends Controller
         $password = $request->get('password');
 
         $user = User::where('email', '=', $email)->first();
+        $role = User::where('email', '=', $email)
+            ->join('roles', 'users.role_id', '=', 'roles.id')
+            ->pluck('roles.name')->first();
 
         if (Hash::check($password, $user->password)) {
-            print "success";
+            print "success" . "  " . $role;
         } else {
             print "failed";
         }
@@ -64,38 +67,43 @@ class APIController extends Controller
         return response()->json($contractors);
     }
 
-    public function api_all_projects()
+    public function api_all_projects(Request $request)
     {
-        $projects = Project::all();
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
 
+        $projects = Project::all()->where('assigned_to', '=', $id);
 
         $check = [];
-        for ($i = 0; $i < $projects->count(); $i++) {
+        $index = 0;
+        foreach ($projects as $project) {
 
-            $contractorID = $projects->pluck("assigned_to")->get($i);
-            $customerID = $projects->pluck("customer_id")->get($i);
-            $managerID = $projects->pluck("assigned_by")->get($i);
-            $project_phaseID = $projects->pluck("phase_id")->get($i);
-            $project_statusID = $projects->pluck("status_id")->get($i);
+            $contractorID = $project->assigned_to;
+            $customerID = $project->customer_id;
+            $managerID = $project->assigned_by;
+            $project_phaseID = $project->phase_id;
+            $project_statusID = $project->status_id;
 
-            $check[$i] = [
-                "id" => DB::table("projects")->pluck("id")->get($i),
-                "title" => DB::table("projects")->pluck("title")->get($i),
-                "area" => DB::table("projects")->pluck("area")->get($i),
-                "city" => DB::table("projects")->pluck("city")->get($i),
-                "plot_size" => DB::table("projects")->pluck("plot_size")->get($i),
+            $check[$index] = [
+                "id" => $project->id,
+                "title" => $project->title,
+                "area" => $project->area,
+                "city" => $project->city,
+                "plot_size" => $project->plot_size,
                 "customer" => DB::table('customers')->where('id', '=', $customerID)->get("name")->first(),
-                "estimated_completion_time" => DB::table("projects")->pluck("estimated_completion_time")->get($i),
-                "estimated_budget" => DB::table("projects")->pluck("estimated_budget")->get($i),
-                "floor" => DB::table("projects")->pluck("floor")->get($i),
-                "description" => DB::table("projects")->pluck("description")->get($i),
-                "contract_image" => DB::table("projects")->pluck("contract_image")->get($i),
+                "estimated_completion_time" => $project->estimated_completion_time,
+                "estimated_budget" => $project->estimated_budget,
+                "floor" => $project->floor,
+                "description" => $project->description,
+                "contract_image" => $project->contract_image,
                 "assigned_to" => DB::table('users')->where('id', '=', $contractorID)->get("name")->first(),
                 "assigned_by" => DB::table('users')->where('id', '=', $managerID)->get("name")->first(),
                 "status" => DB::table("project_status")->where('id', '=', $project_statusID)->get("name")->first(),
                 "phase" => DB::table('project_phase')->where('id', '=', $project_phaseID)->get("name")->first(),
             ];
-
+            $index++;
         }
 
 //    return View::make('testing')->with(compact('projects', 'contractors', 'customers'));
@@ -103,11 +111,17 @@ class APIController extends Controller
         return response()->json($check);
     }
 
-    public function api_project_list()
+    public function api_project_list(Request $request)
     {
-        $project = Project::all();
-        return response()->json($project);
 
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $projects = DB::table('projects')->where('assigned_to', '=', $id)->get()->all();
+
+        return response()->json($projects);
     }
 
     public function api_add_labor(Request $request)
@@ -121,7 +135,6 @@ class APIController extends Controller
             'cnic' => 'required',
             'project_id' => 'required'
         ]);
-
 
         $id = DB::table('projects')
             ->where('title', '=', $request->input('project_id'));
@@ -140,31 +153,34 @@ class APIController extends Controller
             'project_id' => $id->pluck('id')->first()
         ]);
 
-
         if ($labor->save()) {
             return "Record added";
         } else {
             return "Labor record not added";
         }
-
-
     }
 
-    public function api_ongoing_projects()
+    public function api_ongoing_projects(Request $request)
     {
-        $projects = Project::all();
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $projects = Project::all()->where('assigned_to', '=', $id);
+
         $check = [];
         $index = 0;
-        for ($i = 0; $i < $projects->count(); $i++) {
-            $projectID = DB::table('projects')->pluck('id')->get($i);
-            $statusID = DB::table('projects')->pluck('status_id')->get($i);
+        foreach ($projects as $project) {
+            $projectID = $project->id;
+            $statusID = $project->status_id;
             if ($statusID == 2) {
                 continue;
             } else {
                 $labors = DB::table('labors')->where('project_id', '=', $projectID)->count();
                 $check[$index] = [
-                    "id" => DB::table("projects")->pluck("id")->get($i),
-                    "title" => DB::table("projects")->pluck("title")->get($i),
+                    "id" => $project->id,
+                    "title" => $project->title,
                     "status" => DB::table('project_status')->where('name', '!=', "Completed")
                         ->pluck('name')
                         ->first(),
@@ -176,9 +192,14 @@ class APIController extends Controller
         return response()->json($check);
     }
 
-    public function api_completed_projects()
+    public function api_completed_projects(Request $request)
     {
-        $projects = Project::all();
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $projects = Project::all()->where('assigned_to', '=', $id);
 
         $index = 0;
         $check = [];
@@ -198,32 +219,7 @@ class APIController extends Controller
                 continue;
             }
         }
-//        $check = [];
-//
-//        $index = 0;
-//        for ($i = 0; $i < $projects->count(); $i++) {
-//            $projectID = DB::table('projects')->pluck('id')->get($i);
-//            $projectTitle = DB::table('projects')->pluck('title')->get($i);
-//            $statusID = DB::table('projects')->pluck('status_id')->get($i);
-//            $statusName = DB::table("project_status")
-//                ->where('id','=', $statusID)
-//                ->pluck('name')->first();
-//            if ($statusID == 2) {
-//                dd($statusID ."   ". $statusName. "    ". $projectID);
-//
-//                $labors = DB::table('labors')->where('project_id', '=', $projectID)->count();
-//                $check[$index] = [
-//                    "id" => $projectID,
-//                    "title" => $projectTitle,
-//                    "status" => $statusName,
-//                    "labors" => $labors
-//                ];
-//
-//                $index++;
-//            } else {
-//                continue;
-//            }
-//        }
+
         return response()->json($check);
     }
 
@@ -232,15 +228,6 @@ class APIController extends Controller
         $labors = Labor::all();
 
         return response()->json($labors);
-    }
-
-    public function api_project_details(Request $request)
-    {
-        $title = $request->get("title");
-
-        $result = DB::table('projects')->where('title', '=', $title)->first();
-
-        return response()->json($result);
     }
 
     public function api_update_labor_status_dialog()
@@ -259,11 +246,15 @@ class APIController extends Controller
             ->get("id")
             ->first();
 
-        $status = $request->get("status");
+        $statusID = DB::table('labor_status')
+            ->where('name', '=', $request->get("status"))
+            ->pluck('id')
+            ->first();
+
 
         $labor = Labor::findOrFail($labor_id->id);
 
-        $labor->status = $status;
+        $labor->status_id = $statusID;
 
         if ($labor->save()) {
             return "status updated";
@@ -316,31 +307,74 @@ class APIController extends Controller
             ->pluck('id')
             ->first();
 
-       if ($id != null){
-           $user = DB::table('users')
-               ->where('id', '=', $id)
-               ->first();
+        if ($id != null) {
+            $user = DB::table('users')
+                ->where('id', '=', $id)
+                ->first();
 
 
-           $projects = DB::table('projects')
-               ->where('assigned_to', '=', $user->id)
-               ->get('*');
+            $projects = DB::table('projects')
+                ->where('assigned_to', '=', $user->id)
+                ->get('*');
 
 //        $labors = DB::table('labors')->where('project_id', '')
 
-           foreach ($projects as $project){
-               $project->labor = DB::table('labors')
-                   ->where('project_id', '=', $project->id)
-                   ->count();
-           }
+            foreach ($projects as $project) {
+                $project->labor = DB::table('labors')
+                    ->where('project_id', '=', $project->id)
+                    ->count();
+            }
 
-           return response()->json(['profile' => $user, 'projects' => $projects]);
-       } else {
-           return "Unauthorized User";
-       }
+            return response()->json(['profile' => $user, 'projects' => $projects]);
+        } else {
+            return "Unauthorized User";
+        }
 
 
+    }
 
+    public function api_project_details(Request $request)
+    {
+        $title = $request->get("title");
+
+        $project = DB::table('projects')
+            ->where('title', '=', $title)
+            ->get()
+            ->first();
+
+        $customer = DB::table('customers')
+            ->where('id', '=', $project->customer_id)
+            ->get()
+            ->first();
+
+        $statusName = DB::table('project_status')
+            ->where('id', '=', $project->status_id)
+            ->pluck('name')
+            ->first();
+
+        $phaseName = DB::table('project_phase')
+            ->where('id', '=', $project->phase_id)
+            ->pluck('name')
+            ->first();
+
+        if ($project->phase_id == 0) {
+            $progress = (($project->phase_id) / 5) * 100;
+
+        } else {
+            $progress = (($project->phase_id - 1) / 5) * 100;
+        }
+
+
+        $labor = DB::table('labors')->where('project_id', '=', $project->id)->count();
+
+        return response()->json([
+            'project' => $project,
+            'customer' => $customer,
+            'status_name' => $statusName,
+            'phase_name' => $phaseName,
+            'progress' => $progress,
+            'labor' => $labor
+        ]);
     }
 
 }

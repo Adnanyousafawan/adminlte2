@@ -19,12 +19,11 @@ class CreateProjectsTable extends Migration
             $table->string('area')->nullable();
             $table->string('city')->nullable();
             $table->string('plot_size')->nullable();
-              //customer details
             $table->unsignedBigInteger('customer_id')->nullable();
-
             $table->string('estimated_completion_time')->nullable();
             $table->string('estimated_budget')->nullable();
             $table->string('floor')->nullable();
+//            $table->string('current_constructed_floor')->nullable()->default("0");
             $table->string('description', "1000")->nullable();
             $table->string('contract_image')->nullable();
             $table->unsignedBigInteger('assigned_to')->nullable();
