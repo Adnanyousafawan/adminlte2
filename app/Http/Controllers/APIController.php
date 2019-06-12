@@ -182,8 +182,8 @@ class APIController extends Controller
                     "id" => $project->id,
                     "title" => $project->title,
                     "status" => DB::table('project_status')->where('name', '!=', "Completed")
-                        ->pluck('name')
-                        ->first(),
+                        ->where('id','=',$project->status_id)
+                        ->pluck('name')->first(),
                     "labors" => $labors
                 ];
                 $index++;
