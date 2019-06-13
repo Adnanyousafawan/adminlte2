@@ -68,7 +68,7 @@ class ProjectController extends Controller
             'estimated_completion_time' => 'required',
             'estimated_budget' => 'required',
             'description' => 'required',
-            'contract_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
+            'contract_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
 
         ]);
 

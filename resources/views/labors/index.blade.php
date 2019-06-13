@@ -384,7 +384,9 @@ overflow-x: auto;
                                     <td>23</td>
                                     <td>{{ $labor->rate }}</td>
                                     <td>25000</td>
-                                    <td style="max-width: 95px; min-width: 30">
+
+                                    <td style="max-width: 95px; min-width: 30px">
+
                                         <a type="links" href="{{ route('labors.edit', ['id' => $labor->id]) }}"
                                            style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">Edit</a>
                                         <a type="links" data-toggle="modal" data-target="#applicantDeleteModal"

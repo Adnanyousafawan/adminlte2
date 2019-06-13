@@ -4,8 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Item extends Model
+class MaterialRequestStatus extends Model
 {
     //
-    public $timestamps = false;
 }
