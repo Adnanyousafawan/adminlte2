@@ -37,8 +37,9 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('users/profileManager');
+        return view('home');
     }
+
     public function addcontractor()
     {
         return view('contractors/add_contractor')->with('success', 'New Contractor has been added');
@@ -98,7 +99,7 @@ class HomeController extends Controller
             // Make a file path where image will be stored [ folder path + file name + file extension]
             $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
             //delete previously stored image
-            $this->deleteOne( 'public', Auth::user()->profile);
+            $this->deleteOne('public', Auth::user()->profile);
             // Upload image
             $this->uploadOne($image, $folder, 'public', $name);
             // Set user profile image path in database to filePath

@@ -31,12 +31,12 @@ class SupplierController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-         $request->validate([ $request, 
+        $request->validate([$request,
             'name' => 'required',
             'inic' => 'required',
             'phone_number' => 'required',
@@ -63,64 +63,60 @@ class SupplierController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\supplier  $supplier
+     * @param \App\supplier $supplier
      * @return \Illuminate\Http\Response
      */
     public function show()
     {
         $suppliers = Supplier::paginate(20);
-        return view('suppliers/index',compact('suppliers'));
+        return view('suppliers/index', compact('suppliers'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\supplier  $supplier
+     * @param \App\supplier $supplier
      * @return \Illuminate\Http\Response
      */
-public function search_supplier(Request $request)
+    public function search_supplier(Request $request)
     {
         //$users = User::all();
         $search = $request->get('search_name');
         $search_material = $request->get('search_material');
-        if (!is_null($search)) 
-        {
-            $suppliers = DB::table('suppliers')->where('name','like','%'.$search.'%')->paginate(10);
+        if (!is_null($search)) {
+            $suppliers = DB::table('suppliers')->where('name', 'like', '%' . $search . '%')->paginate(10);
             return view('suppliers/index', ['suppliers' => $suppliers]);
         }
-        if (!is_null($search_material)) 
-        {
-            $suppliers  = DB::table('suppliers')->where('material','like','%'.$search_material.'%')->paginate(10);
+        if (!is_null($search_material)) {
+            $suppliers = DB::table('suppliers')->where('material', 'like', '%' . $search_material . '%')->paginate(10);
             return view('suppliers /index', ['suppliers' => $suppliers]);
-        }
-        else
-        {
+        } else {
             $suppliers = Supplier::paginate(20);
             return view('suppliers/index', ['suppliers' => $suppliers]);
-        }   
+        }
     }
+
     public function edit($id)
     {
         $suppliers = Supplier::find($id);
         // Redirect to user list if updating user wasn't existed
-        if ($suppliers == null || count($suppliers) == 0)
-         {
+        if ($suppliers == null || count($suppliers) == 0) {
             return redirect()->intended('/suppliers/index');
         }
         //$users = User::paginate(10);
         return view('suppliers/edit', ['suppliers' => $suppliers]);
-    } 
+    }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\supplier  $supplier
+     * @param \Illuminate\Http\Request $request
+     * @param \App\supplier $supplier
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-         $request->validate([ $request, 
+        $request->validate([$request,
             'name' => 'required',
             'inic' => 'required',
             'phone_number' => 'required',
@@ -140,13 +136,13 @@ public function search_supplier(Request $request)
         $suppliers->price = $request->get('price');
 
         $suppliers->save();
-        return redirect()->route('suppliers.index')->with('success','Data Updated');
+        return redirect()->route('suppliers.index')->with('success', 'Data Updated');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\supplier  $supplier
+     * @param \App\supplier $supplier
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

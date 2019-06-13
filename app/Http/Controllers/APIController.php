@@ -272,18 +272,14 @@ class APIController extends Controller
 
 //        dd($statusID->id);
 
-       $project->status_id = $statusID->id;
-       $project->phase_id = $phaseID->id;
+        $project->status_id = $statusID->id;
+        $project->phase_id = $phaseID->id;
 
-       if ($project->save()){
-           return "success";
-       } else {
-           return "failed";
-       }
-
-
-
-
+        if ($project->save()) {
+            return "success";
+        } else {
+            return "failed";
+        }
 
 
     }
