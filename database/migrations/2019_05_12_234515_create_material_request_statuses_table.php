@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMaterialRequestsTable extends Migration
+class CreateMaterialRequestStatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateMaterialRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('material_requests', function (Blueprint $table) {
+        Schema::create('material_request_statuses', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('items');
-            $table->string('description');
-            $table->boolean('seen');
-            $table->string('status');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateMaterialRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('material_requests');
+        Schema::dropIfExists('material_request_statuses');
     }
 }

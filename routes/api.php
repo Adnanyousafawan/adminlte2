@@ -34,3 +34,5 @@ Route::post('/labor/id', 'APIController@api_update_labor_status');
 Route::post('/projects/longpress/dialog', 'APIController@api_projects_longpress_dialog');
 Route::post('/projects/longpress/dialog/update', 'APIController@api_projects_longpress_dialog_update');
 Route::post('/contractor/profile', 'APIController@api_contractor_profile');
+Route::post('/material/request', 'APIController@api_material_request');
+Route::post('/material/request/store', 'APIController@api_material_request_store');

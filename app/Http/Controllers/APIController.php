@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Labor;
 use App\LaborStatus;
+use App\MaterialRequest;
 use App\Project;
 use App\ProjectPhase;
 use App\ProjectStatus;
@@ -182,7 +183,7 @@ class APIController extends Controller
                     "id" => $project->id,
                     "title" => $project->title,
                     "status" => DB::table('project_status')->where('name', '!=', "Completed")
-                        ->where('id','=',$project->status_id)
+                        ->where('id', '=', $project->status_id)
                         ->pluck('name')->first(),
                     "labors" => $labors
                 ];
@@ -375,6 +376,71 @@ class APIController extends Controller
             'progress' => $progress,
             'labor' => $labor
         ]);
+    }
+
+    public function api_material_request(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $projects = Project::all()->where('assigned_to', '=', $id);
+
+//        dd($projects);
+
+
+//        dd($id);
+        $titles = [];
+        $index = 0;
+        foreach ($projects as $project) {
+            $titles[$index] = $project->title;
+            $index++;
+        }
+
+        $items = DB::table('items')->pluck('name');
+
+        return response()->json([
+                'projects' => $titles,
+                'items' => $items
+            ]
+        );
+    }
+
+    public function api_material_request_store(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $itemID = DB::table('items')
+            ->where('name', '=', $request->get('item'))
+            ->pluck('id')
+            ->first();
+
+        $projectID = DB::table('projects')
+            ->where('title', '=', $request->get('project'))
+            ->pluck('id')
+            ->first();
+
+        $quantity = $request->get('quantity');
+        $instructions = $request->get('instructions');
+
+        $material_request = new MaterialRequest([
+            'item_id' => $itemID,
+            'quantity' => $quantity,
+            'project_id' => $projectID,
+            'requested_by' => $id,
+            'instructions' => $instructions
+        ]);
+
+        if ($material_request->save()) {
+            return "success";
+        } else {
+            return "failed";
+        }
+
     }
 
 }
