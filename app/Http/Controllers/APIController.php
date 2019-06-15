@@ -173,12 +173,14 @@ class APIController extends Controller
         $check = [];
         $index = 0;
         foreach ($projects as $project) {
-            $projectID = $project->id;
-            $statusID = $project->status_id;
-            if ($statusID == 2) {
+            $status = DB::table('project_status')
+                ->where('id', '=', $project->status_id)
+                ->pluck('name')
+                ->first();
+            if ($status == "Completed") {
                 continue;
             } else {
-                $labors = DB::table('labors')->where('project_id', '=', $projectID)->count();
+                $labors = DB::table('labors')->where('project_id', '=', $project->id)->count();
                 $check[$index] = [
                     "id" => $project->id,
                     "title" => $project->title,
@@ -202,10 +204,15 @@ class APIController extends Controller
 
         $projects = Project::all()->where('assigned_to', '=', $id);
 
+
         $index = 0;
         $check = [];
         foreach ($projects as $project) {
-            if ($project->status_id == 2) {
+            $status = DB::table('project_status')
+                ->where('id', '=', $project->status_id)
+                ->pluck('name')
+                ->first();
+            if ($status == "Completed") {
                 $labors = DB::table('labors')->where('project_id', '=', $project->id)->count();
                 $check[$index] = [
                     "id" => $project->id,

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateProjectsTable extends Migration
 {
@@ -15,7 +15,7 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title')->nullable();
+            $table->string('title')->nullable()->unique();
             $table->string('area')->nullable();
             $table->string('city')->nullable();
             $table->string('plot_size')->nullable();
@@ -42,7 +42,7 @@ class CreateProjectsTable extends Migration
                 ->references('id')
                 ->on('users');
 
-                $table->foreign('customer_id')
+            $table->foreign('customer_id')
                 ->references('id')
                 ->on('customers');
 
