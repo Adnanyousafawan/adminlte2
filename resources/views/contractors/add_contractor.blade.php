@@ -17,9 +17,9 @@
         <div class="box-body">
             <form method="post" action="{{ route('contractors.store') }}">
                 @csrf
-                 <div class="col-lg-8 col-lg-offset-2">
+                <div class="col-lg-8 col-lg-offset-2">
                     <div class="form-group">
-                       
+
                         <label for="cont_name">Contractor Name</label>
                         <input type="text" class="form-control" id="cont_name" placeholder="Contractor Name"
                                name="cont_name">

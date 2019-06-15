@@ -1,22 +1,22 @@
 @extends('adminlte::page')
 @section('title', 'AdminLTE')
 @section('content')
-{{-- 
+    {{--
 
-    @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>
-                        {{ $error }}
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    @endif --}}
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>
+                            {{ $error }}
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif --}}
 
     @if (session('status'))
         <div class="alert alert-success" role="alert">
@@ -176,7 +176,8 @@
                         </select>
                         @if ($errors->has('estimated_completion_time'))
                             <span class="help-block">
-                                <strong style="color: red; float: right;">{{ $errors->first('estimated_completion_time') }}</strong>                              
+                                <strong
+                                    style="color: red; float: right;">{{ $errors->first('estimated_completion_time') }}</strong>
                                 </span>
                         @endif
                     </div>
@@ -188,7 +189,8 @@
                                value="{{ $projects->estimated_budget }}">
                         @if ($errors->has('estimated_budget'))
                             <span class="help-block">
-                                <strong style="color: red; float: right;">{{ $errors->first('estimated_budget') }}</strong>                              
+                                <strong
+                                    style="color: red; float: right;">{{ $errors->first('estimated_budget') }}</strong>
                                 </span>
                         @endif
                     </div>

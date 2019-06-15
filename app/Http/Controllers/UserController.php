@@ -15,8 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = DB::table('users')->get()->all();
-        return view('users/index')->with(['users' => $users]);
+       
+        return view('users/index');
     }
 
     /**
@@ -195,6 +195,5 @@ class UserController extends Controller
         ->select('users.*','')*/
 
     }
-
 
 }

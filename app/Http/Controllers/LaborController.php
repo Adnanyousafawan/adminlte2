@@ -15,8 +15,8 @@ class LaborController extends Controller
      */
     public function index()
     {
-        $labors=DB::table('labors')->get();
-        return view('labors/index',compact('labors'));
+        $labors = DB::table('labors')->get();
+        return view('labors/index', compact('labors'));
         // return view('labors/index', compact('labors'));
     }
 
@@ -33,12 +33,12 @@ class LaborController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $request->validate([ $request, 
+        $request->validate([$request,
             'name' => 'required',
             'rate' => 'required',
             'address' => 'required',
@@ -65,53 +65,48 @@ class LaborController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\labor  $labor
+     * @param \App\labor $labor
      * @return \Illuminate\Http\Response
      */
     public function show()
     {
-        $labors=DB::table('labors')->get();
-        return view('labors/index',compact('labors'));
-       // $labors = Labor::paginate(10);
+        $labors = DB::table('labors')->get();
+        return view('labors/index', compact('labors'));
+        // $labors = Labor::paginate(10);
         //return view('labors.index',compact('labors'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\labor  $labor
+     * @param \App\labor $labor
      * @return \Illuminate\Http\Response
      */
-public function search_labor(Request $request)
+    public function search_labor(Request $request)
     {
         //$users = User::all();
         $search = $request->get('search_name');
         $search_phone = $request->get('search_phone');
-        if (!is_null($search)) 
-        {
-            $labors = DB::table('labors')->where('name','like','%'.$search.'%')->paginate(20);
+        if (!is_null($search)) {
+            $labors = DB::table('labors')->where('name', 'like', '%' . $search . '%')->paginate(20);
             return view('labors/index', ['labors' => $labors]);
         }
-        if (!is_null($search_phone)) 
-        {
-            $labors = DB::table('labors')->where('phone','like','%'.$search_phone.'%')->paginate(20);
+        if (!is_null($search_phone)) {
+            $labors = DB::table('labors')->where('phone', 'like', '%' . $search_phone . '%')->paginate(20);
             return view('labors/index', ['labors' => $labors]);
-        }
-        else
-        {
+        } else {
             $labors = Labor::paginate(20);
             return view('labors/index', ['labors' => $labors]);
 
         }
-        
+
     }
 
     public function edit($id)
     {
         $labors = Labor::find($id);
         // Redirect to user list if updating user wasn't existed
-        if ($labors == null || count($labors) == 0)
-         {
+        if ($labors == null || count($labors) == 0) {
             return redirect()->intended('labors/index');
         }
         //$users = User::paginate(10);
@@ -121,8 +116,8 @@ public function search_labor(Request $request)
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\labor  $labor
+     * @param \Illuminate\Http\Request $request
+     * @param \App\labor $labor
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -134,7 +129,7 @@ public function search_labor(Request $request)
             'lab_cnic' => 'required',
             'lab_contact' => 'required',
             'lab_rate' => 'required',
-           // 'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
+            // 'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
         ]);
         $labors = Labor::find($id);
         $labors->name = $request->input('lab_name');
@@ -143,16 +138,16 @@ public function search_labor(Request $request)
         $labors->cnic = $request->input('lab_cnic');
         $labors->phone = $request->input('lab_contact');
         $labors->rate = $request->input('lab_rate');
-            //'role_id' => $request->input('user_role'),
-           // 'profile_image'=> $request->input('profile_image')
+        //'role_id' => $request->input('user_role'),
+        // 'profile_image'=> $request->input('profile_image')
         $labors->save();
-        return redirect()->route('labors.index')->with('success','Data Updated');
+        return redirect()->route('labors.index')->with('success', 'Data Updated');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\labor  $labor
+     * @param \App\labor $labor
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

@@ -375,6 +375,7 @@ class APIController extends Controller
 
         $labor = DB::table('labors')->where('project_id', '=', $project->id)->count();
 
+
         return response()->json([
             'project' => $project,
             'customer' => $customer,
