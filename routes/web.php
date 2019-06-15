@@ -23,6 +23,12 @@ use Illuminate\Support\Facades\Route;
 */
 Auth::routes();
 
+Route::resource('orders', 'OrderController');
+Route::get("orders","OrderController@index");
+Route::post("orders","OrderController@insert")->name('order_f.insert');
+
+
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 

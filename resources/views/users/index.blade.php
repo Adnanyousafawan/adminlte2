@@ -86,7 +86,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($users as $user)
+                                @foreach($users as $user)
                                     <tr role="row" class="odd">
                                         <td><img src="../{{$user->profile_image }}" width="50px" height="50px"/></td>
                                         <td class="hidden-xs">{{ $user->name }}</td>

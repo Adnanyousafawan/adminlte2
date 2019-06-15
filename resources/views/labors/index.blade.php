@@ -300,6 +300,7 @@ overflow-x: auto;
                         <!-- /.info-box -->
                     </div>
                 </div>
+                
 
             </div>
             <!-- /.col -->
@@ -642,7 +643,6 @@ overflow-x: auto;
                                                                        id="project_id" placeholder="Proect ID"
                                                                        name="project_id" required>
                                                             </div>
-
 
                                                             <button type="submit"
                                                                     class="btn btn-block btn-primary btn-xs form-control"

@@ -147,11 +147,24 @@ class ProjectController extends Controller
      */
     public function show()
     {
-        $projects = DB::table('projects')->take(10)->get();  //Project::paginate(10);
+        $projects = DB::table('projects')
+        ->join('users', 'users.id', '=', 'projects.assigned_to')
+        ->join('customers', 'customers.id', '=', 'projects.customer_id')
+        ->get();
+        dd($projects);
+//->where('followers.follower_id', '=', 3)
+       // $projects = DB::table('projects')->join('users','users.id','=','projects.assigned_to')->take(10)->get();
+        //dd($projects);
+          //Project::paginate(10);
         $projectstotal = DB::table('projects')->get();//Project::all();
         $contractors = DB::table('users')->where('role_id', '=', '3')->get();
-        $customers = DB::table('customers')->get();// \App\Customer::all();
-        return view('projects/index', compact('projects', 'contractors', 'customers'), ['projectstotal' => $projectstotal]);
+        //$customers = DB::table('customers')->where('id','=','projects.customer_id')->pluck('name')->first();
+        //$customers = DB::table('projects')->join('customers','customers.id','=','projects.customer_id')->pluck('name')->all();
+        //dd($projects);
+        //dd($customers);
+        //join('customers','customers.id','=','projects.customer_id')->take(10)->get();
+        //$customers = DB::table('customers')->get();// \App\Customer::all();
+        return view('projects/index', compact('projects'));
     }
 
     /**

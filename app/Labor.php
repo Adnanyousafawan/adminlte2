@@ -14,7 +14,8 @@ class Labor extends Model
         "city",
         "rate",
         "status",
-        "project_id"
+        "project_id",
+        "status_id"
     ];
 
     public  $timestamps = false;

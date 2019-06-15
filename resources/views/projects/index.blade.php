@@ -87,13 +87,18 @@
                             </thead>
                             <tbody>
                             {{--  --}}
+
                             @foreach ($projects as $project)
+                             <?php $var = $project->assigned_to;
+
+                             //dd($customers);
+                             $var = $var-1; ?>
 
                                 <tr role="row" class="odd">
                                     <td>{{ $project->title }}</td>
-                                    <td class="hidden-xs "> {{$customers[0]->name }}</td>
-                                    <td class="hidden-xs hidden-sm text-uppercase text-danger">{{ $project->area }}</td>
-                                    <td> {{ $contractors[1]->name }}</td>
+                                    ?<td class="hidden-xs">{{ $project->c_name }}</td>
+                                    <td class="hidden-xs hidden-sm text-bppercase text-danger">{{ $project->area }}</td>
+                                    <td> {{ $project->name }}</td>
                                     <td class="hidden-xs hidden-sm  ">{{ $project->estimated_budget }}</td>
                                     {{-- style="background-color: rgb(236, 240, 245); "--}}
                                     <td>
@@ -146,7 +151,7 @@
                 <div class="row">
                     <div class="col-sm-5">
                         <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">Showing 1
-                            to {{count($projects)}} of {{count($projectstotal)}} entries
+                            to {{count($projects)}} of {{-- {{ count($projectstotal)}}  --}}entries
                         </div>
                     </div>
                     <div class="col-sm-7">
