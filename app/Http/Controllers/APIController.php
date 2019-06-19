@@ -93,7 +93,7 @@ class APIController extends Controller
                 "area" => $project->area,
                 "city" => $project->city,
                 "plot_size" => $project->plot_size,
-                "customer" => DB::table('customers')->where('id', '=', $customerID)->get("name")->first(),
+                "customer" => DB::table('customers')->where('id', '=', $customerID)->get("c_name")->first(),
                 "estimated_completion_time" => $project->estimated_completion_time,
                 "estimated_budget" => $project->estimated_budget,
                 "floor" => $project->floor,
@@ -231,11 +231,45 @@ class APIController extends Controller
         return response()->json($check);
     }
 
-    public function api_all_labors()
+    public function api_all_labors(Request $request)
     {
-        $labors = Labor::all();
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
 
-        return response()->json($labors);
+        $projectsID = Project::all()
+            ->where('assigned_to', '=', $id)
+            ->pluck('id');
+
+        $record = [];
+        $index = 0;
+
+        foreach ($projectsID as $projectID) {
+
+            $labors = DB::table('labors')
+                ->where('project_id', '=', $projectID)->get();
+
+//            dd($labors);
+
+            foreach ($labors as $labor) {
+                $record[$index] = [
+                    'id' => $labor->id,
+                    'name' => $labor->name,
+                    'cnic' => $labor->cnic,
+                    'phone' => $labor->phone,
+                    'address' => $labor->address,
+                    'city' => $labor->city,
+                    'rate' => $labor->rate,
+                    'project_id' => $labor->project_id,
+                    'status' => $labor->status_id,
+                    'days' => DB::table('labor_attendances')->where('labor_id', '=', $labor->id)
+                        ->where('status', '=', 1)->count()
+                ];
+                $index++;
+            }
+        }
+        return response()->json($record);
     }
 
     public function api_update_labor_status_dialog()
@@ -449,6 +483,62 @@ class APIController extends Controller
             return "failed";
         }
 
+    }
+
+    public function api_projects_labor_attendance(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+
+        $projects = DB::table('projects')
+            ->where('assigned_to', '=', $id)
+            ->pluck('title');
+
+        return response()->json($projects);
+
+
+    }
+
+    public function api_get_labor_attendance(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $date = $request->get('date');
+//        dd($date);
+
+        $projectID = Project::all()
+            ->where('title', '=', $request->get('title'))
+            ->where('assigned_to', '=', $id)
+            ->pluck('id');
+
+        $labors = DB::table('labors')
+            ->where('project_id', '=', $projectID)
+            ->pluck('id');
+
+        $result = [];
+        $index = 0;
+
+        foreach ($labors as $labor) {
+
+            $result[$index] = [
+                'labor' => DB::table('labors')
+                    ->where('id', '=', $labor)
+                    ->pluck('name')
+                    ->first(),
+                'attendanceStatus' => DB::table('labor_attendances')
+                    ->where('labor_id', '=', $labor)
+                    ->where('date', '=', $date)->pluck('status')->first(),
+            ];
+            $index++;
+        }
+
+        return response()->json(['attendance' => $result]);
     }
 
 }

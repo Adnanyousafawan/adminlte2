@@ -81,7 +81,7 @@ class ProjectController extends Controller
         // dd($contractor[0]->id);
 
         $customer = new Customer([
-            'name' => $request->input('name'),
+            'c_name' => $request->input('name'),
             'cnic' => $request->input('cnic'),
             'phone' => $request->input('phone'),
             'address' => $request->input('address'),
@@ -151,7 +151,7 @@ class ProjectController extends Controller
         ->join('users', 'users.id', '=', 'projects.assigned_to')
         ->join('customers', 'customers.id', '=', 'projects.customer_id')
         ->get();
-        dd($projects);
+//        dd($projects);
 //->where('followers.follower_id', '=', 3)
        // $projects = DB::table('projects')->join('users','users.id','=','projects.assigned_to')->take(10)->get();
         //dd($projects);
