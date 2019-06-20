@@ -541,4 +541,26 @@ class APIController extends Controller
         return response()->json(['attendance' => $result]);
     }
 
+    public function api_add_labor_attendance(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $date = $request->get('selected_date');
+
+//        $labor_attendance = $request->get('labor_attendance');
+        $labor_attendance = json_decode($request->get('labor_attendance'), true);
+
+        $projectID = Project::all()
+            ->where('title', '=', $request->get('title'))
+            ->where('assigned_to', '=', $id)
+            ->pluck('id');
+
+
+
+        return response($labor_attendance);
+    }
+
 }
