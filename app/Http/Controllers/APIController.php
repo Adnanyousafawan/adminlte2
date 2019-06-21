@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Labor;
+use App\LaborAttendance;
 use App\LaborStatus;
 use App\MaterialRequest;
 use App\Project;
@@ -543,24 +544,82 @@ class APIController extends Controller
 
     public function api_add_labor_attendance(Request $request)
     {
-        $id = DB::table('users')
-            ->where('email', '=', $request->get('email'))
-            ->pluck('id')
-            ->first();
 
-        $date = $request->get('selected_date');
+        $check = [];
+        // selected date
+        $selected_dd = $request->get('selected_dd');
+        $selected_mm = $request->get('selected_mm');
+        $selected_yyyy = $request->get('selected_yyyy');
 
-//        $labor_attendance = $request->get('labor_attendance');
+
+        // current date
+        $current_dd = $request->get('current_dd');
+        $current_mm = $request->get('current_mm');
+        $current_yyyy = $request->get('current_yyyy');
+
+
         $labor_attendance = json_decode($request->get('labor_attendance'), true);
 
-        $projectID = Project::all()
-            ->where('title', '=', $request->get('title'))
-            ->where('assigned_to', '=', $id)
-            ->pluck('id');
+
+        for ($i = 0; $i < count($labor_attendance['attendance']); $i++) {
+
+            $status = $labor_attendance['attendance'][$i]['attendanceStatus'];
+            $labor_id = DB::table('labors')
+                ->where('name', '=', $labor_attendance['attendance'][$i]['labor'])
+                ->pluck('id')->first();
 
 
+            if (($selected_yyyy < $current_yyyy) ||
+                (($selected_yyyy >= $current_yyyy) && ($selected_mm < $current_mm)) ||
+                (($selected_yyyy >= $current_yyyy) && ($selected_mm >= $current_mm) && ($selected_dd < $current_dd))) {
+                $getLabor = DB::table('labor_attendances')
+                    ->where('date', '=', $selected_dd . '-' . $selected_mm . '-' . $selected_yyyy)
+                    ->where('labor_id', '=', $labor_id)->get();
 
-        return response($labor_attendance);
+                if (count($getLabor) == 0) {
+                    $newRecord = new LaborAttendance([
+                        'labor_id' => $labor_id,
+                        'status' => $status,
+                        'date' => $selected_dd . '-' . $selected_mm . '-' . $selected_yyyy,
+                    ]);
+                    $newRecord->save();
+
+                } else {
+                    LaborAttendance::where('id', $getLabor[0]->id)
+                        ->update(['status' => $status]);
+
+                };
+
+            } else {
+
+//                DB::table('labor_attendance')
+//                    ->updateOrInsert(
+//                        ['labor_id' => $labor_id],
+//                        ['status' => $status],
+//                        ['date' => $current_dd . '-' . $current_mm . '-' . $current_yyyy]
+//                    );
+
+                $found = LaborAttendance::all()
+                    ->where('labor_id', '=', $labor_id)
+                    ->where('date', '=', $current_dd . '-' . $current_mm . '-' . $current_yyyy);
+
+                if (count($found) == 0) {
+                    $attendance = new LaborAttendance([
+                        'labor_id' => $labor_id,
+                        'status' => $status,
+                        'date' => $current_dd . '-' . $current_mm . '-' . $current_yyyy,
+                    ]);
+                    $attendance->save();
+
+                } else {
+                    LaborAttendance::where('labor_id',$labor_id)
+                        ->where('date','=',$current_dd . '-' . $current_mm . '-' . $current_yyyy)
+                        ->update(['status' => $status]);
+                }
+
+
+            }
+        }
     }
 
 }
