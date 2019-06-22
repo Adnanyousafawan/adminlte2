@@ -544,22 +544,19 @@ class APIController extends Controller
 
     public function api_add_labor_attendance(Request $request)
     {
-
-        $check = [];
+        $response = "";
+        $action = "";
         // selected date
         $selected_dd = $request->get('selected_dd');
         $selected_mm = $request->get('selected_mm');
         $selected_yyyy = $request->get('selected_yyyy');
-
 
         // current date
         $current_dd = $request->get('current_dd');
         $current_mm = $request->get('current_mm');
         $current_yyyy = $request->get('current_yyyy');
 
-
         $labor_attendance = json_decode($request->get('labor_attendance'), true);
-
 
         for ($i = 0; $i < count($labor_attendance['attendance']); $i++) {
 
@@ -567,7 +564,6 @@ class APIController extends Controller
             $labor_id = DB::table('labors')
                 ->where('name', '=', $labor_attendance['attendance'][$i]['labor'])
                 ->pluck('id')->first();
-
 
             if (($selected_yyyy < $current_yyyy) ||
                 (($selected_yyyy >= $current_yyyy) && ($selected_mm < $current_mm)) ||
@@ -582,22 +578,17 @@ class APIController extends Controller
                         'status' => $status,
                         'date' => $selected_dd . '-' . $selected_mm . '-' . $selected_yyyy,
                     ]);
-                    $newRecord->save();
+                    $response = $newRecord->save();
+                    $action = "added";
 
                 } else {
-                    LaborAttendance::where('id', $getLabor[0]->id)
+                    $response = LaborAttendance::where('id', $getLabor[0]->id)
                         ->update(['status' => $status]);
-
+                    $action = "updated";
                 };
 
-            } else {
-
-//                DB::table('labor_attendance')
-//                    ->updateOrInsert(
-//                        ['labor_id' => $labor_id],
-//                        ['status' => $status],
-//                        ['date' => $current_dd . '-' . $current_mm . '-' . $current_yyyy]
-//                    );
+            }
+            else {
 
                 $found = LaborAttendance::all()
                     ->where('labor_id', '=', $labor_id)
@@ -609,17 +600,24 @@ class APIController extends Controller
                         'status' => $status,
                         'date' => $current_dd . '-' . $current_mm . '-' . $current_yyyy,
                     ]);
-                    $attendance->save();
+                    $response = $attendance->save();
+                    $action = "added";
 
                 } else {
-                    LaborAttendance::where('labor_id',$labor_id)
-                        ->where('date','=',$current_dd . '-' . $current_mm . '-' . $current_yyyy)
+                    $response = LaborAttendance::where('labor_id', $labor_id)
+                        ->where('date', '=', $current_dd . '-' . $current_mm . '-' . $current_yyyy)
                         ->update(['status' => $status]);
+                    $action = "updated";
                 }
-
-
             }
         }
+
+        if ($response) {
+            return "Attendance has been " . $action;
+        } else {
+            return "Attendance has been " . $action;
+        }
+
     }
 
 }
