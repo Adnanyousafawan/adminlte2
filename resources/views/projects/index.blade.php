@@ -96,7 +96,7 @@
 
                                 <tr role="row" class="odd">
                                     <td>{{ $project->title }}</td>
-                                    ?<td class="hidden-xs">{{ $project->c_name }}</td>
+                                    <td class="hidden-xs">{{ $project->name }}</td>
                                     <td class="hidden-xs hidden-sm text-bppercase text-danger">{{ $project->area }}</td>
                                     <td> {{ $project->name }}</td>
                                     <td class="hidden-xs hidden-sm  ">{{ $project->estimated_budget }}</td>
@@ -118,7 +118,7 @@
                                                style="margin-left: 5px; margin-top: 5px; color: #f0ad4e;">
                                                 Edit
                                             </a>
-                                            {{-- <a href="{{ route('projects.destroy', ['id' => $project->id]) }}" type="links" onclick="return confirm('Are you sure?')"  class="btn btn-danger col-xs" style="margin-left: 5px; margin-top: 5px;">
+                                            {{-- <a href="{{ route('projects.destroy', ['id' => $project->id]) }}" type="links" onclick="return confirm('Are you sure`')"  class="btn btn-danger col-xs" style="margin-left: 5px; margin-top: 5px;">
                                               Delete</a>--}}
                                             <button type="submit" class="btn-link"
                                                     style="margin-left: 5px; margin-top: 5px; color: #FF0000">Delete

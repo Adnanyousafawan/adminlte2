@@ -94,7 +94,7 @@ class APIController extends Controller
                 "area" => $project->area,
                 "city" => $project->city,
                 "plot_size" => $project->plot_size,
-                "customer" => DB::table('customers')->where('id', '=', $customerID)->get("c_name")->first(),
+                "customer" => DB::table('customers')->where('id', '=', $customerID)->get("name")->first(),
                 "estimated_completion_time" => $project->estimated_completion_time,
                 "estimated_budget" => $project->estimated_budget,
                 "floor" => $project->floor,
