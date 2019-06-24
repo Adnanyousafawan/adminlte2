@@ -1,0 +1,96 @@
+[2019-06-24 18:44:56] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php:168)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(102): Illuminate\\Log\\LogManager->resolve(NULL)
+#1 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(90): Illuminate\\Log\\LogManager->get(NULL)
+#2 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(500): Illuminate\\Log\\LogManager->driver()
+#3 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(114): Illuminate\\Log\\LogManager->error('syntax error, u...', Array)
+#4 C:\\xampp\\htdocs\\adminlte2\\app\\Exceptions\\Handler.php(37): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#5 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(314): App\\Exceptions\\Handler->report(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#6 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(122): Illuminate\\Foundation\\Http\\Kernel->reportException(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#7 C:\\xampp\\htdocs\\adminlte2\\public\\index.php(55): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#8 C:\\xampp\\htdocs\\adminlte2\\server.php(21): require_once('C:\\\\xampp\\\\htdocs...')
+#9 {main}
+"} 
+[2019-06-24 18:44:56] laravel.ERROR: syntax error, unexpected '=>' (T_DOUBLE_ARROW), expecting ']' {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): syntax error, unexpected '=>' (T_DOUBLE_ARROW), expecting ']' at C:\\xampp\\htdocs\\adminlte2\\config\\adminlte.php:255)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(39): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFiles(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Config\\Repository))
+#1 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(210): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->bootstrap(Object(Illuminate\\Foundation\\Application))
+#2 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(162): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#3 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(146): Illuminate\\Foundation\\Http\\Kernel->bootstrap()
+#4 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(116): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#5 C:\\xampp\\htdocs\\adminlte2\\public\\index.php(55): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#6 C:\\xampp\\htdocs\\adminlte2\\server.php(21): require_once('C:\\\\xampp\\\\htdocs...')
+#7 {main}
+"} 
+[2019-06-24 18:45:06] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php:168)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(102): Illuminate\\Log\\LogManager->resolve(NULL)
+#1 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(90): Illuminate\\Log\\LogManager->get(NULL)
+#2 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(500): Illuminate\\Log\\LogManager->driver()
+#3 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(114): Illuminate\\Log\\LogManager->error('syntax error, u...', Array)
+#4 C:\\xampp\\htdocs\\adminlte2\\app\\Exceptions\\Handler.php(37): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#5 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(314): App\\Exceptions\\Handler->report(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#6 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(122): Illuminate\\Foundation\\Http\\Kernel->reportException(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#7 C:\\xampp\\htdocs\\adminlte2\\public\\index.php(55): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#8 C:\\xampp\\htdocs\\adminlte2\\server.php(21): require_once('C:\\\\xampp\\\\htdocs...')
+#9 {main}
+"} 
+[2019-06-24 18:45:06] laravel.ERROR: syntax error, unexpected '=>' (T_DOUBLE_ARROW), expecting ']' {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): syntax error, unexpected '=>' (T_DOUBLE_ARROW), expecting ']' at C:\\xampp\\htdocs\\adminlte2\\config\\adminlte.php:255)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(39): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFiles(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Config\\Repository))
+#1 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(210): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->bootstrap(Object(Illuminate\\Foundation\\Application))
+#2 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(162): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#3 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(146): Illuminate\\Foundation\\Http\\Kernel->bootstrap()
+#4 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(116): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#5 C:\\xampp\\htdocs\\adminlte2\\public\\index.php(55): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#6 C:\\xampp\\htdocs\\adminlte2\\server.php(21): require_once('C:\\\\xampp\\\\htdocs...')
+#7 {main}
+"} 
+[2019-06-24 18:51:32] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php:168)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(102): Illuminate\\Log\\LogManager->resolve(NULL)
+#1 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(90): Illuminate\\Log\\LogManager->get(NULL)
+#2 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(500): Illuminate\\Log\\LogManager->driver()
+#3 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(114): Illuminate\\Log\\LogManager->error('syntax error, u...', Array)
+#4 C:\\xampp\\htdocs\\adminlte2\\app\\Exceptions\\Handler.php(37): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#5 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(314): App\\Exceptions\\Handler->report(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#6 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(122): Illuminate\\Foundation\\Http\\Kernel->reportException(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#7 C:\\xampp\\htdocs\\adminlte2\\public\\index.php(55): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#8 C:\\xampp\\htdocs\\adminlte2\\server.php(21): require_once('C:\\\\xampp\\\\htdocs...')
+#9 {main}
+"} 
+[2019-06-24 18:51:32] laravel.ERROR: syntax error, unexpected '=>' (T_DOUBLE_ARROW), expecting ']' {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): syntax error, unexpected '=>' (T_DOUBLE_ARROW), expecting ']' at C:\\xampp\\htdocs\\adminlte2\\config\\adminlte.php:239)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(39): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFiles(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Config\\Repository))
+#1 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(210): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->bootstrap(Object(Illuminate\\Foundation\\Application))
+#2 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(162): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#3 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(146): Illuminate\\Foundation\\Http\\Kernel->bootstrap()
+#4 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(116): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#5 C:\\xampp\\htdocs\\adminlte2\\public\\index.php(55): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#6 C:\\xampp\\htdocs\\adminlte2\\server.php(21): require_once('C:\\\\xampp\\\\htdocs...')
+#7 {main}
+"} 
+[2019-06-24 18:51:42] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php:168)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(102): Illuminate\\Log\\LogManager->resolve(NULL)
+#1 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(90): Illuminate\\Log\\LogManager->get(NULL)
+#2 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(500): Illuminate\\Log\\LogManager->driver()
+#3 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(114): Illuminate\\Log\\LogManager->error('syntax error, u...', Array)
+#4 C:\\xampp\\htdocs\\adminlte2\\app\\Exceptions\\Handler.php(37): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#5 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(314): App\\Exceptions\\Handler->report(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#6 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(122): Illuminate\\Foundation\\Http\\Kernel->reportException(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#7 C:\\xampp\\htdocs\\adminlte2\\public\\index.php(55): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#8 C:\\xampp\\htdocs\\adminlte2\\server.php(21): require_once('C:\\\\xampp\\\\htdocs...')
+#9 {main}
+"} 
+[2019-06-24 18:51:42] laravel.ERROR: syntax error, unexpected '=>' (T_DOUBLE_ARROW), expecting ']' {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): syntax error, unexpected '=>' (T_DOUBLE_ARROW), expecting ']' at C:\\xampp\\htdocs\\adminlte2\\config\\adminlte.php:239)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(39): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFiles(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Config\\Repository))
+#1 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(210): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->bootstrap(Object(Illuminate\\Foundation\\Application))
+#2 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(162): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#3 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(146): Illuminate\\Foundation\\Http\\Kernel->bootstrap()
+#4 C:\\xampp\\htdocs\\adminlte2\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(116): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#5 C:\\xampp\\htdocs\\adminlte2\\public\\index.php(55): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#6 C:\\xampp\\htdocs\\adminlte2\\server.php(21): require_once('C:\\\\xampp\\\\htdocs...')
+#7 {main}
+"} 

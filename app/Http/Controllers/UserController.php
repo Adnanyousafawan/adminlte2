@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use DB;
 use Illuminate\Http\Request;
-
+use Gate;
 class UserController extends Controller
 {
     /**
@@ -15,9 +15,44 @@ class UserController extends Controller
      */
     public function index()
     {
-       $users = DB::table('users')->get();
-        return view('users/index',compact($users));
+       if(Gate::allows('isAdmin'))
+       {
+        $users = DB::table('users')->where('role_id','!=',1)->get();
+       return view('users/index',compact('users'));
+
+        //abort(404, "Sorry, You cant  Access this Page");
+       }
+       if(Gate::allows('isManager'))
+       {
+        $users = DB::table('users')->where('role_id','=',3)->get();
+         return view('users/index',compact('users'));
+
+       }
     }
+
+    public function manager()
+    {
+        if(Gate::allows('isAdmin'))
+       {
+         $users = DB::table('users')->where('role_id','!=',2)->get();
+         return view('users/index',compact('users'));
+     }
+    }
+
+     public function contractor()
+    {
+         if(Gate::allows('isAdmin'))
+       {
+         $users = DB::table('users')->where('role_id','=',3)->get();
+         return view('users/index',compact('users'));
+     }
+    }
+    /*  public function all()
+    {
+         $users = DB::table('users')->where('role_id','!=',1)->get();
+         return view('users/index',compact('users'));
+    }
+*/
 
     /**
      * Show the form for creating a new resource.
@@ -26,7 +61,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users/user');
+        
+        $roles = DB::table('roles')->get(); 
+        return view('users/create',compact('roles'));
+
     }
 
     /**

@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 
-/*function () {
+Route::get('/',function(){
     return view('welcome');
 });
-*/
+
 
 Auth::routes();
 
@@ -77,7 +77,11 @@ Route::get('projects/all','ProjectController@all')->name('projects.all');
 //-----------------------------------User Management------------------------------------//
 
 Route::resource('users', 'UserController');
-Route::get('users/index', 'UserController@index')->name('users.index');
+Route::get('users', 'UserController@index')->name('users.index');
+
+//Route::get('users/all','UserController@all')->name('users.all');
+Route::get('users/manager','UserController@manager')->name('users.manager');
+Route::get('users/contractor','UserController@contractor')->name('users.contractor');
 
 //-----------------------------------Labor Management--------------------------------------//
 

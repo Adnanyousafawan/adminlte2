@@ -42,15 +42,14 @@
     @endforeach
 </ol>
 
-<div class="row">
+{{-- <div class="row"> --}}
 <div class="col-md-12 col-md-offset-0 col-xs-12 col-xs-offset-0  col-lg-12 col-lg-offset-0 col-sm-12 col-sm-offset-0 col-xl-12 col-xl-offset-0">
 
 <div class="box" style="background-colors: #f4f4f487;">
-
     <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0  col-lg-8 col-lg-offset-2 col-sm-10 col-sm-offset-1 col-xl-8 col-xl-offset-2" style="margin-top: 40px;">
 
 
-    <div class="box box-primary" style="padding-bottom: 40px;">
+    <div class="box box-primary" style="padding-bottom: 20px;">
         <div class="box-header">
             <h2 class="text-center">Add Supplier</h2>
         </div>
@@ -93,7 +92,7 @@
 </div>
 
 </div>
-</div>
+
 
 
 @stop

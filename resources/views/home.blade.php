@@ -707,7 +707,14 @@
 <div class="col-md-2">
 <div class="box box-solid">
       <div class="box-header with-border">
+        @can('isAdmin')
+        <h3 class="box-title"><i class="fa fa-users dashbord-icon-color" aria-hidden="true"></i> &nbsp; Users</h3>
+        @endcan
+         @can('isManager')
         <h3 class="box-title"><i class="fa fa-users dashbord-icon-color" aria-hidden="true"></i> &nbsp; Contractors</h3>
+        @endcan
+
+
         <div class="box-tools pull-right">
           <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
         </div>
@@ -715,12 +722,22 @@
       <div class="box-body">
         <div class="row">
           <div class="col-md-12">
+            @can('isManager')
             <h5>Contractors</h5><hr>
+            @endcan
+             @can('isAdmin')
+            <h5>Users</h5><hr>
+            @endcan
+
             <div class="vendor-info-count">
               <ul>
                 <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.index') }}">8 &nbsp;&nbsp;Total Contrators</a></li>
                 <li><i class="fa fa-check"></i>&nbsp;&nbsp; <a href="{{route('users.index') }}">6 &nbsp;&nbsp;Working Contractors</a></li>
                 <li><i class="fa fa-close"></i>&nbsp;&nbsp; <a href="{{route('users.index') }}">2 &nbsp;&nbsp;Free Contractors</a></li>
+@can('isAdmin')
+                 <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.index') }}">8 &nbsp;&nbsp;Total Managers</a></li>
+                @endcan
+                
               </ul>
             </div>
           </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Labor;
+use App\LaborAttendance;
 use App\LaborStatus;
 use App\MaterialRequest;
 use App\Project;
@@ -231,11 +232,45 @@ class APIController extends Controller
         return response()->json($check);
     }
 
-    public function api_all_labors()
+    public function api_all_labors(Request $request)
     {
-        $labors = Labor::all();
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
 
-        return response()->json($labors);
+        $projectsID = Project::all()
+            ->where('assigned_to', '=', $id)
+            ->pluck('id');
+
+        $record = [];
+        $index = 0;
+
+        foreach ($projectsID as $projectID) {
+
+            $labors = DB::table('labors')
+                ->where('project_id', '=', $projectID)->get();
+
+//            dd($labors);
+
+            foreach ($labors as $labor) {
+                $record[$index] = [
+                    'id' => $labor->id,
+                    'name' => $labor->name,
+                    'cnic' => $labor->cnic,
+                    'phone' => $labor->phone,
+                    'address' => $labor->address,
+                    'city' => $labor->city,
+                    'rate' => $labor->rate,
+                    'project_id' => $labor->project_id,
+                    'status' => $labor->status_id,
+                    'days' => DB::table('labor_attendances')->where('labor_id', '=', $labor->id)
+                        ->where('status', '=', 1)->count()
+                ];
+                $index++;
+            }
+        }
+        return response()->json($record);
     }
 
     public function api_update_labor_status_dialog()
@@ -447,6 +482,140 @@ class APIController extends Controller
             return "success";
         } else {
             return "failed";
+        }
+
+    }
+
+    public function api_projects_labor_attendance(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+
+        $projects = DB::table('projects')
+            ->where('assigned_to', '=', $id)
+            ->pluck('title');
+
+        return response()->json($projects);
+
+
+    }
+
+    public function api_get_labor_attendance(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $date = $request->get('date');
+//        dd($date);
+
+        $projectID = Project::all()
+            ->where('title', '=', $request->get('title'))
+            ->where('assigned_to', '=', $id)
+            ->pluck('id');
+
+        $labors = DB::table('labors')
+            ->where('project_id', '=', $projectID)
+            ->pluck('id');
+
+        $result = [];
+        $index = 0;
+
+        foreach ($labors as $labor) {
+
+            $result[$index] = [
+                'labor' => DB::table('labors')
+                    ->where('id', '=', $labor)
+                    ->pluck('name')
+                    ->first(),
+                'attendanceStatus' => DB::table('labor_attendances')
+                    ->where('labor_id', '=', $labor)
+                    ->where('date', '=', $date)->pluck('status')->first(),
+            ];
+            $index++;
+        }
+
+        return response()->json(['attendance' => $result]);
+    }
+
+    public function api_add_labor_attendance(Request $request)
+    {
+        $response = "";
+        $action = "";
+        // selected date
+        $selected_dd = $request->get('selected_dd');
+        $selected_mm = $request->get('selected_mm');
+        $selected_yyyy = $request->get('selected_yyyy');
+
+        // current date
+        $current_dd = $request->get('current_dd');
+        $current_mm = $request->get('current_mm');
+        $current_yyyy = $request->get('current_yyyy');
+
+        $labor_attendance = json_decode($request->get('labor_attendance'), true);
+
+        for ($i = 0; $i < count($labor_attendance['attendance']); $i++) {
+
+            $status = $labor_attendance['attendance'][$i]['attendanceStatus'];
+            $labor_id = DB::table('labors')
+                ->where('name', '=', $labor_attendance['attendance'][$i]['labor'])
+                ->pluck('id')->first();
+
+            if (($selected_yyyy < $current_yyyy) ||
+                (($selected_yyyy >= $current_yyyy) && ($selected_mm < $current_mm)) ||
+                (($selected_yyyy >= $current_yyyy) && ($selected_mm >= $current_mm) && ($selected_dd < $current_dd))) {
+                $getLabor = DB::table('labor_attendances')
+                    ->where('date', '=', $selected_dd . '-' . $selected_mm . '-' . $selected_yyyy)
+                    ->where('labor_id', '=', $labor_id)->get();
+
+                if (count($getLabor) == 0) {
+                    $newRecord = new LaborAttendance([
+                        'labor_id' => $labor_id,
+                        'status' => $status,
+                        'date' => $selected_dd . '-' . $selected_mm . '-' . $selected_yyyy,
+                    ]);
+                    $response = $newRecord->save();
+                    $action = "added";
+
+                } else {
+                    $response = LaborAttendance::where('id', $getLabor[0]->id)
+                        ->update(['status' => $status]);
+                    $action = "updated";
+                };
+
+            }
+            else {
+
+                $found = LaborAttendance::all()
+                    ->where('labor_id', '=', $labor_id)
+                    ->where('date', '=', $current_dd . '-' . $current_mm . '-' . $current_yyyy);
+
+                if (count($found) == 0) {
+                    $attendance = new LaborAttendance([
+                        'labor_id' => $labor_id,
+                        'status' => $status,
+                        'date' => $current_dd . '-' . $current_mm . '-' . $current_yyyy,
+                    ]);
+                    $response = $attendance->save();
+                    $action = "added";
+
+                } else {
+                    $response = LaborAttendance::where('labor_id', $labor_id)
+                        ->where('date', '=', $current_dd . '-' . $current_mm . '-' . $current_yyyy)
+                        ->update(['status' => $status]);
+                    $action = "updated";
+                }
+            }
+        }
+
+        if ($response) {
+            return "Attendance has been " . $action;
+        } else {
+            return "Attendance has been " . $action;
         }
 
     }

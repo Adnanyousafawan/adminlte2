@@ -217,6 +217,7 @@ return [
                 ],
             ],
         ],
+
          [
             'text'    => 'Expenses',
             'icon'    => 'share',
@@ -233,22 +234,25 @@ return [
               
             ],
         ],
+       
          [
-            'text'    => 'Contractors',
+            'text'    => 'User',
             'icon'    => 'share',
             'submenu' => [
                  [
-                    'text' => 'View All Contractors',
+                    'text' => 'View All User',
                     'url' => 'users/index',
                 ],
                 [
-                    'text' => 'Add Contractor',
+                    'text' => 'Add User',
                     'url'  => 'users/create',
                 ],
                
               
             ],
         ],
+
+  
          [
             'text'    => 'Supplier',
             'icon'    => 'share',
@@ -264,6 +268,7 @@ return [
               
             ],
         ],
+
         'Reports Management',
                 [
                     'text' => 'Daily',

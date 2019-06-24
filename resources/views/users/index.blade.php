@@ -40,6 +40,21 @@
         </div>
     @endif
 
+<ol class="breadcrumb">
+    <li><a href="{{ route('home')}}"><i class="fa fa-dashboard"></i>  &nbsp;Dashboard</a></li>
+    <?php $segments = ''; ?>
+    @foreach(Request::segments() as $segment)
+        <?php $segments .= '/'.$segment; ?>
+        <li>
+            <a href="{{ $segments }}">{{$segment}}</a>
+        </li>
+    @endforeach
+</ol>
+
+<div class="row">
+
+
+
 
     <div class="box-body" id="screen"
          >
@@ -49,6 +64,9 @@
                         class="col-xs-6 col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
                         style="margin-bottom: 10px; padding: 0px;">User Details</span></h3>
             </div>
+
+
+
 
             {{-- _________________________________All User DataTable_____________________________________--}}
             <div
@@ -62,6 +80,14 @@
                                data-target="#applicantADDModal" class="btn btn-primary pul-right">Add User</a>
                         </div>
                     </div>
+        <div class="container">
+@can('isAdmin')
+            <a class="active" href=" {{ route('users.index') }}" style="font-size: 18px;">All &nbsp; | &nbsp; </a> 
+            <a class="active" href=" {{ route('users.manager') }}" style="font-size: 18px;">Managers &nbsp; | &nbsp;</a>
+            <a class="active" href=" {{ route('users.contractor') }}"  style="font-size: 18px;">Contractors &nbsp; | &nbsp;</a>
+@endcan    
+
+        </div>
                     <div class="table-responsive" style="margin-top: 10px; padding: 10px;">
                         <table class="table no-margin table-bordered table-striped project">
                             <thead>
@@ -89,7 +115,7 @@
                                     <td>{{ $user->address}}</td>
                                     <td>{{ $user->phone}}</td>
                                     <td>{{ $user->cnic}}</td>
-                                    <td>{{ $user->role}}</td>
+                                    <td>{{ $user->role_id}}</td>
                                    
                                     <td style="max-width: 50px;">
                                         
