@@ -16,8 +16,8 @@
                 <div class="col-lg-8 col-lg-offset-2">
 
                     <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
-                        <label for="user_name">User Name</label>
-                        <input type="text" class="form-control" id="user_name" name="user_name"
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name"
                                value="{{ $users->name }}">
                         @if ($errors->has('name'))
                             <span class="help-block alert-danger">
@@ -28,8 +28,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="user_email">User Email</label>
-                        <input type="text" class="form-control" id="user_email" name="user_email"
+                        <label for="email">Email</label>
+                        <input type="text" class="form-control" id="email" name="email"
                                value="{{ $users->email }}">
                         @if ($errors->has('email'))
                             <span class="help-block alert-danger">
@@ -39,8 +39,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="user_pass">User Password</label>
-                        <input type="password" class="form-control" id="user_pass" name="user_pass"
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password"
                                value="{{ $users->password }}">
                         @if ($errors->has('password'))
                             <span class="help-block alert-danger">
@@ -50,8 +50,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="user_cnic">User CNIC</label>
-                        <input type="text" class="form-control" id="user_cnic" name="user_cnic"
+                        <label for="cnic">User CNIC</label>
+                        <input type="text" class="form-control" id="cnic" name="cnic"
                                value="{{ $users->cnic }}">
                         @if ($errors->has('cnic'))
                             <span class="help-block alert-danger">
@@ -61,17 +61,17 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="user_phone_number">User Contact</label>
+                        <label for="phone">User Contact</label>
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-phone"></i>
                             </div>
-                            <input type="text" class="form-control" value="{{ $users->phone_number }}"
+                            <input type="text" class="form-control" value="{{ $users->phone }}"
                                    data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']"
-                                   data-mask="" id="user_phone_number" name="user_phone_number">
-                            @if ($errors->has('phone_number'))
+                                   data-mask="" id="phone" name="phone">
+                            @if ($errors->has('phone'))
                                 <span class="help-block alert-danger">
-                        <strong>{{ $errors->first('phone_number') }}</strong>                              
+                        <strong>{{ $errors->first('phone') }}</strong>
                       </span>
                             @endif
                         </div>
@@ -79,10 +79,10 @@
 
 
                     <div class="form-group">
-                        <label for="user_address">Address</label>
-                        <input type="text" class="form-control" id="user_address" name="user_address"
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" name="address"
                                value="{{ $users->address }}">
-                        @if ($errors->has('addres'))
+                        @if ($errors->has('address'))
                             <span class="help-block alert-danger">
                         <strong>{{ $errors->first('address') }}</strong>                              
                       </span>
@@ -90,8 +90,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="user_city">City</label>
-                        <input type="text" class="form-control" id="user_city" name="user_city"
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" id="city" name="city"
                                value="{{ $users->city }}">
                         @if ($errors->has('city'))
                             <span class="help-block alert-danger">
@@ -101,8 +101,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="assigned_to">Select Role</label>
-                        <select class="form-control" id="user_role" name="user_role">
+                        <label for="role">Select Role</label>
+                        <select class="form-control" id="role" name="role">
                             <option>Manager</option>
                             <option>Contractor</option>
                         </select>

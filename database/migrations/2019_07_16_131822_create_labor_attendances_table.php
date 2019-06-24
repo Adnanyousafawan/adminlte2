@@ -16,13 +16,14 @@ class CreateLaborAttendancesTable extends Migration
         Schema::create('labor_attendances', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('labor_id');
-            $table->boolean('status')->default(0);
+            $table->boolean('status')->default(0); //0 for absent, 1 for present
             $table->String('date');
             $table->timestamps();
 
             $table->foreign('labor_id')
                 ->references('id')
                 ->on('labors');
+
         });
     }
 

@@ -80,6 +80,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required',
             'address' => 'required',
+            'password' => 'required | min:8',
             'cnic' => 'required',
             'phone' => 'required',
             'role' => 'required',
@@ -91,6 +92,7 @@ class UserController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'address' => $request->input('address'),
+            'password' => $request->input('password'),
             'cnic' => $request->input('cnic'),
             'phone' => $request->input('phone'),
             //'role_id' => $request->input('user_role'),
@@ -183,6 +185,7 @@ class UserController extends Controller
              'name' => 'required',
             'email' => 'required',
             'address' => 'required',
+            'password' => 'required | min:8',
             'cnic' => 'required',
             'phone' => 'required',
             'role' => 'required',
@@ -195,7 +198,7 @@ class UserController extends Controller
         $users->address = $request->input('address');
     
         $users->cnic = $request->input('cnic');
-        $users->phone_number = $request->input('phone');
+        $users->phone = $request->input('phone');
      
         //'role_id' => $request->input('user_role'),
         // 'profile_image'=> $request->input('profile_image')
