@@ -89,7 +89,7 @@ class ProjectController extends Controller
         // dd($contractor[0]->id);
 
         $customer = new Customer([
-            'c_name' => $request->input('name'),
+            'name' => $request->input('name'),
             'cnic' => $request->input('cnic'),
             'phone' => $request->input('phone'),
             'address' => $request->input('address'),
