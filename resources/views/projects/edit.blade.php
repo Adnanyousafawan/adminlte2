@@ -17,12 +17,24 @@
                 </ul>
             </div>
         @endif --}}
+<ol class="breadcrumb">
+    <li><a href="{{ route('home')}}"><i class="fa fa-dashboard"></i>  &nbsp;Dashboard</a></li>
+    <?php $segments = ''; ?>
+    @foreach(Request::segments() as $segment)
+        <?php $segments .= '/'.$segment; ?>
+        <li>
+            <a href="{{ $segments }}">{{$segment}}</a>
+        </li>
+    @endforeach
+</ol>
+
 
     @if (session('status'))
         <div class="alert alert-success" role="alert">
             {{ session('status') }}
         </div>
     @endif
+
 
     <div class="box box-primary" style="padding-bottom: 85px;">
         <div class="box-header">

@@ -1,6 +1,7 @@
 @extends('adminlte::page')
-@section('title', 'Order Material')
+@section('title', 'AdminLTE')
 @section('content')
+
 <html>
 <head>
   <meta charset="utf-8">
@@ -16,11 +17,12 @@
   </head>
   <body>
 
-   @if (session('status'))
+   @if (session('success'))
    <div class="alert alert-success" role="alert">
-    {{ session('status') }}
+    {{ session('success') }}
   </div>
   @endif
+  
 
 <ol class="breadcrumb">
     <li><a href="{{ route('home')}}"><i class="fa fa-dashboard"></i>  &nbsp;Dashboard</a></li>
@@ -34,32 +36,28 @@
 </ol>
 
   
-
 <div class="box box-primary">
    <br />
-   <h3 align="center">Order Material</h3>
+   <h3 align="center">Add Expenses</h3>
    <br />
    <div class="table-responsive">
     <form id="dynamic_form">
       @csrf
       @method('POST')
-        <div class="col-md-10 col-xl-10 col-lg-10 col-sm-12 col-xs-12 col-md-offset-1 col-xl-offset-1 col-lg-offset-1 col-sm-offset-0 col-xs-offset-0 " style="margin-bottom: 70px;">
-         
-
+        <div class="col-md-10 col-xl-10 col-lg-10 col-sm-10 col-xs-12 col-md-offset-1 col-xl-offset-1 col-lg-offset-1 col-sm-offset-1 col-xs-offset-0 " style="margin-bottom: 70px;">
           <div class="row">
           <div class="col-md-6 col-md-offset-3">
-                  <div class="form-group">
+                  <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="assigned_to">Select Project</label>
                             <select class="form-control" id="project_id" name="project_id" required>
-                              <option disabled selected value > -- select an option -- </option>
+                              <option disabled selected value> -- select an option -- </option>
                                 @foreach($projects as $project)
                                     <option>{{ $project->title}}</option>
                                 @endforeach
                             </select>
                         </div>
                       </div>
-                    </div>
-
+</div>
                {{--      @csrf
                 @method('POST') --}}
                 <span id="result"></span>
@@ -67,9 +65,9 @@
                  <thead>
                   <tr>
                     {{-- <th width="21%">Project ID</th> --}}
-                    <th>Item</th>
-                    <th>Quatity</th>
-                    <th>Status</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Expense</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -104,10 +102,10 @@
        function dynamic_field(number)
        {
         html = '<tr>';
-        // html += '<td><select name="project_id[]" class="form-control">@foreach($projects as $project)<option>{{$project->title}}</option>@endforeach </select></td>';
-        html += '<td><select name="item_id[]" class="form-control">@foreach($items as $item)<option>{{$item->name}}</option>@endforeach </select></td>';
-        html += '<td><input type="number" name="quantity[]" class="form-control"/></td>';
-        html += '<td><input type="text" name="status[]" class="form-control"/></td>';
+       
+        html += '<td><input type="text" name="name[]" class="form-control"></td>';
+        html += '<td><input type="text" name="description[]" class="form-control"/></td>';
+        html += '<td><input type="number" name="expenses[]" class="form-control"/></td>';
         
         if(number > 1)
         {
@@ -143,24 +141,12 @@
           //var name = "Hamza";
           $.ajax({
             type:'POST',
-            url:'orderdetails/insert',
+            url:'miscellaneousexpenses/insert',
             data:$('#dynamic_form').serialize(),
             datatype: 'json',
 
-          //   success:function(data){
-          //     console.log(data);
-          //   //alert(data);
-          // },error:function(){ 
-          //   alert("error!!!!");
-          // }
-            // beforeSend:function(){
-            //     $('#save').attr('disabled','disabled');
-            // },
-        
-          success:function(data)
-            {
-              //console.log(data);
-                if(data.error)
+            success:function(data){
+               if(data.error)
                 {
                     var error_html = '';
                     for(var count = 0; count < data.error.length; count++)
@@ -179,7 +165,34 @@
                     $('#result').html('<div class="alert alert-success">'+data.success+'</div>');
                 }
                 $('#save').attr('disabled', false);
-           }
+
+          }
+            // beforeSend:function(){
+            //     $('#save').attr('disabled','disabled');
+            // },
+          // success:function(data)
+            //{
+              //console.log(data);
+                // if(data.error)
+                // {
+                //     var error_html = '';
+                //     for(var count = 0; count < data.error.length; count++)
+                //     {
+
+                //         error_html += '<p>'+data.error[count]+'</p>';
+                //         console.log('ERRORRRR');
+                //     }
+                //     $('#result').html('<div class="alert alert-danger">'+error_html+'</div>');
+                // }
+                // else
+                // {
+                //     // dynamic_field(1);
+                //     console.log(data);
+
+                //     $('#result').html('<div class="alert alert-success">'+data.success+'</div>');
+                // }
+                // $('#save').attr('disabled', false);
+           // }
          });
 
         });

@@ -15,8 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-       
-        return view('users/index');
+       $users = DB::table('users')->get();
+        return view('users/index',compact($users));
     }
 
     /**
@@ -39,29 +39,22 @@ class UserController extends Controller
     {
 
         $request->validate([
-            'user_name' => 'required',
-            'user_email' => 'required',
-            'user_gender' => 'required',
-            'user_age' => 'required',
-            'user_address' => 'required',
-            'user_city' => 'required',
-            'user_cnic' => 'required',
-            'user_phone_number' => 'required',
-            'user_role' => 'required',
+            'name' => 'required',
+            'email' => 'required',
+            'address' => 'required',
+            'cnic' => 'required',
+            'phone' => 'required',
+            'role' => 'required',
             // 'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
 
         ]);
 
         $User = new User([
-            'name' => $request->input('user_name'),
-            'email' => $request->input('user_email'),
-            'gender' => $request->input('user_gender'),
-            'age' => $request->input('user_age'),
-            'address' => $request->input('user_address'),
-            'city' => $request->input('user_city'),
-            'cnic' => $request->input('user_cnic'),
-            'phone_number' => $request->input('user_phone_number'),
-            'password' => $request->input('user_pass')
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'address' => $request->input('address'),
+            'cnic' => $request->input('cnic'),
+            'phone' => $request->input('phone'),
             //'role_id' => $request->input('user_role'),
             // 'profile_image'=> $request->input('profile_image')
 
@@ -89,7 +82,7 @@ class UserController extends Controller
         $User->save();
 
         // Return user back and show a flash message
-        return redirect()->route('users.index')->with(['status' => 'Project added successfully.']);
+        return redirect()->route('users.index')->with(['status' => 'User added successfully.']);
     }
 
     /**
@@ -149,27 +142,23 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'user_name' => 'required',
-            'user_email' => 'required',
-            'user_gender' => 'required',
-            'user_age' => 'required',
-            'user_address' => 'required',
-            'user_city' => 'required',
-            'user_cnic' => 'required',
-            'user_phone_number' => 'required',
-            'user_role' => 'required',
-            // 'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
+             'name' => 'required',
+            'email' => 'required',
+            'address' => 'required',
+            'cnic' => 'required',
+            'phone' => 'required',
+            'role' => 'required',
+            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
         ]);
         $users = User::find($id);
-        $users->name = $request->input('user_name');
-        $users->email = $request->input('user_email');
-        $users->gender = $request->input('user_gender');
-        $users->age = $request->input('user_age');
-        $users->address = $request->input('user_address');
-        $users->city = $request->input('user_city');
-        $users->cnic = $request->input('user_cnic');
-        $users->phone_number = $request->input('user_phone_number');
-        $users->password = $request->input('user_pass');
+        $users->name = $request->input('name');
+        $users->email = $request->input('email');
+        
+        $users->address = $request->input('address');
+    
+        $users->cnic = $request->input('cnic');
+        $users->phone_number = $request->input('phone');
+     
         //'role_id' => $request->input('user_role'),
         // 'profile_image'=> $request->input('profile_image')
         $users->save();
@@ -184,8 +173,25 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        $check = DB::table('users')
+        ->join('projects', 'projects.assigned_to', '=', $id)
+        ->count();
+        dd($check);
+        
+        if($check == 0)
+        {
         User::where('id', $id)->delete();
-        return redirect()->intended('users/index');
+        return redirect()->intended('users.index');
+        }
+        else
+        {
+            return redirect()->route('users.index')->with('message', 'Project is Currently Assigned to Contractor. Cannot Delete Contractor');
+
+        }
+
+
+
+        
     }
 
     public function view_user($id)

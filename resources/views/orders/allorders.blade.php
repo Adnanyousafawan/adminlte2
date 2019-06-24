@@ -1,5 +1,3 @@
-
-
 @extends('adminlte::page')
 @section('title', 'AdminLTE')
     <meta charset="utf-8">
@@ -10,7 +8,7 @@
     {{-- <link rel="stylesheet" href="/images"> --}}
     <script src="/js/jquery-3.4.1.js"></script>
     <script src="/js/jquery.dataTables.js"></script>
-
+ 
 @section('content')
 
     @if ($errors->any())
@@ -40,56 +38,76 @@
         </div>
     @endif
 
+<ol class="breadcrumb">
+    <li><a href="{{ route('home')}}"><i class="fa fa-dashboard"></i> &nbsp;Home</a></li>
+    <?php $segments = ''; ?>
+    @foreach(Request::segments() as $segment)
+        <?php $segments .= '/'.$segment; ?>
+        <li>
+            <a href="{{ $segments }}">{{$segment}}</a>
+        </li>
+    @endforeach
+</ol>
 
-    <div class="box-body" id="screen"
-         >
+<div class="box-body" id="screen">
         <div class="box box-body" style=" background-color: #f4f4f487; padding: 0px;">
             <div class="box-header">
                 <h3><span
                         class="col-xs-6 col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
-                        style="margin-bottom: 10px; padding: 0px;">User Details</span></h3>
-            </div>
+                        style="margin-bottom: 10px; padding: 0px;">Order List</span></h3>
+                        <div class="box-tools pull-right">
+                            <a type="links" href="{{ route('order.create') }}" class="btn btn-primary pul-right">Place Order</a>
+                        </div>
+<div class="vendor-list-status">
+  <div class="row">
+      <div class="btn-group">
+                     
+  </div>
+</div>
+          
 
             {{-- _________________________________All User DataTable_____________________________________--}}
             <div
                 class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
+        
                 style="padding: 5px;">
+<div class="container">
+    <a class="active" href=" {{ route('orders.list') }}" style="font-size: 20px;">All &nbsp; | &nbsp; </a> 
+    <a class="active" href=" {{ route('orders.recieved') }}" style="font-size: 20px;">Recieved &nbsp; | &nbsp;</a>
+    <a class="active" href=" {{ route('orders.cancelled') }}"  style="font-size: 20px;">Cancelled</a>
+  </div>
+
                 <div class="box" style="margin-bottom: 10px; margin-top: 1%;">
                     <div class="box-header with-border ">
-                        <h4><span class="box-title col-md-8">User Record</span></h4>
-                        <div class="box-tools pull-right">
-                            <a type="links"  {{-- href="{{ route('projects.create') }}" --}}  data-toggle="modal"
-                               data-target="#applicantADDModal" class="btn btn-primary pul-right">Add User</a>
-                        </div>
+                        <h4><span class="box-title col-md-8">Order Details</span></h4>
+                     
                     </div>
+
                     <div class="table-responsive" style="margin-top: 10px; padding: 10px;">
                         <table class="table no-margin table-bordered table-striped project">
                             <thead>
                                 <tr>
-
-                                <th>Profile</th>
-                                <th>User ID</th>
-                                <th>User Name</th>
-                                <th>Email</th>
-                                <th>Address</th>
-                                <th>Contact</th>
-                                <th>CNIC</th>
-                                <th>Role</th>
+                                <th>Project ID</th>
+                                <th>Project ID</th>
+                                <th>Item Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
 
-                            @foreach ($users as $user)
+                            @foreach ($orders as $order)
                                 <tr>
-                                    <td>Us0000{{ $user->id }}</td>
-                                    <td>{{ $user->id }}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email}}</td>
-                                    <td>{{ $user->address}}</td>
-                                    <td>{{ $user->phone}}</td>
-                                    <td>{{ $user->cnic}}</td>
-                                    <td>{{ $user->role}}</td>
+                                    <td>OR0000{{ $order->id }}</td>
+                                    <td>{{ $order->project_id }}</td>
+                                    <td>{{ $order->item_id }}</td>
+                                    <td>{{ $order->quantity }}</td>
+                                    <td>join price</td>
+                                    <td>find total</td>
+                                    <td>{{ $order->status }}</td>
                                    
                                     <td style="max-width: 50px;">
                                         
@@ -104,9 +122,9 @@
                     <ul role="menu" class="dropdown-menu">
                       <li><a target="_blank" href="{{-- {{ route('users.view', ['id' => $user->id]) }} --}}"><i class="fa fa-edit"></i>View</a></li>
                        
-                        <li><a href="{{ route('users.edit', ['id' => $user->id]) }}"><i class="fa fa-edit"></i>Edit</a></li>
+                        {{-- <li><a href="{{ route('users.edit', ['id' => $user->id]) }}"><i class="fa fa-edit"></i>Edit</a></li> --}}
                                              
-                        <li><a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $user->id }}"><i class="fa fa-remove"></i>Delete</a></li>
+                        <li><a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $order->id }}"><i class="fa fa-remove"></i>Delete</a></li>
                                           </ul>
 
                   </div>
@@ -124,17 +142,17 @@
 
 {{-- ______________________________Delete Modal ______________________________________________--}}
 
-                                <div id="applicantDeleteModal-{{ $user->id }}" class="modal fade" tabindex="-1" role="dialog"
+                                <div id="applicantDeleteModal-{{ $order->id }}" class="modal fade" tabindex="-1" role="dialog"
                                      aria-labelledby="custom-width-modalLabel" aria-hidden="true"
                                      style="display: none;">
                                     <div class="modal-dialog"
                                          style="min-width:40%; align-content: center;">
                                         <div class="modal-content">
                                             <form class="row" method="POST"
-                                                  action="{{ route('users.destroy', ['id' => $user->id]) }}">
+                                                  action="{{ route('orders.destroy', ['id' => $order->id]) }}">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <form action="{{ route('users.destroy', ['id' => $user->id]) }}"
+                                                <form action=" {{ route('orders.destroy', ['id' => $order->id]) }}"
                                                       method="POST" class="remove-record-model">
                                                     {{ method_field('delete') }}
                                                     {{ csrf_field() }}
@@ -174,113 +192,6 @@
                 </div> 
             </div>
 
-
-
-            {{-- _______________________________________Model Add New PROJECT_______________________________--}}
-
-                <div id="applicantADDModal" class="modal fade" tabindex="-1" role="dialog"
-                     aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
-                    <div class="modal-dialog" style="min-width:70%; align-content: center; text-align: center;">
-                        <div class="modal-content">
-
-                            <form method="post" action="{{ route('users.store') }}" enctype="">
-                                @csrf
-                                <div class="modal-header">
-                                    <button type="button" class="close pull-right" data-dismiss="modal"
-                                            aria-hidden="true">x
-                                    </button>
-                                    <strong><h3 class="modal-title text-center" id="custom-width-modalLabel">Add
-                                            Labor</h3></strong>
-                                </div>
-
-
-                                <div class="modal-body">
-
-                                    <div style=" width: 100%; margin-left: 1%;">
-
-                                        <div class="row" style="margin-top: 5px;">
-                                            <div class="col-md-3 col-md-offset-1 {{-- col-lg-offset-1 col-xl-offset-1  col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-0 col-lg-3 col-xl-3 --}}">
-                                                <!-- Profile Image -->
-
-                <div class="no-profile-picture">
-                <div class="img-div"><img src="https://paksa.pk/public/images/upload.png" class="user-image" alt=""></div><br>
-                <div class="btn">
-                    <input type="file" name="image" class="btn btn-default btn-sm profile-picture-uploader" id="image"> {{-- data-toggle="modal" data-target="#uploadprofilepicture"  class="btn btn-default btn-sm profile-picture-uploader" id="cont_image"
-                                                                   name="cont_image"--}}
-                                                               </div>
-                </div>
-            </div>
-    
-
-
-                                            <div
-                                                class="col-md-7 col-lg-8 col-md-offset-1 col-lg-offset-0{{-- col-sm-10 col-xs-offset-1 col-sm-offset-0 col-xs-10 col-lg-8 col-xl-8 --}} "
-                                                style="/*max-width: 70%;*/ padding-bottom: 30px;">
-                                                <div>
-                                                    
-                                                    <div class="box-body">
-
-                                                        <div class="col-lg-9 col-lg-offset-2">
-                                                            <div class="form-group">
-
-   <div class="form-group">
-                    <label for="name">User Name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="User Name">
-                </div>
-
-                <div class="form-group">
-                    <label for="email">User Email</label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Email">
-                </div>
-                <div class="form-group">
-                    <label for="cnic">User CNIC</label>
-                    <input type="text" class="form-control" id="cnic" name="cnic" placeholder="User CNIC">
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">User Contact</label>
-                    <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-phone"></i>
-                        </div>
-                        <input type="Number" class="form-control" placeholder="Contact Number"
-                               data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']"
-                               data-mask="" id="phone" name="phone">
-                    </div>
-                </div>
-
-
-
-                <div class="form-group">
-                    <label for="address">Address</label>
-                    <input type="text" class="form-control" id="user_address" name="address"
-                           placeholder="Home Address">
-                </div>
-
-                <div class="form-group">
-                    <label for="assigned_to">Select Role</label>
-                    <select class="form-control" id="role" name="role">
-                        <option>Manager</option>
-                        <option>Contractor</option>
-                    </select>
-                </div>
-                                                            <button type="submit"
-                                                                    class="btn btn-block btn-primary btn-xs form-control"
-                                                                    style="margin-top: 20px;">Add Labor
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                  </div>
-  </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 <script type="text/javascript">

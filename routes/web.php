@@ -21,27 +21,62 @@ use Illuminate\Support\Facades\Route;
     return view('welcome');
 });
 */
+
 Auth::routes();
 
-Route::resource('orders', 'OrderController');
-Route::get("orders","OrderController@index");
-Route::post("orders","OrderController@insert")->name('order_f.insert');
+Route::resource('item','ItemController');
+Route::get('items/create','ItemController@create')->name('item.create');
+Route::post('items/itemdetails/insert','ItemController@insert')->name('item.insert');
+Route::get('items','ItemController@index')->name('items.list');
+Route::delete('items/destroy/{id}', 'ItemController@destroy')->name('items.destroy');
 
+
+Route::get('expenses/create','MiscellaneousExpenseController@create')->name('expense.create');
+Route::post('expenses/miscellaneousexpenses/insert','MiscellaneousExpenseController@insert')->name('expenses.insert');
+Route::get('expenses','MiscellaneousExpenseController@index')->name('expenses.list');
+Route::delete('epenses/destroy/{id}', 'MiscellaneousExpenseController@destroy')->name('expenses.destroy');
+
+Route::get('allcustomers', 'CustomerController@index')->name('customers.list');
+/*
+Route::get('orders/recieved','OrderDetailsController@recieved')->name('orders.recieved');
+Route::get('orders/cancelled','OrderDetailsController@cancelled')->name('orders.cancelled');
+*/
+
+Route::get('orders/create', 'OrderDetailsController@create')->name('order.create');
+Route::post('orders/orderdetails/insert', 'OrderDetailsController@insert')->name('order.insert');
+Route::get('orders','OrderDetailsController@index')->name('orders.list');
+Route::get('orders/recieved','OrderDetailsController@recieved')->name('orders.recieved');
+Route::get('orders/cancelled','OrderDetailsController@cancelled')->name('orders.cancelled');
+Route::delete('orders/destroy/{id}', 'OrderDetailsController@destroy')->name('orders.destroy');
 
 
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 //-----------------------------------Project Management------------------------------------//
-Route::resource('projects', 'ProjectController');
+
+//Route::resource('projects', 'ProjectController');
 Route::get('/search_project', 'ProjectController@search_project');
-Route::get('projects/index', 'ProjectController@index')->name('projects.index');
-Route::get('projects/view', 'ProjectController@viewuser')->name('projects.view');
+Route::get('projects', 'ProjectController@index')->name('projects.index');
+Route::get('projects/create', 'ProjectController@create')->name('projects.create');
+Route::get('projects/edit/{id}', 'ProjectController@edit')->name('projects.edit');
+Route::post('projects/store', 'ProjectController@store')->name('projects.store');
+Route::delete('projects/destroy/{id}', 'ProjectController@destroy')->name('projects.destroy');
+Route::get('projects/view/{id}', 'ProjectController@viewuser')->name('projects.view');
+
+
+
+Route::get('projects/pending','ProjectController@pending')->name('projects.pending');
+Route::get('projects/completed','ProjectController@completed')->name('projects.completed');
+Route::get('projects/cancelled','ProjectController@cancelled')->name('projects.cancelled');
+Route::get('projects/current','ProjectController@current')->name('projects.current');
+Route::get('projects/all','ProjectController@all')->name('projects.all');
+
+
 
 //-----------------------------------User Management------------------------------------//
 
 Route::resource('users', 'UserController');
-Route::get('/search_user', 'UserController@search_user');
 Route::get('users/index', 'UserController@index')->name('users.index');
 
 //-----------------------------------Labor Management--------------------------------------//
@@ -49,7 +84,9 @@ Route::get('users/index', 'UserController@index')->name('users.index');
 Route::resource('labors', 'LaborController');
 Route::get('/search_labor', 'LaborController@search_labor');
 //Route::get('labors/index', 'LaborController@index')->name('labors.index');
-Route::get('/labors/index',array('as'=>'viewLabor','uses'=>'LaborController@index'));
+Route::get('/labors/create','LaborController@create')->name('labors.create');
+
+
 //-----------------------------------Supplier Management-----------------------------------//
 
 Route::resource('suppliers', 'SupplierController');

@@ -2,8 +2,8 @@
 @section('title', 'AdminLTE')
 @section('content')
 
-
-    <div class="box box-primary" style="padding-bottom: 85px;">
+<div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
+    <div class="box box-primary">
         <div class="box-header">
             <h2 class="text-center">Update User</h2>
         </div>
@@ -12,8 +12,7 @@
                   enctype="multipart/form-data">
                 @method('PATCH')
                 @csrf
-                {{--  <input type="hidden" name="_method" value="PATCH">
-                 <input type="hidden" name="_token" value="{{ csrf_token() }}"> --}}
+                
                 <div class="col-lg-8 col-lg-offset-2">
 
                     <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
@@ -78,26 +77,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="user_gender">Gender</label>
-                        <input type="text" class="form-control" id="user_gender" name="user_gender"
-                               value="{{ $users->gender }}">
-                        @if ($errors->has('gender'))
-                            <span class="help-block alert-danger">
-                        <strong>{{ $errors->first('gender') }}</strong>                              
-                      </span>
-                        @endif
-                    </div>
-
-                    <div class="form-group">
-                        <label for="user_age">Age</label>
-                        <input type="text" class="form-control" id="user_age" name="user_age" value="{{ $users->age}}">
-                        @if ($errors->has('age'))
-                            <span class="help-block alert-danger">
-                        <strong>{{ $errors->first('age') }}</strong>                              
-                      </span>
-                        @endif
-                    </div>
 
                     <div class="form-group">
                         <label for="user_address">Address</label>
@@ -135,10 +114,10 @@
                                     </div>
                  --}}
 
-                    <button type="submit" class="btn btn-block btn-primary btn-xs form-control">Update User</button>
+                    <button type="submit" class="btn btn-block btn-primary btn-xs form-control" style="margin-bottom: 20px;">Update User</button>
                 </div>
             </form>
         </div>
     </div>
-    </div>
+</div>
 @stop

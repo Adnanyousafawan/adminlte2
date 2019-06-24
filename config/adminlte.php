@@ -30,10 +30,10 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Construction</b>TMS',
 
-    'logo_mini' => '<b>A</b>LT',
-
+    'logo_mini' => 'TMS',
+/*<b>CS</b>*/
     /*
     |--------------------------------------------------------------------------
     | Skin Color
@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'collapse_sidebar' => false,
+    'collapse_sidebar' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -126,10 +126,10 @@ return [
         ],
         [
             'text'        => 'Profile',
-            'url'         => 'admin/pages',
+            'url'         => '/profile',
             'icon'        => 'user',
-            'label'       =>  4,
-            'label_color' => 'success',
+            /*'label'       =>  4,
+            'label_color' => 'success',*/
         ],
         'General links',
         [
@@ -140,44 +140,147 @@ return [
         [
             'text' => 'Create Project',
             'url'  => 'projects/create',
-            'icon' => 'lock',
+            //'icon' => 'glyphicon glyphicon-plus'
+            'icon_color' => 'aqua',
         ],
+         [
+            'text' => 'Add Expense',
+            'url'  => 'expenses/create',
+            'icon_color' => 'red',
+        ],
+         [
+            'text' => 'Material Requests',
+            'url' => 'home',
+            'icon_color' => 'usr',
+            
+        ],
+         [
+                    'text' => 'Add Order',
+                    'url'  => 'orders/create',
+        ],
+        'Customers',
+        [
+            'text' => 'Customers',
+            'url'  => '/allcustomers',
+            'icon' => 'file',
+        ],
+      
+
         'Manage',
         [
-            'text'    => 'Manage',
+            'text'    => 'Orders',
             'icon'    => 'share',
             'submenu' => [
                 [
-                    'text' => 'Users',
-                    'url'  => 'users/index',
+                    'text' => 'View All Orders',
+                    'url' => '/orders',
                 ],
                 [
-                    'text' => 'Labor',
-                    'url' => 'labors/index',
+                    'text' => 'Add Order',
+                    'url'  => 'orders/create',
                 ],
-                [
-                    'text' => 'supplier',
-                    'url' => 'suppliers/index',
-                ], 
+                
+              
             ],
         ],
-        'System Management',
+        [
+            'text'    => 'Labors',
+            'icon'    => 'share',
+            'submenu' => [
                 [
-                    'text' => 'Order Material',
-                    'url' => 'home',
-                    'icon' => 'yellow'
+                    'text' => 'View All Labors',
+                    'url' => '/labors',
                 ],
                 [
-                    'text' => 'Day Book',
+                    'text' => 'Add Labor',
+                    'url'  => 'labors/create',
+                ],
+                
+              
+            ],
+        ],
+        [
+            'text'    => 'Projects',
+            'icon'    => 'share',
+            'submenu' => [
+                 [
+                    'text' => 'Projects Index',
+                    'url'  => 'projects',
+                ],
+                 [
+                    'text' => 'All Projects',
+                    'url'  => 'projects/all',
+                ],
+                [
+                    'text' => 'Create Project',
+                    'url'  => 'projects/create',
+                ],
+            ],
+        ],
+         [
+            'text'    => 'Expenses',
+            'icon'    => 'share',
+            'submenu' => [
+                 [
+                    'text' => 'View All Expenses',
+                    'url' => '/expenses',
+                ],
+                [
+                    'text' => 'Add Expenses',
+                    'url'  => 'expenses/create',
+                ],
+               
+              
+            ],
+        ],
+         [
+            'text'    => 'Contractors',
+            'icon'    => 'share',
+            'submenu' => [
+                 [
+                    'text' => 'View All Contractors',
+                    'url' => 'users/index',
+                ],
+                [
+                    'text' => 'Add Contractor',
+                    'url'  => 'users/create',
+                ],
+               
+              
+            ],
+        ],
+         [
+            'text'    => 'Supplier',
+            'icon'    => 'share',
+            'submenu' => [
+                [
+                    'text' => 'Add Supplier',
+                    'url'  => 'suppliers/create',
+                ],
+                [
+                    'text' => 'View All Supplier',
+                    'url' => 'suppliers/create',
+                ],
+              
+            ],
+        ],
+        'Reports Management',
+                [
+                    'text' => 'Daily',
                     'url' => 'home',
                     'icon' => 'file'
                 ],
                 [
-                    'text' => 'Users',
-                    'url' => 'users',
+                    'text' => 'Weekly',
+                    'url' => 'home',
                     'icon' => 'file'
                 ],
-        'LABELS',
+                [
+                    'text' => 'Monthly',
+                    'url' => 'home',
+                    'icon' => 'file'
+                ],
+      /*  'LABELS',
         [
             'text' => 'Material Requests',
             'url' => 'home',
@@ -190,7 +293,7 @@ return [
         [
             'text'       => 'Information',
             'icon_color' => 'aqua',
-        ],
+        ],*/
     ],
 
     /*

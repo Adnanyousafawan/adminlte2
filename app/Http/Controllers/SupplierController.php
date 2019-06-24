@@ -15,7 +15,8 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        return view('suppliers/index');
+        $suppliers = DB::table('suppliers')->paginate(10);
+        return view('suppliers/index',compact('suppliers'));
     }
 
     /**
@@ -38,22 +39,17 @@ class SupplierController extends Controller
     {
         $request->validate([$request,
             'name' => 'required',
-            'inic' => 'required',
-            'phone_number' => 'required',
+            'phone' => 'required',
             'address' => 'required',
             'city' => 'required',
-            'material' => 'required',
-            'price' => 'required'
         ]);
 
         $supplier = new Supplier([
             'name' => $request->get('name'),
-            'inic' => $request->get('inic'),
-            'phone_number' => $request->get('phone_number'),
+            'phone' => $request->get('phone'),
             'address' => $request->get('address'),
-            'city' => $request->get('city'),
-            'material' => $request->get('material'),
-            'price' => $request->get('price')
+            'city' => $request->get('city')
+           
         ]);
         $supplier->save();
 
@@ -118,23 +114,18 @@ class SupplierController extends Controller
     {
         $request->validate([$request,
             'name' => 'required',
-            'inic' => 'required',
-            'phone_number' => 'required',
+           
+            'phone' => 'required',
             'address' => 'required',
-            'city' => 'required',
-            'material' => 'required',
-            'price' => 'required'
+            'city' => 'required'
+            
         ]);
 
         $suppliers = Supplier::find($id);
         $suppliers->name = $request->get('name');
-        $suppliers->inic = $request->get('inic');
-        $suppliers->phone_number = $request->get('phone_number');
+        $suppliers->phone_number = $request->get('phone');
         $suppliers->address = $request->get('address');
         $suppliers->city = $request->get('city');
-        $suppliers->material = $request->get('material');
-        $suppliers->price = $request->get('price');
-
         $suppliers->save();
         return redirect()->route('suppliers.index')->with('success', 'Data Updated');
     }

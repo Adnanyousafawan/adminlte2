@@ -4,48 +4,67 @@
     <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+     <link rel="stylesheet" href="/css/bootstrap-3.4.1.css">
+    <script src="/js/jquery-3.4.1.js"></script>
+
 </head>
 </html>
-{{-- 
-@if ($errors->any())
-  <div class="alert alert-danger">
-       <ul>
-        @foreach ($errors->all() as $error)
-          <li>{{ $error }}</li>
-        @endforeach
-        </ul>
-  </div><br/>
-@endif --}}
 
-<div class="box box-primary" style="padding-bottom: 50px; max-width: 90%; margin-left: 5%;">
+
+
+<ol class="breadcrumb">
+    <li><a href="{{ route('home')}}"><i class="fa fa-dashboard"></i>  &nbsp;Dashboard</a></li>
+    <?php $segments = ''; ?>
+    @foreach(Request::segments() as $segment)
+        <?php $segments .= '/'.$segment; ?>
+        <li>
+            <a href="{{ $segments }}">{{$segment}}</a>
+        </li>
+    @endforeach
+</ol>
+
+
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>
+                        {{ $error }}
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
+     @if (session('message'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('message') }}
+        </div>
+    @endif
+
+
+
+<div class="box" style="background-color: #f4f4f487;">
 
     <div class="row" style="margin-top: 30px;">
+        
         <form method="POST" action="{{ route('labors.update', ['id' => $labors->id]) }}" enctype="multipart/form-data">
             @method('PATCH')
             @csrf
-            <div class="col-md-3 col-md-offset-1 col-xs-offset-1 col-xs-10">
-                <!-- Profile Image -->
-                <div class="box box-primary">
-                    <div class="box-body box-profile">
-                        <head><h4>Upload Labor CNIC</h4></head>
-                        <hr>
-                        <img class="img-fluid img-responsive" style="min-width: 100%; min-height: 200px;">
-                        <hr>
-                        <div class="form-group">
-                            <input type="file" class="btn btn-primary col-md-12 col-xs-12" id="cont_image"
-                                   name="cont_image" required>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="box box-primary col-md-7 col-md-offset-0 col-xs-10 col-xs-offset-1"
-                 style="padding-bottom: 30px;">
+        
+            <div class="box box-primary col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1  col-lg-10 col-lg-offset-1 col-sm-10 col-sm-offset-1 col-xl-10 col-xl-offset-1"
+                 style="padding-bottom: 40px;">
                 <div class="box-header">
                     <h2 class="text-center">Update Labor</h2>
                 </div>
@@ -131,9 +150,12 @@
 
                         <button type="submit" class="btn btn-block btn-primary btn-xs form-control">Add Labor</button>
                     </div>
+                </div>
+            </div>
+
         </form>
     </div>
 </div>
-</div>
+
 
 @stop

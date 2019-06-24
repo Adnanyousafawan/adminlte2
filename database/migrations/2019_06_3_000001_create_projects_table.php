@@ -28,8 +28,8 @@ class CreateProjectsTable extends Migration
             $table->string('contract_image')->nullable();
             $table->unsignedBigInteger('assigned_to')->nullable();
             $table->unsignedBigInteger('assigned_by')->nullable();
-            $table->unsignedBigInteger('status_id')->nullable()->default(0);
-            $table->unsignedBigInteger('phase_id')->nullable()->default(0);
+            $table->unsignedBigInteger('status_id')->nullable()->default(1);
+            $table->unsignedBigInteger('phase_id')->nullable()->default(1);
             $table->timestamps();
 
 

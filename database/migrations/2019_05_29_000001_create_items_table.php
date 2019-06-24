@@ -15,9 +15,14 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->String('name');
-            $table->integer('rate');
-            $table->string('unit');
+            $table->String('name')->nullable();
+            $table->integer('rate')->nullable();
+            $table->string('unit')->nullable();
+            $table->unsignedBigInteger('supplier_id');
+    
+            $table->foreign('supplier_id')
+                ->references('id')
+                ->on('suppliers');  
         });
     }
 

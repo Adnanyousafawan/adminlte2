@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Order Material')
+@section('title', 'Add New Items')
 @section('content')
 <html>
 <head>
@@ -37,7 +37,7 @@
 
 <div class="box box-primary">
    <br />
-   <h3 align="center">Order Material</h3>
+   <h3 align="center">Add Items</h3>
    <br />
    <div class="table-responsive">
     <form id="dynamic_form">
@@ -49,11 +49,11 @@
           <div class="row">
           <div class="col-md-6 col-md-offset-3">
                   <div class="form-group">
-                            <label for="assigned_to">Select Project</label>
-                            <select class="form-control" id="project_id" name="project_id" required>
+                            <label for="supplier_id">Select Project</label>
+                            <select class="form-control" id="supplier_id" name="supplier_id" required>
                               <option disabled selected value > -- select an option -- </option>
-                                @foreach($projects as $project)
-                                    <option>{{ $project->title}}</option>
+                                @foreach($suppliers as $supplier)
+                                    <option>{{ $supplier->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -67,9 +67,9 @@
                  <thead>
                   <tr>
                     {{-- <th width="21%">Project ID</th> --}}
-                    <th>Item</th>
-                    <th>Quatity</th>
-                    <th>Status</th>
+                    <th>Item Name</th>
+                    <th>Price</th>
+                    <th>Unit</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -104,10 +104,9 @@
        function dynamic_field(number)
        {
         html = '<tr>';
-        // html += '<td><select name="project_id[]" class="form-control">@foreach($projects as $project)<option>{{$project->title}}</option>@endforeach </select></td>';
-        html += '<td><select name="item_id[]" class="form-control">@foreach($items as $item)<option>{{$item->name}}</option>@endforeach </select></td>';
-        html += '<td><input type="number" name="quantity[]" class="form-control"/></td>';
-        html += '<td><input type="text" name="status[]" class="form-control"/></td>';
+        html += '<td><input type="text" name="name[]" class="form-control"/></td>';
+        html += '<td><input type="number" name="rate[]" class="form-control"/></td>';
+        html += '<td><input type="text" name="unit[]" class="form-control"/></td>';
         
         if(number > 1)
         {
@@ -143,9 +142,10 @@
           //var name = "Hamza";
           $.ajax({
             type:'POST',
-            url:'orderdetails/insert',
+            url:'itemdetails/insert',
             data:$('#dynamic_form').serialize(),
             datatype: 'json',
+          
 
           //   success:function(data){
           //     console.log(data);

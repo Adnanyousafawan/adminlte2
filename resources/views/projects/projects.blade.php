@@ -38,13 +38,11 @@
             </ul>
         </div>
     @endif
-
-    @if (session('success'))
+ @if (session('success'))
         <div class="alert alert-success" role="alert">
             {{ session('success') }}
         </div>
     @endif
-
      @if (session('message'))
         <div class="alert alert-danger" role="alert">
             {{ session('message') }}
@@ -52,217 +50,17 @@
     @endif
 
 
-{{-- ______________________________________Logged In User _________________________________
-
-
-<div class="navbar-custom-menu">
-      <ul class="nav navbar-nav">
-        <li class="dropdown user user-menu">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                          <img src="https://paksa.pk/public/images/avatar.jpg" class="user-image" alt="">
-                        <span class="hidden-xs">Paksa Online Shopping</span>
-          </a>
-          <ul class="dropdown-menu">
-            <li class="user-header">
-                              <img src="https://paksa.pk/public/images/avatar.jpg" class="user-image" alt="">
-                            <p>
-                Paksa Online Shopping
-                <small>Administrator</small>
-              </p>
-            </li>
-
-            <li class="user-footer">
-                
-                <div class="pull-left">
-                  <a href="https://paksa.pk/admin/user/profile" class="btn btn-default btn-flat">Profile</a>
-                </div>
-                            <form method="post" action="https://paksa.pk/admin/logout" enctype="multipart/form-data">
-                <input type="hidden" name="_token" id="_token" value="DA5Q1YMS3JhejxXcyNdnlhGcGgJ1WX6KjY4AMTyP">
-                <div class="pull-right">
-                  <button type="submit" class="btn btn-default btn-flat">Sign out</button>
-                </div>
-              </form>    
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
- --}}
-
-{{-- {{dd($projects)}} --}}
-
-    <div class="box-body" id="screen"
-         style="/*max-width: 94%; margin-left: 3%; margin-top: 1%; */padding: 0px; background-color: #f4f4f487;">
-        <div class="box box-body" style=" background-color: #f4f4f487; padding: 0px;">
-            <div class="box-header">
-                <h3><span
-                        class="col-xs-6 col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
-                        style="margin-bottom: 10px; padding: 0px;">Projects Details</span></h3>
-            </div>
-
-            <div class="row" style="padding: 0px;">
-                {{-- <div class="row" style="margin-top: 30px;"> --}}
-                <div
-                    class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xl-offset-1 col-md-offset-1 col-lg-offset-1">
-                    <div class="box" style="margin-bottom: 20px;">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Labor at Projects</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <div class="table-responsive">
-                                <table class="table no-margin table-bordered table-dark table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>Project ID</th>
-                                        <th>Title</th>
-                                        <th>Labor</th>
-                                        <th>Cost</th>
-                                        <th>Contractor</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($projects as $project)
-                                    <tr>
-                                        <td><a href="pages/examples/invoice.html" type="links">{{ $project->id }}</a></td>
-                                        <td>Tulip</td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#00a65a" data-height="20">111</div>
-                                        </td>
-                                        <td>
-                                            <div class="label label-warning col-md-8">10,000</div>
-                                        </td>
-                                        <td>ALI</td>
-                                    </tr>
-                                    @endforeach
-                                    <tr>
-                                        <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                        <td>Bahria</td>
-
-                                        <td>
-                                            <div class="sparkbar" data-color="#f39c12" data-height="20">22</div>
-                                        </td>
-                                        <td>
-                                            <div class="label label-warning col-md-8">11,000</div>
-                                        </td>
-                                        <td>ALI</td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                        <td>pindi</td>
-
-                                        <td>
-                                            <div class="sparkbar" data-color="#f56954" data-height="20">333</div>
-                                        </td>
-                                        <td>
-                                            <div class="label label-warning col-md-8">12,000</div>
-                                        </td>
-                                        <td>ALI</td>
-                                    </tr>
-
-                                   
-                                    </tbody>
-                                </table>
-                            </div><!-- /.table-responsive -->
-                        </div><!-- /.box-body -->
-                        <div class="box-footer clearfix">
-                            <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All
-                                Requests</a>
-                            <div class="row">
-                                <div class="col-sm-5">
-                                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                                        Showing 1 to 2 of 2 entries
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- /.box-footer -->
-                    </div><!-- /.box -->
-                </div>
-
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4  col-xl-4" style="padding: 0px;">
-                    <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                        <div class="box" style="margin-top: 0px;">
-                            <div class="box-header">
-                                <h2 class="box-title">Total Labor</h2>
-                                <span class="info-box-number label label-primary pull-right" style="margin-top: 0px;">112</span>
-                            </div>
-                            <!-- /.box-header -->
-                            <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
-                        </div>
-                        <!-- /.info-box-content -->
-                        <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-xs-12 col-md-12 col-sm-12  col-lg-12 col-xl-12">
-                        <div class="box">
-                            <div class="box-header">
-                                <h2 class="box-title">Working Labor</h2>
-                                <span class="info-box-number label label-warning pull-right"
-                                      style="margin-top: 0px;">80</span>
-                            </div>
-                            <!-- /.box-header -->
-                            <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
-                        </div>
-                        <!-- /.info-box-content -->
-                        <!-- /.info-box -->
-                    </div>
-
-                    <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                        <div class="box">
-                            <div class="box-header">
-                                <h2 class="box-title">Available Labor</h2>
-                                <span class="info-box-number label label-success pull-right"
-                                      style="margin-top: 0px;">32</span>
-                            </div>
-                            <!-- /.box-header -->
-                            <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
-                        </div>
-                        <!-- /.info-box-content -->
-                        <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                        <div class="box">
-                            <div class="box-header">
-                                <h2 class="box-title">Total Cost</h2>
-                                <span class="info-box-number label label-danger pull-right" style="margin-top: 0px;">20,0000</span>
-                            </div>
-                            <!-- /.box-header -->
-                            <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
-                        </div>
-                        <!-- /.info-box-content -->
-                        <!-- /.info-box -->
-                    </div>
-                    <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                        <div class="box">
-                            <div class="box-header">
-                                <h2 class="box-title">Total Projects</h2>
-                                <span class="info-box-number label label-info pull-right"
-                                      style="margin-top: 0px;">20</span>
-                            </div>
-                            <!-- /.box-header -->
-                            <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
-                        </div>
-                        <!-- /.info-box-content -->
-                        <!-- /.info-box -->
-                    </div>
-                </div>
-                
-
-            </div>
-            <!-- /.col -->
 
 <div class="col-md-offset-1 col-lg-offset-1 col-xl-offset-1">
 
 <div class="container">
-    {{-- <a class="active" href=" {{ route('orders.list') }}" style="font-size: 18px;">All &nbsp; | &nbsp; </a>  --}}
+    <a class="active" href=" {{ route('projects.all') }}" style="font-size: 18px;">All &nbsp; | &nbsp; </a> 
     <a class="active" href=" {{ route('projects.current') }}" style="font-size: 18px;">Current Projects &nbsp; | &nbsp;</a>
     <a class="active" href=" {{ route('projects.completed') }}"  style="font-size: 18px;">Completed &nbsp; | &nbsp;</a>
      <a class="active" href=" {{ route('projects.pending') }}"  style="font-size: 18px;">Pending &nbsp; | &nbsp;</a>
     <a class="active" href=" {{ route('projects.cancelled') }}"  style="font-size: 18px;">Cancelled &nbsp; | &nbsp;</a>
   </div>
 </div>
-
             {{-- _________________________________All Projects DataTable_____________________________________--}}
             <div
                 class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
@@ -596,9 +394,8 @@
                     </div>
                 </div>
 
-            </div>
-        </div>
-<script type="text/javascript">
+
+                <script type="text/javascript">
 
 
         $('.project').DataTable({

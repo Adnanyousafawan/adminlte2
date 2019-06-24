@@ -8,15 +8,19 @@ use DB;
 
 class LaborController extends Controller
 {
-    /**
+    /** 
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {  
+        
         $labors = DB::table('labors')->get();
+        //$count = $labors->count()->all();
+
         return view('labors/index', compact('labors'));
+
         // return view('labors/index', compact('labors'));
     }
 

@@ -1,49 +1,32 @@
 @extends('adminlte::page')
 @section('title', 'AdminLTE')
-
+@section('content')
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {{--
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> --}}
 
     <link rel="stylesheet" href="/css/bootstrap-3.4.1.css">
     <link rel="stylesheet" href="/css/jquery.dataTables.css">
     <link rel="stylesheet" href="/css/jquery.dataTables.css">
-    {{-- <link rel="stylesheet" href="/images"> --}}
+  
     <script src="/js/jquery-3.4.1.js"></script>
     <script src="/js/jquery.dataTables.js"></script>
 
-    {{--
-    <link rel="stylesheet" href="/js/jquery-3.4.1.js">
-    <link rel="stylesheet" href="/js/jquery.dataTables.js"> --}}
-    {{-- <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-     --}}
-
-    {{--
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> --}}
-
-{{-- <style type="text/css">
-table.datatable.dataTable.no-footer.fixedHeader-floating {
-top: 0px;
-width: 100% !important;
-display: block;
-overflow-x: auto;
-}
-</style> --}}
 @section('content')
+  
+
+<ol class="breadcrumb">
+    <li><a href="{{ route('home')}}"><i class="fa fa-dashboard"></i>  &nbsp;Dashboard</a></li>
+    <?php $segments = ''; ?>
+    @foreach(Request::segments() as $segment)
+        <?php $segments .= '/'.$segment; ?>
+        <li>
+            <a href="{{ $segments }}">{{$segment}}</a>
+        </li>
+    @endforeach
+</ol>
+
+
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -59,68 +42,17 @@ overflow-x: auto;
         </div>
     @endif
 
-    @if (session('status'))
+    @if (session('success'))
         <div class="alert alert-success" role="alert">
-            {{ session('status') }}
+            {{ session('success') }}
         </div>
     @endif
 
-    {{-- col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-lg-11 col-lg-offset-1
-     --}}
-
-    {{--
-
-    <script type="text/javascript">
-    function myFunction(x)
-    {
-      if (x.matches)
-      { // If media query matches
-
-
-
-
-
-
-        }
-
-       // document.body.style.backgroundColor = "yellow";
-      }
-      else
-      {
-
-
-      // document.body.style.backgroundColor = "pink";
-      }
-    var x = window.matchMedia("(max-width: 750px)")
-    myFunction(x) // Call listener function at run time
-    x.addListener(myFunction) // Attach listener function on state changes
-
-    </script>
-     --}}
-    {{-- <style type="text/css">
-        @media (max-width: 850px)
-        {
-
-            .screen{
-                width: 96%;
-                margin: 0 auto;
-                margin-left: 2%;
-                background: #eee;
-                margin-top: 10px;
-            }
-        }
-        @media (min-width: 851px)
-        {
-            .screen{
-                width: 80%;
-                margin: 0 auto;
-                margin-left: 3%;
-                background: #eee;
-                margin-top: 10px;
-            }
-        }
-
-    </style> --}}
+     @if (session('message'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('message') }}
+        </div>
+    @endif
 
 
     <div class="box-body" id="screen"
@@ -128,7 +60,7 @@ overflow-x: auto;
         <div class="box box-body" style=" background-color: #f4f4f487; padding: 0px;">
             <div class="box-header">
                 <h3><span
-                        class="col-xs-6 col-sm-6 col-md-5 col-lg-5 col-xl-5 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
+                        class="col-xs-6 col-sm-6 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
                         style="margin-bottom: 10px; padding: 0px;">Labor Details</span></h3>
             </div>
 
@@ -350,9 +282,7 @@ overflow-x: auto;
             </form>
         </div>
      --}}
-
-            <div
-                class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
+            <div class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
                 style="padding: 5px;">
                 <div class="box" style="margin-bottom: 10px; margin-top: 1%;">
                     <div class="box-header with-border ">
@@ -365,14 +295,15 @@ overflow-x: auto;
                     <div class="table-responsive" style="margin-top: 10px; padding: 10px;">
                         <table class="table no-margin table-bordered table-striped labor">
                             <thead>
+                                <tr>
 
-                            <th>Labor ID</th>
-                            <th>Name</th>
-                            <th>Project Id</th>
-                            <th>Present</th>
-                            <th>Labor Rate</th>
-                            <th>Cost</th>
-                            <th>Action</th>
+                                <th>Labor ID</th>
+                                <th>Name</th>
+                                <th>Project Id</th>
+                                <th>Present</th>
+                                <th>Labor Rate</th>
+                                <th>Cost</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -390,11 +321,12 @@ overflow-x: auto;
 
                                         <a type="links" href="{{ route('labors.edit', ['id' => $labor->id]) }}"
                                            style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">Edit</a>
-                                        <a type="links" data-toggle="modal" data-target="#applicantDeleteModal"
+                                        <a type="links" data-toggle="modal" data-target="{{-- #applicantDeleteModal --}}
+                                        #applicantDeleteModal-{{ $labor->id }}"
                                            style="color: red; margin-left: 3px;  margin-top: 0px;">Delete</a></td>
                                 </tr>
 
-                                <div id="applicantDeleteModal" class="modal fade" tabindex="-1" role="dialog"
+                                <div id="applicantDeleteModal-{{ $labor->id }}" class="modal fade" tabindex="-1" role="dialog"
                                      aria-labelledby="custom-width-modalLabel" aria-hidden="true"
                                      style="display: none;">
                                     <div class="modal-dialog"
@@ -404,8 +336,8 @@ overflow-x: auto;
                                                   action="{{ route('labors.destroy', ['id' => $labor->id]) }}">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <form action="{{ route('labors.destroy', ['id' => $labor->id]) }}"
-                                                      method="POST" class="remove-record-model">
+                                                {{-- <form action="{{ route('labors.destroy', ['id' => $labor->id]) }}"
+                                                      method="POST" class="remove-record-model"> --}}
                                                     {{ method_field('delete') }}
                                                     {{ csrf_field() }}
 
@@ -431,7 +363,7 @@ overflow-x: auto;
                                                         </button>
                                                     </div>
 
-                                                </form>
+                                              
                                             </form>
                                         </div>
                                     </div>
@@ -439,6 +371,7 @@ overflow-x: auto;
                             @endforeach
                             </tbody>
                         </table>
+                    </div>
                     </div>
                 </div>
 
@@ -533,7 +466,7 @@ overflow-x: auto;
 
 
 
-                {{--______________________________________________________________   This is EDIT MODAL CODE  ______________________________ --}}
+                {{--____________________________   This is ADD MODAL CODE  ______________________________ --}}
 
 
                 <div id="applicantADDModal" class="modal fade" tabindex="-1" role="dialog"
@@ -554,7 +487,7 @@ overflow-x: auto;
                                 @csrf
                                 <div class="modal-header">
                                     <button type="button" class="close pull-right" data-dismiss="modal"
-                                            aria-hidden="true">×
+                                            aria-hidden="true">
                                     </button>
                                     <strong><h3 class="modal-title text-center" id="custom-width-modalLabel">Add
                                             Labor</h3></strong>
@@ -565,7 +498,7 @@ overflow-x: auto;
 
                                         <div class="row" style="margin-top: 5px; margin-left: 1%;">
                                             <div
-                                                class="col-md-3  col-lg-offset-1 col-xl-offset-1 col-md-offset-1col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-0 col-lg-3 col-xl-3">
+                                                class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1 col-xl-3 col-xl-offset-1  ">
                                                 <!-- Profile Image -->
                                                 <div class="">
                                                     <div class="box-body box-profile">
@@ -585,7 +518,7 @@ overflow-x: auto;
                                             </div>
 
                                             <div
-                                                class="col-md-8 col-sm-10 col-xs-offset-1 col-sm-offset-0 col-xs-10 col-lg-8 col-xl-8"
+                                                class="col-sm-10 col-xs-offset-1 col-sm-offset-0 col-xs-10 col-lg-8 col-xl-8"
                                                 style="/*max-width: 70%;*/ padding-bottom: 30px;">
                                                 <div>
                                                     {{-- <div class="box-header">
@@ -655,6 +588,9 @@ overflow-x: auto;
 
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+
                             </form>
                         </div>
                     </div>
@@ -673,9 +609,7 @@ overflow-x: auto;
 
             </div>
         </div>
-    </div>
-
-
+   
     <script type="text/javascript">
 
 

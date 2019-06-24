@@ -18,14 +18,10 @@ class CreateUsersTable extends Migration
             $table->string('name')->nullable();
             $table->string('profile_image')->nullable();
             $table->string('email')->unique();
-            $table->string('gender')->nullable();
-            $table->string('age')->nullable();
             $table->string('address')->nullable();
-            $table->string('city')->nullable();
             $table->string('cnic')->nullable();
             $table->string('phone_number')->nullable();
             $table->unsignedBigInteger('role_id')->nullable();
-            $table->string('salary')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             //adding foreign key constraint on role_id
