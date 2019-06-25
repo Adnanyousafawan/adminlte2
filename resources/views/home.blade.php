@@ -731,12 +731,16 @@
 
             <div class="vendor-info-count">
               <ul>
-                <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.index') }}">8 &nbsp;&nbsp;Total Contrators</a></li>
-                <li><i class="fa fa-check"></i>&nbsp;&nbsp; <a href="{{route('users.index') }}">6 &nbsp;&nbsp;Working Contractors</a></li>
-                <li><i class="fa fa-close"></i>&nbsp;&nbsp; <a href="{{route('users.index') }}">2 &nbsp;&nbsp;Free Contractors</a></li>
-@can('isAdmin')
-                 <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.index') }}">8 &nbsp;&nbsp;Total Managers</a></li>
+                @can('isAdmin')
+                 <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.manager') }}">8 &nbsp;&nbsp;Total User</a></li>
+          
+                 <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.manager') }}">8 &nbsp;&nbsp;Total Managers</a></li>
                 @endcan
+                
+                <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}">8 &nbsp;&nbsp;Total Contrators</a></li>
+                <li><i class="fa fa-check"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}">6 &nbsp;&nbsp;Working Contractors</a></li>
+                <li><i class="fa fa-close"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}">2 &nbsp;&nbsp;Free Contractors</a></li>
+
                 
               </ul>
             </div>

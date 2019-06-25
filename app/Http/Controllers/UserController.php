@@ -16,40 +16,67 @@ class UserController extends Controller
      */
     public function index()
     {
+/*
         if (Gate::allows('isAdmin')) {
             $users = DB::table('users')->where('role_id', '!=', 1)->get();
             return view('users/index', compact('users'));
 
             //abort(404, "Sorry, You cant  Access this Page");
         }
-        if (Gate::allows('isManager')) {
-            $users = DB::table('users')->where('role_id', '=', 2)->get();
-            return view('users/index', compact('users'));
 
+        if (Gate::allows('isManager')) {
+            $users = DB::table('users')->where('role_id', '=', 3)->get();
+            return view('users/index', compact('users'));
         }
+        */
+
     }
 
     public function manager()
     {
         if (Gate::allows('isAdmin')) {
-            $users = DB::table('users')->where('role_id', '!=', 2)->get();
-            return view('users/index', compact('users'));
+            $roles = DB::table('roles')->where('id', '!=', 1)->get();
+            $users = DB::table('users')->where('role_id', '=', 2)->get();
+            return view('users/index', compact('users , roles'));
         }
+         if (Gate::allows('isManager')) {
+            abort(404, "Sorry, You cant  Access this Page");
+        }
+
     }
 
     public function contractor()
     {
         if (Gate::allows('isAdmin')) {
+            $roles = DB::table('roles')->where('id', '!=', 1)->get();
             $users = DB::table('users')->where('role_id', '=', 3)->get();
-            return view('users/index', compact('users'));
+            return view('users/index', compact('users' , 'roles'));
         }
+        if (Gate::allows('isManager')) {
+            $roles = DB::table('roles')->where('id', '=', 3)->get();
+            $users = DB::table('users')->where('role_id', '=', 3)->get();
+            return view('users/index', compact('users', 'roles'));
+        }
+
     }
-    /*  public function all()
+     public function all()
     {
+        if (Gate::allows('isAdmin')) {
+         $roles = DB::table('roles')->where('id', '!=', 1)->get();
          $users = DB::table('users')->where('role_id','!=',1)->get();
-         return view('users/index',compact('users'));
+         return view('users/index',compact('users' , 'roles'));
+         }
+         if (Gate::allows('isManager')) {
+         $roles = DB::table('roles')->where('id', '=', 3)->get();
+         $users = DB::table('users')->where('role_id','=',3)->get();
+         return view('users/index',compact('users' , 'roles'));
+         }
+           if (Gate::allows('isContractor')) {
+           abort(404,"Sorry you are not Allowed ");
+        }
+
     }
-*/
+
 
     /**
      * Show the form for creating a new resource.
@@ -59,8 +86,18 @@ class UserController extends Controller
     public function create()
     {
 
-        $roles = DB::table('roles')->get();
-        return view('users/create', compact('roles'));
+       if (Gate::allows('isAdmin'))  
+        {
+            $roles = DB::table('roles')->where('id', '!=', 1)->get();
+            return view('users/create', compact('roles'));
+        }
+        if (Gate::allows('isManager')) {
+            $roles = DB::table('roles')->where('id', '=', 3)->get();
+            return view('users/create', compact('roles'));
+        }
+         if (Gate::allows('isContractor')) {
+           abort(404,"Sorry you are not Allowed ");
+        }
 
     }
 

@@ -30,8 +30,7 @@
             align-items: center;
             display: flex;
             justify-content: center;
-
-
+            background-image: url("/storage/images/CSTMS.jpg");
         }
 
         .position-ref {

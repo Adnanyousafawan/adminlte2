@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'collapse_sidebar' => true,
+    'collapse_sidebar' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -241,7 +241,7 @@ return [
             'submenu' => [
                  [
                     'text' => 'View All User',
-                    'url' => 'users/index',
+                    'url' => 'users',
                 ],
                 [
                     'text' => 'Add User',

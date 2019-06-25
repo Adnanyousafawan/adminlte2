@@ -55,7 +55,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //-----------------------------------Project Management------------------------------------//
 
-Route::resource('projects', 'ProjectController');
+//Route::resource('projects', 'ProjectController');
 Route::get('/search_project', 'ProjectController@search_project');
 Route::get('projects', 'ProjectController@index')->name('projects.index');
 Route::get('projects/create', 'ProjectController@create')->name('projects.create');
@@ -63,7 +63,7 @@ Route::get('projects/edit/{id}', 'ProjectController@edit')->name('projects.edit'
 Route::post('projects/store', 'ProjectController@store')->name('projects.store');
 Route::delete('projects/destroy/{id}', 'ProjectController@destroy')->name('projects.destroy');
 Route::get('projects/view/{id}', 'ProjectController@viewuser')->name('projects.view');
-
+ 
 
 
 Route::get('projects/pending','ProjectController@pending')->name('projects.pending');
@@ -76,12 +76,17 @@ Route::get('projects/all','ProjectController@all')->name('projects.all');
 
 //-----------------------------------User Management------------------------------------//
 
-Route::resource('users', 'UserController');
-Route::get('users', 'UserController@index')->name('users.index');
-
-//Route::get('users/all','UserController@all')->name('users.all');
+//Route::resource('users', 'UserController');
+//
+Route::get('users','UserController@all')->name('users.all');
+Route::get('users/create','UserController@create')->name('users.create');
 Route::get('users/manager','UserController@manager')->name('users.manager');
 Route::get('users/contractor','UserController@contractor')->name('users.contractor');
+Route::get('users/edit/{id}','UserController@edit')->name('users.edit');
+Route::get('users/store','UserController@store')->name('users.store');
+Route::get('users/destroy/{id}','UserController@destroy')->name('users.destroy');
+
+
 
 //-----------------------------------Labor Management--------------------------------------//
 
