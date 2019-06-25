@@ -631,18 +631,28 @@ class APIController extends Controller
     {
         $contractorID = DB::table('users')
             ->where('email', '=', $request->get('email'))
-            ->get('id')
+            ->pluck('id')
             ->first();
 
-        $notStarted = DB::table('project_status')->where('name', '=', 'Not Started')
-            ->get('id')
+        $notStarted = DB::table('project_status')
+            ->where('name', '=', 'Not Started')
+            ->pluck('id')
             ->first();
 
-        $assignedProjects = Project::all()
+        $assignedProjects = DB::table('projects')
             ->where('status_id', '=', $notStarted)
-            ->where('assigned_to', '=', $contractorID)->get('*');
+            ->where('assigned_to', '=', $contractorID)
+            ->get();
 
-        dd($contractorID);
+
+        foreach($assignedProjects as $assignedProject){
+           $assignedProject->manager = DB::table('users')
+               ->where('id','=', $assignedProject->assigned_by)
+               ->pluck('name')
+               ->first();
+        }
+
+        return response()->json($assignedProjects);
 
     }
 
