@@ -346,7 +346,7 @@
                                                                 aria-hidden="true">×
                                                         </button>
                                                         <h4 class="modal-title text-center"
-                                                            id="custom-width-modalLabel">Delete Applicant Record</h4>
+                                                            id="custom-width-modalLabel">Delete Labor Record</h4>
                                                     </div>
                                                     <div class="modal-body">
                                                         <strong><b><h3>Are You Sure? <br>You Want Delete This Record?

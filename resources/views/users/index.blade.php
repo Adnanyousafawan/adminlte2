@@ -63,8 +63,18 @@
                 <h3><span
                         class="col-xs-6 col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
                         style="margin-bottom: 10px; padding: 0px;">User Details</span></h3>
-            </div>
+            
 
+</div>
+
+<div class="container col-xs-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 col-xl-offset-1">
+@can('isAdmin')
+            <a class="active" href=" {{ route('users.all') }}" style="font-size: 18px;">All &nbsp; | &nbsp; </a> 
+            <a class="active" href=" {{ route('users.manager') }}" style="font-size: 18px;">Managers &nbsp; | &nbsp;</a>
+            <a class="active" href=" {{ route('users.contractor') }}"  style="font-size: 18px;">Contractors &nbsp; | &nbsp;</a>
+@endcan    
+
+        </div>
 
 
 
@@ -80,14 +90,7 @@
                                data-target="#applicantADDModal" class="btn btn-primary pul-right">Add User</a>
                         </div>
                     </div>
-        <div class="container">
-@can('isAdmin')
-            <a class="active" href=" {{ route('users.index') }}" style="font-size: 18px;">All &nbsp; | &nbsp; </a> 
-            <a class="active" href=" {{ route('users.manager') }}" style="font-size: 18px;">Managers &nbsp; | &nbsp;</a>
-            <a class="active" href=" {{ route('users.contractor') }}"  style="font-size: 18px;">Contractors &nbsp; | &nbsp;</a>
-@endcan    
-
-        </div>
+    
                     <div class="table-responsive" style="margin-top: 10px; padding: 10px;">
                         <table class="table no-margin table-bordered table-striped project">
                             <thead>
@@ -115,7 +118,7 @@
                                     <td>{{ $user->address}}</td>
                                     <td>{{ $user->phone}}</td>
                                     <td>{{ $user->cnic}}</td>
-                                    <td>{{ $user->role_id}}</td>
+                                    <td>{{ $user->role_id }}</td>
                                    
                                     <td style="max-width: 50px;">
                                         
@@ -154,7 +157,7 @@
                                      aria-labelledby="custom-width-modalLabel" aria-hidden="true"
                                      style="display: none;">
                                     <div class="modal-dialog"
-                                         style="min-width:40%; align-content: center;">
+                                         style="min-width:40%; align-content: center;  text-align: center;">
                                         <div class="modal-content">
                                             <form class="row" method="POST"
                                                   action="{{ route('users.destroy', ['id' => $user->id]) }}">
@@ -170,7 +173,7 @@
                                                                 aria-hidden="true">×
                                                         </button>
                                                         <h4 class="modal-title text-center"
-                                                            id="custom-width-modalLabel">Delete Applicant Record</h4>
+                                                            id="custom-width-modalLabel">Delete User Record</h4>
                                                     </div>
                                                       <div class="modal-body">
                                                         <strong><b><h3>Are You Sure? <br>You Want Delete This Record?
@@ -216,7 +219,7 @@
                                             aria-hidden="true">x
                                     </button>
                                     <strong><h3 class="modal-title text-center" id="custom-width-modalLabel">Add
-                                            Labor</h3></strong>
+                                            User</h3></strong>
                                 </div>
 
 
@@ -251,16 +254,16 @@
 
    <div class="form-group">
                     <label for="name">User Name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="User Name">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="User Name" required>
                 </div>
 
                 <div class="form-group">
                     <label for="email">User Email</label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Email">
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Email" required>
                 </div>
                 <div class="form-group">
                     <label for="cnic">User CNIC</label>
-                    <input type="text" class="form-control" id="cnic" name="cnic" placeholder="User CNIC">
+                    <input type="text" class="form-control" id="cnic" name="cnic" placeholder="User CNIC" required>
                 </div>
 
                 <div class="form-group">
@@ -271,7 +274,7 @@
                         </div>
                         <input type="Number" class="form-control" placeholder="Contact Number"
                                data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']"
-                               data-mask="" id="phone" name="phone">
+                               data-mask="" id="phone" name="phone" required>
                     </div>
                 </div>
 
@@ -280,14 +283,16 @@
                 <div class="form-group">
                     <label for="address">Address</label>
                     <input type="text" class="form-control" id="user_address" name="address"
-                           placeholder="Home Address">
+                           placeholder="Home Address" required>
                 </div>
 
                 <div class="form-group">
                     <label for="assigned_to">Select Role</label>
                     <select class="form-control" id="role" name="role">
-                        <option>Manager</option>
-                        <option>Contractor</option>
+                       @foreach($roles as $role)
+                       <option>{{ $role->name }}</option>
+
+                       @endforeach
                     </select>
                 </div>
                                                             <button type="submit"

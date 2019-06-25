@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Redirect;
 use Validator;
 use View;
+use Gate;
 
 class ProjectController extends Controller
 {
@@ -30,15 +31,35 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = DB::table('projects')
+
+        if(Gate::allows('isAdmin'))
+        {
+          $projects = DB::table('projects')
             /* ->join('users', 'users.id', '=', 'projects.assigned_to')
-             ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
+            ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
             ->get();
-        //dd($projects);
+
         //$projectstotal = DB::table('projects')->get();//Project::all();
-        $contractors = DB::table('users')->where('role_id', '=', 3)->get();
-        return view('projects/index', compact('projects'), ['contractors' => $contractors]);
+            $contractors = DB::table('users')->where('role_id', '=', 3)->get();
+            return view('projects/index', compact('projects'), ['contractors' => $contractors]);
+        }
+        if(Gate::allows('isManager'))
+        {
+            $projects = DB::table('projects')->where('projects.assigned_by','=',Auth::user()->id )->get();
+            /* ->join('users', 'users.id', '=', 'projects.assigned_to')
+            ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
+            
+
+        //$projectstotal = DB::table('projects')->get();//Project::all();
+            $contractors = DB::table('users')->where('role_id', '=', 3)->get();
+            return view('projects/index', compact('projects'), ['contractors' => $contractors]);
         //return view('projects.index');
+        }
+        if(Gate::allows('isContractor'))
+        {
+            abort(404,"You are not Allowed to Access this Page.");
+        }
+       
 
     }
 
@@ -49,9 +70,21 @@ class ProjectController extends Controller
      */
     public function create()
     {
+        if (Gate::allows('isAdmin')) 
+        {
+             $contractors = DB::table('users')->where('role_id', '=', 3)->get();
+            return View('projects/create')->with('contractors', $contractors);
+        }
+        if (Gate::allows('isManager')) {
+
         $contractors = DB::table('users')->where('role_id', '=', 3)->get();
         return View('projects/create')->with('contractors', $contractors);
-        //return view('projects/create');
+        }
+        if(Gate::allows('isContractor'))
+        {
+            abort(404,"You are not Allowed to Access this Page.");
+        }
+       
     }
 
     /**
@@ -194,8 +227,35 @@ class ProjectController extends Controller
 
     public function all()
     {
-        $projects = DB::table('projects')->get();
-        return view('projects/projects', compact('projects'));
+
+         if(Gate::allows('isAdmin'))
+        {
+          $projects = DB::table('projects')
+            /* ->join('users', 'users.id', '=', 'projects.assigned_to')
+            ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
+            ->get();
+
+        //$projectstotal = DB::table('projects')->get();//Project::all();
+            $contractors = DB::table('users')->where('role_id', '=', 3)->get();
+            return view('projects/projects', compact('projects'), ['contractors' => $contractors]);
+        }
+        if(Gate::allows('isManager'))
+        {
+            $projects = DB::table('projects')->where('projects.assigned_by','=',Auth::user()->id )->get();
+            /* ->join('users', 'users.id', '=', 'projects.assigned_to')
+            ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
+            
+
+        //$projectstotal = DB::table('projects')->get();//Project::all();
+            $contractors = DB::table('users')->where('role_id', '=', 3)->get();
+            return view('projects/projects', compact('projects'), ['contractors' => $contractors]);
+        //return view('projects.index');
+        }
+        if(Gate::allows('isContractor'))
+        {
+            abort(404,"You are not Allowed to Access this Page.");
+        }
+
     }
 
     public function pending()
@@ -260,33 +320,102 @@ class ProjectController extends Controller
 
     public function viewuser($id)
     {
+        
         $labors = DB::table('labors')
             ->join('projects', 'projects.id', '=', 'labors.project_id')
             ->get();
 
-        /* $customers = DB::table('customers')
+       /*  $customers = DB::table('customers')
          ->join('projects', 'projects.customer_id', '=', 'customers.id')
          ->get();
-         */
-        $orders = DB::table('order_details')->join('projects', 'projects.id', '=', 'order_details.project_id');
-        $customers = DB::table('customers')->where('projects.id', '=', $id)
-            ->join('projects', 'projects.customer_id', '=', 'customers.id')
-            ->get();
+         
+       */
 
-        $data = DB::table('projects')->where('projects.id', '=', $id)
+       $orders = DB::table('order_details')->join('projects', 'projects.id', '=', 'order_details.project_id')->where('order_details.project_id','=',$id)->get()->all();
+       
+        //dd($orders);
+        $customers = DB::table('projects')->where('projects.id', '=', $id)
+            ->join('customers', 'customers.id', '=', 'projects.id')
+            ->get()->first();
+
+            //dd($customers);
+
+       /* $data = DB::table('projects')->where('projects.id', '=', $id)
             ->join('users', 'users.id', '=', 'projects.assigned_to')
             ->join('customers', 'customers.id', '=', 'projects.customer_id')
-            ->get();
+            ->get()->all();
+
+*/
+       // $projects = Project::find($id)->first();
+        //dd($data);
+        
 
 
-        $projects = Project::find($id);
-        // Redirect to user list if updating user wasn't existed
+         /*
+
+             $id = DB::table('users')
+                ->where('email', '=', $request->get('email'))
+                ->pluck('id')
+                ->first();
+        */
+        $contractors = DB::table('projects')->join('users','users.id','=','projects.assigned_to')
+        ->where('projects.id','=',$id)->get()->first();
+
+        //dd($contractors);
+
+        $projects = DB::table('projects')->where('id','=',$id)->first(); //->where('assigned_to', '=', $id);
+
+       // $check = [];
+       // $index = 0;
+       // foreach ($projects as $project) {
+
+          
+/*
+        $project = DB::table('projects')->where('id','=',$id)->first(); //->where('assigned_to', '=', $id);
+
+            $contractorID = $project->assigned_to;
+            $customerID = $project->customer_id;
+            $managerID = $project->assigned_by;
+            $project_phaseID = $project->phase_id;
+            $project_statusID = $project->status_id;
+
+            $data[] = [
+                "id" => $project->id,
+                "title" => $project->title,
+                "area" => $project->area,
+                "city" => $project->city,
+                "plot_size" => $project->plot_size,
+                "customer" => DB::table('customers')->where('id', '=', $customerID)->pluck("name")->first,
+                "customer_phone" => DB::table('customers')->where('id', '=', $customerID)->get("phone")->first(),
+
+                "estimated_completion_time" => $project->estimated_completion_time,
+                "estimated_budget" => $project->estimated_budget,
+                "floor" => $project->floor,
+                "description" => $project->description,
+                "contract_image" => $project->contract_image,
+                "assigned_to" => DB::table('users')->where('id', '=', $contractorID)->get("name")->first(),
+                "assigned_by" => DB::table('users')->where('id', '=', $managerID)->get("name")->first(),
+                "status" => DB::table("project_status")->where('id', '=', $project_statusID)->get("name")->first(),
+                "phase" => DB::table('project_phase')->where('id', '=', $project_phaseID)->get("name")->first(),
+            ];
+           //dd($data);
+    // dd($data[0]['customer']);
+            //dd(DB::table('customers')->where('id', '=', $customerID)->get("phone")->first());
+       */
+
+
         if ($projects == null || count($projects) == 0) {
             return redirect()->intended('projects/index');
         }
 
+       /* if ($projects == null || count($projects) == 0) {
+            return redirect()->intended('projects/index');
+        }
+        */
+
         //$users = User::paginate(10);
-        return view('projects/view', ['data' => $data], ['labors' => $labors], ['orders' => $orders]);
+        return view('projects/view', compact('projects','customers','labors','orders','contractors'));
+        // ['data' => $data],['orders' => $orders]);
     }
 
 
