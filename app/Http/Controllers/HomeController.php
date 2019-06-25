@@ -12,19 +12,18 @@ use Redirect;
 use View;
 use Illuminate\Support\Str;
 use App\Traits\UploadTrait;
+use Project;
 
 
 class HomeController extends Controller
 {
     use UploadTrait;
-
-
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct() 
     {
         $this->middleware('auth');
     }
@@ -37,8 +36,20 @@ class HomeController extends Controller
 
     public function index()
     {
+        $status_id = DB::table('project_status')->where('name','=','Completed')->pluck('id')->all();
+        $expense = DB::table('miscellaneous_expenses')->sum('expense');
+
+
         $projects = DB::table('projects')->get();
-        return view('home', compact($projects));
+        $total_contractors = DB::table('users')->where('id','=',3)->count();
+        
+        $completed_projects = DB::table('projects')->where('status_id', '=', $status_id)->count();
+        $current_projects =  DB::table('projects')->where('status_id', '!=', $status_id)->count();
+
+        //DB::table()->where('status_id','=',$status_id)->get()->count();
+
+       // dd($completed_projects);
+        return view('home', compact('projects','total_contractors','completed_projects','current_projects','expense'));
     }
 
     public function addcontractor()

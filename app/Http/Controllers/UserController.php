@@ -6,7 +6,8 @@ use App\User;
 use DB;
 use Gate;
 use Illuminate\Http\Request;
-
+use Hash;
+use Auth;
 class UserController extends Controller
 {
     /**
@@ -255,7 +256,7 @@ class UserController extends Controller
         $check = DB::table('users')
             ->join('projects', 'projects.assigned_to', '=', $id)
             ->count();
-        dd($check);
+        //dd($check);
 
         if ($check == 0) {
             User::where('id', $id)->delete();
@@ -267,6 +268,50 @@ class UserController extends Controller
 
 
     }
+
+public function changepassword(Request $request)
+{
+     $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required',
+            'confirm_password' => 'required',
+        ]);
+
+    if($request->input('new_password') == $request->input('confirm_password'))
+    {
+        if(Hash::check($request->input('old_password'),Auth::user()->password ))
+        {
+               // dd('matching with old');
+
+            $user = User::find(Auth::user()->id);
+            $user->password = Hash::make($request->get('new_password'));
+            if($user->save())
+            {
+                //dd('inside saving');
+               return view('profile')->with('message',"successfully Changed Password");
+           }
+           else
+           {
+            return view('profile')->with('error', "Error Occured");
+
+        }  
+    }
+    else
+    {
+          return view('profile')->with('error', "Old Password Doesn't Matched ");
+    }
+}
+else
+{      
+    return view('profile')->with('error', "New Password Doesn't Matched");
+}
+
+
+   
+
+ 
+}
+
 
     public function view_user($id)
     {

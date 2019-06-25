@@ -31,7 +31,7 @@
 
   
 
-<div class="row">
+{{-- <div class="row">
         
         <div class="col-md-3 col-sm-6 col-xs-12">
 
@@ -62,7 +62,7 @@
         </div>
         <!-- /.col -->
 
-        <!-- fix for small devices only -->
+        fix for small devices only
         <div class="clearfix visible-sm-block"></div>
 
         <div class="col-md-3 col-sm-6 col-xs-12">
@@ -91,13 +91,16 @@
             <!-- /.info-box -->
         </div>
         <!-- /.col -->
-    </div>
+    </div> --}}
+
+
+    
 <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3>150</h3>
+              <h3>{{ $current_projects }}</h3>
 
               <p>Current Projects</p>
             </div>
@@ -112,7 +115,7 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
+              <h3> {{ $completed_projects }}</h3>
 
               <p>Completed Projects</p>
             </div>
@@ -127,7 +130,7 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>44</h3>
+              <h3>{{ $total_contractors }}</h3>
 
               <p>Total Contrators</p>
             </div>
@@ -142,7 +145,7 @@
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>65</h3>
+              <h3>{{ $expense }}</h3>
 
               <p>Expenses History</p>
             </div>
@@ -582,7 +585,7 @@
             <!-- /.box -->
         </div>
         <!-- /.col -->
-    
+ {{--    
 <div class="col-md-4">  
   <div class="box box-default">
             <div class="box-header with-border">
@@ -632,7 +635,7 @@
             <!-- /.footer -->
           </div>
 </div>
-
+ --}}
              {{--  <!-- USERS LIST -->
               <div class="box box-danger">
                 <div class="box-header with-border">
