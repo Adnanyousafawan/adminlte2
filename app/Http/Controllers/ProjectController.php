@@ -255,8 +255,8 @@ class ProjectController extends Controller
         {
             abort(404,"You are not Allowed to Access this Page.");
         }
-
     }
+    
 
     public function pending()
     {

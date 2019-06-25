@@ -86,6 +86,8 @@ Route::get('users/edit/{id}','UserController@edit')->name('users.edit');
 Route::get('users/store','UserController@store')->name('users.store');
 Route::get('users/destroy/{id}','UserController@destroy')->name('users.destroy');
 
+Route::post('users/change_password','UserController@changepassword')->name('user.changepassword');
+
 
 
 //-----------------------------------Labor Management--------------------------------------//

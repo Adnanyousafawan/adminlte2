@@ -135,31 +135,7 @@
                                         <td>ALI</td>
                                     </tr>
                                     @endforeach
-                                    <tr>
-                                        <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                        <td>Bahria</td>
-
-                                        <td>
-                                            <div class="sparkbar" data-color="#f39c12" data-height="20">22</div>
-                                        </td>
-                                        <td>
-                                            <div class="label label-warning col-md-8">11,000</div>
-                                        </td>
-                                        <td>ALI</td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                        <td>pindi</td>
-
-                                        <td>
-                                            <div class="sparkbar" data-color="#f56954" data-height="20">333</div>
-                                        </td>
-                                        <td>
-                                            <div class="label label-warning col-md-8">12,000</div>
-                                        </td>
-                                        <td>ALI</td>
-                                    </tr>
-
+                                    
                                    
                                     </tbody>
                                 </table>
