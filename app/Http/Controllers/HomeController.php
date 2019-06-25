@@ -86,26 +86,27 @@ class HomeController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'profile' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
+            'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
         ]);
 
 
-        if ($request->has('profile')) {
+        if ($request->has('profile_image')) {
             // Get image file
-            $image = $request->file('profile');
+            $image = $request->file('profile_image');
             // Make a image name based on user name and current timestamp
             $name = Str::slug($request->input('name')) . '-' . time();
             // Define folder path
-            $folder = '/images/';
+            $folder = '/images/profile/';
             // Make a file path where image will be stored [ folder path + file name + file extension]
             $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
             //delete previously stored image
-            $this->deleteOne('public', Auth::user()->profile);
+            $this->deleteOne('public', Auth::user()->profile_image);
             // Upload image
             $this->uploadOne($image, $folder, 'public', $name);
             // Set user profile image path in database to filePath
-            $user->profile = $filePath;
+            $user->profile_image = $filePath;
         }
+
         // Persist user record to database
         $user->save();
 

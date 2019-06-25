@@ -26,7 +26,7 @@ Auth::routes();
 
 Route::resource('item','ItemController');
 Route::get('items/create','ItemController@create')->name('item.create');
-Route::post('items/itemdetails/insert','ItemController@insert')->name('item.insert');
+Route::post('items/itemDetails/insert','ItemController@insert')->name('item.insert');
 Route::get('items','ItemController@index')->name('items.list');
 Route::delete('items/destroy/{id}', 'ItemController@destroy')->name('items.destroy');
 
@@ -55,7 +55,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //-----------------------------------Project Management------------------------------------//
 
-//Route::resource('projects', 'ProjectController');
+Route::resource('projects', 'ProjectController');
 Route::get('/search_project', 'ProjectController@search_project');
 Route::get('projects', 'ProjectController@index')->name('projects.index');
 Route::get('projects/create', 'ProjectController@create')->name('projects.create');

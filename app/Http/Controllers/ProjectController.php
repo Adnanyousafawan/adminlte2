@@ -31,16 +31,16 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = DB::table('projects')
-       /* ->join('users', 'users.id', '=', 'projects.assigned_to')
-        ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
-        ->get();
+            /* ->join('users', 'users.id', '=', 'projects.assigned_to')
+             ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
+            ->get();
         //dd($projects);
         //$projectstotal = DB::table('projects')->get();//Project::all();
-        $contractors = DB::table('users')->where('role_id', '=', '1')->get();
-        return view('projects/index', compact('projects'),['contractors' => $contractors]);
+        $contractors = DB::table('users')->where('role_id', '=', 3)->get();
+        return view('projects/index', compact('projects'), ['contractors' => $contractors]);
         //return view('projects.index');
 
-    } 
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -49,7 +49,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        $contractors = DB::table('users')->where('role_id', '=', '1')->get();
+        $contractors = DB::table('users')->where('role_id', '=', 3)->get();
         return View('projects/create')->with('contractors', $contractors);
         //return view('projects/create');
     }
@@ -111,7 +111,7 @@ class ProjectController extends Controller
             'plot_size' => $request->input('plot_size'),
             'floor' => $request->input('floor'),
             'customer_id' => $customerId[0]->id,
-            'assigned_to' =>DB::table('users')->where('name','=', $request->input('assigned_to'))->pluck('id')->first(),
+            'assigned_to' => DB::table('users')->where('name', '=', $request->input('assigned_to'))->pluck('id')->first(),
             'status_id' => $project_status,
             'phase_id' => $project_phase,
             'assigned_by' => Auth::id(),
@@ -119,7 +119,7 @@ class ProjectController extends Controller
             'estimated_budget' => $request->input('estimated_budget'),
             'description' => $request->input('description'),
             'contract_image' => $request->input('contract_image')
-            
+
 
         ]);
 
@@ -158,16 +158,16 @@ class ProjectController extends Controller
     public function show()
     {
         $projects = DB::table('projects')
-        /*->join('users', 'users.id', '=', 'projects.assigned_to')
-        ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
-        ->get();
+            /*->join('users', 'users.id', '=', 'projects.assigned_to')
+            ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
+            ->get();
 
-        
+
         //dd($projects);
         //->where('followers.follower_id', '=', 3)
-       // $projects = DB::table('projects')->join('users','users.id','=','projects.assigned_to')->take(10)->get();
+        // $projects = DB::table('projects')->join('users','users.id','=','projects.assigned_to')->take(10)->get();
         //dd($projects);
-          //Project::paginate(10);
+        //Project::paginate(10);
         $projectstotal = DB::table('projects')->get();//Project::all();
         $contractors = DB::table('users')->where('role_id', '=', '3')->get();
         //$customers = DB::table('customers')->where('id','=','projects.customer_id')->pluck('name')->first();
@@ -182,31 +182,33 @@ class ProjectController extends Controller
 
     public function cancelled()
     {
-      $projects = DB::table('projects')->where('projects.id','=','5')->get();
-      return view('projects/projects',compact('projects'));
+        $projects = DB::table('projects')->where('projects.id', '=', '5')->get();
+        return view('projects/projects', compact('projects'));
     }
 
     public function completed()
     {
-     $projects = DB::table('projects')->where('projects.floor','=','5')->get();
-      return view('projects/projects',compact('projects'));
-    }
-    public function all()
-    {
-     $projects = DB::table('projects')->get();
-      return view('projects/projects',compact('projects'));
-    }
-     public function pending()
-    {
-     $projects = DB::table('projects')->where('projects.floor','=','3')->get();
-      return view('projects/projects',compact('projects'));
-    }
-     public function current()
-    {
-     $projects = DB::table('projects')->where('projects.floor','=','3')->get();
-      return view('projects/projects',compact('projects'));
+        $projects = DB::table('projects')->where('projects.floor', '=', '5')->get();
+        return view('projects/projects', compact('projects'));
     }
 
+    public function all()
+    {
+        $projects = DB::table('projects')->get();
+        return view('projects/projects', compact('projects'));
+    }
+
+    public function pending()
+    {
+        $projects = DB::table('projects')->where('projects.floor', '=', '3')->get();
+        return view('projects/projects', compact('projects'));
+    }
+
+    public function current()
+    {
+        $projects = DB::table('projects')->where('projects.floor', '=', '3')->get();
+        return view('projects/projects', compact('projects'));
+    }
 
 
     /**
@@ -237,35 +239,45 @@ class ProjectController extends Controller
     {
 
         $projects = Project::find($id);
+        $contractors = DB::table('users')->where('role_id', '=', 3)->get();
+
+        $customer = DB::table('customers')
+            ->where('id', '=', $projects->customer_id)
+            ->get()->first();
+
         // Redirect to user list if updating user wasn't existed
         if ($projects == null || count($projects) == 0) {
             return redirect()->intended('projects/index');
         }
         //$users = User::paginate(10);
-        return view('projects/edit', ['projects' => $projects]);
+        return view('projects/edit',
+            compact('customer','contractors'),
+            compact('projects')
+//            compact()
+        );
     }
 
 
-     public function viewuser($id)
+    public function viewuser($id)
     {
         $labors = DB::table('labors')
-        ->join('projects', 'projects.id', '=', 'labors.project_id')
-        ->get();
+            ->join('projects', 'projects.id', '=', 'labors.project_id')
+            ->get();
 
-       /* $customers = DB::table('customers')
-        ->join('projects', 'projects.customer_id', '=', 'customers.id')
-        ->get();
-        */
-        $orders = DB::table('order_details')->join('projects','projects.id','=','order_details.project_id');
+        /* $customers = DB::table('customers')
+         ->join('projects', 'projects.customer_id', '=', 'customers.id')
+         ->get();
+         */
+        $orders = DB::table('order_details')->join('projects', 'projects.id', '=', 'order_details.project_id');
         $customers = DB::table('customers')->where('projects.id', '=', $id)
-        ->join('projects', 'projects.customer_id', '=', 'customers.id')
-        ->get();
-       
+            ->join('projects', 'projects.customer_id', '=', 'customers.id')
+            ->get();
+
         $data = DB::table('projects')->where('projects.id', '=', $id)
-        ->join('users', 'users.id', '=', 'projects.assigned_to')
-        ->join('customers', 'customers.id', '=', 'projects.customer_id')
-        ->get();
-        
+            ->join('users', 'users.id', '=', 'projects.assigned_to')
+            ->join('customers', 'customers.id', '=', 'projects.customer_id')
+            ->get();
+
 
         $projects = Project::find($id);
         // Redirect to user list if updating user wasn't existed
@@ -274,9 +286,8 @@ class ProjectController extends Controller
         }
 
         //$users = User::paginate(10);
-        return view('projects/view', ['data' => $data] , ['labors' => $labors], ['orders' => $orders ]);
+        return view('projects/view', ['data' => $data], ['labors' => $labors], ['orders' => $orders]);
     }
-
 
 
     /**
@@ -327,24 +338,18 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-       
-        $check = DB::table('labors')
-        ->join('projects', 'projects.id', '=', 'labors.project_id') //->where('labors.id','=',$id)
-        ->count();
-      
-        if($check == 0)
-        {
+
+        if (DB::table('labors')
+            ->join('projects', 'projects.id', '=', 'labors.project_id')
+            ->where('labors.id','=',$id)
+            ->count()) {
             Project::where('id', $id)->delete();
-            return redirect()->intended('projects/index')->with('success','Project Deleted Succuessfully.');
-        }
-        else
-        {
+            return redirect()->intended('projects/index')->with('success', 'Project Deleted Succuessfully.');
+        } else {
             return redirect()->route('projects.index')->with('message', 'Labor Exists. Please delete labors from project first.');
 
-        }        
+        }
     }
-
-
 
 
     public function updateImage(Request $request)

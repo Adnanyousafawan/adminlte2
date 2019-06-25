@@ -311,6 +311,7 @@ class APIController extends Controller
     {
         $phase = ProjectPhase::all();
         $status = ProjectStatus::all();
+        $floor = Project::all()->pluck('floor');
 
         return response()->json(['phases' => $phase, 'status' => $status]);
     }
@@ -401,10 +402,10 @@ class APIController extends Controller
             ->first();
 
         if ($project->phase_id == 0) {
-            $progress = (($project->phase_id) / 5) * 100;
+            $progress = (($project->phase_id) / 6) * 100;
 
         } else {
-            $progress = (($project->phase_id - 1) / 5) * 100;
+            $progress = (($project->phase_id - 1) / 6) * 100;
         }
 
 
@@ -581,7 +582,8 @@ class APIController extends Controller
                     $response = $newRecord->save();
                     $action = "added";
 
-                } else {
+                }
+                else {
                     $response = LaborAttendance::where('id', $getLabor[0]->id)
                         ->update(['status' => $status]);
                     $action = "updated";
@@ -603,7 +605,8 @@ class APIController extends Controller
                     $response = $attendance->save();
                     $action = "added";
 
-                } else {
+                }
+                else {
                     $response = LaborAttendance::where('labor_id', $labor_id)
                         ->where('date', '=', $current_dd . '-' . $current_mm . '-' . $current_yyyy)
                         ->update(['status' => $status]);
@@ -614,7 +617,8 @@ class APIController extends Controller
 
         if ($response) {
             return "Attendance has been " . $action;
-        } else {
+        }
+        else {
             return "Attendance has been " . $action;
         }
 

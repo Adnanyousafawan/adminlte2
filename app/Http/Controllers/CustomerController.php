@@ -15,7 +15,6 @@ class CustomerController extends Controller
      */
     public function index()
     {
-   
         $customers = DB::table('customers')->get();
         return view('customers/allcustomers', ['customers' => $customers]);
     }

@@ -19,6 +19,8 @@ class CreateItemsTable extends Migration
             $table->integer('rate')->nullable();
             $table->string('unit')->nullable();
             $table->unsignedBigInteger('supplier_id');
+            $table->timestamps();
+
     
             $table->foreign('supplier_id')
                 ->references('id')

@@ -359,6 +359,7 @@
                                                         <strong><b><h3>Are You Sure? <br>You Want Delete This Record?
                                                                 </h3></b></strong>
                                                         <input type="hidden" , name="applicant_id" id="app_id">
+                                                        <input type="hidden" , name="applicant_id" id="app_id">
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default waves-effect"
@@ -549,9 +550,9 @@
                         <div class="form-group">
                             <label for="assigned_to pull pull-left">Select Contractor</label>
                             <select class="form-control" id="assigned_to" name="assigned_to">
-                               {{--  @foreach($contractors as $contractor)
+                                @foreach($contractors as $contractor)
                                     <option>{{ $contractor->name}}</option>
-                                @endforeach --}}
+                                @endforeach
                             </select>
                         </div>
 

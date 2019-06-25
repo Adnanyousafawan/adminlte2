@@ -55,8 +55,8 @@
         </div>
 
         <div class="custom-file form-group">
-            <label class="profileImage " for="profileImage">Choose file</label>
-            <input type="file" class="form-control custom-file-input" id="profileImage" name="profile">
+            <label class="profile_image " for="profileImage">Choose file</label>
+            <input type="file" class="form-control custom-file-input" id="profile_image" name="profile_image">
         </div>
 
 

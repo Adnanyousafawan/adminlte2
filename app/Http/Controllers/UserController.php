@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use DB;
-use Illuminate\Http\Request;
 use Gate;
+use Illuminate\Http\Request;
+
 class UserController extends Controller
 {
     /**
@@ -15,37 +16,33 @@ class UserController extends Controller
      */
     public function index()
     {
-       if(Gate::allows('isAdmin'))
-       {
-        $users = DB::table('users')->where('role_id','!=',1)->get();
-       return view('users/index',compact('users'));
+        if (Gate::allows('isAdmin')) {
+            $users = DB::table('users')->where('role_id', '!=', 1)->get();
+            return view('users/index', compact('users'));
 
-        //abort(404, "Sorry, You cant  Access this Page");
-       }
-       if(Gate::allows('isManager'))
-       {
-        $users = DB::table('users')->where('role_id','=',3)->get();
-         return view('users/index',compact('users'));
+            //abort(404, "Sorry, You cant  Access this Page");
+        }
+        if (Gate::allows('isManager')) {
+            $users = DB::table('users')->where('role_id', '=', 2)->get();
+            return view('users/index', compact('users'));
 
-       }
+        }
     }
 
     public function manager()
     {
-        if(Gate::allows('isAdmin'))
-       {
-         $users = DB::table('users')->where('role_id','!=',2)->get();
-         return view('users/index',compact('users'));
-     }
+        if (Gate::allows('isAdmin')) {
+            $users = DB::table('users')->where('role_id', '!=', 2)->get();
+            return view('users/index', compact('users'));
+        }
     }
 
-     public function contractor()
+    public function contractor()
     {
-         if(Gate::allows('isAdmin'))
-       {
-         $users = DB::table('users')->where('role_id','=',3)->get();
-         return view('users/index',compact('users'));
-     }
+        if (Gate::allows('isAdmin')) {
+            $users = DB::table('users')->where('role_id', '=', 3)->get();
+            return view('users/index', compact('users'));
+        }
     }
     /*  public function all()
     {
@@ -61,9 +58,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        
-        $roles = DB::table('roles')->get(); 
-        return view('users/create',compact('roles'));
+
+        $roles = DB::table('roles')->get();
+        return view('users/create', compact('roles'));
 
     }
 
@@ -84,42 +81,46 @@ class UserController extends Controller
             'cnic' => 'required',
             'phone' => 'required',
             'role' => 'required',
-            // 'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
+            'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
 
         ]);
 
-        $User = new User([
+        $rollID = DB::table('roles')
+            ->where('name', '=', $request->input('role'))
+            ->get()
+            ->first();
+
+        $user = new User([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'address' => $request->input('address'),
             'password' => $request->input('password'),
             'cnic' => $request->input('cnic'),
             'phone' => $request->input('phone'),
-            //'role_id' => $request->input('user_role'),
-            // 'profile_image'=> $request->input('profile_image')
+            'role_id' => $rollID,
+            'profile_image' => $request->input('profile_image')
 
         ]);
 
-        /*
-                if ($request->has('profile_image')) {
-                    // Get image file
-                    $image = $request->file('profile_image');
-                    // Make a image name based on user name and current timestamp
-                    $name = Str::slug($create_users_table->name . '-' . time());
-                    // Define folder path
-                    $folder = '/images/';
-                    // Make a file path where image will be stored [ folder path + file name + file extension]
-                    $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
-                    //delete previously stored image
-        //            $this->deleteOne( 'public', $project->contract_image);
-                    // Upload image
-                    $this->uploadOne($image, $folder, 'public', $name);
-                    // Set user profile image path in database to filePath
-                    $create_users_table->upload_profile = $filePath;
-                }
-                */
+        if ($request->has('profile_image')) {
+            // Get image file
+            $image = $request->file('profile_image');
+            // Make a image name based on user name and current timestamp
+            $name = Str::slug($user->name . '-' . time());
+            // Define folder path
+            $folder = '/images/profile';
+            // Make a file path where image will be stored [ folder path + file name + file extension]
+            $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+            //delete previously stored image
+            //            $this->deleteOne( 'public', $project->contract_image);
+            // Upload image
+            $this->uploadOne($image, $folder, 'public', $name);
+            // Set user profile image path in database to filePath
+            $user->upload_profile = $filePath;
+        }
+
         // Persist user record to database
-        $User->save();
+        $user->save();
 
         // Return user back and show a flash message
         return redirect()->route('users.index')->with(['status' => 'User added successfully.']);
@@ -182,7 +183,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-             'name' => 'required',
+            'name' => 'required',
             'email' => 'required',
             'address' => 'required',
             'password' => 'required | min:8',
@@ -194,12 +195,12 @@ class UserController extends Controller
         $users = User::find($id);
         $users->name = $request->input('name');
         $users->email = $request->input('email');
-        
+
         $users->address = $request->input('address');
-    
+
         $users->cnic = $request->input('cnic');
         $users->phone = $request->input('phone');
-     
+
         //'role_id' => $request->input('user_role'),
         // 'profile_image'=> $request->input('profile_image')
         $users->save();
@@ -215,24 +216,19 @@ class UserController extends Controller
     public function destroy($id)
     {
         $check = DB::table('users')
-        ->join('projects', 'projects.assigned_to', '=', $id)
-        ->count();
+            ->join('projects', 'projects.assigned_to', '=', $id)
+            ->count();
         dd($check);
-        
-        if($check == 0)
-        {
-        User::where('id', $id)->delete();
-        return redirect()->intended('users.index');
-        }
-        else
-        {
+
+        if ($check == 0) {
+            User::where('id', $id)->delete();
+            return redirect()->intended('users.index');
+        } else {
             return redirect()->route('users.index')->with('message', 'Project is Currently Assigned to Contractor. Cannot Delete Contractor');
 
         }
 
 
-
-        
     }
 
     public function view_user($id)
