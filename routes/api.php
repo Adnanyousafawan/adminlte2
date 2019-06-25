@@ -39,3 +39,4 @@ Route::post('/material/request/store', 'APIController@api_material_request_store
 Route::post('/projects/labor/attendance', 'APIController@api_projects_labor_attendance');
 Route::post('/get/labor/attendance', 'APIController@api_get_labor_attendance');
 Route::post('/add/labor/attendance', 'APIController@api_add_labor_attendance');
+Route::post('/assigned/projects', 'APIController@api_assigned_projects');

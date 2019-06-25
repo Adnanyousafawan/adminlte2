@@ -346,7 +346,7 @@ class APIController extends Controller
     public function api_contractor_profile(Request $request)
     {
         $id = DB::table('users')
-            ->where('email', '=', $request->email)
+            ->where('email', '=', $request->get('email'))
             ->where('role_id', '=', 3)
             ->pluck('id')
             ->first();
@@ -368,6 +368,8 @@ class APIController extends Controller
                     ->where('project_id', '=', $project->id)
                     ->count();
             }
+
+//            dd($projects);
 
             return response()->json(['profile' => $user, 'projects' => $projects]);
         } else {
@@ -429,7 +431,9 @@ class APIController extends Controller
             ->pluck('id')
             ->first();
 
-        $projects = Project::all()->where('assigned_to', '=', $id);
+        $projects = Project::all()
+            ->where('assigned_to', '=', $id)
+            ->where('status_id', '!=', 3);
 
 //        dd($projects);
 
@@ -465,6 +469,7 @@ class APIController extends Controller
 
         $projectID = DB::table('projects')
             ->where('title', '=', $request->get('project'))
+            ->where('status_id', '!=', 3)
             ->pluck('id')
             ->first();
 
@@ -497,6 +502,7 @@ class APIController extends Controller
 
         $projects = DB::table('projects')
             ->where('assigned_to', '=', $id)
+            ->where('status_id', '!=', 3)
             ->pluck('title');
 
         return response()->json($projects);
@@ -517,6 +523,7 @@ class APIController extends Controller
         $projectID = Project::all()
             ->where('title', '=', $request->get('title'))
             ->where('assigned_to', '=', $id)
+            ->where('status_id', '!=', 3)
             ->pluck('id');
 
         $labors = DB::table('labors')
@@ -582,15 +589,13 @@ class APIController extends Controller
                     $response = $newRecord->save();
                     $action = "added";
 
-                }
-                else {
+                } else {
                     $response = LaborAttendance::where('id', $getLabor[0]->id)
                         ->update(['status' => $status]);
                     $action = "updated";
                 };
 
-            }
-            else {
+            } else {
 
                 $found = LaborAttendance::all()
                     ->where('labor_id', '=', $labor_id)
@@ -605,8 +610,7 @@ class APIController extends Controller
                     $response = $attendance->save();
                     $action = "added";
 
-                }
-                else {
+                } else {
                     $response = LaborAttendance::where('labor_id', $labor_id)
                         ->where('date', '=', $current_dd . '-' . $current_mm . '-' . $current_yyyy)
                         ->update(['status' => $status]);
@@ -617,10 +621,28 @@ class APIController extends Controller
 
         if ($response) {
             return "Attendance has been " . $action;
-        }
-        else {
+        } else {
             return "Attendance has been " . $action;
         }
+
+    }
+
+    public function api_assigned_projects(Request $request)
+    {
+        $contractorID = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->get('id')
+            ->first();
+
+        $notStarted = DB::table('project_status')->where('name', '=', 'Not Started')
+            ->get('id')
+            ->first();
+
+        $assignedProjects = Project::all()
+            ->where('status_id', '=', $notStarted)
+            ->where('assigned_to', '=', $contractorID)->get('*');
+
+        dd($contractorID);
 
     }
 
