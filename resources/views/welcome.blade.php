@@ -3,12 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<<<<<<< HEAD
-    <title>CS-TMS</title>
-=======
     <title>CSTMS</title>
->>>>>>> 58b8a40facc7caec51d3528b32bbd462b0d9e0d4
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -34,12 +29,7 @@
             align-items: center;
             display: flex;
             justify-content: center;
-<<<<<<< HEAD
-
-
-=======
             background-image: url("/storage/images/CSTMS.jpg");
->>>>>>> 58b8a40facc7caec51d3528b32bbd462b0d9e0d4
         }
 
         .position-ref {
@@ -106,17 +96,11 @@
                 <a href="{{ url('/home') }}">Home</a>
             @else
                 <a href="{{ route('login') }}">Login</a>
-<<<<<<< HEAD
 
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}">Register</a>
-                @endif
-=======
-{{-- 
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}">Register</a>
-                @endif --}}
->>>>>>> 58b8a40facc7caec51d3528b32bbd462b0d9e0d4
+{{--                @if (Route::has('register'))--}}
+{{--                    <a href="{{ route('register') }}">Register</a>--}}
+{{--                @endif --}}
+
             @endauth
 
 

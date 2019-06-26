@@ -94,7 +94,7 @@ class ProjectStatusController extends Controller
      * @param \App\Phase $phase
      * @return \Illuminate\Http\Response
      */
-    public function edit(Phase $phase)
+    public function edit($id)
     {
         $status = DB::table('project_status')->find($id);
         return redirect()->back()->with('message','Think about Editing');

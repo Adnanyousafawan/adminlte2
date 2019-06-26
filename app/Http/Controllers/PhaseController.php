@@ -94,9 +94,9 @@ class PhaseController extends Controller
      * @param \App\Phase $phase
      * @return \Illuminate\Http\Response
      */
-    public function edit(Phase $phase)
+    public function edit($id)
     {
-        //$phase = DB::table('project_phase')->find($id);
+        $phase = DB::table('project_phase')->find($id);
         return redirect()->back()->with('message','Think about Editing');
     }
 
