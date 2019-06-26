@@ -81,8 +81,17 @@ class MaterialRequestController extends Controller
      * @param \App\MaterialRequest $materialRequest
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MaterialRequest $materialRequest)
+    public function destroy($id)
     {
-        //
+        if(MaterialRequest::where('id', $id)->delete())
+        {
+            return redirect()->back()->with('success','Record Successfully Deleted.');
+        }
+        else
+        {
+            return redirect()->back()->with('message','Record is not Deleted.');
+
+        }
+        
     }
 }

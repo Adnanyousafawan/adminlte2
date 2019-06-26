@@ -134,7 +134,6 @@ class UserController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'address' => $request->input('address'),
-            'password' => $request->input('password'),
             'cnic' => $request->input('cnic'),
             'password' => $password,
             'phone' => $request->input('phone'),

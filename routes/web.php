@@ -94,6 +94,9 @@ Route::delete('projectstatus/destroy/{id}', 'ProjectStatusController@destroy')->
 
 Route::get('materialrequest','MaterialRequestController@index')->name('requests.index');
 
+Route::get('materialrequest/edit/{id}', 'MaterialRequestController@edit')->name('requests.edit');
+Route::delete('materialrequest/destroy/{id}', 'MaterialRequestController@destroy')->name('requests.destroy');
+
 
 
 //-----------------------------------User Management------------------------------------//

@@ -101,6 +101,7 @@
 
                                     <!-- Notifications Menu -->
                                         @can('isAdmin')
+
                                             <li class="dropdown notifications-menu">
                                                 <!-- Menu toggle button -->
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -125,27 +126,36 @@
                                                     <li class="footer"><a href="#">View all</a></li>
                                                 </ul>
                                             </li>
+
                                     @endcan
                                     <!-- Tasks Menu -->
+                                        @php
+                                        $totalrequests = DB::table('material_requests')->count();
+                                        $requests = DB::table('material_requests')->take(5)->get();
+
+                                        @endphp
                                         <li class="dropdown tasks-menu">
                                             <!-- Menu Toggle Button -->
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                                 <i class="fa fa-flag-o"></i>
-                                                <span class="label label-danger">9</span>
+                                                <span class="label label-danger">{{ $totalrequests }}</span>
                                             </a>
                                             <ul class="dropdown-menu">
+                                                <li class="header">You have {{ $totalrequests }} Material Requests</li>
 
-                                                <li class="header">You have 9 tasks</li>
                                                 <li>
                                                     <!-- Inner menu: contains the tasks -->
                                                     <ul class="menu">
+                                                        @foreach($requests as $request)
                                                         <li>
                                                             <!-- Task item -->
                                                             <a href="#">
                                                                 <!-- Task title and progress text -->
                                                                 <h3>
-                                                                    Design some buttons
-                                                                    <small class="pull-right">20%</small>
+                                                                    PR{{ $request->project_id }}
+                                                                    <p class="pull-right">CT{{ $request->requested_by }}</p>
+                                                                    <br>{{ $request->item_id }}
+
                                                                 </h3>
                                                                 <!-- The progress bar -->
                                                                 <div class="progress xs">
@@ -159,6 +169,7 @@
                                                                 </div>
                                                             </a>
                                                         </li>
+                                                    @endforeach
                                                         <!-- end task item -->
                                                     </ul>
                                                 </li>
@@ -166,6 +177,7 @@
                                                     <a href="#">View all tasks</a>
                                                 </li>
                                             </ul>
+
                                         </li>
                                         <!-- User Account Menu -->
 
