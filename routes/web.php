@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 
-/*function () {
+Route::get('/',function(){
     return view('welcome');
 });
-*/
+
 
 Auth::routes();
 

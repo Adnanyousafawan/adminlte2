@@ -61,9 +61,9 @@
     <a class="active" href=" {{ route('projects.cancelled') }}"  style="font-size: 18px;">Cancelled &nbsp; | &nbsp;</a>
   </div>
 </div>
-            {{-- _________________________________All Projects DataTable_____________________________________--}}
-            <div
-                class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
+<div class="row">
+            {{-- _________________________________All Customers DataTable_____________________________________--}}
+        <div class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
                 style="padding: 5px;">
                 <div class="box" style="margin-bottom: 10px; margin-top: 1%;">
                     <div class="box-header with-border ">
@@ -185,7 +185,7 @@
                     </div>
                 </div>
                 </div> 
-
+</div>
 
 
                 <script type="text/javascript">

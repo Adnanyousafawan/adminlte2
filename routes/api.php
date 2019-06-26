@@ -36,3 +36,6 @@ Route::post('/projects/longpress/dialog/update', 'APIController@api_projects_lon
 Route::post('/contractor/profile', 'APIController@api_contractor_profile');
 Route::post('/material/request', 'APIController@api_material_request');
 Route::post('/material/request/store', 'APIController@api_material_request_store');
+Route::post('/projects/labor/attendance', 'APIController@api_projects_labor_attendance');
+Route::post('/get/labor/attendance', 'APIController@api_get_labor_attendance');
+Route::post('/add/labor/attendance', 'APIController@api_add_labor_attendance');

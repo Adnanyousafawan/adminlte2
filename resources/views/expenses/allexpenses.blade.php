@@ -58,15 +58,10 @@
                         <div class="box-tools pull-right">
                             <a type="links" href="{{ route('expense.create') }}" class="btn btn-primary pul-right">Add Expense</a>
                         </div>
-<div class="vendor-list-status">
-  <div class="row">
-      <div class="btn-group">
-                     
-  </div>
-</div>
-          
+                    </div>
 
-            {{-- _________________________________All User DataTable_____________________________________--}}
+
+            {{-- _________________________________All Expenses DataTable_____________________________________--}}
             <div
                 class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
         
@@ -79,7 +74,7 @@
 </div>
                 <div class="box" style="margin-bottom: 10px; margin-top: 1%;">
                     <div class="box-header with-border ">
-                        <h4><span class="box-title col-md-8">Order Details</span></h4>
+                        <h4><span class="box-title col-md-8">Expenses Details</span></h4>
                      
                     </div>
 
@@ -100,7 +95,7 @@
 
                             @foreach ($expenses as $expense)
                                 <tr>
-                                    <td>OR0000{{ $expense->id }}</td>
+                                    <td>EX0000{{ $expense->id }}</td>
                                     <td>{{ $expense->project_id }}</td>
                                     <td>{{ $expense->name }}</td>
                                     <td>{{ $expense->description }}</td>

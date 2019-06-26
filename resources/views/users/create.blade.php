@@ -10,8 +10,9 @@
             </ul>
         </div><br/>
     @endif
-
-    <div class="box-body col-md-8 col-lg-offset-1">
+    
+<div class="row">
+    <div class="box-body col-md-8 col-md-offset-2">
         <div class="box box-primary" style="padding-bottom: 85px;">
             <div class="box-header">
                 <h2 class="text-center">Add User</h2>
@@ -76,8 +77,11 @@
                 <div class="form-group">
                     <label for="assigned_to">Select Role</label>
                     <select class="form-control" id="user_role" name="user_role">
-                        <option>Manager</option>
-                        <option>Contractor</option>
+                        @foreach($roles as $role)
+                        <option>{{ $role->name }}</option>
+                       {{--  <option>Manager</option>
+                        <option>Contractor</option> --}}
+                        @endforeach
                     </select>
                 </div>
                 {{--
@@ -91,6 +95,7 @@
             </form>
         </div>
     </div>
+</div>
 
 
 @stop

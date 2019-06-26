@@ -16,7 +16,7 @@ class UserController extends Controller
     public function index()
     {
        $users = DB::table('users')->get();
-        return view('users/index',compact($users));
+       return view('users/index',compact($users));
     }
 
     /**
@@ -26,7 +26,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users/user');
+        
+        $roles = DB::table('roles')->get(); 
+        return view('users/create',compact('roles'));
+
     }
 
     /**

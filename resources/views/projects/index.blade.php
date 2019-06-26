@@ -309,6 +309,7 @@
                       <span class="sr-only">Toggle Dropdown</span>
                     </button>
 
+
                     <ul role="menu" class="dropdown-menu">
                       <li><a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"><i class="fa fa-edit"></i>View</a></li>
                        
