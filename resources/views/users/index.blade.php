@@ -220,7 +220,6 @@
                         User</h3></strong>
                     </div>
 
-
                     <div class="modal-body">
 
                         <div style=" width: 100%; margin-left: 1%;">

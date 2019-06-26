@@ -192,14 +192,24 @@ class ProjectController extends Controller
     public function show()
     {
         $projects = DB::table('projects')
+<<<<<<< HEAD
+        /*->join('users', 'users.id', '=', 'projects.assigned_to')
+        ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
+        ->get();
+=======
             /*->join('users', 'users.id', '=', 'projects.assigned_to')
             ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
             ->get();
 
+>>>>>>> 58b8a40facc7caec51d3528b32bbd462b0d9e0d4
 
         //dd($projects);
         //->where('followers.follower_id', '=', 3)
+<<<<<<< HEAD
+       // $projects = DB::table('projects')->join('users','users.id','=','projects.assigned_to')->take(10)->get();
+=======
         // $projects = DB::table('projects')->join('users','users.id','=','projects.assigned_to')->take(10)->get();
+>>>>>>> 58b8a40facc7caec51d3528b32bbd462b0d9e0d4
         //dd($projects);
         //Project::paginate(10);
         $projectstotal = DB::table('projects')->get();//Project::all();

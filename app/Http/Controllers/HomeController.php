@@ -34,6 +34,11 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
+    public function goBackToHome()
+    {
+        return view('welcome');
+    }
+
     public function index()
     {
         //_________________________ Dashboard Boxes Count _____________________________________

@@ -195,7 +195,7 @@
                                                 <li class="user-header">
                                                      <img src="/storage/{{ Auth::user()->profile_image }}" class="user-image"
                                                      alt="User Image">
-                                                       
+
 
                                                     <p>
                                                         {{ Auth::user()->name }}
@@ -250,34 +250,10 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <!-- Control Sidebar Toggle Button -->
-                                    {{--     <li>
-                                          <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                                        </li> --}}
-                                    {{--  </ul>
-                                              {   <ul class="nav navbar-nav">
-                                                     <li>
-                                                         @if(config('adminlte.logout_method') == 'GET' || !config('adminlte.logout_method') && version_compare(\Illuminate\Foundation\Application::VERSION, '5.3.0', '<'))
-                                                             <a href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}">
-                                                                 <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
-                                                             </a>
-                                                         @else
-                                                             <a href="#"
-                                                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                                             >
-                                                                 <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
-                                                             </a>
-                                                             <form id="logout-form" action="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">
-                                                                 @if(config('adminlte.logout_method'))
-                                                                     {{ method_field(config('adminlte.logout_method')) }}
-                                                                 @endif
-                                                                 {{ csrf_field() }}
-                                                             </form>
-                                                         @endif
-                                                     </li>
-                                                 </ul>  --}}
-
+                                    </ul>
                                 </div>
+                            </nav>
+
                             @if(config('adminlte.layout') == 'top-nav')
                     </div>
                     @endif
