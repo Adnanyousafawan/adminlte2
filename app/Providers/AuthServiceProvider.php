@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
+use Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,17 +26,24 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(GateContract $gate)
     {
 
-//        $this->registerPolicies($gate);
-//
+        $this->registerPolicies();
+
 //        $gate->define('isAdmin', function($users)
 //        {
-//            return $user->role_id == '1';
+//            return $users->role_id == '1';
 //        });
 //        $gate->define('isManager', function($users)
+//       {
+//           return $users->role_id == '2';
+//       });
 //
-//        $this->registerPolicies();
+//        $gate->define('isContractor', function($users)
+//        {
+//            return $users->role_id == '3';
+//        });
+
         
-       // $gate->define('isAdmin', function($users)
+        //$gate->define('isAdmin', function($users)
 
         Gate::define('isAdmin', function($user)
         {
@@ -51,23 +59,6 @@ class AuthServiceProvider extends ServiceProvider
         });
 
 
-/*
-       $gate->define('isManager', function($users)
-
-        {
-            return $user->role_id == '2';
-        });
-        
-        $gate->define('isContractor', function($users)
-        {
-            return $user->role_id == '3';
-        });
-
-        */
-
-
-
-
-//        Passport::routes();
+          //Passport::routes();
     }
 }
