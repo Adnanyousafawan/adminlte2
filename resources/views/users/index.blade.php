@@ -212,7 +212,7 @@
                     <div class="modal-dialog" style="min-width:70%; align-content: center; text-align: center;">
                         <div class="modal-content">
 
-                            <form method="post" action="{{ route('users.store') }}" enctype="">
+                            <form method="get" action="{{ route('users.store') }}" enctype="">
                                 @csrf
                                 <div class="modal-header">
                                     <button type="button" class="close pull-right" data-dismiss="modal"
@@ -297,7 +297,7 @@
                 </div>
                                                             <button type="submit"
                                                                     class="btn btn-block btn-primary btn-xs form-control"
-                                                                    style="margin-top: 20px;">Add Labor
+                                                                    style="margin-top: 20px;">Add User
                                                             </button>
                                                         </div>
                                                     </div>

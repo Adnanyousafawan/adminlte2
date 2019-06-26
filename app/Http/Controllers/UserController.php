@@ -8,6 +8,7 @@ use Gate;
 use Illuminate\Http\Request;
 use Hash;
 use Auth;
+
 class UserController extends Controller
 {
     /**
@@ -115,7 +116,6 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required',
             'address' => 'required',
-            'password' => 'required | min:8',
             'cnic' => 'required',
             'phone' => 'required',
             'role' => 'required',
@@ -125,20 +125,22 @@ class UserController extends Controller
 
         $rollID = DB::table('roles')
             ->where('name', '=', $request->input('role'))
-            ->get()
+            ->pluck('id')
             ->first();
 
         $user = new User([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'address' => $request->input('address'),
-            'password' => $request->input('password'),
-            'cnic' => $request->input('cnic'),
-            'phone' => $request->input('phone'),
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'address' => $request->get('address'),
+            'cnic' => $request->get('cnic'),
+            'password' => Hash::make('init1234'),
+            'phone' => $request->get('phone'),
             'role_id' => $rollID,
-            'profile_image' => $request->input('profile_image')
-
+            'profile_image' => $request->get('profile_image')
         ]);
+
+
+
 
         if ($request->has('profile_image')) {
             // Get image file
@@ -158,10 +160,15 @@ class UserController extends Controller
         }
 
         // Persist user record to database
-        $user->save();
+        if ($user->save()){
+            return redirect()->route('users.all')->with(['status' => 'User added successfully.']);
+
+        } else {
+            return redirect()->route('users.all')->with(['error' => 'User not added successfully.']);
+
+        }
 
         // Return user back and show a flash message
-        return redirect()->route('users.index')->with(['status' => 'User added successfully.']);
     }
 
     /**

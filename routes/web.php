@@ -17,9 +17,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/',function(){
-    return view('welcome');
-});
+Route::get('/', 'HomeController@goBackToHome')->name('home');
+
+
 
 
 Auth::routes();
@@ -111,16 +111,6 @@ Route::get('user/table', 'HomeController@datatable');
 
 //_______________________________User Management___________________________________//
 Route::get('useer', 'HomeController@usermanagement');
-
-
-//-----------------------------------Manager------------------------------------//
-Route::get('managers/addmanager', 'HomeController@addmanager');
-Route::resource('managers', 'ManagerController');
-
-
-//-----------------------------------Contractor---------------------------------//
-Route::get('contractors/addcontractor', 'HomeController@addcontractor');
-Route::resource('contractors', 'ContractorController');
 
 
 //________________________________User Management___________________________________//

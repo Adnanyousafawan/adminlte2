@@ -34,6 +34,11 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
+    public function goBackToHome()
+    {
+        return view('welcome');
+    }
+
     public function index()
     {
         $status_id = DB::table('project_status')->where('name','=','Completed')->pluck('id')->all();
