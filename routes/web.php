@@ -48,6 +48,9 @@ Route::get('orders','OrderDetailsController@index')->name('orders.list');
 Route::get('orders/recieved','OrderDetailsController@recieved')->name('orders.recieved');
 Route::get('orders/cancelled','OrderDetailsController@cancelled')->name('orders.cancelled');
 Route::delete('orders/destroy/{id}', 'OrderDetailsController@destroy')->name('orders.destroy');
+Route::get('orders/projectorders/{id}', 'OrderDetailsController@projectorders')->name('orders.projectorders');
+
+
 
 
 
@@ -55,7 +58,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //-----------------------------------Project Management------------------------------------//
 
-//Route::resource('projects', 'ProjectController');
+Route::resource('projects', 'ProjectController');
 Route::get('/search_project', 'ProjectController@search_project');
 Route::get('projects', 'ProjectController@index')->name('projects.index');
 Route::get('projects/create', 'ProjectController@create')->name('projects.create');
@@ -72,21 +75,39 @@ Route::get('projects/cancelled','ProjectController@cancelled')->name('projects.c
 Route::get('projects/current','ProjectController@current')->name('projects.current');
 Route::get('projects/all','ProjectController@all')->name('projects.all');
 
+//--------------------------------Project Phase Management------------------------------
+Route::get('phases','PhaseController@index')->name('phases.index');
+Route::get('phases/create','PhaseController@create')->name('phases.create');
+Route::post('phases/phases/insert','PhaseController@insert')->name('phases.insert');
+Route::get('phase/edit/{id}', 'PhaseController@edit')->name('phases.edit');
+Route::delete('phase/destroy/{id}', 'PhaseController@destroy')->name('phases.destroy');
+
+//-----------------------------ProjectStatus-----------------------------------
+
+Route::get('projectstatus','ProjectStatusController@index')->name('projectstatus.index');
+Route::get('projectstatus/create','ProjectStatusController@create')->name('projectstatus.create');
+Route::post('projectstatus/projectstatus/insert','ProjectStatusController@insert')->name('projectstatus.insert');
+Route::get('projectstatus/edit/{id}', 'ProjectStatusController@edit')->name('projectstatus.edit');
+Route::delete('projectstatus/destroy/{id}', 'ProjectStatusController@destroy')->name('projectstatus.destroy');
+
+//__________________________________Material Request_______________________________________
+
+Route::get('materialrequest','MaterialRequestController@index')->name('requests.index');
+
 
 
 //-----------------------------------User Management------------------------------------//
 
-//Route::resource('users', 'UserController');
-//
+Route::resource('users', 'UserController');
 Route::get('users','UserController@all')->name('users.all');
 Route::get('users/create','UserController@create')->name('users.create');
 Route::get('users/manager','UserController@manager')->name('users.manager');
 Route::get('users/contractor','UserController@contractor')->name('users.contractor');
 Route::get('users/edit/{id}','UserController@edit')->name('users.edit');
-Route::get('users/store','UserController@store')->name('users.store');
-Route::get('users/destroy/{id}','UserController@destroy')->name('users.destroy');
-
+Route::post('users/store','UserController@store')->name('users.store');
+Route::delete('users/destroy/{id}','UserController@destroy')->name('users.destroy');
 Route::post('users/change_password','UserController@changepassword')->name('user.changepassword');
+//Route::post('users/update/{id}','UserController@update')->name('users.update');
 
 
 
@@ -102,7 +123,7 @@ Route::get('/labors/create','LaborController@create')->name('labors.create');
 
 Route::resource('suppliers', 'SupplierController');
 Route::get('/search_supplier', 'SupplierController@search_supplier');
-Route::get('suppliers/index', 'SupplierController@index')->name('suppliers.index');
+Route::get('suppliers/all', 'SupplierController@index')->name('suppliers.all');
 
 //Route::get('users/index', 'HomeController@userindex')->name('user.index');
 

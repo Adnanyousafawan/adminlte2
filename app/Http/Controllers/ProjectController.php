@@ -34,15 +34,15 @@ class ProjectController extends Controller
 
         if(Gate::allows('isAdmin'))
         {
-          $projects = DB::table('projects')
+          $projects = DB::table('projects')->get();
             /* ->join('users', 'users.id', '=', 'projects.assigned_to')
             ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
-            ->get();
-
-        //$projectstotal = DB::table('projects')->get();//Project::all();
+            //$projectstotal = DB::table('projects')->get();//Project::all();
             $contractors = DB::table('users')->where('role_id', '=', 3)->get();
-            return view('projects/index', compact('projects'), ['contractors' => $contractors]);
+            return view('projects/index', compact('projects','contractors'));
         }
+
+
         if(Gate::allows('isManager'))
         {
             $projects = DB::table('projects')->where('projects.assigned_by','=',Auth::user()->id )->get();
@@ -55,6 +55,7 @@ class ProjectController extends Controller
             return view('projects/index', compact('projects'), ['contractors' => $contractors]);
         //return view('projects.index');
         }
+
         if(Gate::allows('isContractor'))
         {
             abort(404,"You are not Allowed to Access this Page.");
@@ -320,23 +321,24 @@ class ProjectController extends Controller
 
     public function viewuser($id)
     {
-        
-        $labors = DB::table('labors')
-            ->join('projects', 'projects.id', '=', 'labors.project_id')
-            ->get();
+        $projects = DB::table('projects')->where('id','=',$id)->get()->first(); 
 
+        $labors = DB::table('labors')->where('project_id','=',$id)->get()->all();
+       
        /*  $customers = DB::table('customers')
          ->join('projects', 'projects.customer_id', '=', 'customers.id')
          ->get();
          
        */
+       $orders = DB::table('order_details')/*join('projects', 'projects.id', '=', 'order_details.project_id')*/->where('project_id','=',$id)->paginate(5);
 
-       $orders = DB::table('order_details')->join('projects', 'projects.id', '=', 'order_details.project_id')->where('order_details.project_id','=',$id)->get()->all();
-       
+
+        $total_orders = DB::table('order_details')->where('project_id','=',$id)->count();
         //dd($orders);
-        $customers = DB::table('projects')->where('projects.id', '=', $id)
-            ->join('customers', 'customers.id', '=', 'projects.id')
-            ->get()->first();
+
+        $selectedproject= DB::table('projects')->where('id', '=', $id)->pluck('id')->first();
+        $customers = DB::table('customers')->where('id','=',$selectedproject)->get()->first();
+       // dd($customers);
 
             //dd($customers);
 
@@ -363,8 +365,12 @@ class ProjectController extends Controller
 
         //dd($contractors);
 
-        $projects = DB::table('projects')->where('id','=',$id)->first(); //->where('assigned_to', '=', $id);
+        //$spent = DB::table('order_details')->where('project_id','=',$id)->sum('price');
+        $expense = DB::table('miscellaneous_expenses')->where('project_id','=',$id)->sum('expense');
 
+        $projects = DB::table('projects')->where('id','=',$id)->get()->first(); //->where('assigned_to', '=', $id);
+        $balance = $projects->estimated_budget - $expense;
+        //dd($balance);
        // $check = [];
        // $index = 0;
        // foreach ($projects as $project) {
@@ -414,7 +420,7 @@ class ProjectController extends Controller
         */
 
         //$users = User::paginate(10);
-        return view('projects/view', compact('projects','customers','labors','orders','contractors'));
+        return view('projects/view', compact('projects','customers','labors','orders','contractors','total_orders','balance','expense'));
         // ['data' => $data],['orders' => $orders]);
     }
 
@@ -456,7 +462,7 @@ class ProjectController extends Controller
         // $projects->contract_image = $request->input('contract_image');
         $projects->save();
         // Return user back and show a flash message
-        return redirect()->route('projects.index')->with('success', 'Data Updated');
+        return redirect()->back()->with('success', 'Data Updated');
     }
 
     /**
@@ -467,17 +473,24 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-
-        if (DB::table('labors')
-            ->join('projects', 'projects.id', '=', 'labors.project_id')
-            ->where('labors.id','=',$id)
-            ->count()) {
-            Project::where('id', $id)->delete();
-            return redirect()->intended('projects/index')->with('success', 'Project Deleted Succuessfully.');
-        } else {
-            return redirect()->route('projects.index')->with('message', 'Labor Exists. Please delete labors from project first.');
-
-        }
+        $labors = DB::table('labors')->where('project_id','=',$id)->count();
+        $orders = DB::table('order_details')->where('project_id','=',$id)->count();
+        if($orders <= 0)
+        {
+             if ($labors <= 0)
+            {
+                Project::where('id', $id)->delete();
+                return redirect()->back()->with('success', 'Project Deleted Succuessfully.');
+            } 
+            else {
+                return redirect()->back()->with('message', 'Labor Exists. Please delete labors from project first.');
+            }
+        }  
+        else
+        {
+                return redirect()->back()->with('message', 'Orders Exists. Please delete Orders from project first');
+        }    
+       
     }
 
 
@@ -486,4 +499,6 @@ class ProjectController extends Controller
 
 
     }
+
+
 }

@@ -41,20 +41,60 @@ class HomeController extends Controller
 
     public function index()
     {
+        //_________________________ Dashboard Boxes Count _____________________________________
         $status_id = DB::table('project_status')->where('name','=','Completed')->pluck('id')->all();
         $expense = DB::table('miscellaneous_expenses')->sum('expense');
-
-
         $projects = DB::table('projects')->get();
         $total_contractors = DB::table('users')->where('id','=',3)->count();
-        
         $completed_projects = DB::table('projects')->where('status_id', '=', $status_id)->count();
         $current_projects =  DB::table('projects')->where('status_id', '!=', $status_id)->count();
+        //_______________________________________________________________________________________
+
+
+        //_________________________ Monthly Graph _______________________________________________
+
+        //_______________________________________________________________________________________
+
+        //___________________________ Material List _____________________________________________
+
+
+
+        //_______________________________________________________________________________________
+
+        //____________________________Current Projects___________________________________________
+
+
+        //_______________________________________________________________________________________
+
+
+        //____________________________Order Details______________________________________________
+
+         $orders = DB::table('order_details')->paginate(5);
+
+
+
+        //_______________________________________________________________________________________
+
+
+        //____________________________Users Box__________________________________________________
+            
+        // $total_free_contractors = DB::table('users')->where('id','=',3)->count();
+        // $working_contractors = 
+
+        //_______________________________________________________________________________________
+
+
+
+
+
+
+
+
 
         //DB::table()->where('status_id','=',$status_id)->get()->count();
 
        // dd($completed_projects);
-        return view('home', compact('projects','total_contractors','completed_projects','current_projects','expense'));
+        return view('home', compact('projects','total_contractors','completed_projects','current_projects','expense','orders'));
     }
 
     public function addcontractor()

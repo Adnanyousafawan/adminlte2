@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\MaterialRequest;
 use Illuminate\Http\Request;
+use DB;
+use Validator;
 
 class MaterialRequestController extends Controller
 {
@@ -14,7 +16,8 @@ class MaterialRequestController extends Controller
      */
     public function index()
     {
-        //
+        $materialrequests = DB::table('material_requests')->get()->all();
+        return view('materialrequest/index', compact('materialrequests'));
     }
 
     /**

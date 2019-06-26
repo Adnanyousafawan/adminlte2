@@ -36,7 +36,7 @@ class SupplierController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    { 
         $request->validate([$request,
             'name' => 'required',
             'phone' => 'required',

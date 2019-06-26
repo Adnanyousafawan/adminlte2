@@ -51,7 +51,7 @@
 
                     </div>
                     <div class="col-sm-4">
-                        <a class="btn btn-primary  form-control" href="{{ route('suppliers.create') }}">Add new User</a>
+                        <a class="btn btn-primary  form-control" href="{{ route('suppliers.create') }}">Add new Supplier</a>
                     </div>
                 </div>
             </div>
