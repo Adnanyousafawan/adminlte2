@@ -90,7 +90,7 @@
                             @foreach ($customers as $customer)
                                 <tr>
                                     <td>CU0000{{ $customer->id }}</td>
-                                    <td>{{ $customer->c_name }}</td>
+                                    <td>{{ $customer->name }}</td>
                                     <td>Project id Here</td>
                                     <td>Project Title Here</td>
                                     <td>{{ $customer->phone}}</td>

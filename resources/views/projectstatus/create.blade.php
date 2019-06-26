@@ -17,11 +17,6 @@
   </head>
   <body>
 
-   @if (session('success'))
-   <div class="alert alert-success" role="alert">
-    {{ session('success') }}
-  </div>
-  @endif
   
 
 <ol class="breadcrumb">
@@ -35,30 +30,30 @@
     @endforeach
 </ol>
 
-  
+
+   @if (session('success'))
+   <div class="alert alert-success" role="alert">
+    {{ session('success') }}
+  </div>
+  @endif
+
+   @if (session('message'))
+   <div class="alert alert-success" role="alert">
+    {{ session('message') }}
+  </div>
+  @endif
+
+
 <div class="box box-primary">
    <br />
-   <h3 align="center">Add Expenses</h3>
+   <h3 align="center">Add Project Status</h3>
    <br />
    <div class="table-responsive">
     <form id="dynamic_form">
       @csrf
       @method('POST')
         <div class="col-md-10 col-xl-10 col-lg-10 col-sm-10 col-xs-12 col-md-offset-1 col-xl-offset-1 col-lg-offset-1 col-sm-offset-1 col-xs-offset-0 " style="margin-bottom: 70px;">
-          <div class="row">
-          <div class="col-md-6 col-md-offset-3">
-                  <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="assigned_to">Select Project</label>
-                            <select class="form-control" id="project_id" name="project_id" required>
-                              <option disabled selected value> -- select an option -- </option>
-                                @foreach($projects as $project)
-                                    <option>{{ $project->title}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                      </div>
-</div>
-               {{--      @csrf
+            {{--      @csrf
                 @method('POST') --}}
                 <span id="result"></span>
                 <table class="table table-bordered table-striped" id="user_table">
@@ -66,8 +61,6 @@
                   <tr>
                     {{-- <th width="21%">Project ID</th> --}}
                     <th>Name</th>
-                    <th>Description</th>
-                    <th>Expense</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -76,7 +69,7 @@
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colspan="3" align="right">&nbsp;</td>
+                    <td colspan="1" align="right">&nbsp;</td>
                     <td>
                      {{-- @csrf --}}
                      <button type="submit" name="save" id="save" class="btn btn-primary" value="Save" >Save</button>
@@ -104,9 +97,7 @@
         html = '<tr>';
        
         html += '<td><input type="text" name="name[]" class="form-control"></td>';
-        html += '<td><input type="text" name="description[]" class="form-control"/></td>';
-        html += '<td><input type="number" name="expenses[]" class="form-control"/></td>';
-        
+
         if(number > 1)
         {
           html += '<td><button type="button" name="remove" id="" class="btn btn-danger remove">Remove</button></td></tr>';
@@ -129,7 +120,6 @@
         $(this).closest("tr").remove();
       });
 
- // $('#dynamic_form').on('submit', function(event){
   $.ajaxSetup({
     headers:{
       'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
@@ -138,13 +128,11 @@
 
   $('#save').click(function(e){
     e.preventDefault();
-          //var name = "Hamza";
           $.ajax({
             type:'POST',
-            url:'miscellaneousexpenses/insert',
+            url:'projectstatus/insert',
             data:$('#dynamic_form').serialize(),
             datatype: 'json',
-
             success:function(data){
                if(data.error)
                 {
@@ -153,7 +141,7 @@
                     {
 
                         error_html += '<p>'+data.error[count]+'</p>';
-                        //console.log('ERRORRRR');
+                       
                     }
                     $('#result').html('<div class="alert alert-danger"; >'+error_html+'</div>');
                 }
@@ -173,7 +161,7 @@
         });
 
            
-          });
+  });
 
 // });
 </script>

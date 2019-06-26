@@ -107,11 +107,11 @@
                     <div class="form-group">
                         <label for="name">Customer Name</label>
                         <input type="text" class="form-control" id=_name" placeholder="Customer Name"
-                               value="{{ $projects->customer_name }}"
+                               value="{{ $customer->name }}"
                                name="name">
-                        @if ($errors->has('cust_name'))
+                        @if ($errors->has('name'))
                             <span class="help-block">
-                                <strong style="color: red; float: right;">{{ $errors->first('came') }}</strong>
+                                <strong style="color: red; float: right;">{{ $errors->first('name') }}</strong>
                                 </span>
                         @endif
                     </div>
@@ -119,7 +119,7 @@
                     <div class="form-group">
                         <label for="cnic">Customer CNIC</label>
                         <input type="text" class="form-control" id="cnic" placeholder="Customer CNIC"
-                               value="{{ $projects->customer_cnic }}"
+                               value="{{ $customer->cnic }}"
                                name="cnic">
                         @if ($errors->has('cnic'))
                             <span class="help-block">
@@ -136,7 +136,7 @@
                                 <i class="fa fa-phone"></i>
                             </div>
                             <input type="text" class="form-control" placeholder="Contact Number"
-                                   value="{{ $projects->customer_phone_number }}"
+                                   value="{{ $customer->phone }}"
                                    data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']"
                                    data-mask="" id="phone" name="phone">
                             @if ($errors->has('phone_number'))
@@ -150,7 +150,7 @@
                     <div class="form-group">
                         <label for="address">Home Address</label>
                         <input type="text" class="form-control" id="address" name="address"
-                               value="{{ $projects->customer_address }}"
+                               value="{{ $customer->address }}"
                                placeholder="Home Address">
                         @if ($errors->has('address'))
                             <span class="help-block">
@@ -161,13 +161,10 @@
 
                     <div class="form-group">
                         <label for="assigned_to">Select Contractor</label>
-                        <select class="form-control" id="assigned_to" name="assigned_to"
-                                value="{{ $projects->assigned_to }}">
-                            <option>Contractor 1</option>
-                            <option>Contractor 2</option>
-                            <option>Contractor 3</option>
-                            <option>Contractor 4</option>
-                            <option>Contractor 5</option>
+                        <select class="form-control" id="assigned_to" name="assigned_to">
+                            @foreach($contractors as $contractor)
+                                <option>{{ $contractor->name}}</option>
+                            @endforeach
                         </select>
                         @if ($errors->has('assigned_to'))
                             <span class="help-block">

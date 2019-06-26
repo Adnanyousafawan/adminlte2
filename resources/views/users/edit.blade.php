@@ -1,11 +1,26 @@
 @extends('adminlte::page')
 @section('title', 'AdminLTE')
+
 @section('content')
 
+    @if (session('message'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('message') }}
+        </div>
+    @endif
+
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+ 
 <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
     <div class="box box-primary">
         <div class="box-header">
-            <h2 class="text-center">Update User</h2>
+            @can('isAdmin')<h2 class="text-center">Update User</h2>@endcan
+            @can('isManager')<h2 class="text-center">Update Contractor</h2>@endcan
+
         </div>
         <div class="box-body">
             <form method="POST" action="{{ route('users.update', ['id' => $users->id]) }}"
@@ -16,8 +31,8 @@
                 <div class="col-lg-8 col-lg-offset-2">
 
                     <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
-                        <label for="user_name">User Name</label>
-                        <input type="text" class="form-control" id="user_name" name="user_name"
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name"
                                value="{{ $users->name }}">
                         @if ($errors->has('name'))
                             <span class="help-block alert-danger">
@@ -28,8 +43,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="user_email">User Email</label>
-                        <input type="text" class="form-control" id="user_email" name="user_email"
+                        <label for="email">Email</label>
+                        <input type="text" class="form-control" id="email" name="email"
                                value="{{ $users->email }}">
                         @if ($errors->has('email'))
                             <span class="help-block alert-danger">
@@ -37,10 +52,10 @@
                       </span>
                         @endif
                     </div>
-
+                    @can('isAdmin')
                     <div class="form-group">
-                        <label for="user_pass">User Password</label>
-                        <input type="password" class="form-control" id="user_pass" name="user_pass"
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password"
                                value="{{ $users->password }}">
                         @if ($errors->has('password'))
                             <span class="help-block alert-danger">
@@ -48,10 +63,11 @@
                       </span>
                         @endif
                     </div>
+                    @endcan
 
                     <div class="form-group">
-                        <label for="user_cnic">User CNIC</label>
-                        <input type="text" class="form-control" id="user_cnic" name="user_cnic"
+                        <label for="cnic">CNIC</label>
+                        <input type="text" class="form-control" id="cnic" name="cnic"
                                value="{{ $users->cnic }}">
                         @if ($errors->has('cnic'))
                             <span class="help-block alert-danger">
@@ -61,17 +77,17 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="user_phone_number">User Contact</label>
+                        <label for="phone">Contact</label>
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-phone"></i>
                             </div>
-                            <input type="text" class="form-control" value="{{ $users->phone_number }}"
+                            <input type="text" class="form-control" value="{{ $users->phone }}"
                                    data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']"
-                                   data-mask="" id="user_phone_number" name="user_phone_number">
-                            @if ($errors->has('phone_number'))
+                                   data-mask="" id="phone" name="phone">
+                            @if ($errors->has('phone'))
                                 <span class="help-block alert-danger">
-                        <strong>{{ $errors->first('phone_number') }}</strong>                              
+                        <strong>{{ $errors->first('phone') }}</strong>
                       </span>
                             @endif
                         </div>
@@ -79,42 +95,40 @@
 
 
                     <div class="form-group">
-                        <label for="user_address">Address</label>
-                        <input type="text" class="form-control" id="user_address" name="user_address"
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" name="address"
                                value="{{ $users->address }}">
-                        @if ($errors->has('addres'))
+                        @if ($errors->has('address'))
                             <span class="help-block alert-danger">
                         <strong>{{ $errors->first('address') }}</strong>                              
                       </span>
                         @endif
                     </div>
 
+                    @can('isAdmin')
                     <div class="form-group">
-                        <label for="user_city">City</label>
-                        <input type="text" class="form-control" id="user_city" name="user_city"
-                               value="{{ $users->city }}">
-                        @if ($errors->has('city'))
-                            <span class="help-block alert-danger">
-                        <strong>{{ $errors->first('city') }}</strong>                              
-                      </span>
-                        @endif
-                    </div>
-
-                    <div class="form-group">
-                        <label for="assigned_to">Select Role</label>
-                        <select class="form-control" id="user_role" name="user_role">
-                            <option>Manager</option>
-                            <option>Contractor</option>
+                        <label for="role">Select Role</label>
+                        <select class="form-control" id="role" name="role" value="{{ $current_role }}">
+                                @foreach($roles as $role)
+                                <option>
+                                {{ $role->name }}
+                                 </option>
+                                @endforeach
                         </select>
                     </div>
+                    @endcan
                     {{--
                                 <div class="form-group">
                                   <label for="profile_image">Upload Profile</label>
                                     <input type="file" class="form-control custom-file-input" id="profile_image" name="profile_image">
                                     </div>
                  --}}
-
+                    @can('isAdmin')
                     <button type="submit" class="btn btn-block btn-primary btn-xs form-control" style="margin-bottom: 20px;">Update User</button>
+                    @endcan
+                     @can('isManager')
+                    <button type="submit" class="btn btn-block btn-primary btn-xs form-control" style="margin-bottom: 20px;">Update Contractor</button>
+                    @endcan
                 </div>
             </form>
         </div>

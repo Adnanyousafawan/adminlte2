@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 2',
+    'title' => 'CSTMS',
 
     'title_prefix' => '',
 
@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'collapse_sidebar' => true,
+    'collapse_sidebar' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -217,6 +217,7 @@ return [
                 ],
             ],
         ],
+
          [
             'text'    => 'Expenses',
             'icon'    => 'share',
@@ -233,22 +234,25 @@ return [
               
             ],
         ],
+       
          [
-            'text'    => 'Contractors',
+            'text'    => 'User',
             'icon'    => 'share',
             'submenu' => [
                  [
-                    'text' => 'View All Contractors',
-                    'url' => 'users/index',
+                    'text' => 'View All User',
+                    'url' => 'users',
                 ],
                 [
-                    'text' => 'Add Contractor',
+                    'text' => 'Add User',
                     'url'  => 'users/create',
                 ],
                
               
             ],
         ],
+
+  
          [
             'text'    => 'Supplier',
             'icon'    => 'share',
@@ -259,11 +263,12 @@ return [
                 ],
                 [
                     'text' => 'View All Supplier',
-                    'url' => 'suppliers/create',
+                    'url' => 'suppliers/all',
                 ],
               
             ],
         ],
+
         'Reports Management',
                 [
                     'text' => 'Daily',

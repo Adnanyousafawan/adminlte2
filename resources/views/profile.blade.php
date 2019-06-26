@@ -6,26 +6,26 @@
     <h1>Profile</h1>
 @stop
 
-@if (session('status'))
+@if (session('message'))
     <div class="alert alert-success" role="alert">
         {{ session('status') }}
     </div>
 @endif
 
+@if (session('error'))
+    <div class="alert alert-success" role="alert">
+        {{ session('error') }}
+    </div>
+@endif
 
-@section('content')
 
 
-    {{--<img src="{{ asset(auth()->user()->image) }}" alt="{{ Auth::user()->name  }}'s profile picture" class="img-rounded"/>--}}
+@section('content') 
 
     @if (auth()->user()->profile)
         <img src="{{ asset('/storage'.auth()->user()->profile) }}"
              style="width: 80px; height: 80px; border-radius: 50%;" alt="{{ Auth::user()->name  }}'s profile picture"/>
     @endif
-
-    <br>
-    <br>
-    <br>
 
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible" role="alert">
@@ -42,6 +42,75 @@
         </div>
     @endif
 
+<div class="row">
+    
+
+
+    <div class="col-md-8 col-sm-12 col-lg-8 col-xl-8 col-md-offset-2 col-lg-offset-2 col-xl-offset-2">
+
+        <div class="box box-primary">
+            <div class="box-body">
+                <img class="profile-user-img img-responsive" src="/storage/{{ Auth::user()->profile_image }}"  alt="Project Image" style="min-width: 300px; min-height: 250px; margin-bottom: 50px; margin-top: 40px;">
+                <hr>
+               
+                <div class="col-md-10 col-md-offset-1" style="margin-bottom: 50px;">
+
+                    <form method="post" action="{{ route('profile.image') }}" role="form" enctype="multipart/form-data" >
+                        @csrf
+                        <div class="form-group">
+                            <lable for="name">Name:</lable>
+                            <input type="text" class="form-control disabled" name="name" id="name" value="{{ Auth::user()->name }}">
+                        </div>
+                        <div class="form-group">
+                            <lable for="email">Email:</lable>
+                            <input type="email" class="form-control disabled" name="email" id="email" value="{{ Auth::user()->email }}"
+                            disabled>
+                        </div>
+
+                        <div class="custom-file form-group">
+                            <label class="profile_image " for="profileImage">Choose File</label>
+                            <input type="file" class="form-control custom-file-input" id="profile_image" name="profile_image">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Upload Image">
+                        </div>
+                    </form>
+                    <hr>
+                    <form method="post" action="{{ route('user.changepassword')}}" role="form" enctype="multipart/form-data" >
+                        @csrf
+                     <div class="form-group">
+                            <lable for="old_password">Old Password:</lable>
+                            <input type="Password" class="form-control disabled" name="old_password" id="old_password" value="">
+                        </div>
+                        <div class="form-group">
+                            <lable for="new_password">New Password:</lable>
+                            <input type="Password" class="form-control disabled" name="new_password" id="new_password" value="">
+                        </div>
+                         <div class="form-group">
+                            <lable for="confirm_password">Confirm Password</lable>
+                            <input type="Password" class="form-control disabled" name="confirm_password" id="confirm_password" value="">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Change Password</button> 
+                        </div>
+</form>
+                </div>
+
+
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+
+
+</div>
+
+
+
+{{-- 
+
     <form method="post" action="{{ route('profile.image') }}" role="form" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
@@ -55,8 +124,8 @@
         </div>
 
         <div class="custom-file form-group">
-            <label class="profileImage " for="profileImage">Choose file</label>
-            <input type="file" class="form-control custom-file-input" id="profileImage" name="profile">
+            <label class="profile_image " for="profileImage">Choose file</label>
+            <input type="file" class="form-control custom-file-input" id="profile_image" name="profile_image">
         </div>
 
 
@@ -64,6 +133,7 @@
             <input type="submit" class="btn btn-primary" value="Upload Image">
         </div>
 
-    </form>
+    </form> --}}
+
 
 @stop

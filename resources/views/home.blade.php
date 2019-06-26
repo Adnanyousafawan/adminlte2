@@ -31,7 +31,7 @@
 
   
 
-<div class="row">
+{{-- <div class="row">
         
         <div class="col-md-3 col-sm-6 col-xs-12">
 
@@ -62,7 +62,7 @@
         </div>
         <!-- /.col -->
 
-        <!-- fix for small devices only -->
+        fix for small devices only
         <div class="clearfix visible-sm-block"></div>
 
         <div class="col-md-3 col-sm-6 col-xs-12">
@@ -91,13 +91,16 @@
             <!-- /.info-box -->
         </div>
         <!-- /.col -->
-    </div>
+    </div> --}}
+
+
+    
 <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3>150</h3>
+              <h3>{{ $current_projects }}</h3>
 
               <p>Current Projects</p>
             </div>
@@ -112,7 +115,7 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
+              <h3> {{ $completed_projects }}</h3>
 
               <p>Completed Projects</p>
             </div>
@@ -127,7 +130,7 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>44</h3>
+              <h3>{{ $total_contractors }}</h3>
 
               <p>Total Contrators</p>
             </div>
@@ -142,7 +145,7 @@
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>65</h3>
+              <h3>{{ $expense }}</h3>
 
               <p>Expenses History</p>
             </div>
@@ -512,61 +515,24 @@
                             <tr>
                                 <th>Order ID</th>
                                 <th>Item</th>
+                                <th>Quantity</th>
                                 <th>Status</th>
-                                <th>Site Id</th>
+                                <th>Project ID</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                <td>Bricks</td>
-                                <td><span class="label label-success">Shipped</span></td>
-                                <td>
-                                    <div class="sparkbar" data-color="#00a65a" data-height="20">PR1111</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                <td>Cement</td>
-                                <td><span class="label label-warning">Pending</span></td>
-                                <td>
-                                    <div class="sparkbar" data-color="#f39c12" data-height="20">PR2222</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                <td>Rod</td>
-                                <td><span class="label label-danger">Delivered</span></td>
-                                <td>
-                                    <div class="sparkbar" data-color="#f56954" data-height="20">PR3333</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                <td>Sand</td>
-                                <td><span class="label label-info">Processing</span></td>
-                                <td>
-                                    <div class="sparkbar" data-color="#00c0ef" data-height="20">PR2222</div>
-                                </td>
-                            </tr>
+                           
+                               @foreach($orders as $order)
+                                 <tr>
+                                  <td><a href=" ">OR1000{{ $order->id }}</a></td>
+                                  <td>{{ $order->item_id }}</td>
+                                  <td>{{ $order->quantity }}</td>
 
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                <td>Cement</td>
-                                <td><span class="label label-success">Shipped</span></td>
-                                <td>
-                                    <div class="sparkbar" data-color="#00a65a" data-height="20">PR4555</div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                <td>Cement</td>
-                                <td><span class="label label-success">Shipped</span></td>
-                                <td>
-                                    <div class="sparkbar" data-color="#00a65a" data-height="20">PR4555</div>
-                                </td>
-                            </tr>
+                                  <td><span class="label label-success col-md-8">{{ $order->status }}</span></td>
+                                  <td><a href="{{ route('projects.view', ['id' => $order->project_id]) }}" data-height="20">PR000{{ $order->project_id }}</a>
+                                  </td>
+                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -575,14 +541,14 @@
                 <!-- /.box-body -->
                 <div class="box-footer clearfix">
                     <a href="{{ route('order.create')}}" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
-                    <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
-                </div>
+                    <a href="{{route('orders.list')}}" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+                </div> 
                 <!-- /.box-footer -->
             </div>
             <!-- /.box -->
         </div>
         <!-- /.col -->
-    
+ {{--    
 <div class="col-md-4">  
   <div class="box box-default">
             <div class="box-header with-border">
@@ -632,7 +598,7 @@
             <!-- /.footer -->
           </div>
 </div>
-
+ --}}
              {{--  <!-- USERS LIST -->
               <div class="box box-danger">
                 <div class="box-header with-border">
@@ -704,10 +670,17 @@
 
 
 
-<div class="col-md-2">
+<div class="col-md-4">
 <div class="box box-solid">
       <div class="box-header with-border">
+        @can('isAdmin')
+        <h3 class="box-title"><i class="fa fa-users dashbord-icon-color" aria-hidden="true"></i> &nbsp; Users</h3>
+        @endcan
+         @can('isManager')
         <h3 class="box-title"><i class="fa fa-users dashbord-icon-color" aria-hidden="true"></i> &nbsp; Contractors</h3>
+        @endcan
+
+
         <div class="box-tools pull-right">
           <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
         </div>
@@ -715,12 +688,26 @@
       <div class="box-body">
         <div class="row">
           <div class="col-md-12">
+            @can('isManager')
             <h5>Contractors</h5><hr>
+            @endcan
+             @can('isAdmin')
+            <h5>Users</h5><hr>
+            @endcan
+
             <div class="vendor-info-count">
               <ul>
-                <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.index') }}">8 &nbsp;&nbsp;Total Contrators</a></li>
-                <li><i class="fa fa-check"></i>&nbsp;&nbsp; <a href="{{route('users.index') }}">6 &nbsp;&nbsp;Working Contractors</a></li>
-                <li><i class="fa fa-close"></i>&nbsp;&nbsp; <a href="{{route('users.index') }}">2 &nbsp;&nbsp;Free Contractors</a></li>
+                @can('isAdmin')
+                 <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.manager') }}">8 &nbsp;&nbsp;Total User</a></li>
+          
+                 <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.manager') }}">8 &nbsp;&nbsp;Total Managers</a></li>
+                @endcan
+                
+                <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}">8 &nbsp;&nbsp;Total Contrators</a></li>
+                <li><i class="fa fa-check"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}">6 &nbsp;&nbsp;Working Contractors</a></li>
+                <li><i class="fa fa-close"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}">2 &nbsp;&nbsp;Free Contractors</a></li>
+
+                
               </ul>
             </div>
           </div>

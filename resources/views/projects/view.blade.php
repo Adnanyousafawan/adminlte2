@@ -16,10 +16,12 @@
 
 @section('content')
 
+
    <ol class="breadcrumb">
     <li><a href="{{ route('home')}}"><i class="fa fa-dashboard"></i>  &nbsp;Dashboard</a></li>
     <?php $segments = ''; ?>
     @foreach(Request::segments() as $segment)
+          
         <?php $segments .= '/'.$segment; ?>
         <li>
             <a href="{{ $segments }}">{{$segment}}</a>
@@ -62,9 +64,9 @@
                     <div class="col-xs-12 col-md-3 col-sm-4 col-lg-4 col-xl-12">
                         <div class="box">
                             <div class="box-header">
-                                <h2 class="box-title">Cost</h2>
+                                <h2 class="box-title">Spent</h2>
                                 <span class="info-box-number label label-warning pull-right"
-                                      style="margin-top: 0px;">80,000</span>
+                                      style="margin-top: 0px;">{{ $expense }}</span>
                             </div>
                             <!-- /.box-header -->
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -76,9 +78,9 @@
                     <div class="col-xs-12 col-md-4 col-sm-4 col-lg-4 col-xl-12">
                         <div class="box">
                             <div class="box-header">
-                                <h2 class="box-title">Credit</h2>
-                                <span class="info-box-number label label-success pull-right"
-                                      style="margin-top: 0px;">32,0000</span>
+                                <h2 class="box-title">Balance</h2>
+                                <span class="info-box-number label label-danger pull-right"
+                                      style="margin-top: 0px;">{{ $balance }}</span>
                             </div>
                             <!-- /.box-header -->
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -86,12 +88,13 @@
                         <!-- /.info-box-content -->
                         <!-- /.info-box -->
                     </div>
+                {{-- {{     dd($data) }}  --}}
                     <!-- /.col -->
                     <div class="col-xs-12 col-md-3 col-sm-4 col-lg-4 col-xl-12">
                         <div class="box">
                             <div class="box-header">
                                 <h2 class="box-title">Budget</h2>
-                                <span class="info-box-number label label-danger pull-right" style="margin-top: 0px;">{{ $data->estimated_budget }} /Rs.</span>
+                                <span class="info-box-number label label-success pull-right" style="margin-top: 0px;"> {{ $projects->estimated_budget }}</span>
                             </div>
                             <!-- /.box-header -->
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -103,6 +106,9 @@
                 </div>
        
             </div>    
+<div class="row">
+    
+
 
                 <div class="col-md-4 col-md-offset-1 col-sm-6 col-lg-4 col-lg-offset-1">
                    
@@ -113,44 +119,45 @@
                 <?php
                 //dd($projects);
                 ?>
-                            <h3 class="profile-username text-center">{{ $data->title }}</h3>
-
-                            <p class="text-muted text-center">{{ $data->area }}</p>
+                            <h3 class="profile-username text-center"> {{$projects->title }}  </h3>
+                             <p class="text-muted text-center"> {{ $projects->area }}  </p>
+                            <b><p class="text-muted text-center"> {{ $projects->city }}  </p></b>
                             <hr>
                             <strong><i class="fa fa-book margin-r-5"></i>Customer Name</strong>
                             <p class="text-muted float-right">
-                                {{ $data->c_name }}
+                                {{ $customers->name }}
                             </p>
                             <strong><i class="fa fa-book margin-r-5"></i>Customer Contact</strong>
-                            <p class="text-muted float-right">
-                                 {{ $data->phone }}
+                            <b><p class="text-muted float-right">
+                                {{ $customers->phone }}
                             </p>
-                            <hr>
+                            
                             <strong><i class="fa fa-book"></i>Project Details</strong>
                             <div class="box-body">
 
                                 <ul class="list-group list-group-unbordered">
                                     <li class="list-group-item">
                                         <b>Size</b> <a class="pull-right"> <span
-                                                class="label label-danger"> {{ $data->plot_size }}</span></a>
+                                                class="label label-danger"> {{ $projects->plot_size }}   </span></a>
                                     </li>
                                     <li class="list-group-item">
-                                        <b>Number of Floors</b> <a class="pull-right">{{ $data->floor }}</a>
+                                        <b>Number of Floors</b> <a class="pull-right">  {{ $projects->floor}}   </a>
+                                    </li>
+
+                                    <li class="list-group-item">
+                                        <b>Completion Time</b> <a class="pull-right"> {{ $projects->estimated_completion_time }}   </a>
                                     </li>
                                     <li class="list-group-item">
-                                        <b>Completion Time</b> <a class="pull-right">{{ $data->estimated_completion_time }}</a>
+                                        <b>Assigned To</b> <a class="pull-right">  {{ $contractors->name }}  </a>
                                     </li>
                                     <li class="list-group-item">
-                                        <b>Assigned To</b> <a class="pull-right">{{ $data->assigned_to }}</a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <b>Contact</b> <a class="pull-right">{{ $data->phone }}</a>
+                                        <b>Contact</b> <a class="pull-right"> {{ $contractors->phone }}  </a>
                                     </li>
                                 </ul>
                                 <!-- /.box-body -->
-                                <strong><i class="fa fa-file-text-o "></i> Description</strong>
+                                <strong><i class="fa fa-file-text-o "></i> {{ $projects->description }}</strong>
 
-                                <p>{{ $data->description }}</p>
+                                <p>   </p>
                             </div>
 
                             <a href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
@@ -208,7 +215,81 @@
       </div>
               
  
-                <div class="col-md-4 col-md-offset-1 col-sm-12 col-sm-offset-0 col-lg-4 col-lg-offset-1">
+</div>
+
+<div class="row">
+                <div class="col-md-5 col-md-offset-1 col-sm-12 col-lg-6 col-lg-offset-1">
+                    <div class="box box-primary" style="margin-bottom: 10px;">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Orders Details</h3>
+
+                            <div class="box-tools pull-right">
+                                {{--  <a href="javascript:void(0)" class="btn btn-sm btn-primary btn-flat pull-left">Place New Order</a> --}}
+
+
+                                {{--  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                             class="fa fa-minus"></i>
+                                 </button> --}}
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table class="table no-margin">
+                                    <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Item</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($orders as $order) 
+                                    <tr>
+                                        <td><a href="#">OR{{ $order->id }}</a></td>
+                                        
+                                        <td>{{ $order->item_id }}</td>
+                                        <td>{{ $order->quantity}}</td>
+                                        <td>{{ $order->status }}</td>
+                                        <td><span class="label label-success col-md-10">{{ $order->status }}</span></td>
+                                    </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div> 
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer clearfix">
+
+                            <a href="{{ route('orders.projectorders',['id' => $projects->id ]) }}" class="btn btn-sm btn-default btn-flat pull-right">View All
+                                Orders</a>
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                                        Showing 1
+                                to {{count($orders)}} of {{ $total_orders }} entries
+                                    </div>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                                        {{--  {{ $projects->links() }} --}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-footer -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+
+
+
+
+
+                <div class="col-md-4 col-md-offset-0 col-sm-12 col-sm-offset-0 col-lg-4 col-lg-offset-0">
                     <div class="box box-primary" style="margin-bottom: 10px;">
                         <div class="box-header with-border">
                             <h3 class="box-title">Material Requests</h3>
@@ -305,127 +386,7 @@
                 </div>
 
 
-
-                <div class="col-md-6 col-md-offset-0 col-sm-12 col-lg-6 col-lg-offset-0">
-                    <div class="box box-primary" style="margin-bottom: 10px;">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Orders Details</h3>
-
-                            <div class="box-tools pull-right">
-                                {{--  <a href="javascript:void(0)" class="btn btn-sm btn-primary btn-flat pull-left">Place New Order</a> --}}
-
-
-                                {{--  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                             class="fa fa-minus"></i>
-                                 </button> --}}
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <div class="table-responsive">
-                                <table class="table no-margin">
-                                    <thead>
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>Project Id</th>
-                                        <th>Item</th>
-                                        <th>Quantity</th>
-                                        <th>Price</th>
-                                        <th>Status</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#00a65a" data-height="20">PR1111</div>
-                                        </td>
-                                        <td>Bricks</td>
-                                        <td>12</td>
-                                        <td>12*3=24</td>
-                                        <td><span class="label label-success col-md-6">Shipped</span></td>
-
-                                    </tr>
-                                    <tr>
-                                        <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#f39c12" data-height="20">PR2222</div>
-                                        </td>
-                                        <td>Cement</td>
-                                        <td>12</td>
-                                        <td>12*3=24</td>
-                                        <td><span class="label label-warning col-md-6">Pending</span></td>
-
-
-                                    </tr>
-                                    <tr>
-                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#f56954" data-height="20">PR3333</div>
-                                        </td>
-                                        <td>Rod</td>
-                                        <td>12</td>
-                                        <td>12*3=24</td>
-                                        <td><span class="label label-danger col-md-6"> Delivered</span></td>
-
-                                    </tr>
-                                    <tr>
-                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#00c0ef" data-height="20">PR2222</div>
-                                        </td>
-                                        <td>Sand</td>
-                                        <td>12</td>
-                                        <td>12*3=24</td>
-                                        <td><span class="label label-info col-md-6 col-sm-10 col-xs-12 col-lg-12"> Processing</span>
-                                        </td>
-
-                                    </tr>
-
-                                    <tr>
-                                        <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#00a65a" data-height="20">PR4555</div>
-                                        </td>
-                                        <td>Cement</td>
-                                        <td>12</td>
-                                        <td>12*3=24</td>
-                                        <td><span
-                                                class="label label-success col-md-6 col-sm-10 col-xs-12 col-lg-12 col-12">Shipped</span>
-                                        </td>
-
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.table-responsive -->
-                        </div>
-                        <!-- /.box-body -->
-                        <div class="box-footer clearfix">
-
-                            <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All
-                                Orders</a>
-                            <div class="row">
-                                <div class="col-sm-5">
-                                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                                        Showing 1
-                                        to 2 of 2 entries
-                                    </div>
-                                </div>
-                                <div class="col-sm-7">
-                                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-                                        {{--  {{ $projects->links() }} --}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.box-footer -->
-                    </div>
-                    <!-- /.box -->
-                </div>
-
-
-
+</div>
 
 
             <div class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
@@ -540,7 +501,7 @@
 
                 <div id="applicantADDModal" class="modal fade" tabindex="-1" role="dialog"
                      aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
-                    <div class="modal-dialog" style="min-width:70%; align-content: center; text-align: center;">
+                    <div class="modal-dialog" style="min-width:70%; align-content: center;">
                         <div class="modal-content">
 
                             {{--   <form class="row" method="POST"
@@ -557,7 +518,7 @@
                                 <div class="modal-header">
                                     <button type="button" class="close pull-right" data-dismiss="modal"
                                             aria-hidden="true">x
-                                    </button>
+                                     </button>
                                     <strong><h3 class="modal-title text-center" id="custom-width-modalLabel">Add
                                             Labor</h3></strong>
                                 </div>
@@ -566,36 +527,10 @@
                                     <div style=" width: 100%;">
 
                                         <div class="row" style="margin-top: 5px; margin-left: 1%;">
-                                            <div
-                                                class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1 col-xl-3 col-xl-offset-1  ">
-                                                <!-- Profile Image -->
-                                                <div class="">
-                                                    <div class="box-body box-profile">
-                                                        <head><h4>Upload Labor CNIC</h4></head>
-                                                        <hr>
-                                                        <img class="img-fluid img-responsive"
-                                                             style="min-width: 100%; min-height: 200px;">
-                                                        <hr>
-                                                        <div class="form-group">
-                                                            <input type="file"
-                                                                   class="btn btn-primary col-md-12 col-xs-12"
-                                                                   id="cont_image"
-                                                                   name="cont_image" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div
-                                                class="col-sm-10 col-xs-offset-1 col-sm-offset-0 col-xs-10 col-lg-8 col-xl-8"
-                                                style="/*max-width: 70%;*/ padding-bottom: 30px;">
-                                                <div>
-                                                    {{-- <div class="box-header">
-                                                        <h2 class="text-center">Add Labor</h2>
-                                                    </div> --}}
+                                        
                                                     <div class="box-body">
 
-                                                        <div class="col-lg-9 col-lg-offset-2">
+                                                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-2 col-sm-12 col-xl-10 col-xl-offset-2 ">
                                                             <div class="form-group">
 
 
@@ -641,9 +576,9 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="project_id">Project ID</label>
-                                                                <input type="number" class="form-control"
-                                                                       id="project_id" placeholder="Proect ID"
-                                                                       name="project_id" required>
+                                                                <select class="form-control" id="project_id" name="project_id">
+                                                                    <option> {{ $projects->title }} </option>
+                                                                </select>
                                                             </div>
 
                                                             <button type="submit"
@@ -653,22 +588,19 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                             </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
-
-                            </form>
+                            </div>
                         </div>
-                    </div>
+                    
                 </div>
-
-                
-
-        </div><!-- /.row -->
+            </div>
+        </div>
     </div>
+</div>
+</div>
 </div>
 
  <script type="text/javascript">

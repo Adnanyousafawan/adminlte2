@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Phase;
 use Illuminate\Http\Request;
-use App\ProjectPhase;
+use App\ProjectStatus;
 use Validator;
 use DB;
 
 
-class PhaseController extends Controller
+class ProjectStatusController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class PhaseController extends Controller
      */
     public function index()
     {
-        $phases = DB::table('project_phase')->get()->all();
-        return view('projectphase/index',compact('phases'));
+        $statuses = DB::table('project_status')->get()->all();
+        return view('projectstatus/index',compact('statuses'));
     }
 
     /**
@@ -28,7 +28,7 @@ class PhaseController extends Controller
      */
     public function create()
     {
-       return view('projectphase/create');  
+       return view('projectstatus/create');  
     }
 
     /**
@@ -60,7 +60,7 @@ class PhaseController extends Controller
          for($count = 0; $count < count($name); $count++)
          {
    
-          $obj = new ProjectPhase([
+          $obj = new ProjectStatus([
               'name' => $name[$count],
 
           ]);
@@ -68,7 +68,7 @@ class PhaseController extends Controller
           $obj->save();
       }
       return response()->json([
-       'success'  => 'Data Added successfully.']
+       'success'  => 'Status Added successfully.']
     );
     }
 }
@@ -96,7 +96,7 @@ class PhaseController extends Controller
      */
     public function edit(Phase $phase)
     {
-        //$phase = DB::table('project_phase')->find($id);
+        $status = DB::table('project_status')->find($id);
         return redirect()->back()->with('message','Think about Editing');
     }
 
@@ -120,16 +120,16 @@ class PhaseController extends Controller
      */
     public function destroy($id)
     {
-        $count = DB::table('projects')->where('phase_id','=',$id)->count();
-       if($count == 0)
-       {
-            ProjectPhase::where('id', $id)->delete();
-            return redirect()->back()->with('success','Phase Deleted Successfully.');
-       }
-       else
-       {
-            return redirect()->back()->with('message','Some projects are in this Phase. Edit Phase Instead');
-       }
-       
+        $count = DB::table('projects')->where('status_id','=',$id)->count();
+           if($count == 0)
+           {
+                ProjectStatus::where('id', $id)->delete();
+                return redirect()->back()->with('success','Status Deleted Successfully.');
+           }
+           else
+           {
+                return redirect()->back()->with('message','Some projects are in this Status. Edit Status Instead');
+           }
+        
     }
 }

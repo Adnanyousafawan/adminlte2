@@ -12,19 +12,18 @@ use Redirect;
 use View;
 use Illuminate\Support\Str;
 use App\Traits\UploadTrait;
+use Project;
 
 
 class HomeController extends Controller
 {
     use UploadTrait;
-
-
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct() 
     {
         $this->middleware('auth');
     }
@@ -35,10 +34,67 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
+    public function goBackToHome()
+    {
+        return view('welcome');
+    }
+
     public function index()
     {
+        //_________________________ Dashboard Boxes Count _____________________________________
+        $status_id = DB::table('project_status')->where('name','=','Completed')->pluck('id')->all();
+        $expense = DB::table('miscellaneous_expenses')->sum('expense');
         $projects = DB::table('projects')->get();
-        return view('home', compact($projects));
+        $total_contractors = DB::table('users')->where('id','=',3)->count();
+        $completed_projects = DB::table('projects')->where('status_id', '=', $status_id)->count();
+        $current_projects =  DB::table('projects')->where('status_id', '!=', $status_id)->count();
+        //_______________________________________________________________________________________
+
+
+        //_________________________ Monthly Graph _______________________________________________
+
+        //_______________________________________________________________________________________
+
+        //___________________________ Material List _____________________________________________
+
+
+
+        //_______________________________________________________________________________________
+
+        //____________________________Current Projects___________________________________________
+
+
+        //_______________________________________________________________________________________
+
+
+        //____________________________Order Details______________________________________________
+
+         $orders = DB::table('order_details')->paginate(5);
+
+
+
+        //_______________________________________________________________________________________
+
+
+        //____________________________Users Box__________________________________________________
+            
+        // $total_free_contractors = DB::table('users')->where('id','=',3)->count();
+        // $working_contractors = 
+
+        //_______________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+        //DB::table()->where('status_id','=',$status_id)->get()->count();
+
+       // dd($completed_projects);
+        return view('home', compact('projects','total_contractors','completed_projects','current_projects','expense','orders'));
     }
 
     public function addcontractor()
@@ -86,26 +142,27 @@ class HomeController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'profile' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
+            'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
         ]);
 
 
-        if ($request->has('profile')) {
+        if ($request->has('profile_image')) {
             // Get image file
-            $image = $request->file('profile');
+            $image = $request->file('profile_image');
             // Make a image name based on user name and current timestamp
             $name = Str::slug($request->input('name')) . '-' . time();
             // Define folder path
-            $folder = '/images/';
+            $folder = 'images/profile/';
             // Make a file path where image will be stored [ folder path + file name + file extension]
             $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
             //delete previously stored image
-            $this->deleteOne('public', Auth::user()->profile);
+            $this->deleteOne('public', Auth::user()->profile_image);
             // Upload image
             $this->uploadOne($image, $folder, 'public', $name);
             // Set user profile image path in database to filePath
-            $user->profile = $filePath;
+            $user->profile_image = $filePath;
         }
+
         // Persist user record to database
         $user->save();
 

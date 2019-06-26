@@ -24,6 +24,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(GateContract $gate)
     {
+<<<<<<< HEAD
         $this->registerPolicies($gate);
         
         $gate->define('isAdmin', function($users)
@@ -31,6 +32,27 @@ class AuthServiceProvider extends ServiceProvider
             return $user->role_id == '1';
         });
         $gate->define('isManager', function($users)
+=======
+        $this->registerPolicies();
+        
+       // $gate->define('isAdmin', function($users)
+        Gate::define('isAdmin', function($user)
+        {
+            return $user->role_id == '1';
+        });
+         Gate::define('isManager', function($user)
+        {
+            return $user->role_id == '2';
+        });
+          Gate::define('isContractor', function($user)
+        {
+            return $user->role_id == '3';
+        });
+
+
+/*
+       $gate->define('isManager', function($users)
+>>>>>>> 58b8a40facc7caec51d3528b32bbd462b0d9e0d4
         {
             return $user->role_id == '2';
         });
@@ -39,7 +61,11 @@ class AuthServiceProvider extends ServiceProvider
         {
             return $user->role_id == '3';
         });
+<<<<<<< HEAD
         
+=======
+        */
+>>>>>>> 58b8a40facc7caec51d3528b32bbd462b0d9e0d4
 
 
 
