@@ -38,7 +38,7 @@ class UserController extends Controller
         if (Gate::allows('isAdmin')) {
             $roles = DB::table('roles')->where('id', '!=', 1)->get();
             $users = DB::table('users')->where('role_id', '=', 2)->get();
-            return view('users/index', compact('users , roles'));
+            return view('users/index', compact('users' , 'roles'));
         }
          if (Gate::allows('isManager')) {
             abort(404, "Sorry, You cant  Access this Page");
@@ -65,12 +65,13 @@ class UserController extends Controller
         if (Gate::allows('isAdmin')) {
          $roles = DB::table('roles')->where('id', '!=', 1)->get();
          $users = DB::table('users')->where('role_id','!=',1)->get();
-         return view('users/index',compact('users' , 'roles'));
+         
+         return view('users/index',compact('users','roles'));
          }
          if (Gate::allows('isManager')) {
          $roles = DB::table('roles')->where('id', '=', 3)->get();
          $users = DB::table('users')->where('role_id','=',3)->get();
-         return view('users/index',compact('users' , 'roles'));
+         return view('users/index',compact('users','roles'));
          }
            if (Gate::allows('isContractor')) {
            abort(404,"Sorry you are not Allowed ");
@@ -115,7 +116,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required',
             'address' => 'required',
-            'password' => 'required | min:8',
+            //'password' => 'required | min:8',
             'cnic' => 'required',
             'phone' => 'required',
             'role' => 'required',
@@ -125,8 +126,9 @@ class UserController extends Controller
 
         $rollID = DB::table('roles')
             ->where('name', '=', $request->input('role'))
-            ->get()
-            ->first();
+            ->pluck('id')->first();
+            $password = Hash::make('init1234');
+
 
         $user = new User([
             'name' => $request->input('name'),
@@ -134,6 +136,7 @@ class UserController extends Controller
             'address' => $request->input('address'),
             'password' => $request->input('password'),
             'cnic' => $request->input('cnic'),
+            'password' => $password,
             'phone' => $request->input('phone'),
             'role_id' => $rollID,
             'profile_image' => $request->input('profile_image')
@@ -161,7 +164,7 @@ class UserController extends Controller
         $user->save();
 
         // Return user back and show a flash message
-        return redirect()->route('users.index')->with(['status' => 'User added successfully.']);
+        return redirect()->route('users.all')->with(['status' => 'User added successfully.']);
     }
 
     /**
@@ -173,7 +176,7 @@ class UserController extends Controller
     public function show()
     {
         $users = User::paginate(10);
-        return view('users.index', compact('users'));
+        return view('users/index', compact('users'));
     }
 
     public function search_user(Request $request)
@@ -207,8 +210,12 @@ class UserController extends Controller
         if ($users == null || count($users) == 0) {
             return redirect()->intended('/users/index');
         }
+
+        $roles = DB::table('roles')->where('id','!=',1)->get();
+        $current_role = DB::table('roles')->where('id','=',$users->role_id)->pluck('name')->first();
+        //dd($current_role);
         //$users = User::paginate(10);
-        return view('/users/edit', ['users' => $users]);
+        return view('/users/edit',compact('users','roles','current_role'));
     }
 
     /**
@@ -220,7 +227,9 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        if(Gate::allows('isAdmin'))
+        {
+             $request->validate([
             'name' => 'required',
             'email' => 'required',
             'address' => 'required',
@@ -230,19 +239,70 @@ class UserController extends Controller
             'role' => 'required',
             // 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
         ]);
+
+        $rollID = DB::table('roles')
+            ->where('name', '=', $request->input('role'))
+            ->pluck('id')->first();
+        $password = Hash::make($request->input('password'));
+
         $users = User::find($id);
         $users->name = $request->input('name');
         $users->email = $request->input('email');
-
         $users->address = $request->input('address');
-
         $users->cnic = $request->input('cnic');
         $users->phone = $request->input('phone');
+        $users->password = $password;
+        $users->role_id = $rollID;
 
-        //'role_id' => $request->input('user_role'),
         // 'profile_image'=> $request->input('profile_image')
-        $users->save();
-        return redirect()->route('users.index')->with('success', 'Data Updated');
+        if($users->save())
+        {
+            return redirect()->back()->with('success', 'Data Updated');
+        }
+        else
+        {
+            return redirect()->back()->with('message','Sorry, Data is not updated ');
+        }
+        }
+
+        if(Gate::allows('isManager'))
+        {
+             $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'address' => 'required',
+            'cnic' => 'required',
+            'phone' => 'required',
+            
+            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
+        ]);
+
+
+        $users = User::find($id);
+        $users->name = $request->input('name');
+        $users->email = $request->input('email');
+        $users->address = $request->input('address');
+        $users->cnic = $request->input('cnic');
+        $users->phone = $request->input('phone');
+       
+       
+
+        // 'profile_image'=> $request->input('profile_image')
+        if($users->save())
+        {
+            return redirect()->back()->with('success', 'Data Updated');
+        }
+        else
+        {
+            return redirect()->back()->with('message','Sorry, Data is not updated ');
+        }
+        }
+
+
+
+
+
+
     }
 
     /**
@@ -253,20 +313,14 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $check = DB::table('users')
-            ->join('projects', 'projects.assigned_to', '=', $id)
-            ->count();
-        //dd($check);
-
+        $check = DB::table('projects')->where('assigned_to','=',$id)->count();
         if ($check == 0) {
             User::where('id', $id)->delete();
-            return redirect()->intended('users.index');
-        } else {
-            return redirect()->route('users.index')->with('message', 'Project is Currently Assigned to Contractor. Cannot Delete Contractor');
-
+            return redirect()->back()->with('success','Successfully Deleted');
         }
-
-
+         else {
+            return redirect()->back()->with('message', 'Project is Currently Assigned to Contractor. Cannot Delete Contractor');
+        }
     }
 
 public function changepassword(Request $request)

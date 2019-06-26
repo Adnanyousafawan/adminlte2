@@ -263,7 +263,7 @@ return [
                 ],
                 [
                     'text' => 'View All Supplier',
-                    'url' => 'suppliers/create',
+                    'url' => 'suppliers/all',
                 ],
               
             ],

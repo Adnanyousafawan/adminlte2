@@ -1,11 +1,26 @@
 @extends('adminlte::page')
 @section('title', 'AdminLTE')
+
 @section('content')
 
+    @if (session('message'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('message') }}
+        </div>
+    @endif
+
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+ 
 <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
     <div class="box box-primary">
         <div class="box-header">
-            <h2 class="text-center">Update User</h2>
+            @can('isAdmin')<h2 class="text-center">Update User</h2>@endcan
+            @can('isManager')<h2 class="text-center">Update Contractor</h2>@endcan
+
         </div>
         <div class="box-body">
             <form method="POST" action="{{ route('users.update', ['id' => $users->id]) }}"
@@ -37,7 +52,7 @@
                       </span>
                         @endif
                     </div>
-
+                    @can('isAdmin')
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" name="password"
@@ -48,9 +63,10 @@
                       </span>
                         @endif
                     </div>
+                    @endcan
 
                     <div class="form-group">
-                        <label for="cnic">User CNIC</label>
+                        <label for="cnic">CNIC</label>
                         <input type="text" class="form-control" id="cnic" name="cnic"
                                value="{{ $users->cnic }}">
                         @if ($errors->has('cnic'))
@@ -61,7 +77,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="phone">User Contact</label>
+                        <label for="phone">Contact</label>
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-phone"></i>
@@ -89,32 +105,30 @@
                         @endif
                     </div>
 
-                    <div class="form-group">
-                        <label for="city">City</label>
-                        <input type="text" class="form-control" id="city" name="city"
-                               value="{{ $users->city }}">
-                        @if ($errors->has('city'))
-                            <span class="help-block alert-danger">
-                        <strong>{{ $errors->first('city') }}</strong>                              
-                      </span>
-                        @endif
-                    </div>
-
+                    @can('isAdmin')
                     <div class="form-group">
                         <label for="role">Select Role</label>
-                        <select class="form-control" id="role" name="role">
-                            <option>Manager</option>
-                            <option>Contractor</option>
+                        <select class="form-control" id="role" name="role" value="{{ $current_role }}">
+                                @foreach($roles as $role)
+                                <option>
+                                {{ $role->name }}
+                                 </option>
+                                @endforeach
                         </select>
                     </div>
+                    @endcan
                     {{--
                                 <div class="form-group">
                                   <label for="profile_image">Upload Profile</label>
                                     <input type="file" class="form-control custom-file-input" id="profile_image" name="profile_image">
                                     </div>
                  --}}
-
+                    @can('isAdmin')
                     <button type="submit" class="btn btn-block btn-primary btn-xs form-control" style="margin-bottom: 20px;">Update User</button>
+                    @endcan
+                     @can('isManager')
+                    <button type="submit" class="btn btn-block btn-primary btn-xs form-control" style="margin-bottom: 20px;">Update Contractor</button>
+                    @endcan
                 </div>
             </form>
         </div>

@@ -13,3 +13,4 @@ class OrderDetail extends Model
         'project_id',
     ];
 }
+ 

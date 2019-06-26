@@ -15,7 +15,7 @@ class CreateProjectStatusTable extends Migration
     {
         Schema::create('project_status', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('name')->nullable();
 
         });
     }

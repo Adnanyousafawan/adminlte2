@@ -1,5 +1,3 @@
-
-
 @extends('adminlte::page')
 @section('title', 'AdminLTE')
     <meta charset="utf-8">
@@ -104,7 +102,7 @@
                                 <th>Contact</th>
                                 <th>CNIC</th>
                                 <th>Role</th>
-                                <th>Action</th>
+                                <th>Action</th> 
                             </tr>
                             </thead>
                             <tbody>
@@ -205,115 +203,117 @@
 
 
 
-            {{-- _______________________________________Model Add New PROJECT_______________________________--}}
+            {{-- _______________________________________Model Add New User______________________________--}}
 
-                <div id="applicantADDModal" class="modal fade" tabindex="-1" role="dialog"
-                     aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
-                    <div class="modal-dialog" style="min-width:70%; align-content: center; text-align: center;">
-                        <div class="modal-content">
+            <div id="applicantADDModal" class="modal fade" tabindex="-1" role="dialog"
+            aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog" style="min-width:70%; align-content: center;">
+                <div class="modal-content">
 
-                            <form method="post" action="{{ route('users.store') }}" enctype="">
-                                @csrf
-                                <div class="modal-header">
-                                    <button type="button" class="close pull-right" data-dismiss="modal"
-                                            aria-hidden="true">x
-                                    </button>
-                                    <strong><h3 class="modal-title text-center" id="custom-width-modalLabel">Add
-                                            User</h3></strong>
-                                </div>
+                    <form method="post" action="{{ route('users.store') }}" enctype="">
+                        @csrf
+                        <div class="modal-header">
+                            <button type="button" class="close pull-right" data-dismiss="modal"
+                            aria-hidden="true">x
+                        </button>
+                        <strong><h3 class="modal-title text-center" id="custom-width-modalLabel">Add
+                        User</h3></strong>
+                    </div>
 
 
-                                <div class="modal-body">
+                    <div class="modal-body">
 
-                                    <div style=" width: 100%; margin-left: 1%;">
+                        <div style=" width: 100%; margin-left: 1%;">
 
-                                        <div class="row" style="margin-top: 5px;">
-                                            <div class="col-md-3 col-md-offset-1 {{-- col-lg-offset-1 col-xl-offset-1  col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-0 col-lg-3 col-xl-3 --}}">
-                                                <!-- Profile Image -->
+                            <div class="row" style="margin-top: 5px;">
+                                <div class="col-md-3 col-md-offset-1 {{-- col-lg-offset-1 col-xl-offset-1  col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-0 col-lg-3 col-xl-3 --}}">
+                                    <!-- Profile Image -->
 
-                <div class="no-profile-picture">
-                <div class="img-div"><img src="https://paksa.pk/public/images/upload.png" class="user-image" alt=""></div><br>
-                <div class="btn">
+                                    <div class="no-profile-picture">
+                                        <div class="img-div"><img src="https://paksa.pk/public/images/upload.png" class="user-image" alt=""></div><br>
+                                        <div class="btn">
                     <input type="file" name="image" class="btn btn-default btn-sm profile-picture-uploader" id="image"> {{-- data-toggle="modal" data-target="#uploadprofilepicture"  class="btn btn-default btn-sm profile-picture-uploader" id="cont_image"
-                                                                   name="cont_image"--}}
-                                                               </div>
-                </div>
-            </div>
-    
-
-
-                                            <div
-                                                class="col-md-7 col-lg-8 col-md-offset-1 col-lg-offset-0{{-- col-sm-10 col-xs-offset-1 col-sm-offset-0 col-xs-10 col-lg-8 col-xl-8 --}} "
-                                                style="/*max-width: 70%;*/ padding-bottom: 30px;">
-                                                <div>
-                                                    
-                                                    <div class="box-body">
-
-                                                        <div class="col-lg-9 col-lg-offset-2">
-                                                            <div class="form-group">
-
-   <div class="form-group">
-                    <label for="name">User Name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="User Name" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">User Email</label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Email" required>
-                </div>
-                <div class="form-group">
-                    <label for="cnic">User CNIC</label>
-                    <input type="text" class="form-control" id="cnic" name="cnic" placeholder="User CNIC" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">User Contact</label>
-                    <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-phone"></i>
-                        </div>
-                        <input type="Number" class="form-control" placeholder="Contact Number"
-                               data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']"
-                               data-mask="" id="phone" name="phone" required>
-                    </div>
-                </div>
-
-
-
-                <div class="form-group">
-                    <label for="address">Address</label>
-                    <input type="text" class="form-control" id="user_address" name="address"
-                           placeholder="Home Address" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="assigned_to">Select Role</label>
-                    <select class="form-control" id="role" name="role">
-                       @foreach($roles as $role)
-                       <option>{{ $role->name }}</option>
-
-                       @endforeach
-                    </select>
-                </div>
-                                                            <button type="submit"
-                                                                    class="btn btn-block btn-primary btn-xs form-control"
-                                                                    style="margin-top: 20px;">Add Labor
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                  </div>
-  </div>
-                            </form>
-                        </div>
-                    </div>
+                    name="cont_image"--}}
                 </div>
             </div>
         </div>
+
+
+
+        <div
+        class="col-md-7 col-lg-8 col-md-offset-1 col-lg-offset-0{{-- col-sm-10 col-xs-offset-1 col-sm-offset-0 col-xs-10 col-lg-8 col-xl-8 --}} "
+        style="/*max-width: 70%;*/ padding-bottom: 30px;">
+        <div>
+
+            <div class="box-body">
+
+                <div class="col-lg-9 col-lg-offset-2">
+                    <div class="form-group">
+
+                     <div class="form-group">
+                        <label for="name">User Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="User Name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">User Email</label>
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cnic">User CNIC</label>
+                        <input type="text" class="form-control" id="cnic" name="cnic" placeholder="User CNIC" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">User Contact</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <input type="Number" class="form-control" placeholder="Contact Number"
+                            data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']"
+                            data-mask="" id="phone" name="phone" required>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="user_address" name="address"
+                        placeholder="Home Address" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">Select Role</label>
+                        <select class="form-control" id="role" name="role">
+                         @foreach($roles as $role)
+                         <option>{{ $role->name }}</option>
+                         @endforeach
+                     </select>
+                 </div>
+                 <button type="submit"
+                 class="btn btn-block btn-primary btn-xs form-control"
+                 style="margin-top: 20px;">Add User
+             </button>
+         </div>
+     </div>
+ </div>
+
+
+</div>
+</div>
+</div>
+
+</div>
+</form>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
 <script type="text/javascript">
 
 

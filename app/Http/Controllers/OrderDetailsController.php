@@ -54,7 +54,7 @@ function insert(Request $request)
      'quantity' =>  $quantity[$count],
       'project_id' =>DB::table('projects')->where('title','=',  $project_id)->pluck('id')->first(),
       'status' => $status[$count],
-      
+  
       ]);
 
       // dd($obj);
@@ -103,6 +103,12 @@ function create()
       $orders = DB::table('order_details')->where('order_details.status','=','ok')->get();
       return view('orders/allorders',compact('orders'));
     }
-   
 
+
+
+    public function projectorders($id)
+    {
+      $orders = DB::table('order_details')->where('project_id','=',$id)->get();
+      return view('orders/allorders', compact('orders'));
+    }
 }

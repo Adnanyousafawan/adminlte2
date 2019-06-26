@@ -515,61 +515,24 @@
                             <tr>
                                 <th>Order ID</th>
                                 <th>Item</th>
+                                <th>Quantity</th>
                                 <th>Status</th>
-                                <th>Site Id</th>
+                                <th>Project ID</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                <td>Bricks</td>
-                                <td><span class="label label-success">Shipped</span></td>
-                                <td>
-                                    <div class="sparkbar" data-color="#00a65a" data-height="20">PR1111</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                <td>Cement</td>
-                                <td><span class="label label-warning">Pending</span></td>
-                                <td>
-                                    <div class="sparkbar" data-color="#f39c12" data-height="20">PR2222</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                <td>Rod</td>
-                                <td><span class="label label-danger">Delivered</span></td>
-                                <td>
-                                    <div class="sparkbar" data-color="#f56954" data-height="20">PR3333</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                <td>Sand</td>
-                                <td><span class="label label-info">Processing</span></td>
-                                <td>
-                                    <div class="sparkbar" data-color="#00c0ef" data-height="20">PR2222</div>
-                                </td>
-                            </tr>
+                           
+                               @foreach($orders as $order)
+                                 <tr>
+                                  <td><a href=" ">OR1000{{ $order->id }}</a></td>
+                                  <td>{{ $order->item_id }}</td>
+                                  <td>{{ $order->quantity }}</td>
 
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                <td>Cement</td>
-                                <td><span class="label label-success">Shipped</span></td>
-                                <td>
-                                    <div class="sparkbar" data-color="#00a65a" data-height="20">PR4555</div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                <td>Cement</td>
-                                <td><span class="label label-success">Shipped</span></td>
-                                <td>
-                                    <div class="sparkbar" data-color="#00a65a" data-height="20">PR4555</div>
-                                </td>
-                            </tr>
+                                  <td><span class="label label-success col-md-8">{{ $order->status }}</span></td>
+                                  <td><a href="{{ route('projects.view', ['id' => $order->project_id]) }}" data-height="20">PR000{{ $order->project_id }}</a>
+                                  </td>
+                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -578,8 +541,8 @@
                 <!-- /.box-body -->
                 <div class="box-footer clearfix">
                     <a href="{{ route('order.create')}}" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
-                    <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
-                </div>
+                    <a href="{{route('orders.list')}}" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+                </div> 
                 <!-- /.box-footer -->
             </div>
             <!-- /.box -->
@@ -707,7 +670,7 @@
 
 
 
-<div class="col-md-2">
+<div class="col-md-4">
 <div class="box box-solid">
       <div class="box-header with-border">
         @can('isAdmin')

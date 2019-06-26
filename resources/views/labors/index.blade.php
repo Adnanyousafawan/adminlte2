@@ -44,6 +44,9 @@
 
     @if (session('success'))
         <div class="alert alert-success" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
             {{ session('success') }}
         </div>
     @endif
@@ -471,54 +474,24 @@
 
                 <div id="applicantADDModal" class="modal fade" tabindex="-1" role="dialog"
                      aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
-                    <div class="modal-dialog" style="min-width:70%; align-content: center; text-align: center;">
+                    <div class="modal-dialog" style="min-width:70%; align-content: center;">
                         <div class="modal-content">
-
-                            {{--   <form class="row" method="POST"
-                                            action="{{ route('labors.destroy', ['id' => $labor->id]) }}">
-                                          <input type="hidden" name="_method" value="DELETE">
-                                          <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                              <form action="{{ route('labors.destroy', ['id' => $labor->id]) }}" method="POST" class="remove-record-model">
-                                         {{ method_field('delete') }}
-                                         {{ csrf_field() }}
-
---}}
-                            <form method="post" action="{{ route('labors.store') }}" enctype="">
+                <form method="post" action="{{ route('labors.store') }}" enctype="">
                                 @csrf
                                 <div class="modal-header">
                                     <button type="button" class="close pull-right" data-dismiss="modal"
-                                            aria-hidden="true">
+                                            aria-hidden="true">x
                                     </button>
                                     <strong><h3 class="modal-title text-center" id="custom-width-modalLabel">Add
                                             Labor</h3></strong>
                                 </div>
                                 <div class="modal-body">
 
-                                    <div style=" width: 100%;">
+                                    <div style=" width: 100%; margin-bottom: 10px;">
 
-                                        <div class="row" style="margin-top: 5px; margin-left: 1%;">
+                                        <div class="row">
                                             <div
-                                                class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1 col-xl-3 col-xl-offset-1  ">
-                                                <!-- Profile Image -->
-                                                <div class="">
-                                                    <div class="box-body box-profile">
-                                                        <head><h4>Upload Labor CNIC</h4></head>
-                                                        <hr>
-                                                        <img class="img-fluid img-responsive"
-                                                             style="min-width: 100%; min-height: 200px;">
-                                                        <hr>
-                                                        <div class="form-group">
-                                                            <input type="file"
-                                                                   class="btn btn-primary col-md-12 col-xs-12"
-                                                                   id="cont_image"
-                                                                   name="cont_image" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div
-                                                class="col-sm-10 col-xs-offset-1 col-sm-offset-0 col-xs-10 col-lg-8 col-xl-8"
+                                                class="col-sm-12  col-sm-offset-0 col-xs-12 col-lg-10 col-xl-10 col-lg-offset-1 col-xl-offset-1 col-md-10 col-md-offset-1"
                                                 style="/*max-width: 70%;*/ padding-bottom: 30px;">
                                                 <div>
                                                     {{-- <div class="box-header">
@@ -572,9 +545,13 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="project_id">Project ID</label>
-                                                                <input type="number" class="form-control"
-                                                                       id="project_id" placeholder="Proect ID"
-                                                                       name="project_id" required>
+                                                                <select class="form-control" id="project_id" name="project_id">
+                                                                    @foreach($projects as $project)
+                                                                        <option>{{ $project->title }}</option>
+                                                                    @endforeach
+                                                                
+                                                                </select>
+                                                                
                                                             </div>
 
                                                             <button type="submit"
