@@ -467,20 +467,27 @@ class APIController extends Controller
 
         $projectID = DB::table('projects')
             ->where('title', '=', $request->get('project'))
-            ->where('status_id', '!=', 3)
             ->pluck('id')
             ->first();
 
         $quantity = $request->get('quantity');
         $instructions = $request->get('instructions');
+        $pending = DB::table('material_request_statuses')
+            ->where('name','=', 'Pending')
+            ->pluck('id')
+            ->first();
 
         $material_request = new MaterialRequest([
             'item_id' => $itemID,
             'quantity' => $quantity,
             'project_id' => $projectID,
             'requested_by' => $id,
+            'seen' => 0,
+            'request_status_id' => $pending,
             'instructions' => $instructions
         ]);
+
+//        dd($material_request);
 
         if ($material_request->save()) {
             return "success";
