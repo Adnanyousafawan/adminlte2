@@ -17,8 +17,10 @@ class CreateOrderDetailsTable extends Migration
              $table->bigIncrements('id');
                 $table->unsignedBigInteger('item_id');
                 $table->unsignedBigInteger('project_id');
+                $table->unsignedBigInteger('supplier_id');
                 $table->string('quantity')->nullable();
                 $table->string('status')->default('pending');
+                $table->string('invoice_number')->default('100000');
 
                 $table->foreign('item_id')
                     ->references('id')
@@ -27,6 +29,10 @@ class CreateOrderDetailsTable extends Migration
                      $table->foreign('project_id')
                     ->references('id')
                     ->on('projects');
+
+                    $table->foreign('supplier_id')
+                    ->references('id')
+                    ->on('suppliers');
 
 
 

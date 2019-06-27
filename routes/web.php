@@ -56,6 +56,7 @@ Route::get('orders/recieved', 'OrderDetailsController@recieved')->name('orders.r
 Route::get('orders/cancelled', 'OrderDetailsController@cancelled')->name('orders.cancelled');
 Route::delete('orders/destroy/{id}', 'OrderDetailsController@destroy')->name('orders.destroy');
 Route::get('orders/projectorders/{id}', 'OrderDetailsController@projectorders')->name('orders.projectorders');
+Route::post('orders/update/{id}', 'OrderDetailsController@update')->name('orders.update');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -97,8 +98,13 @@ Route::delete('projectstatus/destroy/{id}', 'ProjectStatusController@destroy')->
 //__________________________________Material Request_______________________________________
 
 Route::get('materialrequest','MaterialRequestController@index')->name('requests.index');
+Route::get('materialrequest/approved','MaterialRequestController@approved')->name('requests.approved');
+Route::get('materialrequest/rejected','MaterialRequestController@rejected')->name('requests.rejected');
+Route::get('materialrequest/pending','MaterialRequestController@pending')->name('requests.pending');
+Route::post('materialrequest/insert','MaterialRequestController@insert')->name('requests.insert');
 
-Route::get('materialrequest/edit/{id}', 'MaterialRequestController@edit')->name('requests.edit');
+Route::post('materialrequest/update/{id}', 'MaterialRequestController@update')->name('requests.update');
+
 Route::delete('materialrequest/destroy/{id}', 'MaterialRequestController@destroy')->name('requests.destroy');
 
 //-----------------------------------User Management------------------------------------//

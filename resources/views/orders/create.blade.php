@@ -15,10 +15,10 @@
            --}}
     </head>
     <body>
+     @if (session('message'))
 
-    @if (session('status'))
         <div class="alert alert-success" role="alert">
-            {{ session('status') }}
+            {{ session('message') }}
         </div>
     @endif
 
@@ -51,7 +51,7 @@
                             <div class="form-group">
                                 <label for="project_id">Select Project</label>
                                 <select class="form-control" id="project_id" name="project_id" required>
-                                    <option disabled selected value> -- select an option --</option>
+                                    <option value="">Select Project</option>
                                     @foreach($projects as $project)
                                         <option>{{ $project->title}}</option>
                                     @endforeach
@@ -68,8 +68,8 @@
                         <tr>
                             {{-- <th width="21%">Project ID</th> --}}
                             <th>Item</th>
+                            <th>Supplier</th>
                             <th>Quatity</th>
-                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -105,10 +105,11 @@
 
             function dynamic_field(number) {
                 html = '<tr>';
-                // html += '<td><select name="project_id[]" class="form-control">@foreach($projects as $project)<option>{{$project->title}}</option>@endforeach </select></td>';
-                html += '<td><select name="item_id[]" class="form-control">@foreach($items as $item)<option>{{$item->name}}</option>@endforeach </select></td>';
+              
+                html += '<td><select name="item_id[]" class="form-control"><option value="">Select Item</option>@foreach($items as $item)<option>{{$item->name}}</option>@endforeach </select></td>';
+                 html += '<td><select name="supplier_id[]" class="form-control"><option value="">Select Supplier</option>@foreach($suppliers as $supplier)<option>{{$supplier->name}}</option>@endforeach </select></td>';
                 html += '<td><input type="number" name="quantity[]" class="form-control"/></td>';
-                html += '<td><input type="text" name="status[]" class="form-control"/></td>';
+                //html += '<td><input type="text" name="status[]" class="form-control"/></td>';
 
                 if (number > 1) {
                     html += '<td><button type="button" name="remove" id="" class="btn btn-danger remove">Remove</button></td></tr>';
