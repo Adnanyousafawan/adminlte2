@@ -17,7 +17,10 @@ class LaborController extends Controller
      */
     public function index()
     {  
-        
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         if(Gate::allows('isManager'))
         {
             // ____________________________ADD query to show just record of specific manager projects labors____________
@@ -43,6 +46,10 @@ class LaborController extends Controller
      */
     public function create()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         return view('labors/add_labor');
     }
 
@@ -90,6 +97,10 @@ class LaborController extends Controller
      */
     public function show()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         $labors = DB::table('labors')->get();
         return view('labors/index', compact('labors'));
         // $labors = Labor::paginate(10);

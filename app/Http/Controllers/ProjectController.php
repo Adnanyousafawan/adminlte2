@@ -31,6 +31,10 @@ class ProjectController extends Controller
      */
     public function index()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
 
         if(Gate::allows('isAdmin'))
         {
@@ -71,6 +75,10 @@ class ProjectController extends Controller
      */
     public function create()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         if (Gate::allows('isAdmin')) 
         {
              $contractors = DB::table('users')->where('role_id', '=', 3)->get();
@@ -191,6 +199,10 @@ class ProjectController extends Controller
 
     public function show()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         $projects = DB::table('projects')
 
         /*->join('users', 'users.id', '=', 'projects.assigned_to')
@@ -219,18 +231,30 @@ class ProjectController extends Controller
 
     public function cancelled()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         $projects = DB::table('projects')->where('projects.id', '=', '5')->get();
         return view('projects/projects', compact('projects'));
     }
 
     public function completed()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         $projects = DB::table('projects')->where('projects.floor', '=', '5')->get();
         return view('projects/projects', compact('projects'));
     }
 
     public function all()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
 
          if(Gate::allows('isAdmin'))
         {
@@ -255,21 +279,26 @@ class ProjectController extends Controller
             return view('projects/projects', compact('projects'), ['contractors' => $contractors]);
         //return view('projects.index');
         }
-        if(Gate::allows('isContractor'))
-        {
-            abort(404,"You are not Allowed to Access this Page.");
-        }
+       
     }
     
 
     public function pending()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         $projects = DB::table('projects')->where('projects.floor', '=', '3')->get();
         return view('projects/projects', compact('projects'));
     }
 
     public function current()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         $projects = DB::table('projects')->where('projects.floor', '=', '3')->get();
         return view('projects/projects', compact('projects'));
     }
@@ -324,6 +353,10 @@ class ProjectController extends Controller
 
     public function viewuser($id)
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         $projects = DB::table('projects')->where('id','=',$id)->get()->first(); 
 
         $labors = DB::table('labors')->where('project_id','=',$id)->get()->all();

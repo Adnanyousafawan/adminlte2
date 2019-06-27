@@ -223,7 +223,7 @@
                                                                             class="btn btn-default waves-effect"
                                                                             data-dismiss="modal">Close
                                                                     </button>
-                                                                    <button type="submit"
+                                                                    <button type="save"
                                                                             class="btn btn-primary">
                                                                         Save
                                                                     </button>

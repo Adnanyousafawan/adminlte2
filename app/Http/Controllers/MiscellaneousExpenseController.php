@@ -7,11 +7,16 @@ use DB;
 use App\MiscellaneousExpense;
 use Validator;
 use View;
+use Gate;
 class MiscellaneousExpenseController extends Controller
 {
     
     function index()
     {
+       if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
 		    	 
 		  $expenses = DB::table('miscellaneous_expenses')->get();
 
@@ -74,7 +79,10 @@ class MiscellaneousExpenseController extends Controller
 }
   function create()
       {
-          
+           if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         $projects = DB::table('projects')->get();
         return view('expenses/create',compact('projects'));
       }

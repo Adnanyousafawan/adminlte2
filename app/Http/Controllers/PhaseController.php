@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\ProjectPhase;
 use Validator;
 use DB;
+use Gate;
 
 
 class PhaseController extends Controller
@@ -17,6 +18,10 @@ class PhaseController extends Controller
      */
     public function index()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         $phases = DB::table('project_phase')->get()->all();
         return view('projectphase/index',compact('phases'));
     }
@@ -28,6 +33,10 @@ class PhaseController extends Controller
      */
     public function create()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
        return view('projectphase/create');  
     }
 

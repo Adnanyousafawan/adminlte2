@@ -17,6 +17,11 @@ class MaterialRequestController extends Controller
      */
     public function index()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
+         
         if(Gate::allows('isManager'))
         {
             $seens = DB::table('material_requests')->pluck('id')->all();
@@ -38,6 +43,10 @@ class MaterialRequestController extends Controller
 
     public function approved()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
          if(Gate::allows('isManager'))
         {
             $seens = DB::table('material_requests')->pluck('id')->all();
@@ -59,6 +68,10 @@ class MaterialRequestController extends Controller
     }
      public function rejected()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
          if(Gate::allows('isManager'))
         {
             $seens = DB::table('material_requests')->pluck('id')->all();
@@ -80,6 +93,10 @@ class MaterialRequestController extends Controller
     }
      public function pending()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         if(Gate::allows('isManager'))
         {
             $seens = DB::table('material_requests')->pluck('id')->all();
@@ -112,7 +129,7 @@ class MaterialRequestController extends Controller
 
 public function insert(Request $request)
 {
-    dd('in insert');
+    //
 
     //return redirect()->with('message',"phnch gaya");
 }

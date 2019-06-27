@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\ProjectStatus;
 use Validator;
 use DB;
+use Gate;
+
 
 
 class ProjectStatusController extends Controller
@@ -17,8 +19,16 @@ class ProjectStatusController extends Controller
      */
     public function index()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
+     if(Gate::allows('isAdmin'))
+        {
+          
         $statuses = DB::table('project_status')->get()->all();
         return view('projectstatus/index',compact('statuses'));
+    }
     }
 
     /**
@@ -28,7 +38,15 @@ class ProjectStatusController extends Controller
      */
     public function create()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
+         if(Gate::allows('isAdmin'))
+        {
+           
        return view('projectstatus/create');  
+   }
     }
 
     /**

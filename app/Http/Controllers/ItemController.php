@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Item;
 use DB;
 use Validator; 
+use Gate;
 
 class ItemController extends Controller
 {
@@ -16,6 +17,10 @@ class ItemController extends Controller
      */
     public function index()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         $orders= DB::table('order_details')->get();
         return view('orders/allorders',compact('orders'));
 

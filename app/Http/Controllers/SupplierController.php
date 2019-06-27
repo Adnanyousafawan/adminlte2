@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\supplier;
 use Illuminate\Http\Request;
 use DB;
+use Gate;
 
 class SupplierController extends Controller
 {
@@ -15,6 +16,10 @@ class SupplierController extends Controller
      */
     public function index()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         $suppliers = DB::table('suppliers')->paginate(10);
         return view('suppliers/index',compact('suppliers'));
     }
@@ -26,6 +31,10 @@ class SupplierController extends Controller
      */
     public function create()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         return view('suppliers/add_supplier');
     }
 
@@ -64,6 +73,10 @@ class SupplierController extends Controller
      */
     public function show()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         $suppliers = Supplier::paginate(20);
         return view('suppliers/index', compact('suppliers'));
     }

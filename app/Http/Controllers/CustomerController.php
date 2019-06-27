@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Customer;
 use Illuminate\Http\Request;
 use DB;
+use Gate;
 
 class CustomerController extends Controller
 {
@@ -15,6 +16,10 @@ class CustomerController extends Controller
      */
     public function index()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         $customers = DB::table('customers')->get();
         return view('customers/allcustomers', ['customers' => $customers]);
     }

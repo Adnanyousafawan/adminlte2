@@ -322,58 +322,6 @@
             </div>
         </div>
 
-
-                {{--
-    <div class="col-md-6">
-        <div class="box box-primary">
-                <div class="box-header ui-sortable-handle" style="cursor: move;">
-                  <i class="ion ion-clipboard"></i>
-
-                  <h3 class="box-title">To Do List</h3>
-
-                  <div class="box-tools pull-right">
-                    <ul class="pagination pagination-sm inline">
-                      <li><a href="#">«</a></li>
-                      <li><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">»</a></li>
-                    </ul>
-                  </div>
-                </div>
-
-
-                <div class="box-body">
-
-
-                  <ul class="todo-list ui-sortable">
-
-                    @foreach($materialrequests as $materialrequest)
-                    <li>
-
-
-                      <input type="checkbox" <?php if($materialrequest->seen==1){echo "checked";}?>>
-
-                      <span class="text">{{ $materialrequest->item_id }} is required at {{ $materialrequest->project_id }}</span>
-
-                      <p class="label label-danger pull-right"><i class="fa fa-clock-o"></i>{{ $materialrequest->instructions }}</p>
-
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                    @endforeach
-                  </ul>
-                </div>
-
-                <div class="box-footer clearfix no-border">
-                  <button type="button" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
-                </div>
-              </div>
-    </div>
-     --}}
-
 <h4 id="result"></h4>
 <script type="text/javascript">
 

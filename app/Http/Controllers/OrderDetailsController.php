@@ -4,13 +4,17 @@ use Illuminate\Http\Request;
 use App\OrderDetail;
 use DB;
 use Validator;
-
+use Gate;
 
 class OrderDetailsController extends Controller
 {
 
  function index()
  {
+   if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
   $orders = DB::table('order_details')->get();
   $items = DB::table('items')->get();
   $suppliers = DB::table('suppliers')->get();
@@ -58,6 +62,7 @@ function insert(Request $request)
       'item_id' => DB::table('items')->where('name','=',  $item_id[$count])->pluck('id')->first(),
       'project_id' =>DB::table('projects')->where('title','=',  $project_id)->pluck('id')->first(),
       'supplier_id' => DB::table('suppliers')->where('name','=',  $supplier_id[$count])->pluck('id')->first(),
+      'quantity' => $quantity[$count],
       'invoice_number' =>  $invoice,
      
       //'status' => $status[$count],
@@ -78,6 +83,10 @@ function insert(Request $request)
 
 function create()
       {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
           $items = DB::table('items')->get();
           $suppliers = DB::table('suppliers')->get();
           $projects = DB::table('projects')->get();
@@ -156,6 +165,10 @@ function create()
 
     public function projectorders($id)
     {
+       if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
 
       $orders = DB::table('order_details')->where('project_id','=',$id)->get();
        $items = DB::table('items')->get();

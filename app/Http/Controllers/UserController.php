@@ -18,6 +18,10 @@ class UserController extends Controller
      */
     public function index()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
 
        $users = DB::table('users')->get();
        return view('users/index',compact($users));
@@ -40,6 +44,10 @@ class UserController extends Controller
 
     public function manager()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         if (Gate::allows('isAdmin')) {
             $roles = DB::table('roles')->where('id', '!=', 1)->get();
             $users = DB::table('users')->where('role_id', '=', 2)->get();
@@ -53,6 +61,10 @@ class UserController extends Controller
 
     public function contractor()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         if (Gate::allows('isAdmin')) {
             $roles = DB::table('roles')->where('id', '!=', 1)->get();
             $users = DB::table('users')->where('role_id', '=', 3)->get();
@@ -68,6 +80,10 @@ class UserController extends Controller
 
     public function all()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         if (Gate::allows('isAdmin')) {
             $roles = DB::table('roles')->where('id', '!=', 1)->get();
             $users = DB::table('users')->where('role_id', '!=', 1)->get();
@@ -92,7 +108,10 @@ class UserController extends Controller
      */
     public function create()
     {
-
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
 
         if (Gate::allows('isAdmin')) {
             $roles = DB::table('roles')->where('id', '!=', 1)->get();
@@ -117,6 +136,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
 
         $request->validate([
             'name' => 'required',
@@ -181,6 +204,10 @@ class UserController extends Controller
      */
     public function show()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         $users = User::paginate(10);
         return view('users/index', compact('users'));
     }

@@ -13,6 +13,7 @@ use View;
 use Illuminate\Support\Str;
 use App\Traits\UploadTrait;
 use Project;
+use Gate;
 
 
 class HomeController extends Controller
@@ -36,11 +37,17 @@ class HomeController extends Controller
 
     public function goBackToHome()
     {
+         
         return view('welcome');
     }
 
     public function index()
     {
+        if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
+
         //_________________________ Dashboard Boxes Count _____________________________________
         $status_id = DB::table('project_status')->where('name','=','Completed')->pluck('id')->all();
         $expense = DB::table('miscellaneous_expenses')->sum('expense');
@@ -88,6 +95,7 @@ class HomeController extends Controller
 
        // dd($completed_projects);
         return view('home', compact('projects','total_contractors','completed_projects','current_projects','expense','orders'));
+       
     }
 
     public function addcontractor()
@@ -123,7 +131,12 @@ class HomeController extends Controller
 
     public function profile()
     {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
         return view('profile');
+
     }
 
 
