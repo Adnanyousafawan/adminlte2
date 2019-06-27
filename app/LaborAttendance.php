@@ -9,6 +9,7 @@ class LaborAttendance extends Model
   
     protected $fillable = [
         'status',
+        'paid',
         'labor_id',
         'date'
     ];

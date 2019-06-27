@@ -16,7 +16,8 @@ class CreateLaborAttendancesTable extends Migration
         Schema::create('labor_attendances', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('labor_id');
-            $table->boolean('status')->default(0); //0 for absent, 1 for present
+            $table->boolean('status')->default(1); //0 for absent, 1 for present
+            $table->boolean('paid')->default(1); //0 for wage not paid, 1 for wage paid
             $table->String('date');
             $table->timestamps();
 

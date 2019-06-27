@@ -263,7 +263,7 @@ class APIController extends Controller
                     'city' => $labor->city,
                     'rate' => $labor->rate,
                     'project_id' => $labor->project_id,
-                    'status' => $labor->status_id,
+                    'status_id' => $labor->status_id,
                     'days' => DB::table('labor_attendances')->where('labor_id', '=', $labor->id)
                         ->where('status', '=', 1)->count()
                 ];
@@ -375,8 +375,6 @@ class APIController extends Controller
         } else {
             return "Unauthorized User";
         }
-
-
     }
 
     public function api_project_details(Request $request)
@@ -518,16 +516,26 @@ class APIController extends Controller
             ->first();
 
         $date = $request->get('date');
+
+        $completed = DB::table('project_status')
+            ->where('name', '=', 'Completed')
+            ->pluck('id')
+            ->first();
 //        dd($date);
 
         $projectID = Project::all()
             ->where('title', '=', $request->get('title'))
             ->where('assigned_to', '=', $id)
-            ->where('status_id', '!=', 3)
+            ->where('status_id', '!=', $completed)
             ->pluck('id');
+
+        $active = DB::table('labor_status')
+            ->where('name','=', "Active")
+            ->pluck('id')->first();
 
         $labors = DB::table('labors')
             ->where('project_id', '=', $projectID)
+            ->where('status_id', '=', $active)
             ->pluck('id');
 
         $result = [];
@@ -535,14 +543,42 @@ class APIController extends Controller
 
         foreach ($labors as $labor) {
 
+            $currentStatus = DB::table('labor_attendances')
+                ->where('labor_id', '=', $labor)
+                ->where('date', '=', $date)
+                ->pluck('status')
+                ->first();
+
+            $currentPaid = DB::table('labor_attendances')
+                ->where('labor_id', '=', $labor)
+                ->where('date', '=', $date)
+                ->pluck('paid')
+                ->first();
+
+//            print "current before: " . $currentStatus;
+
+            if ($currentPaid == 0 && !is_null($currentPaid)) {
+                $currentPaid = 0;
+            } else if (is_null($currentPaid) || $currentPaid == 1) {
+                $currentPaid = 1;
+            }
+
+            if ($currentStatus == 0 && !is_null($currentStatus)) {
+                $currentStatus = 0;
+            } else if (is_null($currentStatus) || $currentStatus == 1) {
+                $currentStatus = 1;
+            }
+
+//            print "current after: " . $currentStatus;
+
+
             $result[$index] = [
                 'labor' => DB::table('labors')
                     ->where('id', '=', $labor)
                     ->pluck('name')
                     ->first(),
-                'attendanceStatus' => DB::table('labor_attendances')
-                    ->where('labor_id', '=', $labor)
-                    ->where('date', '=', $date)->pluck('status')->first(),
+                'attendanceStatus' => $currentStatus,
+                'attendancePaid' => $currentPaid,
             ];
             $index++;
         }
@@ -569,29 +605,42 @@ class APIController extends Controller
         for ($i = 0; $i < count($labor_attendance['attendance']); $i++) {
 
             $status = $labor_attendance['attendance'][$i]['attendanceStatus'];
+            $paid = $labor_attendance['attendance'][$i]['attendancePaid'];
             $labor_id = DB::table('labors')
                 ->where('name', '=', $labor_attendance['attendance'][$i]['labor'])
-                ->pluck('id')->first();
+                ->pluck('id')
+                ->first();
+
+//            dd($paid);
 
             if (($selected_yyyy < $current_yyyy) ||
                 (($selected_yyyy >= $current_yyyy) && ($selected_mm < $current_mm)) ||
                 (($selected_yyyy >= $current_yyyy) && ($selected_mm >= $current_mm) && ($selected_dd < $current_dd))) {
                 $getLabor = DB::table('labor_attendances')
                     ->where('date', '=', $selected_dd . '-' . $selected_mm . '-' . $selected_yyyy)
-                    ->where('labor_id', '=', $labor_id)->get();
+                    ->where('labor_id', '=', $labor_id)
+                    ->get();
 
                 if (count($getLabor) == 0) {
                     $newRecord = new LaborAttendance([
                         'labor_id' => $labor_id,
                         'status' => $status,
+                        'paid' => $paid,
                         'date' => $selected_dd . '-' . $selected_mm . '-' . $selected_yyyy,
                     ]);
+
+//                    dd($newRecord);
                     $response = $newRecord->save();
                     $action = "added";
 
                 } else {
+
                     $response = LaborAttendance::where('id', $getLabor[0]->id)
-                        ->update(['status' => $status]);
+                        ->update(
+                            ['status' => $status],
+                            ['paid' => $paid]
+                        );
+                    return "this is called";
                     $action = "updated";
                 };
 
@@ -605,15 +654,22 @@ class APIController extends Controller
                     $attendance = new LaborAttendance([
                         'labor_id' => $labor_id,
                         'status' => $status,
+                        'paid' => $paid,
                         'date' => $current_dd . '-' . $current_mm . '-' . $current_yyyy,
                     ]);
+
+//                    dd($attendance);
                     $response = $attendance->save();
                     $action = "added";
-
                 } else {
                     $response = LaborAttendance::where('labor_id', $labor_id)
                         ->where('date', '=', $current_dd . '-' . $current_mm . '-' . $current_yyyy)
                         ->update(['status' => $status]);
+
+                    LaborAttendance::where('labor_id', $labor_id)
+                        ->where('date', '=', $current_dd . '-' . $current_mm . '-' . $current_yyyy)
+                        ->update(['paid' => $paid]);
+
                     $action = "updated";
                 }
             }
@@ -645,11 +701,11 @@ class APIController extends Controller
             ->get();
 
 
-        foreach($assignedProjects as $assignedProject){
-           $assignedProject->manager = DB::table('users')
-               ->where('id','=', $assignedProject->assigned_by)
-               ->pluck('name')
-               ->first();
+        foreach ($assignedProjects as $assignedProject) {
+            $assignedProject->manager = DB::table('users')
+                ->where('id', '=', $assignedProject->assigned_by)
+                ->pluck('name')
+                ->first();
         }
 
         return response()->json($assignedProjects);
