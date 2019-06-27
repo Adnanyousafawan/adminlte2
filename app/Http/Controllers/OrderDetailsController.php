@@ -133,7 +133,7 @@ function create()
         $projects = DB::table('projects')->get();
 
  // $users = DB::table('users')->get();
-         return view('orders/allorders',compact('orders'));
+         return view('orders/allorders',compact('orders','suppliers','projects','items'));
     }
       public function cancelled()
     {
@@ -141,7 +141,7 @@ function create()
        $items = DB::table('items')->get();
         $suppliers = DB::table('suppliers')->get();
         $projects = DB::table('projects')->get();
-      return view('orders/allorders',compact('orders'));
+      return view('orders/allorders',compact('orders','suppliers','projects','items'));
     }
     public function recieved()
     {
@@ -149,7 +149,7 @@ function create()
        $items = DB::table('items')->get();
         $suppliers = DB::table('suppliers')->get();
         $projects = DB::table('projects')->get();
-      return view('orders/allorders',compact('orders'));
+      return view('orders/allorders',compact('orders','suppliers','projects','items'));
     }
 
 
@@ -161,6 +161,6 @@ function create()
        $items = DB::table('items')->get();
         $suppliers = DB::table('suppliers')->get();
         $projects = DB::table('projects')->get();
-      return view('orders/allorders', compact('orders'));
+      return view('orders/allorders', compact('orders','suppliers','projects','items'));
     }
 }
