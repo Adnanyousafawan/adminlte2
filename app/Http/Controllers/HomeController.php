@@ -84,13 +84,6 @@ class HomeController extends Controller
         //_______________________________________________________________________________________
 
 
-
-
-
-
-
-
-
         //DB::table()->where('status_id','=',$status_id)->get()->count();
 
        // dd($completed_projects);

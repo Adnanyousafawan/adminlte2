@@ -636,11 +636,9 @@ class APIController extends Controller
                 } else {
 
                     $response = LaborAttendance::where('id', $getLabor[0]->id)
-                        ->update(
-                            ['status' => $status],
-                            ['paid' => $paid]
-                        );
-                    return "this is called";
+                        ->update(['status' => $status]);
+                    LaborAttendance::where('id', $getLabor[0]->id)
+                        ->update(['paid' => $paid]);
                     $action = "updated";
                 };
 

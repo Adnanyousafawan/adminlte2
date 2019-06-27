@@ -15,13 +15,13 @@ class CreateMaterialRequestsTable extends Migration
     {
         Schema::create('material_requests', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('item_id');
+            $table->unsignedBigInteger('item_id')->nullable();
             $table->string('instructions')->nullable();
-            $table->string('quantity');
-            $table->unsignedBigInteger('requested_by');
-            $table->unsignedBigInteger('project_id');
+            $table->string('quantity')->nullable();
+            $table->unsignedBigInteger('requested_by')->nullable();
+            $table->unsignedBigInteger('project_id')->nullable();
             $table->boolean('seen')->default(0);
-            $table->unsignedBigInteger('request_status_id')->default(1);
+            $table->unsignedBigInteger('request_status_id')->nullable();
             $table->timestamps();
 
             $table->foreign('item_id')

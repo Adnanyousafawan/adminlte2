@@ -27,12 +27,18 @@
     @endif
 
     @if (session('status'))
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
         <div class="alert alert-success" role="alert">
             {{ session('status') }}
         </div>
     @endif
 
     @if (session('message'))
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
         <div class="alert alert-danger" role="alert">
             {{ session('message') }}
         </div>
@@ -231,24 +237,7 @@
                                     <div style=" width: 100%; margin-left: 1%;">
 
                                         <div class="row" style="margin-top: 5px;">
-                                            <div
-                                                class="col-md-3 col-md-offset-1 {{-- col-lg-offset-1 col-xl-offset-1  col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-0 col-lg-3 col-xl-3 --}}">
-                                                <!-- Profile Image -->
-
-                                                <div class="no-profile-picture">
-                                                    <div class="img-div"><img
-                                                            src="https://paksa.pk/public/images/upload.png"
-                                                            class="user-image" alt=""></div>
-                                                    <br>
-                                                    <div class="btn">
-                                                        <input type="file" name="image"
-                                                               class="btn btn-default btn-sm profile-picture-uploader"
-                                                               id="image"> {{-- data-toggle="modal" data-target="#uploadprofilepicture"  class="btn btn-default btn-sm profile-picture-uploader" id="cont_image"
-                    name="cont_image"--}}
-                                                    </div>
-                                                </div>
-                                            </div>
-
+                                            
 
                                             <div
                                                 class="col-md-7 col-lg-8 col-md-offset-1 col-lg-offset-0{{-- col-sm-10 col-xs-offset-1 col-sm-offset-0 col-xs-10 col-lg-8 col-xl-8 --}} "
@@ -298,7 +287,7 @@
                                                                            id="user_address" name="address"
                                                                            placeholder="Home Address" required>
                                                                 </div>
-
+                                                                @can('isAdmin')
                                                                 <div class="form-group">
                                                                     <label for="role">Select Role</label>
                                                                     <select class="form-control" id="role" name="role">
@@ -307,6 +296,17 @@
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
+                                                                @endcan
+                                                                @can('isManager')
+                                                                <div class="form-group">
+                                                                    <label for="role">Select Role</label>
+                                                                    <select class="form-control" id="role" name="role">
+                                                                        @foreach($roles as $role)
+                                                                            <option>{{ $role->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                @endcan
                                                                 <button type="submit"
                                                                         class="btn btn-block btn-primary btn-xs form-control"
                                                                         style="margin-top: 20px;">Add User

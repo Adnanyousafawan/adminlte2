@@ -1,9 +1,10 @@
 @extends('adminlte::page')
 @section('title', 'AdminLTE')
 @section('content')
-    {{--
+    
 
         @if ($errors->any())
+        
             <div class="alert alert-danger alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
@@ -16,7 +17,25 @@
                     @endforeach
                 </ul>
             </div>
-        @endif --}}
+        @endif 
+
+@if (session('success'))
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('message'))
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        <div class="alert alert-success" role="alert">
+            {{ session('message') }}
+        </div>
+    @endif
 <ol class="breadcrumb">
     <li><a href="{{ route('home')}}"><i class="fa fa-dashboard"></i>  &nbsp;Dashboard</a></li>
     <?php $segments = ''; ?>
@@ -29,11 +48,6 @@
 </ol>
 
 
-    @if (session('status'))
-        <div class="alert alert-success" role="alert">
-            {{ session('status') }}
-        </div>
-    @endif
 
 
     <div class="box box-primary" style="padding-bottom: 85px;">

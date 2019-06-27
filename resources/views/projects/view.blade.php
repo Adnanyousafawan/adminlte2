@@ -160,7 +160,7 @@
                                 <p>   </p>
                             </div>
 
-                            <a href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
+                            <a href="{{ route('projects.edit', ['id' => $projects->id]) }}" class="btn btn-primary btn-block"><b>Edit</b></a>
                         </div>
                         <!-- /.box-body -->
                     </div>

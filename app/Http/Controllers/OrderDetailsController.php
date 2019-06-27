@@ -12,7 +12,10 @@ class OrderDetailsController extends Controller
  function index()
  {
   $orders = DB::table('order_details')->get();
-  return view('orders/allorders',compact('orders'));
+  $items = DB::table('items')->get();
+  $suppliers = DB::table('suppliers')->get();
+  $projects = DB::table('projects')->get();
+  return view('orders/allorders',compact('orders','suppliers','projects','items'));
 }
 
 function insert(Request $request)
@@ -22,10 +25,12 @@ function insert(Request $request)
 
        //Log::log($request);
 
-     if($request->ajax())
+     if($request->ajax()) 
      {
       $rules = array(
+
        'item_id.*'  => 'required',
+       'supplier_id.*' => 'required',
        'quantity.*'  => 'required'
       );
       
@@ -39,31 +44,34 @@ function insert(Request $request)
 
     $item_id = $request['item_id'];
     $project_id = $request['project_id'];
+    $supplier_id = $request['supplier_id'];
     $quantity = $request['quantity'];
-    $status =$request['status'];
-    // $rate = $request->rate
-
-//$insert_data = array();
+    $invoice = DB::table('order_details')->pluck('invoice_number')->last();
+    $invoice++;
 
 
     for($count = 0; $count < count($item_id); $count++){
       //  return response()->json($item_id[$count]);
 
       $obj = new OrderDetail([
+
       'item_id' => DB::table('items')->where('name','=',  $item_id[$count])->pluck('id')->first(),
-     'quantity' =>  $quantity[$count],
       'project_id' =>DB::table('projects')->where('title','=',  $project_id)->pluck('id')->first(),
-      'status' => $status[$count],
-  
+      'supplier_id' => DB::table('suppliers')->where('name','=',  $supplier_id[$count])->pluck('id')->first(),
+      'invoice_number' =>  $invoice,
+     
+      //'status' => $status[$count],
       ]);
 
       // dd($obj);
-      $obj->save();
+      if(!$obj->save())
+      {
+        return redirect()->back()->with('message',"Order is Not Placed");
+      }
     }
-
         // DB::table('order_details')->insert($data);
    return response()->json([
-     'success'  => 'Data Added successfully.']
+     'success'  => 'Order Added successfully.']
    );
 }
 }
@@ -71,8 +79,9 @@ function insert(Request $request)
 function create()
       {
           $items = DB::table('items')->get();
+          $suppliers = DB::table('suppliers')->get();
           $projects = DB::table('projects')->get();
-          return view('orders/create', ['items' => $items],['projects' => $projects]);
+          return view('orders/create',compact('projects','items','suppliers'));
       }
 
      // return redirect()->route('orderdetails.index')->with('success', 'Data Updated');
@@ -83,32 +92,75 @@ function create()
     {
       
         OrderDetail::where('id', $id)->delete();
-        return redirect()->intended('orders');
+        return redirect()->intended('orders'); 
       
+    }
+
+    public function update(Request $request,$id)
+    {
+       
+         $request->validate([
+            'item_id' => 'required',
+            'supplier_id' => 'required',
+            'quantity' => 'required',
+            'project_id' => 'required',
+         
+        ]);
+
+       $orders = OrderDetail::find($id);
+
+       $orders->project_id = DB::table('projects')->where('title','=', $request->input('project_id'))->pluck('id')->first();
+       $orders->supplier_id = DB::table('suppliers')->where('name','=', $request->input('supplier_id'))->pluck('id')->first();
+       $orders->item_id = DB::table('items')->where('name','=',$request->input('item_id'))->pluck('id')->first();
+       $orders->quantity = $request->input('quantity');
+
+       if($orders->save())
+       {
+        return redirect()->back()->with('success',"Order Updated successfully");
+       }
+       else
+       {
+        return redirect()->back()->with('message',"Order is not Updated");
+       }
+
     }
 
    public function show()
     {
         $orders = DB::table('order_details')->get();
+        $items = DB::table('items')->get();
+        $suppliers = DB::table('suppliers')->get();
+        $projects = DB::table('projects')->get();
+
  // $users = DB::table('users')->get();
-         return view('orders/allorders',compact('orders'));
+         return view('orders/allorders',compact('orders','suppliers','projects','items'));
     }
       public function cancelled()
     {
       $orders = DB::table('order_details')->where('order_details.status','=','sad')->get();
-      return view('orders/allorders',compact('orders'));
+       $items = DB::table('items')->get();
+        $suppliers = DB::table('suppliers')->get();
+        $projects = DB::table('projects')->get();
+      return view('orders/allorders',compact('orders','suppliers','projects','items'));
     }
     public function recieved()
     {
       $orders = DB::table('order_details')->where('order_details.status','=','ok')->get();
-      return view('orders/allorders',compact('orders'));
+       $items = DB::table('items')->get();
+        $suppliers = DB::table('suppliers')->get();
+        $projects = DB::table('projects')->get();
+      return view('orders/allorders',compact('orders','suppliers','projects','items'));
     }
 
 
 
     public function projectorders($id)
     {
+
       $orders = DB::table('order_details')->where('project_id','=',$id)->get();
-      return view('orders/allorders', compact('orders'));
+       $items = DB::table('items')->get();
+        $suppliers = DB::table('suppliers')->get();
+        $projects = DB::table('projects')->get();
+      return view('orders/allorders', compact('orders','suppliers','projects','items'));
     }
 }

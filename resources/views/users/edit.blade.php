@@ -1,15 +1,25 @@
 @extends('adminlte::page')
-@section('title', 'AdminLTE')
-
+@can('isAdmin')
+@section('title', 'Update User')
+@endcan
+@can('isManager')
+@section('title', 'Update Contractor')
+@endcan
 @section('content')
 
     @if (session('message'))
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
         <div class="alert alert-danger" role="alert">
             {{ session('message') }}
         </div>
     @endif
 
     @if (session('success'))
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
         <div class="alert alert-success" role="alert">
             {{ session('success') }}
         </div>

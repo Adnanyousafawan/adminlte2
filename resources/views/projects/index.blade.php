@@ -40,12 +40,18 @@
     @endif
 
     @if (session('success'))
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
         <div class="alert alert-success" role="alert">
             {{ session('success') }}
         </div>
     @endif
 
      @if (session('message'))
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
         <div class="alert alert-danger" role="alert">
             {{ session('message') }}
         </div>

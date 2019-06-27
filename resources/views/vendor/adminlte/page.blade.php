@@ -130,8 +130,12 @@
                                     @endcan
                                     <!-- Tasks Menu -->
                                         @php
-                                        $totalrequests = DB::table('material_requests')->count();
-                                        $requests = DB::table('material_requests')->take(5)->get();
+                                        
+
+                                        $request_status = DB::table('material_request_statuses')->where('name','=','Pending')->pluck('id')->first();
+                                        $requests = DB::table('material_requests')->where('request_status_id','=',$request_status)->take(5)->get();
+                                        $totalrequests = DB::table('material_requests')->where('request_status_id','=',$request_status)->count();
+
 
                                         @endphp
                                         <li class="dropdown tasks-menu">
@@ -141,7 +145,7 @@
                                                 <span class="label label-danger">{{ $totalrequests }}</span>
                                             </a>
                                             <ul class="dropdown-menu">
-                                                <li class="header">You have {{ $totalrequests }} Material Requests</li>
+                                                <li class="header">You have {{ $totalrequests }} Material Requests </li>
 
                                                 <li>
                                                     <!-- Inner menu: contains the tasks -->
@@ -149,24 +153,24 @@
                                                         @foreach($requests as $request)
                                                         <li>
                                                             <!-- Task item -->
-                                                            <a href="#">
+                                                            <a href="/materialrequest">
                                                                 <!-- Task title and progress text -->
                                                                 <h3>
                                                                     PR{{ $request->project_id }}
                                                                     <p class="pull-right">CT{{ $request->requested_by }}</p>
-                                                                    <br>{{ $request->item_id }}
-
+                                                                    <br><p>{{ $request->item_id }}</p>
                                                                 </h3>
                                                                 <!-- The progress bar -->
-                                                                <div class="progress xs">
-                                                                    <!-- Change the css width attribute to simulate progress -->
-                                                                    <div class="progress-bar progress-bar-aqua"
-                                                                         style="width: 20%" role="progressbar"
-                                                                         aria-valuenow="20" aria-valuemin="0"
-                                                                         aria-valuemax="100">
-                                                                        <span class="sr-only">20% Complete</span>
-                                                                    </div>
-                                                                </div>
+{{--                                                                <div class="progress xs">--}}
+{{--                                                                  --}}
+{{--                                                                    <div class="progress-bar progress-bar-aqua"--}}
+{{--                                                                         style="width: 20%" role="progressbar"--}}
+{{--                                                                         aria-valuenow="20" aria-valuemin="0"--}}
+{{--                                                                         aria-valuemax="100">--}}
+{{--                                                                        <span class="sr-only">20% Complete</span>--}}
+{{--                                                                    </div>--}}
+{{--                                                                    --}}
+{{--                                                                </div>--}}
                                                             </a>
                                                         </li>
                                                     @endforeach
@@ -174,7 +178,7 @@
                                                     </ul>
                                                 </li>
                                                 <li class="footer">
-                                                    <a href="#">View all tasks</a>
+                                                    <a href="/materialrequest">View all Material Requests</a>
                                                 </li>
                                             </ul>
 
