@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', 'HomeController@goBackToHome')->name('home');
+Route::get('/', 'CustomerController@goBackToHome')->name('redirect-to-main');
 
 Auth::routes();
 
@@ -108,7 +108,7 @@ Route::delete('materialrequest/destroy/{id}', 'MaterialRequestController@destroy
 
 //-----------------------------------User Management------------------------------------//
 
-Route::resource('users', 'UserController');
+//Route::resource('users', 'UserController');
 Route::get('users', 'UserController@all')->name('users.all');
 Route::get('users/create', 'UserController@create')->name('users.create');
 Route::get('users/manager', 'UserController@manager')->name('users.manager');
@@ -117,7 +117,7 @@ Route::get('users/edit/{id}', 'UserController@edit')->name('users.edit');
 Route::post('users/store', 'UserController@store')->name('users.store');
 Route::delete('users/destroy/{id}', 'UserController@destroy')->name('users.destroy');
 Route::post('users/change_password', 'UserController@changepassword')->name('user.changepassword');
-//Route::post('users/update/{id}','UserController@update')->name('users.update');
+Route::patch('users/update/{id}','UserController@update')->name('users.update');
 
 
 //-----------------------------------Labor Management--------------------------------------//

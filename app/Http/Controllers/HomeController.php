@@ -35,12 +35,6 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-    public function goBackToHome()
-    {
-         
-        return view('welcome');
-    }
-
     public function index()
     {
         if(Gate::allows('isContractor'))

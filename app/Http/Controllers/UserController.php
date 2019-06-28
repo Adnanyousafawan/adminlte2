@@ -48,9 +48,10 @@ class UserController extends Controller
         {
             abort(420,'You Are not Allowed to access this site');
         }
+;
         if (Gate::allows('isAdmin')) {
             $roles = DB::table('roles')->where('id', '!=', 1)->get();
-            $users = DB::table('users')->where('role_id', '=', 2)->get();
+            $users = User::all()->where('role_id', '=', 2);
             return view('users/index', compact('users', 'roles'));
         }
         if (Gate::allows('isManager')) {
