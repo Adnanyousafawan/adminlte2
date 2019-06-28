@@ -3,7 +3,9 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1>Dashboard</h1>
+   @can('isAdmin') <h1> Admin Dashboard</h1> @endcan
+   @can('isManager') <h1> Manager Dashboard</h1> @endcan
+
 @stop
 
 @section('content')
@@ -29,72 +31,6 @@
   @endforeach
 </ol>
 
-  
-
-{{-- <div class="row">
-        
-        <div class="col-md-3 col-sm-6 col-xs-12">
-
-            <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-cloud-download-outline"></i></span>
-                <!-- ion ion-ios-gear-outline -->
-
-                <div class="info-box-content">
-                    <span class="info-box-text">Total Income</span>
-                    <span class="info-box-number">102000</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">Balance</span>
-                    <span class="info-box-number">1200000</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-
-        fix for small devices only
-        <div class="clearfix visible-sm-block"></div>
-
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">Total Expense</span>
-                    <span class="info-box-number">112020</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">Total Labor</span>
-                    <span class="info-box-number">2,000</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-    </div> --}}
-
-
-    
 <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -102,12 +38,12 @@
             <div class="inner">
               <h3>{{ $current_projects }}</h3>
 
-              <p>Current Projects</p>
+              <p>Current Projects</p> 
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="{{ route('projects.current') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -122,7 +58,7 @@
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="{{ route('projects.current') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -137,7 +73,7 @@
             <div class="icon">
               <i class="ion ion-person-add"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="{{ route('users.contractor') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -152,12 +88,78 @@
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="{{ route('expenses.list') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
       </div>
     
+  
+@can('isAdmin')
+<div class="row">
+        
+        <div class="col-md-3 col-sm-6 col-xs-12">
+
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-cloud-download-outline"></i></span>
+                <!-- ion ion-ios-gear-outline -->
+
+                <div class="info-box-content">
+                    <span class="info-box-text">All Projects Budget</span>
+                    <span class="info-box-number">{{ DB::table('projects')->sum('estimated_budget') }}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Balance</span>
+                    <span class="info-box-number">{{ DB::table('projects')->sum('estimated_budget') -  DB::table('miscellaneous_expenses')->sum('expense') }}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
+        <div class="clearfix visible-sm-block"></div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Total Customers</span>
+                    <span class="info-box-number">{{ DB::table('customers')->count('id') }}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Total Labor</span>
+                    <span class="info-box-number">{{ DB::table('labors')->count('id') }}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+    </div>
+
+@endcan
+    
+
     <!-- TABLE: LATEST ORDERS -->
 <div class="row">
 <div class="col-md-12">
@@ -698,14 +700,14 @@
             <div class="vendor-info-count">
               <ul>
                 @can('isAdmin')
-                 <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.manager') }}">8 &nbsp;&nbsp;Total User</a></li>
+                 <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{ route('users.all') }}">{{  DB::table('users')->count('id') }} &nbsp;&nbsp;Total User</a></li>
           
-                 <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.manager') }}">8 &nbsp;&nbsp;Total Managers</a></li>
+                 <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{ route('users.manager') }}">{{  DB::table('users')->where('role_id','=','2')->count() }} &nbsp;&nbsp;Total Managers</a></li>
                 @endcan
                 
-                <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}">8 &nbsp;&nbsp;Total Contrators</a></li>
-                <li><i class="fa fa-check"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}">6 &nbsp;&nbsp;Working Contractors</a></li>
-                <li><i class="fa fa-close"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}">2 &nbsp;&nbsp;Free Contractors</a></li>
+                <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}">{{  DB::table('users')->where('role_id','=','3')->count() }} &nbsp;&nbsp;Total Contrators</a></li>
+                <li><i class="fa fa-check"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}">{{  DB::table('users')->where('role_id','=','3')->count() }} &nbsp;&nbsp;Working Contractors</a></li>
+                <li><i class="fa fa-close"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}"> &nbsp;&nbsp;Free Contractors</a></li>
 
                 
               </ul>

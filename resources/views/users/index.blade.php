@@ -91,8 +91,8 @@
                         <div class="box-header with-border ">
                             <h4><span class="box-title col-md-8">User Record</span></h4>
                             <div class="box-tools pull-right">
-                                <a type="links" {{-- href="{{ route('projects.create') }}" --}}  data-toggle="modal"
-                                   data-target="#applicantADDModal" class="btn btn-primary pul-right">Add User</a>
+                                <a type="links" href="{{ route('users.create') }}"  {{-- data-toggle="modal"
+                                   data-target="#applicantADDModal"  --}}class="btn btn-primary pul-right">Add User</a>
                             </div>
                         </div>
 
@@ -234,13 +234,13 @@
 
                                 <div class="modal-body">
 
-                                    <div style=" width: 100%; margin-left: 1%;">
+                                    <div style=" width: 100%;">
 
                                         <div class="row" style="margin-top: 5px;">
                                             
 
                                             <div
-                                                class="col-md-7 col-lg-8 col-md-offset-1 col-lg-offset-0{{-- col-sm-10 col-xs-offset-1 col-sm-offset-0 col-xs-10 col-lg-8 col-xl-8 --}} "
+                                                class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2{{-- col-sm-10 col-xs-offset-1 col-sm-offset-0 col-xs-10 col-lg-8 col-xl-8 --}} "
                                                 style="/*max-width: 70%;*/ padding-bottom: 30px;">
                                                 <div>
 
@@ -291,9 +291,9 @@
                                                                 <div class="form-group">
                                                                     <label for="role">Select Role</label>
                                                                     <select class="form-control" id="role" name="role">
-                                                                        @foreach($roles as $role)
+                                                                       {{--  @foreach($roles as $role)
                                                                             <option>{{ $role->name }}</option>
-                                                                        @endforeach
+                                                                        @endforeach --}}
                                                                     </select>
                                                                 </div>
                                                                 @endcan
@@ -301,9 +301,9 @@
                                                                 <div class="form-group">
                                                                     <label for="role">Select Role</label>
                                                                     <select class="form-control" id="role" name="role">
-                                                                        @foreach($roles as $role)
+                                                                       {{--  @foreach($roles as $role)
                                                                             <option>{{ $role->name }}</option>
-                                                                        @endforeach
+                                                                        @endforeach --}}
                                                                     </select>
                                                                 </div>
                                                                 @endcan

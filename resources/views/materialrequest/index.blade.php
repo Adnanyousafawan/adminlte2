@@ -112,7 +112,7 @@
                                             <th>Seen</th>
                                             <th>Status</th>
                                             @endcan
-                                            <th>Action</th>
+                                            <th style="max-width: 60px;">Action</th>
                                           
                                         </tr>
                                         </thead>
@@ -127,13 +127,25 @@
                                                 <td>{{ $materialrequest->requested_by }}</td>
                                                 <td>{{  $materialrequest->instructions }}</td>
                                                 @can('isAdmin')
-                                                   
-                                                    <td><input type="checkbox" <?php if($materialrequest->seen==1){echo "checked";}?> disabled></td>
+                                                <td>@if($materialrequest->seen==1)
+                                                 
+                                                   <div class="label label-success col-md-12">Seen</div>
+                                                @endif
+                                                @if($materialrequest->seen==0)
+                                                 
+                                                   <div class="label label-warning col-md-12">Not Seen</div>
+                                                @endif
+                                            </td>
+
+
+
+
                                                     <td>{{ $materialrequest->request_status_id }}</td>
-                                                     <td style="max-width: 50px;">
+                                                     <td style='max-width: 60px;'>
                                                    
                                                     <div class="btn-group">
-                                                     <button data-toggle="dropdown"--}}
+                                                         <button class="btn btn-success" type="button">Action</button> 
+                                                     <button data-toggle="dropdown"
                                                                class="btn btn-success dropdown-toggle" type="button">
                                                         <span class="caret"></span>
                                                           <span class="sr-only">Toggle Dropdown</span>
@@ -177,7 +189,7 @@
                                                     @endif
                                                       @if($materialrequest->request_status_id == 1)
                                                         {{ $materialrequest->request_status_id  }}
-                                                        <a type="links" href="" class=" glyphicon glyphicon-ok pull-right" style="color: red;"></a>
+                                                        <a type="links" href="" class=" glyphicon glyphicon-ok pull-right" style="color: green;"></a>
                                                     @endif
 
                                                 </td>
@@ -199,14 +211,12 @@
                                                     <div class="modal-content">
                                                             <form
                                                                 action=" {{ route('requests.update', ['id' => $materialrequest->id]) }}"
-                                                                method="POST" >
-                                                                {{ csrf_field() }}
-
-
-                                                                {{-- {{ method_field('POST') }} --}}
-                                                               
-                                                             
-
+                                                                method="post" enctype="multipart/form-data" >
+                                                                {{method_field('PATCH')}}
+                                                                @csrf 
+                                                                {{--  @method('PATCH')
+                                                                 --}}
+                                                                
                                                                 <div class="modal-header">
                                                                     <button type="button" class="close"
                                                                             data-dismiss="modal"
@@ -239,7 +249,7 @@
                                                                     </div>
             
                                                                     </div>
-                                                                  
+                                                                  <input type="hidden" , name="applicant_id" id="app_id">
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button"
@@ -279,7 +289,7 @@
                                                                    value="{{ csrf_token() }}">
                                                             <form
                                                                 action=" {{ route('requests.destroy', ['id' => $materialrequest->id]) }}"
-                                                                method="POST" class="remove-record-model">
+                                                                 method="POST" class="remove-record-model">
                                                                 {{ method_field('delete') }}
                                                                 {{ csrf_field() }}
 

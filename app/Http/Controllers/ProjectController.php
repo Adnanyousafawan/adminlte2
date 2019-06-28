@@ -42,8 +42,9 @@ class ProjectController extends Controller
             /* ->join('users', 'users.id', '=', 'projects.assigned_to')
             ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
             //$projectstotal = DB::table('projects')->get();//Project::all();
+            $labor_at_projects = DB::table('projects')->where('projects.assigned_by','=',Auth::user()->id )->paginate(5);
             $contractors = DB::table('users')->where('role_id', '=', 3)->get();
-            return view('projects/index', compact('projects','contractors'));
+            return view('projects/index', compact('projects','contractors','labor_at_projects'));
         }
 
 
@@ -55,17 +56,11 @@ class ProjectController extends Controller
             
 
         //$projectstotal = DB::table('projects')->get();//Project::all();
-            $contractors = DB::table('users')->where('role_id', '=', 3)->get();
-            return view('projects/index', compact('projects'), ['contractors' => $contractors]);
+            $labor_at_projects = DB::table('projects')->where('projects.assigned_by','=',Auth::user()->id )->paginate(5);
+            $contractors = DB::table('users')->where('role_id', '=', 3)->pluck('id')->all();
+            return view('projects/index', compact('projects','contractors','labor_at_projects'));
         //return view('projects.index');
         }
-
-        if(Gate::allows('isContractor'))
-        {
-            abort(404,"You are not Allowed to Access this Page.");
-        }
-       
-
     }
 
     /**
@@ -89,11 +84,7 @@ class ProjectController extends Controller
         $contractors = DB::table('users')->where('role_id', '=', 3)->get();
         return View('projects/create')->with('contractors', $contractors);
         }
-        if(Gate::allows('isContractor'))
-        {
-            abort(404,"You are not Allowed to Access this Page.");
-        }
-       
+      
     }
 
     /**
@@ -118,7 +109,7 @@ class ProjectController extends Controller
             'estimated_completion_time' => 'required',
             'estimated_budget' => 'required',
             'description' => 'required',
-            'contract_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
+            //'contract_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
 
         ]);
 
@@ -160,11 +151,10 @@ class ProjectController extends Controller
             'estimated_completion_time' => $request->input('estimated_completion_time'),
             'estimated_budget' => $request->input('estimated_budget'),
             'description' => $request->input('description'),
-            'contract_image' => $request->input('contract_image')
+            'contract_image' => $request->get('contract_image'),
 
 
         ]);
-
 
         if ($request->has('contract_image')) {
             // Get image file
@@ -173,6 +163,7 @@ class ProjectController extends Controller
             $name = Str::slug($project->title . '-' . time());
             // Define folder path
             $folder = '/images/';
+            dd($image);
             // Make a file path where image will be stored [ folder path + file name + file extension]
             $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
             //delete previously stored image
@@ -481,7 +472,7 @@ class ProjectController extends Controller
             'estimated_completion_time' => 'required',
             'estimated_budget' => 'required',
             // 'description' => 'required',
-            // 'contract_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
+             'contract_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
 
         ]);
 
@@ -496,6 +487,31 @@ class ProjectController extends Controller
         $projects->estimated_budget = $request->input('estimated_budget');
         //  $projects->description = $request->input('description');
         // $projects->contract_image = $request->input('contract_image');
+
+        $projects->contract_image = $request->input('contract_image');
+
+
+        if ($request->has('contract_image')) {
+            // Get image file
+            $image = $request->file('contract_image');
+            // Make a image name based on user name and current timestamp
+            $name = Str::slug($projects->title . '-' . time());
+            // Define folder path
+            $folder = '/images/';
+            // Make a file path where image will be stored [ folder path + file name + file extension]
+            $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+            //delete previously stored image
+//            $this->deleteOne( 'public', $project->contract_image);
+            // Upload image
+            $this->uploadOne($image, $folder, 'public', $name);
+            // Set user profile image path in database to filePath
+            $projects->contract_image = $filePath;
+        }
+
+
+
+
+
         $projects->save();
         // Return user back and show a flash message
         return redirect()->back()->with('success', 'Data Updated');

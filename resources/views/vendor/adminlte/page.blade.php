@@ -57,6 +57,7 @@
                                     <span class="sr-only">{{ trans('adminlte::adminlte.toggle_navigation') }}</span>
                                 </a>
                             @endif
+  
                             <!-- Navbar Right Menu -->
                                 <div class="navbar-custom-menu">
 

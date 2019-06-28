@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@goBackToHome')->name('home');
 
-Auth::routes();
+Auth::routes(); 
 
+Route::get('/home', 'HomeController@index')->name('home');
 //-----------------------------------Items Management------------------------------------//
 
 Route::resource('item', 'ItemController');
@@ -57,7 +58,7 @@ Route::delete('orders/destroy/{id}', 'OrderDetailsController@destroy')->name('or
 Route::get('orders/projectorders/{id}', 'OrderDetailsController@projectorders')->name('orders.projectorders');
 Route::post('orders/update/{id}', 'OrderDetailsController@update')->name('orders.update');
 
-Route::get('/home', 'HomeController@index')->name('home');
+
 
 //-----------------------------------Project Management------------------------------------//
 
@@ -77,7 +78,7 @@ Route::get('projects/completed', 'ProjectController@completed')->name('projects.
 Route::get('projects/cancelled', 'ProjectController@cancelled')->name('projects.cancelled');
 Route::get('projects/current', 'ProjectController@current')->name('projects.current');
 Route::get('projects/all', 'ProjectController@all')->name('projects.all');
-
+ 
 //--------------------------------Project Phase Management------------------------------
 
 Route::get('phases', 'PhaseController@index')->name('phases.index');
@@ -96,13 +97,15 @@ Route::delete('projectstatus/destroy/{id}', 'ProjectStatusController@destroy')->
 
 //__________________________________Material Request_______________________________________
 
+//Route::resource('materialrequest','MaterialRequestController');
 Route::get('materialrequest','MaterialRequestController@index')->name('requests.index');
 Route::get('materialrequest/approved','MaterialRequestController@approved')->name('requests.approved');
+Route::patch('materialrequest/update/{id}', 'MaterialRequestController@update')->name('requests.update');
 Route::get('materialrequest/rejected','MaterialRequestController@rejected')->name('requests.rejected');
 Route::get('materialrequest/pending','MaterialRequestController@pending')->name('requests.pending');
 Route::post('materialrequest/insert','MaterialRequestController@insert')->name('requests.insert');
 
-Route::post('materialrequest/update/{id}', 'MaterialRequestController@update')->name('requests.update');
+
 
 Route::delete('materialrequest/destroy/{id}', 'MaterialRequestController@destroy')->name('requests.destroy');
 

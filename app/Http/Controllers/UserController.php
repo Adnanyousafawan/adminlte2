@@ -22,11 +22,18 @@ class UserController extends Controller
         {
             abort(420,'You Are not Allowed to access this site');
         }
+/*
+         if (Gate::allows('isAdmin')) {
+            $roles = DB::table('roles')->where('id', '!=', 1)->get();
+            $users = DB::table('users')->get();
+            return view('users/index', compact('users','roles'));
+        }
+        
 
-       $users = DB::table('users')->get();
-       return view('users/index',compact($users));
 
-        /*
+           $users = DB::table('users')->get();
+            $roles = DB::table('roles')->where('id', '!=', 1)->get();
+           return view('users/index',compact('users','roles'));
                 if (Gate::allows('isAdmin')) {
                     $users = DB::table('users')->where('role_id', '!=', 1)->get();
                     return view('users/index', compact('users'));
@@ -49,9 +56,10 @@ class UserController extends Controller
             abort(420,'You Are not Allowed to access this site');
         }
         if (Gate::allows('isAdmin')) {
+
             $roles = DB::table('roles')->where('id', '!=', 1)->get();
             $users = DB::table('users')->where('role_id', '=', 2)->get();
-            return view('users/index', compact('users', 'roles'));
+            return view('users/index', compact('users','roles'));
         }
         if (Gate::allows('isManager')) {
             abort(404, "Sorry, You cant  Access this Page");
@@ -68,12 +76,12 @@ class UserController extends Controller
         if (Gate::allows('isAdmin')) {
             $roles = DB::table('roles')->where('id', '!=', 1)->get();
             $users = DB::table('users')->where('role_id', '=', 3)->get();
-            return view('users/index', compact('users', 'roles'));
+            return view('users/index', compact('users','roles'));
         }
         if (Gate::allows('isManager')) {
             $roles = DB::table('roles')->where('id', '=', 3)->get();
-            $users = DB::table('users')->where('role_id', '=', 3)->get();
-            return view('users/index', compact('users', 'roles'));
+            $users = DB::table('users')->where('role_id','=', 3)->get();
+            return view('users/index', compact('users','roles'));
         }
 
     }
@@ -95,10 +103,7 @@ class UserController extends Controller
             $users = DB::table('users')->where('role_id', '=', 3)->get();
             return view('users/index', compact('users', 'roles'));
         }
-        if (Gate::allows('isContractor')) {
-            abort(404, "Sorry you are not Allowed ");
-        }
-
+       
     }
 
     /**
@@ -121,10 +126,7 @@ class UserController extends Controller
             $roles = DB::table('roles')->where('id', '=', 3)->get();
             return view('users/create', compact('roles'));
         }
-        if (Gate::allows('isContractor')) {
-            abort(404, "Sorry you are not Allowed ");
-        }
-
+       
 
     }
 

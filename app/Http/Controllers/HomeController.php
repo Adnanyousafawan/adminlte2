@@ -39,6 +39,10 @@ class HomeController extends Controller
     {
          
         return view('welcome');
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
     }
 
     public function index()
@@ -62,7 +66,7 @@ class HomeController extends Controller
 
         //_______________________________________________________________________________________
 
-        //___________________________ Material List _____________________________________________
+        //_______________ ____________ Material List _____________________________________________
 
 
 

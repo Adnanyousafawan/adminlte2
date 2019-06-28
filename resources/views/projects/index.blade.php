@@ -128,18 +128,20 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($projects as $project)
+                                        @foreach($labor_at_projects as $lproject)
                                     <tr>
-                                        <td><a href="pages/examples/invoice.html" type="links">{{ $project->id }}</a></td>
-                                        <td>Tulip</td>
+                                        <td><a href="pages/examples/invoice.html" type="links">PR00{{ $lproject->id }}</a></td>
+                                        <td>{{ $lproject->title }}</td>
+
                                         <td>
-                                            <div class="sparkbar" data-color="#00a65a" data-height="20">111</div>
+                                            <div class="sparkbar" data-color="#00a65a" data-height="20">{{DB::table('labors')->where('project_id','=',$lproject->id)->count('id') }}</div>
                                         </td>
                                         <td>
-                                            <div class="label label-warning col-md-8">10,000</div>
+                                            <div class="label label-warning col-md-8">{{ 1000 * DB::table('labors')->where('project_id','=',$lproject->id)->count('id')  }}</div>
                                         </td>
-                                        <td>ALI</td>
-                                    </tr>
+                                        <td>Contractor
+                                            {{-- {{ DB::table('projects')->where('assigned_to','=', $contractors->id ) }} --}}</td>
+                                    </tr> 
                                     @endforeach
                                     
                                    
@@ -166,7 +168,7 @@
                         <div class="box" style="margin-top: 0px;">
                             <div class="box-header">
                                 <h2 class="box-title">Total Labor</h2>
-                                <span class="info-box-number label label-primary pull-right" style="margin-top: 0px;">112</span>
+                                <span class="info-box-number label label-primary pull-right" style="margin-top: 0px;">{{DB::table('labors')->count('id') }}</span>
                             </div>
                             <!-- /.box-header -->
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -180,7 +182,7 @@
                             <div class="box-header">
                                 <h2 class="box-title">Working Labor</h2>
                                 <span class="info-box-number label label-warning pull-right"
-                                      style="margin-top: 0px;">80</span>
+                                      style="margin-top: 0px;">{{DB::table('labors')->where('status_id','=','1')->count('id') }}</span>
                             </div>
                             <!-- /.box-header -->
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -194,7 +196,7 @@
                             <div class="box-header">
                                 <h2 class="box-title">Available Labor</h2>
                                 <span class="info-box-number label label-success pull-right"
-                                      style="margin-top: 0px;">32</span>
+                                      style="margin-top: 0px;">{{DB::table('labors')->where('status_id','=','2')->count('id') }}</span>
                             </div>
                             <!-- /.box-header -->
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -207,7 +209,7 @@
                         <div class="box">
                             <div class="box-header">
                                 <h2 class="box-title">Total Cost</h2>
-                                <span class="info-box-number label label-danger pull-right" style="margin-top: 0px;">20,0000</span>
+                                <span class="info-box-number label  label-danger pull-right" style="margin-top: 0px;">{{ 1000 * DB::table('labors')->count('id') + DB::table('miscellaneous_expenses')->sum('expense')  }}</span>
                             </div>
                             <!-- /.box-header -->
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -220,7 +222,7 @@
                             <div class="box-header">
                                 <h2 class="box-title">Total Projects</h2>
                                 <span class="info-box-number label label-info pull-right"
-                                      style="margin-top: 0px;">20</span>
+                                      style="margin-top: 0px;">{{ DB::table('projects')->count('id')}}</span>
                             </div>
                             <!-- /.box-header -->
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -285,13 +287,11 @@
                                         
                     <div class="btn-group">
 
-                    {{-- <button class="btn btn-success" type="button">Action</button> --}}
+                    <button class="btn btn-success" type="button">Action</button> 
                     <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
                       <span class="caret"></span>
                       <span class="sr-only">Toggle Dropdown</span>
                     </button>
-
-
                     <ul role="menu" class="dropdown-menu">
                       <li><a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"><i class="fa fa-edit"></i>View</a></li>
                        
@@ -395,22 +395,26 @@
 
                                 <div class="modal-body">
 
-                                    <div style=" width: 100%; margin-left: 1%;">
+                                    <div style=" width: 100%;">
 
                                         <div class="row" style="margin-top: 5px;">
-                                            <div class="col-md-3 col-md-offset-1 {{-- col-lg-offset-1 col-xl-offset-1  col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-0 col-lg-3 col-xl-3 --}}">
-                                                <!-- Profile Image -->
+                                            
+{{-- 
+                                            <div class="col-md-3 col-md-offset-1  --}}{{-- col-lg-offset-1 col-xl-offset-1  col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-0 col-lg-3 col-xl-3 --}}">
+             {{--                                    <!-- Profile Image -->
 
                 <div class="no-profile-picture">
-                <div class="img-div"><img src="https://paksa.pk/public/images/upload.png" class="user-image" alt=""></div><br>
+                <div class="img-div"><img src="https://paksa.pk/public/images/upload.png" class="contract_image" alt=""></div><br>
                 <div class="btn">
-                    <input type="file" name="cnic" class="btn btn-default btn-sm profile-picture-uploader" id="cnic"> {{-- data-toggle="modal" data-target="#uploadprofilepicture"  class="btn btn-default btn-sm profile-picture-uploader" id="cont_image"
+                    <input type="file" name="contract_image" class="btn btn-default btn-sm profile-picture-uploader" id="contract_image">  --}}
+
+                    {{-- data-toggle="modal" data-target="#uploadprofilepicture"  class="btn btn-default btn-sm profile-picture-uploader" id="cont_image"
                                                                    name="cont_image"--}}
-                                                               </div>
+             {{--                                                   </div>
                 </div>
             </div>
     
-
+ --}}
 
 
 {{-- 
@@ -455,7 +459,7 @@
                                           
 
                                             <div
-                                                class="col-md-7 col-lg-8 col-md-offset-1 col-lg-offset-0{{-- col-sm-10 col-xs-offset-1 col-sm-offset-0 col-xs-10 col-lg-8 col-xl-8 --}} "
+                                                class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2{{-- col-sm-10 col-xs-offset-1 col-sm-offset-0 col-xs-10 col-lg-8 col-xl-8 --}} "
                                                 style="/*max-width: 70%;*/ padding-bottom: 30px;">
                                                 <div>
                                                     

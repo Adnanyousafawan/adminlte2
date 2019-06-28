@@ -25,10 +25,6 @@ class OrderDetailsController extends Controller
 function insert(Request $request)
 { 
   
-    //error_log($request);
-
-       //Log::log($request);
-
      if($request->ajax()) 
      {
       $rules = array(
@@ -69,10 +65,7 @@ function insert(Request $request)
       ]);
 
       // dd($obj);
-      if(!$obj->save())
-      {
-        return redirect()->back()->with('message',"Order is Not Placed");
-      }
+      $obj->save();
     }
         // DB::table('order_details')->insert($data);
    return response()->json([

@@ -150,7 +150,7 @@ return [
         ],
          [
             'text' => 'Material Requests',
-            'url' => 'home',
+            'url' => '/materialrequest',
             'icon_color' => 'usr',
             
         ],
