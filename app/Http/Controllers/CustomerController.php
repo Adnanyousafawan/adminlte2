@@ -89,4 +89,9 @@ class CustomerController extends Controller
     {
         //
     }
+
+    public function goBackToHome()
+    {
+        return view('welcome');
+    }
 }

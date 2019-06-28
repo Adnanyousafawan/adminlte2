@@ -40,3 +40,7 @@ Route::post('/projects/labor/attendance', 'APIController@api_projects_labor_atte
 Route::post('/get/labor/attendance', 'APIController@api_get_labor_attendance');
 Route::post('/add/labor/attendance', 'APIController@api_add_labor_attendance');
 Route::post('/assigned/projects', 'APIController@api_assigned_projects');
+Route::post('/active/labors', 'APIController@api_active_labors');
+Route::post('/not/active/labors', 'APIController@api_not_active_labors');
+Route::post('/suspended/labors', 'APIController@api_suspended_labors');
+Route::post('/accept/project', 'APIController@api_accept_project');

@@ -65,6 +65,8 @@ class MaterialRequestController extends Controller
         $request_status = DB::table('material_request_statuses')->where('name','=','approved')->pluck('id')->first();
         $materialrequests = DB::table('material_requests')->where('request_status_id','=',$request_status)->get()->all();
         return view('materialrequest/index', compact('materialrequests'));
+
+        
     }
      public function rejected()
     {

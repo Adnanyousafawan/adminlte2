@@ -18,8 +18,8 @@
         <div class="box-body col-md-8 col-md-offset-2">
             <div class="box box-primary" style="padding-bottom: 85px;">
                 <div class="box-header">
-                    @can('isAdmin')<h2 class="text-center">Update User</h2>@endcan
-                    @can('isManager')<h2 class="text-center">Update Contractor</h2>@endcan
+                    @can('isAdmin')<h2 class="text-center">ADD User</h2>@endcan
+                    @can('isManager')<h2 class="text-center">ADD Contractor</h2>@endcan
 
                 </div>
 
