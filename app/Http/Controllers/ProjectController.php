@@ -98,7 +98,16 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
+       
+
+        $old_project = Project::where('title','=', $request->input('title'))->pluck('title')->first();
+        if($request->input('title') == $old_project)
+        {
+            return redirect()->back()->with('message','There is already Project with this name . Please Chnage Project Name');
+        }
+        else
+        {
+             $request->validate([
             'title' => 'required',
             'area' => 'required',
             'city' => 'required',
@@ -112,17 +121,10 @@ class ProjectController extends Controller
             'estimated_completion_time' => 'required',
             'estimated_budget' => 'required',
             'description' => 'required',
-            //'contract_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
-
+            'contract_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
         ]);
 
-        $old_project = Project::where('title','=', $request->input('title'))->pluck('title')->first();
-        if($request->input('title') == $old_project)
-        {
-            return redirect()->back()->with('message','There is already Project with this name . Please Chnage Project Name');
-        }
-        else
-        {
+             
              $contractor = DB::table('users')
             ->where('name', '=', $request->input('assigned_to'))
             ->select('id')
@@ -163,7 +165,6 @@ class ProjectController extends Controller
             'description' => $request->input('description'),
             //'contract_image' => $request->get('contract_image'),
         ]);
-/*
 
           if ($request->has('contract_image')) {
             // Get image file
@@ -181,7 +182,7 @@ class ProjectController extends Controller
             // Set user profile image path in database to filePath
             $project->contract_image = $filePath;
         }
-*/
+
         $project->save();
 
 

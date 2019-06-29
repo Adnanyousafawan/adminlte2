@@ -383,7 +383,7 @@
                     <div class="modal-dialog" style="min-width:70%; align-content: center; ">
                         <div class="modal-content">
 
-                            <form method="post" action="{{ route('projects.store') }}" enctype="">
+                            <form method="post" action="{{ route('projects.store') }}" enctype="multipart/form-data" >
                                 @csrf
                                 <div class="modal-header">
                                     <button type="button" class="close pull-right" data-dismiss="modal"
