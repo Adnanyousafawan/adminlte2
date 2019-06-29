@@ -1,6 +1,16 @@
 @extends('adminlte::page')
 @section('title', 'AdminLTE')
+ <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/bootstrap-3.4.1.css">
+    <link rel="stylesheet" href="/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="/css/jquery.dataTables.css">
+    {{-- <link rel="stylesheet" href="/images"> --}}
+    <script src="/js/jquery-3.4.1.js"></script>
+    <script src="/js/jquery.dataTables.js"></script>
+
 @section('content')
+
     @if ($errors->any())
      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">×</span>
@@ -27,22 +37,22 @@
                     @csrf
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="User Name">
+                        <input type="text" class="form-control" id="name" name="name" pattern="[A-Za-z0-9\w]{4,20}" title="pleese add 4 letter" placeholder="User Name" required>
                     </div>
 
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Email">
+                        <input type="text" class="form-control" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="Email">
                     </div>
 
                     <div class="form-group">
                         <label for="pass">Password</label>
-                        <input type="text" class="form-control" id="pass" name="pass" placeholder="Password"
+                        <input type="Password" class="form-control" id="pass" name="pass" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" placeholder="Password"
                         >
                     </div>
 
                     <div class="form-group">
-                        <label for="cnic">CNIC</label>
+                        <label for="cnic">CNIC <span style="color: red;">*</span></label>
                         <input type="text" class="form-control" id="cnic" name="cnic" placeholder="User CNIC">
                     </div>
 
@@ -52,8 +62,9 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-phone"></i>
                             </div>
-                            <input type="text" class="form-control" placeholder="Contact Number"
-                                   data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']"
+                            <input type="number" maxlength="11" class="form-control" placeholder="Contact Number"
+                                   pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" title="Example:(03330416263)" 
+                                   {{-- pattern="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']" --}}
                                    data-mask="" id="phone" name="phone">
                         </div>
                     </div>

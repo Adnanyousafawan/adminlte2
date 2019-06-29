@@ -11,6 +11,7 @@
 
 @section('content')
 
+{{Session::get('flash-message')}}
 
 <ol class="breadcrumb">
     <li><a href="{{ route('home')}}"><i class="fa fa-dashboard"></i>  &nbsp;Dashboard</a></li>
@@ -22,7 +23,7 @@
         </li>
     @endforeach
 </ol>
-
+ 
 
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible" role="alert">
@@ -379,7 +380,7 @@
 
                 <div id="applicantADDModal" class="modal fade" tabindex="-1" role="dialog"
                      aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
-                    <div class="modal-dialog" style="min-width:70%; align-content: center; text-align: center;">
+                    <div class="modal-dialog" style="min-width:70%; align-content: center; ">
                         <div class="modal-content">
 
                             <form method="post" action="{{ route('projects.store') }}" enctype="">
@@ -399,22 +400,24 @@
 
                                         <div class="row" style="margin-top: 5px;">
                                             
-{{-- 
-                                            <div class="col-md-3 col-md-offset-1  --}}{{-- col-lg-offset-1 col-xl-offset-1  col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-0 col-lg-3 col-xl-3 --}}">
-             {{--                                    <!-- Profile Image -->
+
+                                            <div class="col-md-3 col-md-offset-4 col-lg-offset-4 col-xl-offset-4  col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-lg-3 col-xl-3" style="margin-bottom: 10px;">
+                                                 <!-- Profile Image -->
 
                 <div class="no-profile-picture">
                 <div class="img-div"><img src="https://paksa.pk/public/images/upload.png" class="contract_image" alt=""></div><br>
                 <div class="btn">
-                    <input type="file" name="contract_image" class="btn btn-default btn-sm profile-picture-uploader" id="contract_image">  --}}
+                    <input type="file" name="contract_image" id="contract_image" class="btn btn-default btn-sm profile-picture-uploader" > 
 
-                    {{-- data-toggle="modal" data-target="#uploadprofilepicture"  class="btn btn-default btn-sm profile-picture-uploader" id="cont_image"
-                                                                   name="cont_image"--}}
-             {{--                                                   </div>
-                </div>
-            </div>
+                  {{--   data-toggle="modal" data-target="#uploadprofilepicture"  class="btn btn-default btn-sm profile-picture-uploader" id="cont_image" name="cont_image"
+              --}}
+
+              </div>
+          </div>
+      </div>
+ 
     
- --}}
+
 
 
 {{-- 
@@ -515,7 +518,7 @@
                             <label for="phone">Customer Contact</label>
                             <div class="input-group">
                                 <div class="input-group-addon">
-                                    <i class="fa fa-phone"></i>
+                                     <i class="fa fa-phone"></i>
                                 </div>
                                 <input type="number" maxlength="14" class="form-control"
                                        data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;" data-mask=""
@@ -534,7 +537,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="assigned_to pull pull-left">Select Contractor</label>
+                            <label for="assigned_to">Select Contractor</label>
                             <select class="form-control" id="assigned_to" name="assigned_to">
                                 @foreach($contractors as $contractor)
                                     <option>{{ $contractor->name}}</option>
@@ -567,7 +570,7 @@
                         </div>
 
                                                             <button type="submit"
-                                                                    class="btn btn-block btn-primary btn-xs form-control"
+                                                                    class="btn btn-block btn-primary btn-xs form-control" 
                                                                     style="margin-top: 20px;">Add Project
                                                             </button>
                                                         </div>

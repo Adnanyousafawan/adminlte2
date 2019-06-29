@@ -336,16 +336,18 @@
             select: true,
             "order": [[0, "asc"]],
             //"scrollY"  : "380px",
-            "scrollCollapse": true,
+            //"scrollCollapse": true,
             "paging": true,
             "bProcessing": true,
-            // fixedHeader: {
-            //     header: false,
-            //     // headerOffset: 100,
-            //     },
-            //scrollX: true,
-            // scrollY: true
-        });
+            "iDisplayLength": 500,
+
+        //     fixedHeader: {
+        //         header: false,
+        //         headerOffset: 100,
+        //         },
+        //     scrollX: true,
+        //     scrollY: true
+        // });
 
 
     </script>

@@ -2,6 +2,7 @@
 
 @section('title', 'Dashboard')
 
+
 @section('content_header')
    @can('isAdmin') <h1> Admin Dashboard</h1> @endcan
    @can('isManager') <h1> Manager Dashboard</h1> @endcan

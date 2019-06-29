@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Redirect;
 use Validator;
+use App\User;
 use View;
 use Gate;
 
@@ -43,7 +44,8 @@ class ProjectController extends Controller
             ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
             //$projectstotal = DB::table('projects')->get();//Project::all();
             $labor_at_projects = DB::table('projects')->where('projects.assigned_by','=',Auth::user()->id )->paginate(5);
-            $contractors = DB::table('users')->where('role_id', '=', 3)->get();
+            $contractors = User::all()->where('role_id', '=',3);
+            dd($contractors);
             return view('projects/index', compact('projects','contractors','labor_at_projects'));
         }
 
@@ -57,7 +59,7 @@ class ProjectController extends Controller
 
         //$projectstotal = DB::table('projects')->get();//Project::all();
             $labor_at_projects = DB::table('projects')->where('projects.assigned_by','=',Auth::user()->id )->paginate(5);
-            $contractors = DB::table('users')->where('role_id', '=', 3)->pluck('id')->all();
+            $contractors = User::all()->where('role_id', '=', 3);
             return view('projects/index', compact('projects','contractors','labor_at_projects'));
         //return view('projects.index');
         }
@@ -95,6 +97,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'title' => 'required',
             'area' => 'required',
@@ -113,7 +116,14 @@ class ProjectController extends Controller
 
         ]);
 
-        $contractor = DB::table('users')
+        $old_project = Project::where('title','=', $request->input('title'))->pluck('title')->first();
+        if($request->input('title') == $old_project)
+        {
+            return redirect()->back()->with('message','There is already Project with this name . Please Chnage Project Name');
+        }
+        else
+        {
+             $contractor = DB::table('users')
             ->where('name', '=', $request->input('assigned_to'))
             ->select('id')
             ->get();
@@ -151,19 +161,17 @@ class ProjectController extends Controller
             'estimated_completion_time' => $request->input('estimated_completion_time'),
             'estimated_budget' => $request->input('estimated_budget'),
             'description' => $request->input('description'),
-            'contract_image' => $request->get('contract_image'),
-
-
+            //'contract_image' => $request->get('contract_image'),
         ]);
+/*
 
-        if ($request->has('contract_image')) {
+          if ($request->has('contract_image')) {
             // Get image file
             $image = $request->file('contract_image');
             // Make a image name based on user name and current timestamp
             $name = Str::slug($project->title . '-' . time());
             // Define folder path
             $folder = '/images/';
-            dd($image);
             // Make a file path where image will be stored [ folder path + file name + file extension]
             $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
             //delete previously stored image
@@ -173,12 +181,15 @@ class ProjectController extends Controller
             // Set user profile image path in database to filePath
             $project->contract_image = $filePath;
         }
-
+*/
         $project->save();
 
 
         // Return user back and show a flash message
         return redirect()->route('projects.index')->with('success', 'Project Added Successfully');
+        }
+ 
+       
     }
 
     /**
