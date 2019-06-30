@@ -9,7 +9,7 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+*/ 
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -22,12 +22,15 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 //-----------------------------------Items Management------------------------------------//
 
-Route::resource('item', 'ItemController');
+//Route::resource('item', 'ItemController');
 Route::get('items/create', 'ItemController@create')->name('item.create');
 Route::post('items/itemDetails/insert', 'ItemController@insert')->name('item.insert');
 Route::get('items', 'ItemController@index')->name('items.list');
-
 Route::delete('items/destroy/{id}', 'ItemController@destroy')->name('items.destroy');
+//----------------------------------------------------------
+
+
+
 
 
 //-----------------------------------Expense Management------------------------------------//
@@ -58,16 +61,17 @@ Route::delete('orders/destroy/{id}', 'OrderDetailsController@destroy')->name('or
 Route::get('orders/projectorders/{id}', 'OrderDetailsController@projectorders')->name('orders.projectorders');
 Route::post('orders/update/{id}', 'OrderDetailsController@update')->name('orders.update');
 
-
+Route::get('orders/getItems/{id}', 'OrderDetailsController@getItems');
 
 //-----------------------------------Project Management------------------------------------//
 
-Route::resource('projects', 'ProjectController');
+//Route::resource('projects', 'ProjectController');
 Route::get('/search_project', 'ProjectController@search_project');
 Route::get('projects', 'ProjectController@index')->name('projects.index');
 Route::get('projects/create', 'ProjectController@create')->name('projects.create');
 Route::get('projects/edit/{id}', 'ProjectController@edit')->name('projects.edit');
 Route::post('projects/store', 'ProjectController@store')->name('projects.store');
+Route::patch('projects/update/{id}', 'ProjectController@update')->name('projects.update');
 Route::delete('projects/destroy/{id}', 'ProjectController@destroy')->name('projects.destroy');
 Route::get('projects/view/{id}', 'ProjectController@viewuser')->name('projects.view');
 
@@ -78,6 +82,7 @@ Route::get('projects/completed', 'ProjectController@completed')->name('projects.
 Route::get('projects/cancelled', 'ProjectController@cancelled')->name('projects.cancelled');
 Route::get('projects/current', 'ProjectController@current')->name('projects.current');
 Route::get('projects/all', 'ProjectController@all')->name('projects.all');
+Route::get('projects/labor_by_projects','ProjectController@labors_by_projects')->name('projects.labor_by_projects');
  
 //--------------------------------Project Phase Management------------------------------
 
@@ -94,6 +99,7 @@ Route::get('projectstatus/create', 'ProjectStatusController@create')->name('proj
 Route::post('projectstatus/projectstatus/insert', 'ProjectStatusController@insert')->name('projectstatus.insert');
 Route::get('projectstatus/edit/{id}', 'ProjectStatusController@edit')->name('projectstatus.edit');
 Route::delete('projectstatus/destroy/{id}', 'ProjectStatusController@destroy')->name('projectstatus.destroy');
+
 
 //__________________________________Material Request_______________________________________
 

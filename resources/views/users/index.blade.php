@@ -1,5 +1,7 @@
 @extends('adminlte::page')
 @section('title', 'AdminLTE')
+
+@section('content')
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="/css/bootstrap-3.4.1.css">
@@ -8,8 +10,6 @@
 {{-- <link rel="stylesheet" href="/images"> --}}
 <script src="/js/jquery-3.4.1.js"></script>
 <script src="/js/jquery.dataTables.js"></script>
-
-@section('content')
 
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible" role="alert">
@@ -91,13 +91,13 @@
                         <div class="box-header with-border ">
                             <h4><span class="box-title col-md-8">User Record</span></h4>
                             <div class="box-tools pull-right">
-                                <a type="links" href="{{ route('users.create') }}"  {{-- data-toggle="modal"
-                                   data-target="#applicantADDModal"  --}}class="btn btn-primary pul-right">Add User</a>
+                                <a type="links" {{-- href="{{ route('users.create') }}" --}}  data-toggle="modal"
+                                   data-target="#applicantADDModal"  class="btn btn-primary pul-right">Add User</a>
                             </div>
                         </div>
 
                         <div class="table-responsive" style="margin-top: 10px; padding: 10px;">
-                            <table class="table no-margin table-bordered table-striped project">
+                            <table class="table no-margin table-bordered table-striped user">
                                 <thead>
                                 <tr>
 
@@ -297,16 +297,7 @@
                                                                     </select>
                                                                 </div>
                                                                 @endcan
-                                                                @can('isManager')
-                                                                <div class="form-group">
-                                                                    <label for="role">Select Role</label>
-                                                                    <select class="form-control" id="role" name="role">
-                                                                       {{--  @foreach($roles as $role)
-                                                                            <option>{{ $role->name }}</option>
-                                                                        @endforeach --}}
-                                                                    </select>
-                                                                </div>
-                                                                @endcan
+                                                               
                                                                 <button type="submit"
                                                                         class="btn btn-block btn-primary btn-xs form-control"
                                                                         style="margin-top: 20px;">Add User
@@ -330,9 +321,7 @@
 
 
     <script type="text/javascript">
-
-
-        $('.project').DataTable({
+        $('.user').DataTable({
             select: true,
             "order": [[0, "asc"]],
             //"scrollY"  : "380px",

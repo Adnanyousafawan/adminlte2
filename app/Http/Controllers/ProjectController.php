@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Customer;
 use App\Http\Requests;
 use App\Project;
@@ -45,7 +44,7 @@ class ProjectController extends Controller
             //$projectstotal = DB::table('projects')->get();//Project::all();
             $labor_at_projects = DB::table('projects')->where('projects.assigned_by','=',Auth::user()->id )->paginate(5);
             $contractors = User::all()->where('role_id', '=',3);
-            dd($contractors);
+         
             return view('projects/index', compact('projects','contractors','labor_at_projects'));
         }
 
@@ -58,9 +57,9 @@ class ProjectController extends Controller
             
 
         //$projectstotal = DB::table('projects')->get();//Project::all();
-            $labor_at_projects = DB::table('projects')->where('projects.assigned_by','=',Auth::user()->id )->paginate(5);
+            $labor_by_projects = DB::table('projects')->where('projects.assigned_by','=',Auth::user()->id )->paginate(5);
             $contractors = User::all()->where('role_id', '=', 3);
-            return view('projects/index', compact('projects','contractors','labor_at_projects'));
+            return view('projects/index', compact('projects','contractors','labor_by_projects'));
         //return view('projects.index');
         }
     }
@@ -97,17 +96,14 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-
-       
-
         $old_project = Project::where('title','=', $request->input('title'))->pluck('title')->first();
-        if($request->input('title') == $old_project)
-        {
-            return redirect()->back()->with('message','There is already Project with this name . Please Chnage Project Name');
+        if(strtolower($request->input('title')) == strtolower($old_project))
+        { 
+            return redirect()->back()->with('message','There is already Project with this Title . Please Chnage Project Title');
         }
         else
         {
-             $request->validate([
+            $request->validate([
             'title' => 'required',
             'area' => 'required',
             'city' => 'required',
@@ -123,8 +119,6 @@ class ProjectController extends Controller
             'description' => 'required',
             'contract_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
         ]);
-
-             
              $contractor = DB::table('users')
             ->where('name', '=', $request->input('assigned_to'))
             ->select('id')
@@ -189,8 +183,6 @@ class ProjectController extends Controller
         // Return user back and show a flash message
         return redirect()->route('projects.index')->with('success', 'Project Added Successfully');
         }
- 
-       
     }
 
     /**
@@ -228,7 +220,18 @@ class ProjectController extends Controller
         //dd($customers);
         //join('customers','customers.id','=','projects.customer_id')->take(10)->get();
         //$customers = DB::table('customers')->get();// \App\Customer::all();
-        return view('projects/projects', compact('projects'));
+        return view('projects/projects', compact('projects','contractors'));
+    }
+
+    public function labors_by_projects()
+    {
+         if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
+        //dd('in labor by projects');
+        $labor_by_projects = DB::table('projects')->where('projects.assigned_by','=',Auth::user()->id )->get();
+        return view('projects/laborbyprojects', compact('labor_by_projects'));
     }
 
 
@@ -238,8 +241,9 @@ class ProjectController extends Controller
         {
             abort(420,'You Are not Allowed to access this site');
         }
+        $contractors = User::all()->where('role_id', '=',3);
         $projects = DB::table('projects')->where('projects.id', '=', '5')->get();
-        return view('projects/projects', compact('projects'));
+        return view('projects/projects', compact('projects','contractors'));
     }
 
     public function completed()
@@ -248,8 +252,9 @@ class ProjectController extends Controller
         {
             abort(420,'You Are not Allowed to access this site');
         }
+        $contractors = User::all()->where('role_id', '=',3);
         $projects = DB::table('projects')->where('projects.floor', '=', '5')->get();
-        return view('projects/projects', compact('projects'));
+        return view('projects/projects', compact('projects','contractors'));
     }
 
     public function all()
@@ -292,8 +297,10 @@ class ProjectController extends Controller
         {
             abort(420,'You Are not Allowed to access this site');
         }
+
+        $contractors = User::all()->where('role_id', '=',3);
         $projects = DB::table('projects')->where('projects.floor', '=', '3')->get();
-        return view('projects/projects', compact('projects'));
+        return view('projects/projects', compact('projects','contractors'));
     }
 
     public function current()
@@ -302,8 +309,10 @@ class ProjectController extends Controller
         {
             abort(420,'You Are not Allowed to access this site');
         }
+
+        $contractors = User::all()->where('role_id', '=',3);
         $projects = DB::table('projects')->where('projects.floor', '=', '3')->get();
-        return view('projects/projects', compact('projects'));
+        return view('projects/projects', compact('projects','contractors'));
     }
 
 
@@ -317,17 +326,26 @@ class ProjectController extends Controller
     {
         //$users = User::all();
         $search = $request->get('search_title');
-        $search_customer = $request->get('search_customer');
+        $search_contractor = $request->get('search_contractor');
+
         if (!is_null($search)) {
-            $projects = DB::table('projects')->where('title', 'like', '%' . $search . '%')->paginate(20);
-            return view('projects/index', ['projects' => $projects]);
+            $labor_by_projects = DB::table('projects')->where('title', 'like', '%' . $search . '%')->get();
+
+           // $labor_by_projects = Project::find($search)->where('assigned_by','=',Auth::user()->id)->get();
+            //dd($projects);
+            return view('projects/laborbyprojects',compact('labor_by_projects'));
         }
-        if (!is_null($search_customer)) {
-            $projects = DB::table('projects')->where('customer_name', 'like', '%' . $search_customer . '%')->paginate(20);
-            return view('projects/index', ['projects' => $projects]);
-        } else {
-            $projects = Project::paginate(20);
-            return view('projects/index', ['projects' => $projects]);
+        if (!is_null($search_contractor)) 
+        {
+            // _____________________________________ contractor search queryyy _______________
+           
+           $labor_by_projects = DB::table('projects')->where('assigned_to', 'like', '%' . '2' . '%')->get();
+            return view('projects/laborbyprojects',compact('labor_by_projects'));
+        }
+         else 
+         {
+           return redirect()->back()->with('message','No Record Found');
+
         }
     }
 
@@ -407,14 +425,13 @@ class ProjectController extends Controller
         //$spent = DB::table('order_details')->where('project_id','=',$id)->sum('price');
         $expense = DB::table('miscellaneous_expenses')->where('project_id','=',$id)->sum('expense');
 
-        $projects = DB::table('projects')->where('id','=',$id)->get()->first(); //->where('assigned_to', '=', $id);
-        $balance = $projects->estimated_budget - $expense;
-        //dd($balance);
+        $projects = DB::table('projects')->where('id','=',$id)->get()->first();
+        //->where('assigned_to', '=', $id);
+        $balance = $projects->estimated_budget- $expense;
+    
        // $check = [];
        // $index = 0;
-       // foreach ($projects as $project) {
-
-          
+       // foreach ($projects as $project) {   
 /*
         $project = DB::table('projects')->where('id','=',$id)->first(); //->where('assigned_to', '=', $id);
 
@@ -519,11 +536,6 @@ class ProjectController extends Controller
             // Set user profile image path in database to filePath
             $projects->contract_image = $filePath;
         }
-
-
-
-
-
         $projects->save();
         // Return user back and show a flash message
         return redirect()->back()->with('success', 'Data Updated');

@@ -215,6 +215,10 @@ return [
                     'text' => 'Create Project',
                     'url'  => 'projects/create',
                 ],
+                [
+                    'text' => 'Labor by Projects',
+                    'url'  => 'projects/labor_by_projects',
+                ],
             ],
         ],
 

@@ -41,7 +41,7 @@
                 <div class="col-lg-8 col-lg-offset-2">
 
                     <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
-                        <label for="name">Name</label>
+                        <label for="name">Name <span style="color: red;">*</span></label>
                         <input type="text" class="form-control" id="name" name="name"
                                value="{{ $users->name }}">
                         @if ($errors->has('name'))
@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Email</label>
+                        <label for="email">Email <span style="color: red;">*</span></label>
                         <input type="text" class="form-control" id="email" name="email"
                                value="{{ $users->email }}">
                         @if ($errors->has('email'))
@@ -64,7 +64,7 @@
                     </div>
                     @can('isAdmin')
                     <div class="form-group">
-                        <label for="password">Password</label>
+                        <label for="password">Password <span style="color: red;">*</span></label>
                         <input type="password" class="form-control" id="password" name="password"
                                value="{{ $users->password }}">
                         @if ($errors->has('password'))
@@ -76,7 +76,7 @@
                     @endcan
 
                     <div class="form-group">
-                        <label for="cnic">CNIC</label>
+                        <label for="cnic">CNIC <span style="color: red;">*</span></label>
                         <input type="text" class="form-control" id="cnic" name="cnic"
                                value="{{ $users->cnic }}">
                         @if ($errors->has('cnic'))
@@ -87,7 +87,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="phone">Contact</label>
+                        <label for="phone">Contact <span style="color: red;">*</span></label>
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-phone"></i>
@@ -105,7 +105,7 @@
 
 
                     <div class="form-group">
-                        <label for="address">Address</label>
+                        <label for="address">Address <span style="color: red;">*</span></label>
                         <input type="text" class="form-control" id="address" name="address"
                                value="{{ $users->address }}">
                         @if ($errors->has('address'))
@@ -117,7 +117,7 @@
 
                     @can('isAdmin')
                     <div class="form-group">
-                        <label for="role">Select Role</label>
+                        <label for="role">Select Role <span style="color: red;">*</span></label>
                         <select class="form-control" id="role" name="role" value="{{ $current_role }}">
                                 @foreach($roles as $role)
                                 <option>

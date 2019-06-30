@@ -153,17 +153,23 @@ class UserController extends Controller
             //'password' => 'required | min:8',
             'cnic' => 'required',
             'phone' => 'required',
-            'role' => 'required',
+            //'role' => 'required',
             'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
 
         ]);
-
-        $rollID = DB::table('roles')
+        if(Gate::allows('isAdmin'))
+        {
+            $rollID = DB::table('roles')
             ->where('name', '=', $request->input('role'))
             ->pluck('id')->first();
+        }
+        if(Gate::allows('isManager'))
+        {
+            $rollID = DB::table('roles')
+            ->where('name', '=', 'Contractor')
+            ->pluck('id')->first();
+        }
         $password = Hash::make('init1234');
-
-
         $user = new User([
             'name' => $request->input('name'),
             'email' => $request->input('email'),

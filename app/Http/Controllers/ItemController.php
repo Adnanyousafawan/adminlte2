@@ -22,7 +22,10 @@ class ItemController extends Controller
             abort(420,'You Are not Allowed to access this site');
         }
         $orders= DB::table('order_details')->get();
-        return view('orders/allorders',compact('orders'));
+        $projects = DB::table('projects')->get();
+        $items= DB::table('items')->get();
+        $suppliers= DB::table('suppliers')->get();
+        return view('orders/allorders',compact('orders','projects','items','suppliers'));
 
     }
 
@@ -87,7 +90,11 @@ public function insert(Request $request)
          
         $suppliers = DB::table('suppliers')->get();
         return view('items/create',['suppliers' => $suppliers]);
+
     }
+
+   
+
 
     /**
      * Store a newly created resource in storage.

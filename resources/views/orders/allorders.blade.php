@@ -1,65 +1,30 @@
 @extends('adminlte::page')
 @section('title', 'AdminLTE')
-    <meta charset="utf-8">
+@include('common')
+@yield('meta_tags')
+@yield('datatable_stylesheets')
+
+
+   {{--  <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/bootstrap-3.4.1.css">
     <link rel="stylesheet" href="/css/jquery.dataTables.css">
-    <link rel="stylesheet" href="/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="/css/jquery.dataTables.css"> --}}
     {{-- <link rel="stylesheet" href="/images"> --}}
-    <script src="/js/jquery-3.4.1.js"></script>
+   {{--  <script src="/js/jquery-3.4.1.js"></script>
     <script src="/js/jquery.dataTables.js"></script>
- 
+  --}}
 @section('content')
+@yield('bootstrap_jquery')
+@yield('error_logs')
+@yield('breadcrumbs')
 
-    @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li> 
-                        {{ $error }}
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    @if (session('success'))
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        <div class="alert alert-success" role="alert">
-            {{ session('success') }}
-        </div>
-    @endif
-
-     @if (session('message'))
-     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        <div class="alert alert-danger" role="alert">
-            {{ session('message') }}
-        </div>
-    @endif
-
-<ol class="breadcrumb">
-    <li><a href="{{ route('home')}}"><i class="fa fa-dashboard"></i> &nbsp;Home</a></li>
-    <?php $segments = ''; ?>
-    @foreach(Request::segments() as $segment)
-        <?php $segments .= '/'.$segment; ?>
-        <li>
-            <a href="{{ $segments }}">{{$segment}}</a>
-        </li>
-    @endforeach
-</ol>
 
 <div class="box-body" id="screen">
         <div class="box box-body" style=" background-color: #f4f4f487; padding: 0px;">
             <div class="box-header">
                 <h3><span
-                        class="col-xs-6 col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
+                        class="col-xs-6 col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 col-xl-offset-0"
                         style="margin-bottom: 10px; padding: 0px;">Order List</span></h3>
                         <div class="box-tools pull-right">
                             <a type="links" href="{{ route('order.create') }}" class="btn btn-primary pul-right">Place Order</a>
@@ -74,18 +39,20 @@
 
             {{-- _________________________________All User DataTable_____________________________________--}}
             <div
-                class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
+                class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 col-md-offset-0 col-lg-offset-0 col-xl-offset-0"
         
                 style="padding: 5px;">
-<div class="container">
-    <a class="active" href=" {{ route('orders.list') }}" style="font-size: 20px;">All &nbsp; | &nbsp; </a> 
-    <a class="active" href=" {{ route('orders.recieved') }}" style="font-size: 20px;">Recieved &nbsp; | &nbsp;</a>
-    <a class="active" href=" {{ route('orders.cancelled') }}"  style="font-size: 20px;">Cancelled</a>
-  </div>
+
 
                 <div class="box" style="margin-bottom: 10px; margin-top: 1%;">
                     <div class="box-header with-border ">
                         <h4><span class="box-title col-md-8">Order Details</span></h4>
+                        <br><br>
+                        <div class="container">
+    <a class="active" href=" {{ route('orders.list') }}" style="font-size: 20px;">All &nbsp; | &nbsp; </a> 
+    <a class="active" href=" {{ route('orders.recieved') }}" style="font-size: 20px;">Recieved &nbsp; | &nbsp;</a>
+    <a class="active" href=" {{ route('orders.cancelled') }}"  style="font-size: 20px;">Cancelled</a>
+  </div>
                      
                     </div>
 

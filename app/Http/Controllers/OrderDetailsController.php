@@ -29,8 +29,8 @@ function insert(Request $request)
      {
       $rules = array(
 
-       'item_id.*'  => 'required',
-       'supplier_id.*' => 'required',
+       //'item_id.*'  => 'required',
+      // 'supplier_id.*' => 'required',
        'quantity.*'  => 'required'
       );
       
@@ -48,6 +48,7 @@ function insert(Request $request)
     $quantity = $request['quantity'];
     $invoice = DB::table('order_details')->pluck('invoice_number')->last();
     $invoice++;
+    //dd($item_id);
 
 
     for($count = 0; $count < count($item_id); $count++){
@@ -55,16 +56,18 @@ function insert(Request $request)
 
       $obj = new OrderDetail([
 
-      'item_id' => DB::table('items')->where('name','=',  $item_id[$count])->pluck('id')->first(),
+      'item_id' => $item_id[$count],
+      // DB::table('items')->where('name','=',  $item_id[$count])->pluck('id')->first(),
       'project_id' =>DB::table('projects')->where('title','=',  $project_id)->pluck('id')->first(),
-      'supplier_id' => DB::table('suppliers')->where('name','=',  $supplier_id[$count])->pluck('id')->first(),
+      'supplier_id' => $supplier_id[$count],
+      // DB::table('suppliers')->where('name','=',  $supplier_id[$count])->pluck('id')->first(),
       'quantity' => $quantity[$count],
       'invoice_number' =>  $invoice,
      
       //'status' => $status[$count],
       ]);
 
-      // dd($obj);
+       //dd($obj);
       $obj->save();
     }
         // DB::table('order_details')->insert($data);
@@ -80,11 +83,23 @@ function create()
         {
             abort(420,'You Are not Allowed to access this site');
         }
-          $items = DB::table('items')->get();
-          $suppliers = DB::table('suppliers')->get();
-          $projects = DB::table('projects')->get();
-          return view('orders/create',compact('projects','items','suppliers'));
+         // $items = DB::table('items')->get();
+          $suppliers['data'] =DB::table('suppliers')->orderBy('id', 'asc')->get();
+          $projects = DB::table('projects')->get(); 
+          //dd($suppliers);
+          return view('orders/create',compact('projects','suppliers'));
+
+
+
       }
+
+    public function getItems($supplier_id)
+    {
+        //dd('in items');
+        $itemData['data'] = DB::table('items')->where('supplier_id', $supplier_id)->get();
+         echo json_encode($itemData);
+         exit;
+    }
 
      // return redirect()->route('orderdetails.index')->with('success', 'Data Updated');
       //OrderDetail::insert($insert_data);
