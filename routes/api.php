@@ -28,6 +28,7 @@ Route::post('/labors/add', 'APIController@api_add_labor');
 Route::post('/projects/ongoing', 'APIController@api_ongoing_projects');
 Route::post('/projects/stopped', 'APIController@api_stopped_projects');
 Route::post('/projects/completed', 'APIController@api_completed_projects');
+Route::post('/projects/assigned', 'APIController@api_assigned_projects');
 Route::post('/labors/all', 'APIController@api_all_labors');
 Route::post('/project/id', 'APIController@api_project_details');
 Route::post('/labor/dialog', 'APIController@api_update_labor_status_dialog');
@@ -40,7 +41,6 @@ Route::post('/material/request/store', 'APIController@api_material_request_store
 Route::post('/projects/labor/attendance', 'APIController@api_projects_labor_attendance');
 Route::post('/get/labor/attendance', 'APIController@api_get_labor_attendance');
 Route::post('/add/labor/attendance', 'APIController@api_add_labor_attendance');
-Route::post('/assigned/projects', 'APIController@api_assigned_projects');
 Route::post('/active/labors', 'APIController@api_active_labors');
 Route::post('/not/active/labors', 'APIController@api_not_active_labors');
 Route::post('/suspended/labors', 'APIController@api_suspended_labors');
