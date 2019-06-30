@@ -102,8 +102,8 @@ class APIController extends Controller
                 "contract_image" => $project->contract_image,
                 "assigned_to" => DB::table('users')->where('id', '=', $contractorID)->get("name")->first(),
                 "assigned_by" => DB::table('users')->where('id', '=', $managerID)->get("name")->first(),
-                "status" => DB::table("project_status")->where('id', '=', $project_statusID)->get("name")->first(),
-                "phase" => DB::table('project_phase')->where('id', '=', $project_phaseID)->get("name")->first(),
+                "status" => DB::table("project_status")->where('id', '=', $project_statusID)->first(),
+                "phase" => DB::table('project_phase')->where('id', '=', $project_phaseID)->first(),
             ];
             $index++;
         }
@@ -184,8 +184,54 @@ class APIController extends Controller
             ->pluck('id')
             ->first();
 
-        $completed = DB::table('project_status')
-            ->where('name', '=', 'Completed')
+        $inProgress = DB::table('project_status')
+            ->where('name', '=', 'In Progress')
+            ->pluck('id')
+            ->first();
+
+        $projects = Project::all()
+            ->where('assigned_to', '=', $id)
+            ->where('status_id', '=', $inProgress);
+
+        $check = [];
+        $index = 0;
+
+        foreach ($projects as $project) {
+            $status = DB::table('project_status')
+                ->where('id', '=', $project->status_id)
+                ->pluck('name')
+                ->first();
+
+            if ($status == "Completed") {
+                continue;
+            } else {
+                $labors = DB::table('labors')
+                    ->where('project_id', '=', $project->id)
+                    ->count();
+                $check[$index] = [
+                    "id" => $project->id,
+                    "title" => $project->title,
+                    "status" => DB::table('project_status')
+                        ->where('name', '!=', "Completed")
+                        ->where('id', '=', $project->status_id)
+                        ->pluck('name')->first(),
+                    "labors" => $labors
+                ];
+                $index++;
+            }
+        }
+        return response()->json($check);
+    }
+
+    public function api_stopped_projects(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $inProgress = DB::table('project_status')
+            ->where('name', '=', 'In Progress')
             ->pluck('id')
             ->first();
 
@@ -194,8 +240,14 @@ class APIController extends Controller
             ->pluck('id')
             ->first();
 
+        $completed = DB::table('project_status')
+            ->where('name', '=', 'Completed')
+            ->pluck('id')
+            ->first();
+
         $projects = Project::all()
             ->where('assigned_to', '=', $id)
+            ->where('status_id', '!=', $inProgress)
             ->where('status_id', '!=', $completed)
             ->where('status_id', '!=', $notStarted);
 
@@ -381,9 +433,14 @@ class APIController extends Controller
 
     public function api_contractor_profile(Request $request)
     {
+        $roleContractor = DB::table('roles')
+            ->where('name', '=', 'Contractor')
+            ->pluck('id')
+            ->first();
+
         $id = DB::table('users')
             ->where('email', '=', $request->get('email'))
-            ->where('role_id', '=', 3)
+            ->where('role_id', '=', $roleContractor)
             ->pluck('id')
             ->first();
 
@@ -392,20 +449,15 @@ class APIController extends Controller
                 ->where('id', '=', $id)
                 ->first();
 
-
             $projects = DB::table('projects')
                 ->where('assigned_to', '=', $user->id)
                 ->get('*');
-
-//        $labors = DB::table('labors')->where('project_id', '')
 
             foreach ($projects as $project) {
                 $project->labor = DB::table('labors')
                     ->where('project_id', '=', $project->id)
                     ->count();
             }
-
-//            dd($projects);
 
             return response()->json(['profile' => $user, 'projects' => $projects]);
         } else {
@@ -942,4 +994,202 @@ class APIController extends Controller
             return "failure";
     }
 
+    public function api_all_labors_on_project(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $title = $request->get('title');
+
+        $projectID = Project::all()
+            ->where('assigned_to', '=', $id)
+            ->where('title', '=', $title)
+            ->pluck('id')
+            ->first();
+
+        $record = [];
+        $index = 0;
+
+        $labors = DB::table('labors')
+            ->where('project_id', '=', $projectID)
+            ->get();
+
+        foreach ($labors as $labor) {
+            $record[$index] = [
+                'id' => $labor->id,
+                'name' => $labor->name,
+                'cnic' => $labor->cnic,
+                'phone' => $labor->phone,
+                'address' => $labor->address,
+                'city' => $labor->city,
+                'rate' => $labor->rate,
+                'project_id' => $labor->project_id,
+                'status_id' => $labor->status_id,
+                'days' => DB::table('labor_attendances')
+                    ->where('labor_id', '=', $labor->id)
+                    ->where('status', '=', 1)
+                    ->count()
+            ];
+            $index++;
+        }
+        return response()->json($record);
+    }
+
+    public function api_active_labors_on_project(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $title = $request->get('title');
+
+        $projectID = Project::all()
+            ->where('assigned_to', '=', $id)
+            ->where('title', '=', $title)
+            ->pluck('id')
+            ->first();
+
+        $record = [];
+        $index = 0;
+
+        $active = DB::table('labor_status')
+            ->where('name', '=', 'Active')
+            ->pluck('id')
+            ->first();
+
+        $labors = DB::table('labors')
+            ->where('project_id', '=', $projectID)
+            ->where('status_id', '=', $active)
+            ->get();
+
+        foreach ($labors as $labor) {
+            $record[$index] = [
+                'id' => $labor->id,
+                'name' => $labor->name,
+                'cnic' => $labor->cnic,
+                'phone' => $labor->phone,
+                'address' => $labor->address,
+                'city' => $labor->city,
+                'rate' => $labor->rate,
+                'project_title' => DB::table('projects')
+                    ->where('id', '=', $labor->project_id)
+                    ->pluck('title')
+                    ->first(),
+                'status_id' => $labor->status_id,
+                'days' => DB::table('labor_attendances')
+                    ->where('labor_id', '=', $labor->id)
+                    ->where('status', '=', 1)
+                    ->count()
+            ];
+            $index++;
+        }
+        return response()->json($record);
+    }
+
+    public function api_not_active_labors_on_project(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $title = $request->get('title');
+
+        $projectID = Project::all()
+            ->where('assigned_to', '=', $id)
+            ->where('title', '=', $title)
+            ->pluck('id')
+            ->first();
+
+        $record = [];
+        $index = 0;
+
+        $notActive = DB::table('labor_status')
+            ->where('name', '=', 'Not Active')
+            ->pluck('id')
+            ->first();
+
+        $labors = DB::table('labors')
+            ->where('project_id', '=', $projectID)
+            ->where('status_id', '=', $notActive)
+            ->get();
+
+        foreach ($labors as $labor) {
+            $record[$index] = [
+                'id' => $labor->id,
+                'name' => $labor->name,
+                'cnic' => $labor->cnic,
+                'phone' => $labor->phone,
+                'address' => $labor->address,
+                'city' => $labor->city,
+                'rate' => $labor->rate,
+                'project_title' => DB::table('projects')
+                    ->where('id', '=', $labor->project_id)
+                    ->pluck('title')
+                    ->first(),
+                'status_id' => $labor->status_id,
+                'days' => DB::table('labor_attendances')
+                    ->where('labor_id', '=', $labor->id)
+                    ->where('status', '=', 1)
+                    ->count()
+            ];
+            $index++;
+        }
+        return response()->json($record);
+    }
+
+    public function api_suspended_labors_on_project(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $title = $request->get('title');
+
+        $projectID = Project::all()
+            ->where('assigned_to', '=', $id)
+            ->where('title', '=', $title)
+            ->pluck('id')
+            ->first();
+
+        $record = [];
+        $index = 0;
+
+        $suspended = DB::table('labor_status')
+            ->where('name', '=', 'Suspended')
+            ->pluck('id')
+            ->first();
+
+        $labors = DB::table('labors')
+            ->where('project_id', '=', $projectID)
+            ->where('status_id', '=', $suspended)
+            ->get();
+
+        foreach ($labors as $labor) {
+            $record[$index] = [
+                'id' => $labor->id,
+                'name' => $labor->name,
+                'cnic' => $labor->cnic,
+                'phone' => $labor->phone,
+                'address' => $labor->address,
+                'city' => $labor->city,
+                'rate' => $labor->rate,
+                'project_title' => DB::table('projects')
+                    ->where('id', '=', $labor->project_id)
+                    ->pluck('title')
+                    ->first(),
+                'status_id' => $labor->status_id,
+                'days' => DB::table('labor_attendances')
+                    ->where('labor_id', '=', $labor->id)
+                    ->where('status', '=', 1)
+                    ->count()
+            ];
+            $index++;
+        }
+        return response()->json($record);
+    }
 }
