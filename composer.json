@@ -16,7 +16,8 @@
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.8",
         "yajra/laravel-datatables-oracle": "^9.3",
-      "ext-json": "*"
+      "ext-json": "*",
+      "ext-mysqli": "*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 //RESTFUL APIs
 Route::post('/login', 'APIController@api_login');
@@ -49,4 +49,7 @@ Route::post('/labors/all/project', 'APIController@api_all_labors_on_project');
 Route::post('/active/labors/project', 'APIController@api_active_labors_on_project');
 Route::post('/not-active/labors/project', 'APIController@api_not_active_labors_on_project');
 Route::post('/suspended/labors/project', 'APIController@api_suspended_labors_on_project');
+Route::post('/change/password', 'APIController@api_change_password');
+Route::post('/change/picture', 'APIController@api_change_picture');
+
 

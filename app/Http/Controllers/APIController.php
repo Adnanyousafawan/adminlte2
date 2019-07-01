@@ -10,17 +10,22 @@ use App\MaterialRequest;
 use App\Project;
 use App\ProjectPhase;
 use App\ProjectStatus;
+use App\Traits\UploadTrait;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 
 class APIController extends Controller
 {
 
     use AuthenticatesUsers;
+    use UploadTrait;
+
 
     /**
      * Create a new controller instance.
@@ -1192,4 +1197,63 @@ class APIController extends Controller
         }
         return response()->json($record);
     }
+
+    public function api_change_password(Request $request)
+    {
+        $user = User::all()
+            ->where('email', '=', $request->get('email'))
+            ->first();
+
+        $oldPassword = $request->get('oldPassword');
+        $newPassword = $request->get('newPassword');
+
+        if (Hash::check($oldPassword, $user->password)) {
+
+            if ($oldPassword == $newPassword) {
+                return "New password can not be same as old password";
+            }
+
+            $user->password = Hash::make($newPassword);
+
+            if ($user->save()) {
+                return "Password has been changed successfully";
+            } else {
+                return "Password has not been changed";
+            }
+        } else {
+            return "Old password does not matched";
+        }
+    }
+
+    public function api_change_picture(Request $request)
+    {
+        $email = $request->get('email');
+
+        $img_str = $request->get('image');
+        $base64_image = base64_decode($img_str);
+        $imageName = '/images/profile/'.$request->get('name') . '.png';
+
+        $path = '/public' . $imageName;
+
+        $previousImage = '/public'. DB::table('users')
+            ->where('email', '=', $email)
+            ->pluck('profile_image')
+            ->first();
+
+        if (Storage::disk('local')->delete($previousImage) &&
+            Storage::disk('local')->put($path, $base64_image)){
+
+            DB::table('users')
+                ->where('email','=', $email)
+                ->update(['profile_image' => $imageName]);
+
+            return "Your profile picture is successfully updated.";
+        } else {
+            return "Encountered problem while updating profile picture";
+        }
+
+
+
+    }
+
 }
