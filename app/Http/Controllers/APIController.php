@@ -1251,9 +1251,6 @@ class APIController extends Controller
         } else {
             return "Encountered problem while updating profile picture";
         }
-
-
-
     }
 
 }
