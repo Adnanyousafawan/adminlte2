@@ -126,20 +126,14 @@ class APIController extends Controller
             ->pluck('id')
             ->first();
 
-        $notStarted = DB::table('project_status')
-            ->where('name', '=', 'Not Started')
-            ->pluck('id')
-            ->first();
-
-        $completed = DB::table('project_status')
-            ->where('name', '=', 'Completed')
+        $inProgress = DB::table('project_status')
+            ->where('name', '=', 'In Progress')
             ->pluck('id')
             ->first();
 
         $projects = DB::table('projects')
             ->where('assigned_to', '=', $id)
-            ->where('status_id', '!=', $completed)
-            ->where('status_id', '!=', $notStarted)
+            ->where('status_id', '=', $inProgress)
             ->get()
             ->all();
 
@@ -522,25 +516,15 @@ class APIController extends Controller
             ->pluck('id')
             ->first();
 
-        $completed = DB::table('project_status')
-            ->where('name', '=', 'Completed')
-            ->pluck('id')
-            ->first();
-
-        $notStarted = DB::table('project_status')
-            ->where('name', '=', 'Not Started')
+        $inProgress = DB::table('project_status')
+            ->where('name', '=', 'In Progress')
             ->pluck('id')
             ->first();
 
         $projects = Project::all()
             ->where('assigned_to', '=', $id)
-            ->where('status_id', '!=', $completed)
-            ->where('status_id', '!=', $notStarted);
+            ->where('status_id', '=', $inProgress);
 
-//        dd($projects);
-
-
-//        dd($id);
         $titles = [];
         $index = 0;
         foreach ($projects as $project) {
@@ -598,7 +582,6 @@ class APIController extends Controller
         } else {
             return "failed";
         }
-
     }
 
     public function api_projects_labor_attendance(Request $request)
@@ -608,26 +591,17 @@ class APIController extends Controller
             ->pluck('id')
             ->first();
 
-        $notStarted = DB::table('project_status')
-            ->where('name', '=', 'Not Started')
+        $inProgress = DB::table('project_status')
+            ->where('name', '=', 'In Progress')
             ->pluck('id')
             ->first();
-
-        $completed = DB::table('project_status')
-            ->where('name', '=', 'Completed')
-            ->pluck('id')
-            ->first();
-
 
         $projects = DB::table('projects')
             ->where('assigned_to', '=', $id)
-            ->where('status_id', '!=', $completed)
-            ->where('status_id', '!=', $notStarted)
+            ->where('status_id', '=', $inProgress)
             ->pluck('title');
 
         return response()->json($projects);
-
-
     }
 
     public function api_get_labor_attendance(Request $request)
@@ -639,21 +613,15 @@ class APIController extends Controller
 
         $date = $request->get('date');
 
-        $notStarted = DB::table('project_status')
-            ->where('name', '=', 'Not Started')
-            ->pluck('id')
-            ->first();
-
-        $completed = DB::table('project_status')
-            ->where('name', '=', 'Completed')
+        $inProgress = DB::table('project_status')
+            ->where('name', '=', 'In Progress')
             ->pluck('id')
             ->first();
 
         $projectID = Project::all()
             ->where('title', '=', $request->get('title'))
             ->where('assigned_to', '=', $id)
-            ->where('status_id', '!=', $completed)
-            ->where('status_id', '!=', $notStarted)
+            ->where('status_id', '=', $inProgress)
             ->pluck('id');
 
         $active = DB::table('labor_status')
@@ -695,9 +663,6 @@ class APIController extends Controller
             } else if (is_null($currentStatus) || $currentStatus == 1) {
                 $currentStatus = 1;
             }
-
-//            print "current after: " . $currentStatus;
-
 
             $result[$index] = [
                 'labor' => DB::table('labors')
@@ -1240,13 +1205,13 @@ class APIController extends Controller
             ->pluck('profile_image')
             ->first();
 
-        if (Storage::disk('local')->delete($previousImage) &&
-            Storage::disk('local')->put($path, $base64_image)){
+        Storage::disk('local')->put($path, $base64_image);
 
-            DB::table('users')
-                ->where('email','=', $email)
-                ->update(['profile_image' => $imageName]);
+        DB::table('users')
+            ->where('email','=', $email)
+            ->update(['profile_image' => $imageName]);
 
+        if (Storage::disk('local')->delete($previousImage)){
             return "Your profile picture is successfully updated.";
         } else {
             return "Encountered problem while updating profile picture";
