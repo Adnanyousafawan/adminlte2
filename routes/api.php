@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 //RESTFUL APIs
 Route::post('/login', 'APIController@api_login');
 Route::post('/logout', 'APIController@api_logout');
+Route::post('/password/email', 'Api\ForgotPasswordController@sendResetLinkEmail');
 Route::post('/contractors/all', 'APIController@api_all_contractors');
 Route::post('/projects/all', 'APIController@api_all_projects');
 Route::post('/projects/list', 'APIController@api_project_list');
@@ -51,5 +52,16 @@ Route::post('/not-active/labors/project', 'APIController@api_not_active_labors_o
 Route::post('/suspended/labors/project', 'APIController@api_suspended_labors_on_project');
 Route::post('/change/password', 'APIController@api_change_password');
 Route::post('/change/picture', 'APIController@api_change_picture');
+Route::post('/all/material/requests', 'APIController@api_all_material_requests');
+Route::post('/approved/material/requests', 'APIController@api_approved_material_requests');
+Route::post('/rejected/material/requests', 'APIController@api_rejected_material_requests');
+Route::post('/pending/material/requests', 'APIController@api_pending_material_requests');
+Route::post('/password/forgot', 'APIController@api_password_forgot');
+
+
+
+
+
+//Route::post('/password/reset', 'Api\ResetPasswordController@reset');
 
 
