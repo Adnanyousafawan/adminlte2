@@ -177,6 +177,8 @@ return [
 		JeroenNoten\LaravelAdminLte\ServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+        
 
 //        Laravel\Passport\PassportServiceProvider::class,
 
@@ -231,8 +233,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Datatables' => Yajra\Datatables\Datatables::class,
-       'Form' => Collective\Html\FormFacade::class,
+        'Form' => Collective\Html\FormFacade::class,
         'HTML' => Collective\Html\HtmlFacade::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

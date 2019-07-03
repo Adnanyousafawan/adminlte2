@@ -1,11 +1,11 @@
 @extends('adminlte::page')
 @section('title', 'AdminLTE')
-
+@include('materialrequest.MaterialRequest_Table.material_request_datatable')
 @include('common')
-@yield('datatable_stylesheets')
+
 @section('content')
 
-    @yield('bootstrap_jquery')
+    {{--  @yield('bootstrap_jquery') --}}
     @yield('error_logs')
     @yield('breadcrumbs')
 
@@ -13,7 +13,7 @@
     <div class="box-body" style="margin-top: 0px; padding: 0px;">
         <div class="box box-primary" style=" background-color: #f4f4f487; ">
             <div class="row" style="padding: 12px;">
-                <div class="row" style="padding: 16px;">
+                <div class="row">
                     <div
                         class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1  "
                         style="padding: 0px;">
@@ -378,7 +378,52 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-5 col-md-offset-1 col-sm-12 col-lg-6 col-lg-offset-1">
+
+                    <div class="col-md-6 col-md-offset-1 col-sm-12 col-sm-offset-0 col-lg-6 col-lg-offset-1">
+                        <div class="box box-primary" style="margin-bottom: 10px;">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Material Requests</h3>
+
+                                <div class="box-tools pull-right">
+                                    <a href="{{ route('order.create')}}" class="btn btn-sm btn-primary btn-flat pull-left">Place
+                                        Order</a>
+
+
+                                    {{--  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                                 class="fa fa-minus"></i>
+                                     </button> --}}
+                                </div>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                 @yield('matrial_request_table')
+                            </div>
+                            <!-- /.box-body -->
+                            <div class="box-footer clearfix">
+
+                                <a href="{{ route('requests.pending')}}" class="btn btn-sm btn-primary btn-flat pull-right">View All
+                                    Requests</a>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="dataTables_info" id="example2_info" role="status"
+                                             aria-live="polite">
+                                          Shhowing {{ count($materialrequests) }} of {{ $total_pending_requests }} Pending Requests
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                                            {{--  {{ $projects->links() }} --}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-footer -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+
+                    <div class="col-md-4 col-md-offset-0 col-sm-12 col-lg-4 col-lg-offset-0">
                         <div class="box box-primary" style="margin-bottom: 10px;">
                             <div class="box-header with-border">
                                 <h3 class="box-title">Orders Details</h3>
@@ -450,111 +495,13 @@
                     </div>
 
 
-                    <div class="col-md-4 col-md-offset-0 col-sm-12 col-sm-offset-0 col-lg-4 col-lg-offset-0">
-                        <div class="box box-primary" style="margin-bottom: 10px;">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Material Requests</h3>
-
-                                <div class="box-tools pull-right">
-                                    <a href="javascript:void(0)" class="btn btn-sm btn-primary btn-flat pull-left">Place
-                                        Order</a>
-
-
-                                    {{--  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                                 class="fa fa-minus"></i>
-                                     </button> --}}
-                                </div>
-                            </div>
-                            <!-- /.box-header -->
-                            <div class="box-body">
-                                <div class="table-responsive">
-                                    <table class="table no-margin">
-                                        <thead>
-                                        <tr>
-                                            <th>Request ID</th>
-                                            <th>Item</th>
-                                            <th>Quantity</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                            <td>Bricks</td>
-
-                                            <td>
-                                                <div class="sparkbar" data-color="#00a65a" data-height="20">111</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                            <td>Cement</td>
-
-                                            <td>
-                                                <div class="sparkbar" data-color="#f39c12" data-height="20">2222</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                            <td>Rod</td>
-
-                                            <td>
-                                                <div class="sparkbar" data-color="#f56954" data-height="20">333</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                            <td>Sand</td>
-
-                                            <td>
-                                                <div class="sparkbar" data-color="#00c0ef" data-height="20">222</div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                            <td>Cement</td>
-
-                                            <td>
-                                                <div class="sparkbar" data-color="#00a65a" data-height="20">555</div>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.table-responsive -->
-                            </div>
-                            <!-- /.box-body -->
-                            <div class="box-footer clearfix">
-
-                                <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All
-                                    Requests</a>
-                                <div class="row">
-                                    <div class="col-sm-5">
-                                        <div class="dataTables_info" id="example2_info" role="status"
-                                             aria-live="polite">
-                                            Showing 1
-                                            to 2 of 2 entries
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-7">
-                                        <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-                                            {{--  {{ $projects->links() }} --}}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.box-footer -->
-                        </div>
-                        <!-- /.box -->
-                    </div>
-
 
                 </div>
 
 
-                <div
-                    class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
-                    {{--   style="padding: 5px;" --}}>
+                <div style="padding: 0px 2px;" 
+                    class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1" 
+                    {{--   style="padding: 5px;" --}}  >
                     <div class="box" style="margin-bottom: 10px; margin-top: 1%;">
                         <div class="box-header with-border ">
                             <h4><span class="box-title col-md-8">Labor Record</span></h4>
@@ -773,8 +720,8 @@
     </div>
     </div>
 
+@yield('datatable_stylesheets')
     <script type="text/javascript">
-
 
         $('.labor').DataTable({
             select: true,

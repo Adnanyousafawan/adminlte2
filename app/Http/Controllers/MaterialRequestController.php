@@ -15,6 +15,8 @@ class MaterialRequestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index()
     {
          if(Gate::allows('isContractor'))
@@ -38,7 +40,13 @@ class MaterialRequestController extends Controller
             }
         }
         $materialrequests = DB::table('material_requests')->get()->all();
-        return view('materialrequest/index', compact('materialrequests'));
+        return view('materialrequest/testrequest', compact('materialrequests'));
+    }
+
+    public function tester($id)
+    {
+        dd('in tester controller');
+
     }
 
     public function approved()

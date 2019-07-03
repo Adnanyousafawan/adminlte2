@@ -42,10 +42,10 @@ class ProjectController extends Controller
             /* ->join('users', 'users.id', '=', 'projects.assigned_to')
             ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
             //$projectstotal = DB::table('projects')->get();//Project::all();
-            $labor_at_projects = DB::table('projects')->where('projects.assigned_by','=',Auth::user()->id )->paginate(5);
+            $labor_by_projects = DB::table('projects')->where('projects.assigned_by','=',Auth::user()->id )->paginate(5);
             $contractors = User::all()->where('role_id', '=',3);
          
-            return view('projects/index', compact('projects','contractors','labor_at_projects'));
+            return view('projects/index', compact('projects','contractors','labor_by_projects'));
         }
 
 
@@ -371,7 +371,7 @@ class ProjectController extends Controller
         );
     }
 
-
+ 
     public function viewuser($id)
     {
          if(Gate::allows('isContractor'))
@@ -381,6 +381,7 @@ class ProjectController extends Controller
         $projects = DB::table('projects')->where('id','=',$id)->get()->first(); 
 
         $labors = DB::table('labors')->where('project_id','=',$id)->get()->all();
+
        
        /*  $customers = DB::table('customers')
          ->join('projects', 'projects.customer_id', '=', 'customers.id')
@@ -474,9 +475,12 @@ class ProjectController extends Controller
             return redirect()->intended('projects/index');
         }
         */
-
+        $request_status = DB::table('material_request_statuses')->where('name','=','pending')->pluck('id')->first();
+        $materialrequests = DB::table('material_requests')->where('request_status_id','=',$request_status)->paginate(5);
+    
+        $total_pending_requests = DB::table('material_requests')->where('request_status_id','=',$request_status)->count();
         //$users = User::paginate(10);
-        return view('projects/view', compact('projects','customers','labors','orders','contractors','total_orders','balance','expense'));
+        return view('projects/view', compact('projects','customers','labors','orders','contractors','total_orders','balance','expense','materialrequests','total_pending_requests'));
         // ['data' => $data],['orders' => $orders]);
     }
 

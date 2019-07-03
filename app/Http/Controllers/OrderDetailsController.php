@@ -115,7 +115,7 @@ function create()
 
     public function update(Request $request,$id)
     {
-       
+        
          $request->validate([
             'item_id' => 'required',
             'supplier_id' => 'required',

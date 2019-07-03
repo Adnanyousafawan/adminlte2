@@ -134,19 +134,36 @@
                                         
 
                                         $request_status = DB::table('material_request_statuses')->where('name','=','Pending')->pluck('id')->first();
-                                        $requests = DB::table('material_requests')->where('request_status_id','=',$request_status)->take(5)->get();
+                                        $requests = DB::table('material_requests')->where('request_status_id','=',$request_status)->take(5)->get(); 
                                         $totalrequests = DB::table('material_requests')->where('request_status_id','=',$request_status)->count();
-
-
+                                        $seen = DB::table('material_requests')->pluck('seen')->last();
+                                       // dd($seen);
                                         @endphp
                                         <li class="dropdown tasks-menu">
                                             <!-- Menu Toggle Button -->
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                                 <i class="fa fa-flag-o"></i>
-                                                <span class="label label-danger">{{ $totalrequests }}</span>
+                                                <span class="label label-danger">
+                                                @if($seen == 0)
+                                                {
+                                                    {{ $totalrequests }}
+                                                }
+                                                @endif
+                                                </span>
                                             </a>
                                             <ul class="dropdown-menu">
-                                                <li class="header">You have {{ $totalrequests }} Material Requests </li>
+                                                <li class="header">
+                                                 @if($seen == 0)
+                                                
+                                                   You Have {{ $totalrequests }} Total Pending Material requests
+                                             
+                                                @endif 
+                                                 @if($seen == 1)
+                                                
+                                                   You have {{ $totalrequests }} Pending Material Requests 
+                                                
+                                                @endif
+                                            </li>
 
                                                 <li>
                                                     <!-- Inner menu: contains the tasks -->

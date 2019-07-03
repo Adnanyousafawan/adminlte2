@@ -1,19 +1,24 @@
 @include('projects.modal')
 @include('common')
-@yield('datatable_stylesheets')
+
 
 @section('project_datatable')
 
     {{-- _________________________________All Projects DataTable_____________________________________--}}
-    <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 col-md-offset-0 col-lg-offset-0 col-xl-offset-0"
-         style="padding: 2%; ">
-        <div class="box" style="margin-bottom: 10px; margin-top: 1%;">
-            <div class="box-header with-border ">
+    <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 col-md-offset-0 col-lg-offset-0 col-xl-offset-0" style="padding-left: 0px; padding-right: 0px; " 
+         >
+        <div class="box" style="margin-bottom: 10px; margin-top: 1%; padding-left: 10px; padding-right: 10px;">
+            <div class="box-header with-border">
+                <div class="row">
                 <h4><span class="box-title col-md-8">Project Record</span></h4>
-                <br>
+                <div class="box-tools pull-right" style="margin-right: 10px;">
+                    <a type="links" {{-- href="{{ route('projects.create') }}" --}}  data-toggle="modal"
+                       data-target="#applicantADDModal" class="btn btn-primary pull-right">Add Project</a>
+                </div>
+                </div>
                 <div class="col-md-offset-0 col-lg-offset-0 col-xl-offset-0" style="margin-top: 10px;">
 
-                    <div class="container">
+                    <div class="container" style="padding-left: 0px;">
                         {{-- <a class="active" href=" {{ route('orders.list') }}" style="font-size: 18px;">All &nbsp; | &nbsp; </a>  --}}
                         <a class="active" href=" {{ route('projects.current') }}" style="font-size: 18px;">Current
                             Projects &nbsp; | &nbsp;</a>
@@ -25,43 +30,39 @@
                             &nbsp; | &nbsp;</a>
                     </div>
                 </div>
-                <div class="box-tools pull-right">
-                    <a type="links" {{-- href="{{ route('projects.create') }}" --}}  data-toggle="modal"
-                       data-target="#applicantADDModal" class="btn btn-primary pul-right">Add Project</a>
-                </div>
-
+                
             </div>
 
-            <div class="table-responsive" style="margin-top: 10px; padding: 10px;">
+            <div class="table-responsive" style="margin-top: 10px; ">
                 <table class="table no-margin table-bordered table-striped project">
                     <thead>
                     <tr>
-                        <th style="max-width: 5px;"></th>
+                        {{-- <th style="max-width: 10px;"></th> --}}
                         <th>Project ID</th>
                         <th>Project Title</th>
                         <th>Owner Name</th>
                         <th>Contractor</th>
                         <th>Budget</th>
                         <th>Cost Spent</th>
-                        <th>Action</th>
+                        <th style="min-width: 65px;">Action</th>
                     </tr>
                     </thead>
                     <tbody>
 
                     @foreach ($projects as $project)
                         <tr>
-                            <td style="max-width: 5px;"><b>PR-</b></td>
+                            {{-- <td style="max-width: 10px;"><b>PR-</b></td> --}}
                             <td>0000{{ $project->id }}</td>
                             <td>{{ $project->title }}</td>
                             <td>{{ $project->customer_id }}</td>
                             <td>{{ $project->assigned_to}}</td>
                             <td>{{ $project->estimated_budget}}</td>
                             <td>25000</td>
-                            <td style="max-width: 50px;">
+                            <td style="min-width: 65px;">
 
                                 <div class="btn-group">
 
-                                    <button class="btn btn-success" type="button">Action</button>
+                                    <button class="btn btn-sm btn-success" type="button">Action</button>
                                     <button data-toggle="dropdown" class="btn btn-success dropdown-toggle"
                                             type="button">
                                         <span class="caret"></span>

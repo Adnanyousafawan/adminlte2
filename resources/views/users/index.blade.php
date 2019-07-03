@@ -1,76 +1,51 @@
 @extends('adminlte::page')
-@section('title', 'AdminLTE')
-
+@can('isAdmin')
+@section('title', 'Users')
+@endcan
+@can('isManager')
+@section('title', 'Contractors')
+@endcan
+@include('common')
+@yield('meta_tags')
 @section('content')
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="/css/bootstrap-3.4.1.css">
-<link rel="stylesheet" href="/css/jquery.dataTables.css">
-<link rel="stylesheet" href="/css/jquery.dataTables.css">
-{{-- <link rel="stylesheet" href="/images"> --}}
-<script src="/js/jquery-3.4.1.js"></script>
-<script src="/js/jquery.dataTables.js"></script>
-
-    @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>
-                        {{ $error }}
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    @if (session('status'))
-     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        <div class="alert alert-success" role="alert">
-            {{ session('status') }}
-        </div>
-    @endif
-
-    @if (session('message'))
-     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        <div class="alert alert-danger" role="alert">
-            {{ session('message') }}
-        </div>
-    @endif
-
-    <ol class="breadcrumb">
-        <li><a href="{{ route('home')}}"><i class="fa fa-dashboard"></i> &nbsp;Dashboard</a></li>
-        <?php $segments = ''; ?>
-        @foreach(Request::segments() as $segment)
-            <?php $segments .= '/' . $segment; ?>
-            <li>
-                <a href="{{ $segments }}">{{$segment}}</a>
-            </li>
-        @endforeach
-    </ol>
+@yield('error_logs')
+@yield('breadcrumbs')
 
     <div class="row">
 
-
         <div class="box-body" id="screen"
         >
-            <div class="box box-body" style=" background-color: #f4f4f487; padding: 0px;">
+            <div class="box box-body" style=" background-color: #f4f4f487;">
                 <div class="box-header">
-                    <h3><span
-                            class="col-xs-6 col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
-                            style="margin-bottom: 10px; padding: 0px;">User Details</span></h3>
+                   @can('isAdmin') <h3><span
+                            class="col-xs-6 col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 col-xl-offset-0"
+                            style="margin-bottom: 10px; margin-left: 15px;">User Details</span></h3>
+                    @endcan
+                     @can('isManager') <h3><span
+                            class="col-xs-6 col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 col-xl-offset-0"
+                            style="margin-bottom: 10px; margin-left: 15px;">Contractor Details</span></h3>
+                    @endcan
 
 
                 </div>
 
+                {{-- _________________________________All User DataTable_____________________________________--}}
                 <div
-                    class="container col-xs-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 col-xl-offset-1">
+                    class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 col-md-offset-0 col-lg-offset-0 col-xl-offset-0"
+                    style="padding-left: 3%; padding-right: 3%;">
+                    <div class="box" style="margin-bottom: 10px; margin-top: 1%;">
+                        <div class="box-header with-border ">
+                            <div class="row" style="margin-left: 2px; margin-right: 2px;">
+                           @can('isAdmin')<h4><span class="box-title col-md-8">User Record</span></h4>@endcan
+                           @can('isManager')<h4><span class="box-title col-md-8">Contractor Record</span></h4>@endcan
+                           <div class="box-tools pull-right">
+                                <a type="links" {{-- href="{{ route('users.create') }}" --}}  data-toggle="modal"
+                                   data-target="#applicantADDModal"  class="btn btn-primary pul-right">Add User</a>
+                            </div>
+                         
+</div>
+                <div style="margin-top: 10px;" 
+                    class="container col-xs-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 col-xl-offset-0 style=">
                     @can('isAdmin')
                         <a class="active" href=" {{ route('users.all') }}" style="font-size: 18px;">All &nbsp; |
                             &nbsp; </a>
@@ -79,59 +54,61 @@
                         <a class="active" href=" {{ route('users.contractor') }}" style="font-size: 18px;">Contractors
                             &nbsp; | &nbsp;</a>
                     @endcan
-
                 </div>
 
-
-                {{-- _________________________________All User DataTable_____________________________________--}}
-                <div
-                    class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
-                    style="padding: 5px;">
-                    <div class="box" style="margin-bottom: 10px; margin-top: 1%;">
-                        <div class="box-header with-border ">
-                            <h4><span class="box-title col-md-8">User Record</span></h4>
-                            <div class="box-tools pull-right">
-                                <a type="links" {{-- href="{{ route('users.create') }}" --}}  data-toggle="modal"
-                                   data-target="#applicantADDModal"  class="btn btn-primary pul-right">Add User</a>
-                            </div>
+                            
                         </div>
 
                         <div class="table-responsive" style="margin-top: 10px; padding: 10px;">
-                            <table class="table no-margin table-bordered table-striped user">
+                            <table class="table no-margin table-bordered table-striped project">
                                 <thead>
                                 <tr>
 
                                     <th>Profile</th>
+                                    @can('isAdmin')
                                     <th>User ID</th>
                                     <th>User Name</th>
+                                    @endcan
+                                    @can('isManager')
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    @endcan
                                     <th>Email</th>
                                     <th>Address</th>
                                     <th>Contact</th>
                                     <th>CNIC</th>
+                                    @can('isAdmin')
                                     <th>Role</th>
-                                    <th>Action</th>
+                                    @endcan
+                                    @can('isManager')
+                                    <th>Project ID</th>
+                                    @endcan
+                                    <th style="min-width: 60px;">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
 
                                 @foreach ($users as $user)
                                     <tr>
-                                        <td>Us0000{{ $user->id }}</td>
+                                        <td>Profile Image</td>
                                         <td>{{ $user->id }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email}}</td>
                                         <td>{{ $user->address}}</td>
                                         <td>{{ $user->phone}}</td>
                                         <td>{{ $user->cnic}}</td>
+                                        @can('isAdmin')
                                         <td>{{ $user->role_id }}</td>
+                                        @endcan
+                                        @can('isManager')
+                                        <td>Project ID</td>
+                                        @endcan
 
-                                        <td style="max-width: 50px;">
+                                        <td style="min-width: 60px;">
 
                                             <div class="btn-group">
-
-                                                {{-- <button class="btn btn-success" type="button">Action</button> --}}
-                                                <button data-toggle="dropdown" class="btn btn-success dropdown-toggle"
-                                                        type="button">
+                                                <button class="btn btn-sm btn-success" type="button">Action</button>
+                                                <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
                                                     <span class="caret"></span>
                                                     <span class="sr-only">Toggle Dropdown</span>
                                                 </button>
@@ -228,8 +205,12 @@
                                     <button type="button" class="close pull-right" data-dismiss="modal"
                                             aria-hidden="true">x
                                     </button>
-                                    <strong><h3 class="modal-title text-center" id="custom-width-modalLabel">Add
+                                    @can('isAdmin')<strong><h3 class="modal-title text-center" id="custom-width-modalLabel">Add
                                             User</h3></strong>
+                                    @endcan
+                                      @can('isManager')<strong><h3 class="modal-title text-center" id="custom-width-modalLabel">Add
+                                            Contractor</h3></strong>
+                                    @endcan
                                 </div>
 
                                 <div class="modal-body">
@@ -250,24 +231,24 @@
                                                             <div class="form-group">
 
                                                                 <div class="form-group">
-                                                                    <label for="name">User Name</label>
+                                                                    <label for="name">Name</label>
                                                                     <input type="text" class="form-control" id="name"
-                                                                           name="name" placeholder="User Name" required>
+                                                                           name="name" placeholder="Name" required>
                                                                 </div>
 
                                                                 <div class="form-group">
-                                                                    <label for="email">User Email</label>
+                                                                    <label for="email">Email</label>
                                                                     <input type="text" class="form-control" id="email"
                                                                            name="email" placeholder="Email" required>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="cnic">User CNIC</label>
+                                                                    <label for="cnic">CNIC</label>
                                                                     <input type="text" class="form-control" id="cnic"
-                                                                           name="cnic" placeholder="User CNIC" required>
+                                                                           name="cnic" placeholder="CNIC" required>
                                                                 </div>
 
                                                                 <div class="form-group">
-                                                                    <label for="phone">User Contact</label>
+                                                                    <label for="phone">Contact</label>
                                                                     <div class="input-group">
                                                                         <div class="input-group-addon">
                                                                             <i class="fa fa-phone"></i>
@@ -291,17 +272,22 @@
                                                                 <div class="form-group">
                                                                     <label for="role">Select Role</label>
                                                                     <select class="form-control" id="role" name="role">
-                                                                       {{--  @foreach($roles as $role)
+                                                                        @foreach($roles as $role)
                                                                             <option>{{ $role->name }}</option>
-                                                                        @endforeach --}}
+                                                                        @endforeach
                                                                     </select>
-                                                                </div>
-                                                                @endcan
-                                                               
+                                                                </div>                                                                        
                                                                 <button type="submit"
                                                                         class="btn btn-block btn-primary btn-xs form-control"
                                                                         style="margin-top: 20px;">Add User
                                                                 </button>
+                                                                 @endcan
+                                                                 @can('isManager')
+                                                                 <button type="submit"
+                                                                        class="btn btn-block btn-primary btn-xs form-control"
+                                                                        style="margin-top: 20px;">Add Contractor
+                                                                </button>
+                                                                 @endcan
                                                             </div>
                                                         </div>
                                                     </div>
@@ -318,28 +304,7 @@
         </div>
     </div>
 
-
-
-    <script type="text/javascript">
-        $('.user').DataTable({
-            select: true,
-            "order": [[0, "asc"]],
-            //"scrollY"  : "380px",
-            //"scrollCollapse": true,
-            "paging": true,
-            "bProcessing": true,
-            "iDisplayLength": 500,
-
-        //     fixedHeader: {
-        //         header: false,
-        //         headerOffset: 100,
-        //         },
-        //     scrollX: true,
-        //     scrollY: true
-        // });
-
-
-    </script>
-
+@yield('datatable_stylesheets')
+@yield('datatable_script')
 @stop
 

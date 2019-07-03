@@ -30,6 +30,12 @@ Route::delete('items/destroy/{id}', 'ItemController@destroy')->name('items.destr
 //----------------------------------------------------------
 
 
+Route::get('cstms/report', 'ReportController@index');
+Route::post('cstms/report/search', 'ReportController@search')->name('report.search');
+Route::post('cstms/report/excel', 'ReportController@exportExcel')->name('report.excel');
+Route::post('cstms/report/pdf', 'ReportController@exportPDF')->name('report.pdf');
+
+
 
 
 
@@ -51,7 +57,7 @@ Route::get('allcustomers', 'CustomerController@index')->name('customers.list');
 Route::get('orders/recieved','OrderDetailsController@recieved')->name('orders.recieved');
 Route::get('orders/cancelled','OrderDetailsController@cancelled')->name('orders.cancelled');
 */
-
+  
 Route::get('orders/create', 'OrderDetailsController@create')->name('order.create');
 Route::post('orders/orderdetails/insert', 'OrderDetailsController@insert')->name('order.insert');
 Route::get('orders', 'OrderDetailsController@index')->name('orders.list');
@@ -85,7 +91,7 @@ Route::get('projects/all', 'ProjectController@all')->name('projects.all');
 Route::get('projects/labor_by_projects','ProjectController@labors_by_projects')->name('projects.labor_by_projects');
  
 //--------------------------------Project Phase Management------------------------------
-
+ 
 Route::get('phases', 'PhaseController@index')->name('phases.index');
 Route::get('phases/create', 'PhaseController@create')->name('phases.create');
 Route::post('phases/phases/insert', 'PhaseController@insert')->name('phases.insert');
@@ -110,10 +116,10 @@ Route::patch('materialrequest/update/{id}', 'MaterialRequestController@update')-
 Route::get('materialrequest/rejected','MaterialRequestController@rejected')->name('requests.rejected');
 Route::get('materialrequest/pending','MaterialRequestController@pending')->name('requests.pending');
 Route::post('materialrequest/insert','MaterialRequestController@insert')->name('requests.insert');
-
-
-
 Route::delete('materialrequest/destroy/{id}', 'MaterialRequestController@destroy')->name('requests.destroy');
+
+
+Route::post('materialrequest/test/{id}','MaterialRequestController@tester')->name('test.request');
 
 //-----------------------------------User Management------------------------------------//
 
@@ -127,6 +133,7 @@ Route::post('users/store', 'UserController@store')->name('users.store');
 Route::delete('users/destroy/{id}', 'UserController@destroy')->name('users.destroy');
 Route::post('users/change_password', 'UserController@changepassword')->name('user.changepassword');
 Route::patch('users/update/{id}','UserController@update')->name('users.update');
+Route::get('users/profile', 'UserController@profile')->name('users.profile'); 
 
 
 //-----------------------------------Labor Management--------------------------------------//

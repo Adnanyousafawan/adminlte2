@@ -49,6 +49,14 @@ class UserController extends Controller
 
     }
 
+    public function profile()
+    {
+        $users = DB::table('users')->get()->first();
+        $projects = DB::table('projects')->get()->all();
+        //dd($users);
+        return view('users/profile',compact('users','projects'));
+    }
+
     public function manager()
     {
          if(Gate::allows('isContractor'))

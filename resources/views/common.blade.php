@@ -6,22 +6,20 @@
 @endsection
 
 @section('datatable_stylesheets')
-	
     <link rel="stylesheet" href="/css/bootstrap-3.4.1.css">
     <link rel="stylesheet" href="/css/jquery.dataTables.css">
     <link rel="stylesheet" href="/css/jquery.dataTables.css"> 
     {{-- <link rel="stylesheet" href="/images"> --}}
     <script src="/js/jquery-3.4.1.js"></script>
     <script src="/js/jquery.dataTables.js"></script>
-
 @endsection
 
-@section('bootstrap_jquery')
+{{-- @section('bootstrap_jquery')
   
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
-@endsection
+@endsection --}}
 
 @section('bootstrap-4') 
 <link rel="stylesheet" href="/css/bootstrap.css">
@@ -92,6 +90,29 @@
 
 @endsection
 
+@section('datatable_script')
 
+    <script type="text/javascript">
+
+
+        $('.project').DataTable({
+            select: true,
+            "order": [[0, "asc"]],
+            //"scrollY"  : "380px",
+            "scrollCollapse": true,
+            "paging": true,
+            "bProcessing": true,
+            // fixedHeader: {
+            //     header: false,
+            //     // headerOffset: 100,
+            //     },
+            //scrollX: true,
+            // scrollY: true
+        });
+
+
+    </script>
+
+@endsection
 
  

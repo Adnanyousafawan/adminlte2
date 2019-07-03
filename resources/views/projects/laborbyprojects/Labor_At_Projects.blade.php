@@ -5,7 +5,7 @@
 
     <div class="box-body">
         <div class="table-responsive">
-            <table class="table no-margin table-bordered table-striped labor">
+            <table class="table no-margin table-bordered table-striped project">
                 <thead>
                 <tr>
                     <th>Project ID</th>
@@ -19,7 +19,7 @@
                 @foreach($labor_by_projects as $lproject)
                     <tr>
                         <td><a href=" {{ route('projects.view', ['id' => $lproject->id])   }}"
-                               type="links">PR00{{ $lproject->id }}</a></td>
+                               type="links">0000{{ $lproject->id }}</a></td>
                         <td>{{ $lproject->title }}</td>
 
                         <td>
