@@ -14,9 +14,9 @@
 
 
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-12 col-xl-12 col-xl-offset-0 col-md-offset-0 col-lg-offset-0">
-            <h3 for="search_area">Search Project</h3>
-            <div id="search_area" style="padding: 30px; background-color: rgb(53, 124, 165);">
-                <form action="/search_project" method="get">
+           {{--  <h3 for="search_area">Search Project</h3> --}}
+            <div id="search_area" style="padding: 20px; background-color: rgb(53, 124, 165);">
+                {{-- <form action="/search_project" method="get">
                     @csrf
                     <div class="row">
                         <div class="form-group">
@@ -36,17 +36,20 @@
                                 </div>
                             </div>
                         </div>
-                </form>
-            </div>
-            <div class="box" style="margin-bottom: 20px;">
+                </form> --}}
+                 <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title">Labor at Projects</h3>
                 </div>
                 <!-- /.box-header -->
                 @yield('labor_by_projects')
             </div>
+            </div>
+           
 
         </div>
     </div>
+@yield('datatable_stylesheets')
+@yield('datatable_script')
 
 @stop

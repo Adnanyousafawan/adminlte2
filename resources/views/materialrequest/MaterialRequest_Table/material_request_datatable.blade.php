@@ -15,7 +15,7 @@
                                             <th>Seen</th>
                                             <th>Status</th>
                                             @endcan
-                                            <th style="max-width: 60px;">Action</th>
+                                            <th style="max-width: 20px;">Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -39,9 +39,10 @@
                                                 @endif
                                             </td>
                                                     <td>{{ $materialrequest->request_status_id }}</td>
-                                                     <td style='max-width: 60px;'>
-                                                   
-                                                    <div class="btn-group">
+                                                     <td style="max-width: 20px;">
+                                                        <a type="links" data-toggle="modal" data-target="#EditModal-{{ $materialrequest->id }}"><i class="fa fa-edit col-md-offset-4"></i></a>
+
+                                                   {{--  <div class="btn-group">
                                                          <button class="btn btn-sm btn-success" type="button">Action</button> 
                                                      <button data-toggle="dropdown"
                                                                class="btn btn-success dropdown-toggle" type="button">
@@ -52,14 +53,15 @@
                                                         <ul role="menu" class="dropdown-menu">
                                                            
                                                             <li><a type="links" data-toggle="modal" data-target="#EditModal-{{ $materialrequest->id }}"><i class="fa fa-edit"></i>Edit</a></li> 
+ --}}
 
-                                                        
+                                                        {{-- 
                                                             <li><a type="links" data-toggle="modal"
                                                                    data-target="#DeleteModal-{{ $materialrequest->id }}"> <i
-                                                                        class="fa fa-remove"></i>Delete</a></li>
-                                                        </ul>
+                                                                        class="fa fa-remove"></i>Delete</a></li> --}}
+{{--                                                         </ul>
 
-                                                    </div>
+                                                    </div> --}}
                                                     {{--   <a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"
                                                          style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">View</a>
 
@@ -166,7 +168,7 @@
 
                                             {{-- ______________________________Delete Modal ______________________________________________--}}
 
-                                            <div id="DeleteModal-{{ $materialrequest->id }}" class="modal fade"
+                                       {{--      <div id="DeleteModal-{{ $materialrequest->id }}" class="modal fade"
                                                  tabindex="-1" role="dialog"
                                                  aria-labelledby="custom-width-modalLabel" aria-hidden="true"
                                                  style="display: none;">
@@ -210,7 +212,7 @@
                                                                         Delete
                                                                     </button>
                                                                 </div>
-
+ --}}
                                 @endforeach
                                 </tbody>
                                 </table>

@@ -108,7 +108,7 @@
 
             function dynamic_field(number) {
                 html = '<tr>';
-               html += '<td><select name="supplier_id[]" id="supplier_id" class="form-control"><option value="0">Select Supplier</option>@foreach($suppliers['data'] as $supplier)<option value="{{$supplier->id}}">{{ $supplier->name }}</option>@endforeach </select></td>';
+               html += '<td><select name="supplier_id[]" id="supplier_id" class="form-control" required><option value="0">Select Supplier</option>@foreach($suppliers['data'] as $supplier)<option value="{{$supplier->id}}">{{ $supplier->name }}</option>@endforeach </select></td>';
                 html += '<td><select id="item_id" name="item_id[]" class="form-control"><option value="0">Select Item</option></select></td>';
                 
                 html += '<td><input type="number" name="quantity[]" class="form-control"/></td>';
@@ -171,14 +171,13 @@
 //         });
 // $(document).ready(function(){
 
-      // Department Change
       
       $('#supplier_id').change(function(){
        
-         // Department id
+
          var id = $(this).val();
        
-         // Empty the dropdown
+  
          $('#item_id').find('option').not(':first').remove();
   //dd('ajax');
          // AJAX request 

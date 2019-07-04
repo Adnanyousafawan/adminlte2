@@ -276,7 +276,7 @@ return [
         'Reports Management',
                 [
                     'text' => 'Daily',
-                    'url' => 'home',
+                    'url' => 'report',
                     'icon' => 'file'
                 ],
                 [

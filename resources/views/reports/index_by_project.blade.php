@@ -11,37 +11,24 @@
 </style>
     <!-- Main content -->
 <div class="row"> </div>
-<div class="box" style="width: 100%;"> 
+<div class="box" style="width: 100%;">
   <div class="box-header">
-    <div class="row">
+    <div class="row"> 
         <div class="col-md-4"> 
           <h3 class="box-title">List of orders</h3>
         </div>
         <div class="row pull-right" style="margin-right: 2%;">
             
-            <form class="form-horizontal" role="form" method="POST" action="{{ route('report.pdf') }}">
+            <form class="form-horizontal" role="form" method="POST" action="{{ route('projectreport.pdf') }}">
                 {{ csrf_field() }}
                 <input type="hidden" value="{{$searchingVals['from']}}" name="from" />
                 <input type="hidden" value="{{$searchingVals['to']}}" name="to" />
-                {{-- <input type="hidden" value="{{ $val = $searchingVals['proj'] }}" name="project_id" /> --}}
+                <input type="hidden" value="{{ $val = $searchingVals['proj'] }}" name="project_id" />
                 <button type="submit" class="btn btn-info">
                   Export to PDF
                 </button>
             </form>
         </div>
-          <div class="col-md-offset-0 col-lg-offset-0 col-xl-offset-0" style="margin-top: 10px;">
-
-                    <div class="container" style="padding-left: 0px;">
-                        {{-- <a class="active" href=" {{ route('orders.list') }}" style="font-size: 18px;">All &nbsp; | &nbsp; </a>  --}}
-                        <a class="active" href=" {{ route('report.daily') }}" style="font-size: 18px;">Daily
-                           &nbsp; | &nbsp;</a>
-                        <a class="active" href=" {{ route('report.weekly') }}" style="font-size: 18px;">Weekly
-                            &nbsp; | &nbsp;</a>
-                        <a class="active" href=" {{ route('report.monthly') }}" style="font-size: 18px;">Monthly
-                            &nbsp; | &nbsp;</a>
-                    </div>
-                </div>
-
     </div> 
   </div>
   <!-- /.box-header -->
@@ -50,21 +37,21 @@
         <div class="col-md-6"></div> 
         <div class="col-sm-6"></div> 
       </div>
-      <form method="POST" action="{{ route('report.search') }}">
+      <form method="POST" action="{{ route('projectreport.search') }}">
          {{ csrf_field() }}
 
          @component('reports.search', ['title' => 'Search'])
-        {{--  <div class="form-group">
+         <div class="form-group">
           <label for="project">Projects</label>
          <select class="form-control" id="project" name="project">
-          <option disabled selected value> select an option </option>
+          <option disabled selected value> -- select an option -- </option>
           @foreach($projects as $project)
 
           <option>{{ $project }}</option>
           @endforeach
          </select>
           </div>
-          <hr> --}}
+          <hr>
           @component('reports.two-cols-date-search-row', ['items' => ['From', 'To'], 
           'oldVals' => [isset($searchingVals) ? $searchingVals['from'] : '', isset($searchingVals) ? $searchingVals['to'] : '']])
           @endcomponent
@@ -76,14 +63,13 @@
           <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
             <thead>
              <tr role="row">
-               <th width = "10%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Invoice Number</th>
+                <th width = "10%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Invoice Number</th>
                 <th width = "15%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Supplier</th>
-                <th width = "5%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Project ID</th>
                 <th width = "10%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Item</th>
                 <th width = "10%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Price</th>
                  <th width = "10%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Quantity</th>
                 <th width = "15%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Cost</th>
-                <th width = "25%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Date</th>
+                <th width = "20%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Date</th>
               </tr>
             </thead>
             <tbody>
@@ -99,10 +85,11 @@
                    
                   </tr>
  --}}
-            
+              
+
                   <td style="background-color: #D3D3D3;">{{ $order->invoice_number }}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order->supplier_name }}</td>
-                  <td  style="background-color: #D3D3D3;">{{ $order->project_id }}</td>
+
                   <td  style="background-color: #D3D3D3;">{{ $order->name }}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order->rate }}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order->quantity }}</td>
@@ -120,10 +107,11 @@
                       <td colspan="5" style="background-color: #708090;" >Invoive Total</td>
                       <td style="background-color: #D3D3D3; "colspan="2"></td>
                       </tr> --}}
+              
+
 
                   <td style="background-color: #A9A9A9;">{{ $order->invoice_number }}</td>
                   <td style="background-color: #A9A9A9;">{{ $order->supplier_name }}</td>
-                  <td  style="background-color: #A9A9A9;">{{ $order->project_id }}</td>
                   <td style="background-color: #A9A9A9;">{{ $order->name }}</td>
                   <td style="background-color: #A9A9A9;">{{ $order->rate }}</td>
                   <td style="background-color: #A9A9A9;">{{ $order->quantity }}</td>
@@ -146,12 +134,11 @@
             <tr role="row">
                 <th width = "10%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Invoice Number</th>
                 <th width = "15%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Supplier</th>
-                <th width = "5%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Project ID</th>
                 <th width = "10%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Item</th>
                 <th width = "10%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Price</th>
                  <th width = "10%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Quantity</th>
                 <th width = "15%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Cost</th>
-                <th width = "25%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Date</th>
+                <th width = "20%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Date</th>
               </tr>
             </tfoot>
           </table>

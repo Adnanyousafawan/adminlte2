@@ -124,8 +124,8 @@
  --}}
                                                       <a type="links" id="edit" name="edit" data-toggle="modal" data-target="#EditModal-{{ $materialrequest->id }}"
                                                          style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">Edit</a>
-                                                      <a type="links" data-toggle="modal" data-target="#DeleteModal-{{ $materialrequest->id }}"
-                                                         style="color: red; margin-left: 3px;  margin-top: 0px;">Delete</a>
+                                                     {{--  <a type="links" data-toggle="modal" data-target="#DeleteModal-{{ $materialrequest->id }}"
+                                                         style="color: red; margin-left: 3px;  margin-top: 0px;">Delete</a> --}}
 
                                                 </td>
                                                 @endcan

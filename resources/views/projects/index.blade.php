@@ -127,7 +127,7 @@
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
                         </div>
                         <!-- /.info-box-content -->
-                        <!-- /.info-box -->
+                         <!-- /.info-box -->
                     </div>
                 </div>
             </div>

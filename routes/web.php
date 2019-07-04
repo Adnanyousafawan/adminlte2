@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */ 
-
+ 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -30,13 +30,21 @@ Route::delete('items/destroy/{id}', 'ItemController@destroy')->name('items.destr
 //----------------------------------------------------------
 
 
-Route::get('cstms/report', 'ReportController@index');
-Route::post('cstms/report/search', 'ReportController@search')->name('report.search');
-Route::post('cstms/report/excel', 'ReportController@exportExcel')->name('report.excel');
-Route::post('cstms/report/pdf', 'ReportController@exportPDF')->name('report.pdf');
+Route::get('report', 'ReportController@index')->name('report.daily');
+Route::get('report/weekly', 'ReportController@weekly')->name('report.weekly');
+Route::get('report/monthly', 'ReportController@monthly')->name('report.monthly');
+
+
+Route::post('report/search', 'ReportController@search')->name('report.search');
+Route::post('report/pdf', 'ReportController@exportPDF')->name('report.pdf');
 
 
 
+
+Route::get('projectreport', 'ProjectReportController@index')->name('projectreport.index');
+Route::post('projectreport/search', 'ProjectReportController@search')->name('projectreport.search');
+//Route::post('report/excel', 'ReportController@exportExcel')->name('report.excel');
+Route::post('projectreport/pdf', 'ProjectReportController@exportPDF')->name('projectreport.pdf');
 
 
 //-----------------------------------Expense Management------------------------------------//
@@ -97,7 +105,7 @@ Route::get('phases/create', 'PhaseController@create')->name('phases.create');
 Route::post('phases/phases/insert', 'PhaseController@insert')->name('phases.insert');
 Route::get('phase/edit/{id}', 'PhaseController@edit')->name('phases.edit');
 Route::delete('phase/destroy/{id}', 'PhaseController@destroy')->name('phases.destroy');
-
+ 
 //-----------------------------ProjectStatus-----------------------------------
 
 Route::get('projectstatus', 'ProjectStatusController@index')->name('projectstatus.index');
@@ -116,8 +124,7 @@ Route::patch('materialrequest/update/{id}', 'MaterialRequestController@update')-
 Route::get('materialrequest/rejected','MaterialRequestController@rejected')->name('requests.rejected');
 Route::get('materialrequest/pending','MaterialRequestController@pending')->name('requests.pending');
 Route::post('materialrequest/insert','MaterialRequestController@insert')->name('requests.insert');
-Route::delete('materialrequest/destroy/{id}', 'MaterialRequestController@destroy')->name('requests.destroy');
-
+//Route::delete('materialrequest/destroy/{id}', 'MaterialRequestController@destroy')->name('requests.destroy');
 
 Route::post('materialrequest/test/{id}','MaterialRequestController@tester')->name('test.request');
 
