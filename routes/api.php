@@ -57,6 +57,7 @@ Route::post('/approved/material/requests', 'APIController@api_approved_material_
 Route::post('/rejected/material/requests', 'APIController@api_rejected_material_requests');
 Route::post('/pending/material/requests', 'APIController@api_pending_material_requests');
 Route::post('/password/forgot', 'APIController@api_password_forgot');
+Route::post('/update/project/phase', 'APIController@api_update_project_phase');
 
 
 
