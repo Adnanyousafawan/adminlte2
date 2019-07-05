@@ -58,11 +58,12 @@ Route::post('/rejected/material/requests', 'APIController@api_rejected_material_
 Route::post('/pending/material/requests', 'APIController@api_pending_material_requests');
 Route::post('/password/forgot', 'APIController@api_password_forgot');
 Route::post('/update/project/phase', 'APIController@api_update_project_phase');
+Route::post('/orders/all', 'APIController@api_orders_all');
+Route::post('/orders/pending', 'APIController@api_orders_pending');
+Route::post('/orders/received', 'APIController@api_orders_received');
+Route::post('/orders/partially-received', 'APIController@api_orders_partially_received');
 
 
 
-
-
-//Route::post('/password/reset', 'Api\ResetPasswordController@reset');
 
 

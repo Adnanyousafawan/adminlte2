@@ -7,6 +7,7 @@ use App\Labor;
 use App\LaborAttendance;
 use App\LaborStatus;
 use App\MaterialRequest;
+use App\OrderDetail;
 use App\Project;
 use App\ProjectPhase;
 use App\ProjectStatus;
@@ -1486,6 +1487,146 @@ class APIController extends Controller
     }
 
     public function api_update_project_phase(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')->first();
+
+        $in_progress = DB::table('project_status')
+            ->where('name', '=', 'In Progress')
+            ->pluck('id')
+            ->first();
+
+        $projects = DB::table('projects')
+            ->where('assigned_to', '=', $id)
+            ->where('status_id', '=', $in_progress)
+//            ->orderByDesc('created_at')
+            ->get();
+
+        $response = [];
+        $index = 0;
+
+        foreach ($projects as $project) {
+            $response[$index] = [
+                'title' => $project->title,
+                'floors' => $project->floor,
+                'phase' => DB::table('project_phase')->where('id', '=', $project->phase_id)->pluck('name')->first(),
+                'status' => DB::table('project_status')->where('id', '=', $project->status_id)->pluck('name')->first()
+
+            ];
+            $index++;
+        }
+
+        $phases = ProjectPhase::all()->pluck('name');
+        $statuses = ProjectStatus::all()->pluck('name');
+
+        return response()->json(['projects' => $response, 'phases' => $phases, 'statuses' => $statuses]);
+
+    }
+
+    public function api_orders_all(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $in_progress = DB::table('project_status')
+            ->where('name', '=', 'In Progress')
+            ->pluck('id')
+            ->first();
+
+        $projects = DB::table('projects')
+            ->where('assigned_to', '=', $id)
+            ->where('status_id', '=', $in_progress)
+            ->get();
+
+//        foreach ($projects as $project)
+
+       $orders = OrderDetail::all()
+           ->groupBy('project_id');
+
+        return response()->json($orders);
+
+    }
+
+    public function api_orders_received(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')->first();
+
+        $in_progress = DB::table('project_status')
+            ->where('name', '=', 'In Progress')
+            ->pluck('id')
+            ->first();
+
+        $projects = DB::table('projects')
+            ->where('assigned_to', '=', $id)
+            ->where('status_id', '=', $in_progress)
+//            ->orderByDesc('created_at')
+            ->get();
+
+        $response = [];
+        $index = 0;
+
+        foreach ($projects as $project) {
+            $response[$index] = [
+                'title' => $project->title,
+                'floors' => $project->floor,
+                'phase' => DB::table('project_phase')->where('id', '=', $project->phase_id)->pluck('name')->first(),
+                'status' => DB::table('project_status')->where('id', '=', $project->status_id)->pluck('name')->first()
+
+            ];
+            $index++;
+        }
+
+        $phases = ProjectPhase::all()->pluck('name');
+        $statuses = ProjectStatus::all()->pluck('name');
+
+        return response()->json(['projects' => $response, 'phases' => $phases, 'statuses' => $statuses]);
+
+    }
+
+    public function  api_orders_pending(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')->first();
+
+        $in_progress = DB::table('project_status')
+            ->where('name', '=', 'In Progress')
+            ->pluck('id')
+            ->first();
+
+        $projects = DB::table('projects')
+            ->where('assigned_to', '=', $id)
+            ->where('status_id', '=', $in_progress)
+//            ->orderByDesc('created_at')
+            ->get();
+
+        $response = [];
+        $index = 0;
+
+        foreach ($projects as $project) {
+            $response[$index] = [
+                'title' => $project->title,
+                'floors' => $project->floor,
+                'phase' => DB::table('project_phase')->where('id', '=', $project->phase_id)->pluck('name')->first(),
+                'status' => DB::table('project_status')->where('id', '=', $project->status_id)->pluck('name')->first()
+
+            ];
+            $index++;
+        }
+
+        $phases = ProjectPhase::all()->pluck('name');
+        $statuses = ProjectStatus::all()->pluck('name');
+
+        return response()->json(['projects' => $response, 'phases' => $phases, 'statuses' => $statuses]);
+
+    }
+
+    public function api_orders_partially_received(Request $request)
     {
         $id = DB::table('users')
             ->where('email', '=', $request->get('email'))
