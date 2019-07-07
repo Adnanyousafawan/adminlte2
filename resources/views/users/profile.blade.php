@@ -10,18 +10,18 @@
 @section('content')
 @yield('error_logs')
 @yield('breadcrumbs') 
-
+ 
 
 <div class="box" style="padding: 5%;background-color: #f4f4f487;"> 
 <div class="row">
-                    <div class="col-md-4 col-md-offset-0 col-sm-6 col-lg-4 col-lg-offset-0">
+                    <div class="col-md-5 col-md-offset-0 col-sm-5 col-lg-5 col-lg-offset-0">
 
                         <div class="box box-primary" >
                             <div class="box-body box-profile">
                                  <img style="min-width: 50%; max-width: 50%; min-height: 100px; max-height: 200px; margin-top: 20px; margin-left: 25%;" class=" img-responsive" src="/storage/{{ $users->profile_image }}" alt="User Image">
                                 <h3 class="profile-username text-center"> {{ $users->name }}</h3>
                                 <p class="text-muted text-center"> {{ $users->role_id }} </p>
-                               
+                                
                                 <hr>
                                 <strong><i class="fa fa-book margin-r-5"></i>Address</strong>
                                 <b><p style="margin-left: 40px;" class="text-muted float-right">
@@ -50,7 +50,7 @@
                                         </ul>
                                         <!-- /.box-body -->
                                     </div>
-
+ 
                                     <a href="{{ route('users.edit', ['id' => $users->id]) }}"
                                        class="btn btn-primary btn-block"><b>Edit</b></a>
                             </div>
@@ -58,8 +58,13 @@
                         </div>
                         <!-- /.box -->
                     </div>
- <div class="row" style="padding: 0px;">    
-                <div class="col-md-6 col-lg-6 col-sm-6">
+<div class="col-md-7 col-sm-7 col-lg-7 col-xs-12" style="height: 250px; margin-bottom: 20px">  
+   
+               {!! 
+                $pie_chart->html() 
+                !!}
+    </div>
+ <div class="col-md-7 col-lg-7 col-sm-7">
                         <div class="box box-primary" style="">
                             <div class="box-header with-border">
                                 <h3 class="box-title">Project History</h3>
@@ -68,9 +73,6 @@
                             <div class="box-body">
 
                                 <ul class="list-group list-group-unbordered">
-                                    <li class="list-group-item">
-                                        <b>Number of Projects</b> <a class="pull-right">1,322</a>
-                                    </li>
                                     <li class="list-group-item">
                                         <b>Current Project</b> <a class="pull-right">5</a>
                                     </li>
@@ -90,47 +92,11 @@
                         </div><!-- /.box -->
                     </div>
 
-                <div
-                    class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 col-xl-offset-0 col-md-offset-0 col-lg-offset-0">
-                    <div class="box" style="margin-bottom: 20px;">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Labor By Projects</h3>
-                        </div>
-                        <!-- /.box-header -->
 
-                        @yield('labor_by_projects')
+ <div class="row" style="padding: 0px;"> 
+               
 
-                        <div class="box-footer clearfix">
-                            <a href="{{ route('projects.labor_by_projects')}}"
-                               class="btn btn-sm btn-primary pull-right">View All
-                                Labors By Projects</a>
-                            <div class="row">
-                                <div class="col-sm-5">
-                                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                                        {{-- Showing 1 to 2 of 2 entries --}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- /.box-footer -->
-                       
-                    </div><!-- /.box -->
-                </div>
-
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4  col-xl-4" style="padding: 0px;">
-                    <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                        <div class="box" style="margin-bottom: 14px;">
-                            <div class="box-header">
-                                <h2 class="box-title">Total Labor</h2>
-                                <span class="info-box-number label label-primary pull-right"
-                                      style="margin-top: 0px; font-size: 16px;">{{DB::table('labors')->count('id') }}</span>
-                            </div>
-                            <!-- /.box-header -->
-                            <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
-                        </div>
-                        <!-- /.info-box-content -->
-                        <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
+                {{-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4  col-xl-4" style="padding: 0px;">
                     <div class="col-xs-12 col-md-12 col-sm-12  col-lg-12 col-xl-12">
                         <div class="box"  style="margin-bottom: 13px;">
                             <div class="box-header">
@@ -199,12 +165,11 @@
                         <!-- /.info-box -->
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
-
-
+ 
   {{-- _________________________________All Projects DataTable_____________________________________--}}
-    <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 col-md-offset-0 col-lg-offset-0 col-xl-offset-0" style="padding-left: 0px; padding-right: 0px; " 
+    <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 col-md-offset-0 col-lg-offset-0 col-xl-offset-0" style="padding-left: 0px; padding-right: 0px; padding: 3%;" 
          >
         <div class="box" style="margin-bottom: 10px; padding-left: 10px; padding-right: 10px;">
             <div class="box-header with-border">
@@ -371,5 +336,11 @@
 
                 </div>
 
+    {!! Charts::scripts() !!}
+ 
 
+    {!! $pie_chart->script() !!}
+
+@yield('datatable_stylesheets')
+@yield('datatable_script')
 @endsection

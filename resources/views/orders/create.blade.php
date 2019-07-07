@@ -49,7 +49,7 @@
 
 
                     <div class="row">
-                        <div class="col-md-6 col-md-offset-3">
+                        <div class="col-md-6 col-md-offset-0">
                             <div class="form-group">
                                 <label for="project_id">Select Project</label>
                                 <select class="form-control" id="project_id" name="project_id" required>
@@ -59,7 +59,20 @@
                                     @endforeach
                                 </select>
                             </div>
+                                </div>
+                            <div class="col-md-6 col-md-offset-0">
+                            <div class="form-group">
+                                <label for="project_id">Select Supplier</label>
+                                <select name="supplier_id" id="supplier_id" class="form-control" required><option value="0">Select Supplier</option>
+                                    @foreach($suppliers['data'] as $supplier)
+                                    <option value="{{$supplier->id}}">
+                                        {{ $supplier->name }}
+                                    </option>
+                                @endforeach 
+                            </select>
+                            </div>
                         </div>
+                    
                     </div>
 
                     {{--      @csrf
@@ -70,17 +83,16 @@
                         <tr>
                             {{-- <th width="21%">Project ID</th> --}}
                             <th>Item</th>
-                            <th>Supplier</th>
                             <th>Quatity</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
-
+                            
                         </tbody>
                         <tfoot>
                         <tr>
-                            <td colspan="3" align="right">&nbsp;</td>
+                            <td colspan="2" align="right">&nbsp;</td>
                             <td>
                                 {{-- @csrf --}}
                                 <button type="submit" name="save" id="save" class="btn btn-primary" value="Save">Save
@@ -101,15 +113,17 @@
     <script>
 
      $(document).ready(function () {
-
+ 
             var count = 1;
+            var temp = 1;
+
 
             dynamic_field(count);
 
             function dynamic_field(number) {
-                html = '<tr>';
-               html += '<td><select name="supplier_id[]" id="supplier_id" class="form-control" required><option value="0">Select Supplier</option>@foreach($suppliers['data'] as $supplier)<option value="{{$supplier->id}}">{{ $supplier->name }}</option>@endforeach </select></td>';
-                html += '<td><select id="item_id" name="item_id[]" class="form-control"><option value="0">Select Item</option></select></td>';
+                html = '<tr>'; 
+          console.log(temp);
+                html += '<td><select id="item_id'+temp+'" name="item_id[]" class="form-control"><option value="0">Select Item</option></select></td>';
                 
                 html += '<td><input type="number" name="quantity[]" class="form-control"/></td>';
                 //html += '<td><input type="text" name="status[]" class="form-control"/></td>';
@@ -125,12 +139,72 @@
 
             $(document).on('click', '#add', function () {
                 count++;
+                temp++;
+
+                var t = "#item_id"+temp;
+      
+         var id = $(this).val();
+         $(t).find('option').not(':first').remove();
+  //dd('ajax');
+         // AJAX request 
+         $.ajax({
+
+           url: 'getItems/'+id,
+           type: 'get',
+           dataType: 'json',
+           success: function(response){
+
+
+             var len = 0;
+             if(response['data'] != null){
+               len = response['data'].length;
+             }
+           
+                if(len > 0){
+                var dropdown = '<select id="'+t+'" name="'+t+'">';
+
+                $(t).append(dropdown);
+                var option1 = "<option value='"+t+"'>"+t+"</option>"; 
+                 //window.alert("id " +option);
+                
+                $(t).append(option1); 
+               for(var i=0; i<len; i++){
+                 // console.log(temp);
+               // for (var j = 0; j <=temp; i++) 
+                //{
+                  
+                var id = response['data'][i]['id'];
+                 var name = response['data'][i]['name'];
+
+
+                 var option = "<option value='"+id+"'>"+name+"</option>"; 
+                 //window.alert("id " +option);
+                
+                $(t).append(option); 
+                }
+                 var dropdownclose = '</select>';
+                 $(t).append(dropdownclose);
+                 temp++;
+
+
+
+                 
+               }
+                  // }
+             
+
+           }
+        });
                 dynamic_field(count);
+
             });
 
             $(document).on('click', '.remove', function () {
                 count--;
+               temp--;
+                
                 $(this).closest("tr").remove();
+                 
             });
 
             // $('#dynamic_form').on('submit', function(event){
@@ -172,13 +246,12 @@
 // $(document).ready(function(){
 
       
-      $('#supplier_id').change(function(){
-       
-
+      $('#supplier_id').click(function()
+      {
+        var t = "#item_id"+temp;
+        t = "";
          var id = $(this).val();
-       
-  
-         $('#item_id').find('option').not(':first').remove();
+         $(t).find('option').not(':first').remove();
   //dd('ajax');
          // AJAX request 
          $.ajax({
@@ -188,23 +261,44 @@
            dataType: 'json',
            success: function(response){
 
+
              var len = 0;
              if(response['data'] != null){
                len = response['data'].length;
              }
+           
+                if(len > 0){
+                var dropdown = '<select id="'+t+'" name="'+t+'">';
 
-             if(len > 0){
-               // Read data and create <option >
+                $(t).append(dropdown);
+                var option1 = "<option value='"+t+"'>"+t+"</option>"; 
+                 //window.alert("id " +option);
+                
+                $(t).append(option1); 
                for(var i=0; i<len; i++){
+                 // console.log(temp);
+               // for (var j = 0; j <=temp; i++) 
+                //{
+                  
+                var id = response['data'][i]['id'];
+                 var name = response['data'][i]['name'];
 
-                 var id = response['data'][i].id;
-                 var name = response['data'][i].name;
 
                  var option = "<option value='"+id+"'>"+name+"</option>"; 
+                 //window.alert("id " +option);
+                
+                $(t).append(option); 
+                }
+                 var dropdownclose = '</select>';
+                 $(t).append(dropdownclose);
+                 temp++;
 
-                 $("#item_id").append(option); 
+
+
+                 
                }
-             }
+                  // }
+             
 
            }
         });
@@ -223,3 +317,5 @@
 
 @stop
 {{--<input type="text" name="item_id[]" class="form-control"/> <select name="item_id[]" class="form-control">@foreach($items as $item)<option>{{$item->name}}</option>@endforeach </select>  --}}
+
+   {{--   html += '<td><select name="supplier_id[]" id="supplier_id" class="form-control" required><option value="0">Select Supplier</option>@foreach($suppliers['data'] as $supplier)<option value="{{$supplier->id}}">{{ $supplier->name }}</option>@endforeach </select></td>'; --}}

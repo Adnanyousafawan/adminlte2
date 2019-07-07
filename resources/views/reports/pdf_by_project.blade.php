@@ -1,11 +1,6 @@
- @include('common')
-
-@yield('datatable_stylesheets')
  <!DOCTYPE html>
 <html lang="en">
   <head>
-
-
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -46,10 +41,8 @@
 }
     </style>
   </head>
-   <div class="container">
-        <div><h3>{{$searchingVals['proj_name']}}</h3><br>
 
-   </div>
+  
  <div class="info_box">
           <li>
            <b>From</b>
@@ -94,7 +87,6 @@
               $temp = 0;
               $lcheck = 0;
               $subtotal = 0;
-
               ?>
             <thead>
               <tr role="row">
@@ -113,8 +105,6 @@
                  @if($temp != 0)
                   @if($lcheck !=  $order['invoice_number'])
                   <tr class="blank_row">
-
-
                   <td style="background-color: #778899;" colspan="5">Invoive Total</td> 
                   <td style="background-color: #DCDCDC; "colspan="2">{{ $invoice_total }}</td>
                    {{ $invoice_total = 0 }}
@@ -124,14 +114,18 @@
                   @endif
                 <tr role="row" class="odd">
                   @if($order['invoice_number'] % 2 == 0) 
-                   
+                  @if($lcheck != $order['invoice_number'])
                   <td style="background-color: #D3D3D3;">{{ $order['invoice_number'] }}</td>
+                  @endif
+                  @if($lcheck == $order['invoice_number'])
+                  <td style="background-color: #D3D3D3; text-align: center;" >-</td>
+                  @endif
+
                   <td  style="background-color: #D3D3D3;">{{ $order['supplier_name'] }}</td>
-                 
                   <td  style="background-color: #D3D3D3;">{{ $order['name'] }}</td>
-                  <td  style="background-color: #D3D3D3;">{{ $order['rate'] }}</td>
+                  <td  style="background-color: #D3D3D3;">{{ $order['set_rate'] }}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order['quantity'] }}</td>
-                  {{ $total =  $order['rate'] * $order['quantity'] }} 
+                  {{ $total =  $order['set_rate'] * $order['quantity'] }} 
                   {{ $subtotal = $total + $subtotal }}
                   {{ $invoice_total = $total + $invoice_total }}
                   <td  style="background-color: #D3D3D3;">{{$total}}</td>
@@ -153,12 +147,17 @@
                        $count2++;
                    
                    @endif        --}}
+                  @if($lcheck != $order['invoice_number'])
                   <td style="background-color: #A9A9A9;">{{ $order['invoice_number'] }}</td>
+                  @endif
+                  @if($lcheck == $order['invoice_number'])
+                  <td style="background-color: #D3D3D3; text-align: center;" >-</td>
+                  @endif
                   <td style="background-color: #A9A9A9;">{{ $order['supplier_name'] }}</td>
                   <td style="background-color: #A9A9A9;">{{ $order['name'] }}</td>
-                  <td style="background-color: #A9A9A9;">{{ $order['rate'] }}</td>
+                  <td style="background-color: #A9A9A9;">{{ $order['set_rate'] }}</td>
                   <td style="background-color: #A9A9A9;">{{ $order['quantity'] }}</td>
-                  {{ $total =  $order['rate'] * $order['quantity'] }} 
+                  {{ $total =  $order['set_rate'] * $order['quantity'] }} 
                   {{ $subtotal = $total + $subtotal }}
                   {{ $invoice_total = $total + $invoice_total }}
 
@@ -167,8 +166,20 @@
                   {{ $lcheck = $order['invoice_number'] }}
                   {{ $temp++ }}
                    @endif
-
               </tr>
+               @if($temp != 0)
+                  @if($searchingVals['last_invoice'] ==  $order['invoice_number'])
+                  <tr class="blank_row">
+                  <td style="background-color: #778899;" colspan="5">Invoive Total</td> 
+                  <td style="background-color: #DCDCDC; "colspan="2">{{ $invoice_total }}</td>
+                   {{ $invoice_total = 0 }}
+                  </tr>
+                  <tr class="blank_row">
+                    <td colspan="7"></td>
+                  </tr>
+                 
+                  @endif
+                  @endif
 
             @endforeach   
             </tbody>

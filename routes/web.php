@@ -13,13 +13,27 @@
  
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+ 
 
 Route::get('/', 'CustomerController@goBackToHome')->name('redirect-to-main');
 
 Auth::routes(); 
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('search', 'SearchController@search')->name('search.result');
+
+// display records routes
+Route::get('orderdetails/{slug}', 'OrderDetailsController@show')->name('orderdetails.show');
+Route::get('projects/{slug}', 'ProjectController@show')->name('projects.show');
+ 
+// search routes
+Route::get('laravelssearch', 'SearchController@index')->name('search.index');
+
+ 
+
+Route::get('charts', 'ChartController@index')->name('chart.index');
+
 //-----------------------------------Items Management------------------------------------//
 
 //Route::resource('item', 'ItemController');
@@ -39,13 +53,17 @@ Route::post('report/search', 'ReportController@search')->name('report.search');
 Route::post('report/pdf', 'ReportController@exportPDF')->name('report.pdf');
 
 
-
-
-Route::get('projectreport', 'ProjectReportController@index')->name('projectreport.index');
+Route::get('projectreport', 'ReportController@index')->name('projectreport.index');
 Route::post('projectreport/search', 'ProjectReportController@search')->name('projectreport.search');
 //Route::post('report/excel', 'ReportController@exportExcel')->name('report.excel');
 Route::post('projectreport/pdf', 'ProjectReportController@exportPDF')->name('projectreport.pdf');
 
+
+
+Route::get('expensereport', 'ExpenseReportController@index')->name('expensereport.index');
+Route::post('expensereport/search', 'ExpenseReportController@search')->name('expensereport.search');
+//Route::post('report/excel', 'ReportController@exportExcel')->name('report.excel');
+Route::post('expensereport/pdf', 'ExpenseReportController@exportPDF')->name('expensereport.pdf');
 
 //-----------------------------------Expense Management------------------------------------//
 
@@ -77,8 +95,10 @@ Route::post('orders/update/{id}', 'OrderDetailsController@update')->name('orders
 
 Route::get('orders/getItems/{id}', 'OrderDetailsController@getItems');
 
-//-----------------------------------Project Management------------------------------------//
+Route::get('orders/show', 'OrderDetailsController@show')->name('orders.show');
 
+//-----------------------------------Project Management------------------------------------//
+ 
 //Route::resource('projects', 'ProjectController');
 Route::get('/search_project', 'ProjectController@search_project');
 Route::get('projects', 'ProjectController@index')->name('projects.index');
@@ -88,6 +108,9 @@ Route::post('projects/store', 'ProjectController@store')->name('projects.store')
 Route::patch('projects/update/{id}', 'ProjectController@update')->name('projects.update');
 Route::delete('projects/destroy/{id}', 'ProjectController@destroy')->name('projects.destroy');
 Route::get('projects/view/{id}', 'ProjectController@viewuser')->name('projects.view');
+
+//Route::get('projects/{id}', 'ProjectController@viewuser')->name('projects');
+
 
 //-----------------------------------Project Details Management------------------------------------//
 
@@ -129,7 +152,7 @@ Route::post('materialrequest/insert','MaterialRequestController@insert')->name('
 Route::post('materialrequest/test/{id}','MaterialRequestController@tester')->name('test.request');
 
 //-----------------------------------User Management------------------------------------//
-
+ 
 //Route::resource('users', 'UserController');
 Route::get('users', 'UserController@all')->name('users.all');
 Route::get('users/create', 'UserController@create')->name('users.create');
@@ -140,7 +163,8 @@ Route::post('users/store', 'UserController@store')->name('users.store');
 Route::delete('users/destroy/{id}', 'UserController@destroy')->name('users.destroy');
 Route::post('users/change_password', 'UserController@changepassword')->name('user.changepassword');
 Route::patch('users/update/{id}','UserController@update')->name('users.update');
-Route::get('users/profile', 'UserController@profile')->name('users.profile'); 
+
+Route::get('users/profile/{id}', 'UserController@profile')->name('users.profile'); 
 
 
 //-----------------------------------Labor Management--------------------------------------//
@@ -155,7 +179,7 @@ Route::get('/labors/create', 'LaborController@create')->name('labors.create');
 
 Route::resource('suppliers', 'SupplierController');
 Route::get('/search_supplier', 'SupplierController@search_supplier');
-Route::get('suppliers/all', 'SupplierController@index')->name('suppliers.all');
+Route::get('suppliers', 'SupplierController@index')->name('suppliers.all');
 Route::get('user/table', 'HomeController@datatable');
 
 //_______________________________User Management___________________________________//

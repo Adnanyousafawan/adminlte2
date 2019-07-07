@@ -8,6 +8,7 @@ use DB;
 use Gate;
 use Hash;
 use Illuminate\Http\Request;
+use Charts;
 
 class UserController extends Controller
 {
@@ -47,14 +48,39 @@ class UserController extends Controller
                 }
                 */
 
-    }
+    } 
 
-    public function profile()
+    public function profile($id)
     {
-        $users = DB::table('users')->get()->first();
-        $projects = DB::table('projects')->get()->all();
-        //dd($users);
-        return view('users/profile',compact('users','projects'));
+
+        $users = DB::table('users')->where('id','=',$id)->get()->first();
+
+        if($users->role_id == 2)
+        {
+        
+                $projects = DB::table('projects')->where('assigned_by','=',$id)->get()->all();
+                $pie_chart = Charts::create('pie', 'highcharts')
+                ->title('Pie Chart Demo')
+                ->labels(['Completed', 'Loss', 'Cancelled'])
+                ->values([60,30,10])
+                ->dimensions(1000,500)
+                ->responsive(true);
+                return view('users/profile',['users' => $users] ,compact('projects','pie_chart'));
+        }
+        if($users->role_id == 3)
+        {
+                $projects = DB::table('projects')->where('assigned_to','=',$id)->get()->all();
+                $pie_chart = Charts::create('pie', 'highcharts')
+                ->title('Pie Chart Demo')
+                ->labels(['Current', 'Loss', 'Profit'])
+                ->values([60,30,10])
+                ->dimensions(1000,500)
+                ->responsive(true);
+                return view('users/profile',['users' => $users] ,compact('projects','pie_chart'));
+        }
+
+       
+
     }
 
     public function manager()
@@ -389,12 +415,13 @@ class UserController extends Controller
 
 
     }
-
+ 
     public function view_user($id)
     {
         /*$userbyid = DB::table('users')
         ->join('roles','users.role_id','=','roles.id')
         ->select('users.*','')*/
+        
 
     }
 

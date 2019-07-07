@@ -21,15 +21,15 @@ class ItemController extends Controller
         {
             abort(420,'You Are not Allowed to access this site');
         }
-        $orders= DB::table('order_details')->get();
-        $projects = DB::table('projects')->get();
+
+        
         $items= DB::table('items')->get();
-        $suppliers= DB::table('suppliers')->get();
-        return view('orders/allorders',compact('orders','projects','items','suppliers'));
+       
+        return view('items/index',compact('items'));
 
     }
 
-    /**
+    /** 
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -127,7 +127,7 @@ public function insert(Request $request)
     public function edit(Item $item)
     {
         //
-    }
+    } 
 
     /**
      * Update the specified resource in storage.
@@ -147,9 +147,30 @@ public function insert(Request $request)
      * @param \App\Item $item
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Item $item)
+    public function destroy($id)
     {
-        Item::where('id', $id)->delete();
-        return redirect()->intended('orders');
+
+        $request_count = DB::table('material_requests')->where('item_id','=',$id)->count();
+        $orders = DB::table('order_details')->where('item_id','=',$id)->count();
+        if($orders <= 0)
+        {
+             if ($request_count <= 0)
+            {
+                Item::where('id', $id)->delete();
+                return redirect()->back()->with('success', 'Item Deleted Succuessfully.');
+                
+            } 
+            else 
+            {
+                return redirect()->back()->with('message', 'Request Exists. Please delete Material Request from project first');
+            }
+             }  
+        else
+        {
+                return redirect()->back()->with('message', 'Orders Exists. Please delete Orders from project first');
+        }    
+             
+      
+        
     }
 }
