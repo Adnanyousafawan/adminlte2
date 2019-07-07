@@ -42,9 +42,10 @@ public function insert(Request $request)
      {
       $rules = array(
        'name.*'  => 'required',
-       'rate.*'  => 'required',
+       'purchase_rate.*'  => 'required',
        'unit.*'  => 'required',
-       'supplier_id.*' =>'required'
+       'supplier_id.*' =>'required',
+       'selling_rate.*' =>'required'
       );
 
       $error = Validator::make($request->all(), $rules);
@@ -57,7 +58,8 @@ public function insert(Request $request)
 
     $name = $request['name'];
     $supplier_id = $request['supplier_id'];
-    $rate = $request['rate'];
+    $purchase_rate = $request['purchase_rate'];
+    $selling_rate = $request['selling_rate'];
     $unit = $request['unit'];
     // $rate = $request->rate
 
@@ -67,7 +69,8 @@ public function insert(Request $request)
       $obj = new Item([
       'name' => $name[$count],
       //DB::table('items')->where('name','=',  $name[$count])->pluck('id')->first(),
-     'rate' =>  $rate[$count],
+     'purchase_rate' =>  $purchase_rate[$count],
+     'selling_rate' => $selling_rate[$count],
      'unit' => $unit[$count],
         'supplier_id' =>DB::table('suppliers')->where('name','=',  $supplier_id)->pluck('id')->first(),
       

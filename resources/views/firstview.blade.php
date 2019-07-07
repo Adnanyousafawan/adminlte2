@@ -7,7 +7,7 @@
 @yield('error_logs')
 @yield('breadcrumbs')
 
-			<h2> No Data Exist. Please Add Projects</h2>
+			<h2> No Data Exist. Please Add Data</h2>
 
 
 @endsection 

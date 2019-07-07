@@ -68,7 +68,8 @@
                         <tr>
                             {{-- <th width="21%">Project ID</th> --}}
                             <th>Item Name</th>
-                            <th>Price</th>
+                            <th>Purchase Rate</th>
+                            <th>Selling Rate</th>
                             <th>Unit</th>
                             <th>Action</th>
                         </tr>
@@ -78,7 +79,7 @@
                         </tbody>
                         <tfoot>
                         <tr>
-                            <td colspan="3" align="right">&nbsp;</td>
+                            <td colspan="4" align="right">&nbsp;</td>
                             <td>
                                 {{-- @csrf --}}
                                 <button type="submit" name="save" id="save" class="btn btn-primary" value="Save">Save
@@ -106,7 +107,8 @@
             function dynamic_field(number) {
                 html = '<tr>';
                 html += '<td><input type="text" name="name[]" class="form-control"/></td>';
-                html += '<td><input type="number" name="rate[]" class="form-control"/></td>';
+                html += '<td><input type="number" name="purchase_rate[]" class="form-control"/></td>';
+                html += '<td><input type="number" name="selling_rate[]" class="form-control"/></td>';
                 html += '<td><input type="text" name="unit[]" class="form-control"/></td>';
 
                 if (number > 1) {

@@ -58,7 +58,8 @@
                                 <th>Item ID</th>                             
                                 <th>Item Name</th>
                                 <th>Supplier</th>
-                                <th>Price</th>                                
+                                <th>Purchase Price</th>    
+                                <th>Selling Price</th>                              
                                 <th>Unit</th>
                                 <th>Action</th>
                             </tr>
@@ -70,7 +71,8 @@
                                     <td>0000{{ $item->id }}</td>                              
                                     <td>{{ $item->name }}</td>
                                     <td>{{  $item->supplier_id  }}</td>
-                                    <td>{{  $item->rate }}</td>
+                                    <td>{{  $item->purchase_rate }}</td>
+                                    <td>{{  $item->selling_rate }}</td>
                                     <td>{{  $item->unit }}</td>
                                     <td style="max-width: 50px;">
                                         

@@ -48,7 +48,7 @@ class ReportController extends Controller
             {
                 return redirect()->intended('home')->with('message',"Cant Generate reports. As there are no Items");
             }
-            else
+            else 
             {
                 $orders = DB::table('order_details')
                 ->leftJoin('items', 'order_details.item_id', '=', 'items.id')

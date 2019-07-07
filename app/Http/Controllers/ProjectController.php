@@ -141,6 +141,8 @@ class ProjectController extends Controller
             'description' => 'required',
             'contract_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
         ]);
+            
+
              $contractor = DB::table('users')
             ->where('name', '=', $request->input('assigned_to'))
             ->select('id')
