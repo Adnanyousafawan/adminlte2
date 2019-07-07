@@ -1531,138 +1531,227 @@ class APIController extends Controller
             ->pluck('id')
             ->first();
 
+        $orders = DB::table('order_details')
+            ->distinct()
+            ->pluck('invoice_number');
+
         $in_progress = DB::table('project_status')
             ->where('name', '=', 'In Progress')
             ->pluck('id')
             ->first();
 
-        $projects = DB::table('projects')
-            ->where('assigned_to', '=', $id)
-            ->where('status_id', '=', $in_progress)
+        $response = [];
+        $index = 0;
+
+        for ($i = 0; $i < $orders->count(); $i++) {
+            $record = DB::table('order_details')
+                ->where('invoice_number', '=', $orders[$i])
+                ->select('project_id', 'created_at', 'supplier_id', 'status')
+                ->first();
+
+            $project_title = DB::table('projects')
+                ->where('id', '=', $record->project_id)
+                ->where('status_id', '=', $in_progress)
+                ->where('assigned_to', '=', $id)
+                ->pluck('title')
+                ->first();
+
+            if ($project_title != null) {
+                $response[$index] = [
+                    'invoice_number' => $orders[$i],
+                    'project_title' => $project_title,
+                    'supplier_name' => DB::table('suppliers')
+                        ->where('id', '=', $record->supplier_id)
+                        ->pluck('name')
+                        ->first(),
+                    'status' => $record->status,
+                    'order_date' => $record->created_at
+                ];
+                $index++;
+            }
+        }
+        return response()->json([
+            'orders' => $response
+        ]);
+    }
+
+    public function api_orders_details(Request $request)
+    {
+        $invoice_number = $request->get('invoice_number');
+
+        $items = DB::table('order_details')
+            ->where('invoice_number', '=', $invoice_number)
             ->get();
 
-//        foreach ($projects as $project)
-
-       $orders = OrderDetail::all()
-           ->groupBy('project_id');
-
-        return response()->json($orders);
-
+        return response()->json($items);
     }
 
     public function api_orders_received(Request $request)
     {
         $id = DB::table('users')
             ->where('email', '=', $request->get('email'))
-            ->pluck('id')->first();
+            ->pluck('id')
+            ->first();
+
+        $orders = DB::table('order_details')
+            ->distinct()
+            ->pluck('invoice_number');
 
         $in_progress = DB::table('project_status')
             ->where('name', '=', 'In Progress')
             ->pluck('id')
             ->first();
 
-        $projects = DB::table('projects')
-            ->where('assigned_to', '=', $id)
-            ->where('status_id', '=', $in_progress)
-//            ->orderByDesc('created_at')
-            ->get();
-
         $response = [];
         $index = 0;
 
-        foreach ($projects as $project) {
-            $response[$index] = [
-                'title' => $project->title,
-                'floors' => $project->floor,
-                'phase' => DB::table('project_phase')->where('id', '=', $project->phase_id)->pluck('name')->first(),
-                'status' => DB::table('project_status')->where('id', '=', $project->status_id)->pluck('name')->first()
+        for ($i = 0; $i < $orders->count(); $i++) {
 
-            ];
-            $index++;
+            $record = DB::table('order_details')
+                ->where('invoice_number', '=', $orders[$i])
+                ->where('status', '=', 'Received')
+                ->select('project_id', 'created_at', 'supplier_id', 'status')
+                ->first();
+
+            if ($record != null) {
+                $project_title = DB::table('projects')
+                    ->where('id', '=', $record->project_id)
+                    ->where('status_id', '=', $in_progress)
+                    ->where('assigned_to', '=', $id)
+                    ->pluck('title')
+                    ->first();
+
+                if ($project_title != null) {
+                    $response[$index] = [
+                        'invoice_number' => $orders[$i],
+                        'project_title' => $project_title,
+                        'supplier_name' => DB::table('suppliers')
+                            ->where('id', '=', $record->supplier_id)
+                            ->pluck('name')
+                            ->first(),
+                        'status' => $record->status,
+                        'order_date' => $record->created_at
+                    ];
+                    $index++;
+                }
+            }
         }
-
-        $phases = ProjectPhase::all()->pluck('name');
-        $statuses = ProjectStatus::all()->pluck('name');
-
-        return response()->json(['projects' => $response, 'phases' => $phases, 'statuses' => $statuses]);
+        return response()->json([
+            'orders' => $response
+        ]);
 
     }
 
-    public function  api_orders_pending(Request $request)
+    public function api_orders_pending(Request $request)
     {
         $id = DB::table('users')
             ->where('email', '=', $request->get('email'))
-            ->pluck('id')->first();
+            ->pluck('id')
+            ->first();
+
+        $orders = DB::table('order_details')
+            ->distinct()
+            ->pluck('invoice_number');
 
         $in_progress = DB::table('project_status')
             ->where('name', '=', 'In Progress')
             ->pluck('id')
             ->first();
 
-        $projects = DB::table('projects')
-            ->where('assigned_to', '=', $id)
-            ->where('status_id', '=', $in_progress)
-//            ->orderByDesc('created_at')
-            ->get();
-
         $response = [];
         $index = 0;
 
-        foreach ($projects as $project) {
-            $response[$index] = [
-                'title' => $project->title,
-                'floors' => $project->floor,
-                'phase' => DB::table('project_phase')->where('id', '=', $project->phase_id)->pluck('name')->first(),
-                'status' => DB::table('project_status')->where('id', '=', $project->status_id)->pluck('name')->first()
+        for ($i = 0; $i < $orders->count(); $i++) {
 
-            ];
-            $index++;
+            $record = DB::table('order_details')
+                ->where('invoice_number', '=', $orders[$i])
+                ->where('status', '=', 'Pending')
+                ->select('project_id', 'created_at', 'supplier_id', 'status')
+                ->first();
+
+            if ($record != null) {
+                $project_title = DB::table('projects')
+                    ->where('id', '=', $record->project_id)
+                    ->where('status_id', '=', $in_progress)
+                    ->where('assigned_to', '=', $id)
+                    ->pluck('title')
+                    ->first();
+
+                if ($project_title != null) {
+                    $response[$index] = [
+                        'invoice_number' => $orders[$i],
+                        'project_title' => $project_title,
+                        'supplier_name' => DB::table('suppliers')
+                            ->where('id', '=', $record->supplier_id)
+                            ->pluck('name')
+                            ->first(),
+                        'status' => $record->status,
+                        'order_date' => $record->created_at
+                    ];
+                    $index++;
+                }
+            }
         }
-
-        $phases = ProjectPhase::all()->pluck('name');
-        $statuses = ProjectStatus::all()->pluck('name');
-
-        return response()->json(['projects' => $response, 'phases' => $phases, 'statuses' => $statuses]);
-
+        return response()->json([
+            'orders' => $response
+        ]);
     }
 
     public function api_orders_partially_received(Request $request)
     {
         $id = DB::table('users')
             ->where('email', '=', $request->get('email'))
-            ->pluck('id')->first();
+            ->pluck('id')
+            ->first();
+
+        $orders = DB::table('order_details')
+            ->distinct()
+            ->pluck('invoice_number');
 
         $in_progress = DB::table('project_status')
             ->where('name', '=', 'In Progress')
             ->pluck('id')
             ->first();
 
-        $projects = DB::table('projects')
-            ->where('assigned_to', '=', $id)
-            ->where('status_id', '=', $in_progress)
-//            ->orderByDesc('created_at')
-            ->get();
-
         $response = [];
         $index = 0;
 
-        foreach ($projects as $project) {
-            $response[$index] = [
-                'title' => $project->title,
-                'floors' => $project->floor,
-                'phase' => DB::table('project_phase')->where('id', '=', $project->phase_id)->pluck('name')->first(),
-                'status' => DB::table('project_status')->where('id', '=', $project->status_id)->pluck('name')->first()
+        for ($i = 0; $i < $orders->count(); $i++) {
 
-            ];
-            $index++;
+            $record = DB::table('order_details')
+                ->where('invoice_number', '=', $orders[$i])
+                ->where('status', '=', 'Partially Received')
+                ->select('project_id', 'created_at', 'supplier_id', 'status')
+                ->first();
+
+            if ($record != null) {
+                $project_title = DB::table('projects')
+                    ->where('id', '=', $record->project_id)
+                    ->where('status_id', '=', $in_progress)
+                    ->where('assigned_to', '=', $id)
+                    ->pluck('title')
+                    ->first();
+
+                if ($project_title != null) {
+                    $response[$index] = [
+                        'invoice_number' => $orders[$i],
+                        'project_title' => $project_title,
+                        'supplier_name' => DB::table('suppliers')
+                            ->where('id', '=', $record->supplier_id)
+                            ->pluck('name')
+                            ->first(),
+                        'status' => $record->status,
+                        'order_date' => $record->created_at
+                    ];
+                    $index++;
+                }
+            }
         }
-
-        $phases = ProjectPhase::all()->pluck('name');
-        $statuses = ProjectStatus::all()->pluck('name');
-
-        return response()->json(['projects' => $response, 'phases' => $phases, 'statuses' => $statuses]);
-
+        return response()->json([
+            'orders' => $response
+        ]);
     }
+
 
 
 }
