@@ -2,11 +2,13 @@
 
 namespace App;
 
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements Searchable
 {
 
 
@@ -46,6 +48,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+ 
+    public function getSearchResult(): SearchResult
+    {
+        $url = route('users.profile', $this->id);
+ 
+        return new SearchResult(
+            $this,
+            $this->name,
+            $url
+        );
+    }
     public function getImageAttribute()
     {
         return $this->profile_image;

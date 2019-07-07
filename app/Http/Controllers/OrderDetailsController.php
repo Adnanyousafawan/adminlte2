@@ -8,18 +8,17 @@ use Gate;
 
 class OrderDetailsController extends Controller
 {
-
  function index()
  {
    if(Gate::allows('isContractor'))
         {
             abort(420,'You Are not Allowed to access this site');
         }
-  $orders = DB::table('order_details')->get();
-  $items = DB::table('items')->get();
-  $suppliers = DB::table('suppliers')->get();
-  $projects = DB::table('projects')->get();
-  return view('orders/allorders',compact('orders','suppliers','projects','items'));
+      $orders = DB::table('order_details')->get();
+      $items = DB::table('items')->get();
+      $suppliers = DB::table('suppliers')->get();
+      $projects = DB::table('projects')->get();
+      return view('orders/allorders',compact('orders','suppliers','projects','items'));
 }
 
 function insert(Request $request)
@@ -28,7 +27,6 @@ function insert(Request $request)
      if($request->ajax()) 
      {
       $rules = array(
-
        //'item_id.*'  => 'required',
       // 'supplier_id.*' => 'required',
        'quantity.*'  => 'required'
@@ -46,26 +44,35 @@ function insert(Request $request)
     $project_id = $request['project_id'];
     $supplier_id = $request['supplier_id'];
     $quantity = $request['quantity'];
-    $invoice = DB::table('order_details')->pluck('invoice_number')->last();
-    $invoice++;
-    //dd($item_id);
+    //dd($project_id);
 
+    $invoice = DB::table('order_details')->pluck('invoice_number')->last();
+    if($invoice == 0)
+    {
+      $invoice = 1000;
+    }
+    else
+    {
+      $invoice++;
+    }
 
     for($count = 0; $count < count($item_id); $count++){
       //  return response()->json($item_id[$count]);
-
+      $set_rate = DB::table('items')->where('id','=',$item_id[$count])->pluck('rate')->first();
       $obj = new OrderDetail([
 
       'item_id' => $item_id[$count],
       // DB::table('items')->where('name','=',  $item_id[$count])->pluck('id')->first(),
-      'project_id' =>DB::table('projects')->where('title','=',  $project_id)->pluck('id')->first(),
-      'supplier_id' => $supplier_id[$count],
+      'project_id' => DB::table('projects')->where('title','=',  $project_id)->pluck('id')->first(),
+      'supplier_id' => $supplier_id,
+      //$supplier_id[$count],
       // DB::table('suppliers')->where('name','=',  $supplier_id[$count])->pluck('id')->first(),
       'quantity' => $quantity[$count],
+      'set_rate' => $set_rate,
       'invoice_number' =>  $invoice,
      
       //'status' => $status[$count],
-      ]);
+      ]); 
 
        //dd($obj);
       $obj->save();
@@ -97,8 +104,10 @@ function create()
     {
         //dd('in items');
         $itemData['data'] = DB::table('items')->where('supplier_id', $supplier_id)->get();
-         echo json_encode($itemData);
-         exit;
+        //echo response()->json($itemData);
+        
+        echo json_encode($itemData);
+        exit;
     }
 
      // return redirect()->route('orderdetails.index')->with('success', 'Data Updated');

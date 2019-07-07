@@ -19,6 +19,7 @@ class CreateMiscellaneousExpenseTable extends Migration
                 $table->string('name')->nullable();
                 $table->string('description')->nullable();
                 $table->string('expense')->nullable(); 
+                $table->string('expense_number')->default(0)->nullable(); 
                 $table->unsignedBigInteger('project_id')->nullable();
 
                 $table->foreign('project_id')

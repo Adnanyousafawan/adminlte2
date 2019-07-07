@@ -38,7 +38,7 @@ class ProjectController extends Controller
 
         if(Gate::allows('isAdmin'))
         {
-          $projects = DB::table('projects')->get();
+            $projects = DB::table('projects')->get();
             /* ->join('users', 'users.id', '=', 'projects.assigned_to')
             ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
             //$projectstotal = DB::table('projects')->get();//Project::all();

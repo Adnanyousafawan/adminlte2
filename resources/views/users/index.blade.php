@@ -5,9 +5,10 @@
 @can('isManager')
 @section('title', 'Contractors')
 @endcan
+
 @include('common')
-@yield('meta_tags')
 @section('content')
+@yield('meta_tags')
 @yield('error_logs')
 @yield('breadcrumbs')
 
@@ -100,7 +101,7 @@
                                         @can('isAdmin')
                                         <td>{{ $user->role_id }}</td>
                                         @endcan
-                                        @can('isManager')
+                                        @can('isManager') 
                                         <td>Project ID</td>
                                         @endcan
 
@@ -115,7 +116,7 @@
 
                                                 <ul role="menu" class="dropdown-menu">
                                                     <li><a target="_blank"
-                                                           href="{{-- {{ route('users.view', ['id' => $user->id]) }} --}}"><i
+                                                           href="{{ route('users.profile', ['id' => $user->id]) }}"><i
                                                                 class="fa fa-edit"></i>View</a></li>
 
                                                     <li><a href="{{ route('users.edit', ['id' => $user->id]) }}"><i

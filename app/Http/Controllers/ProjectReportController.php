@@ -19,34 +19,36 @@ class ProjectReportController extends Controller
     {
         $this->middleware('auth');
     }
-
+ 
     public function index() {
         date_default_timezone_set('asia/ho_chi_minh');
         $format = 'Y/m/d';
         //$now = date($format);
        // $now = Carbon\Carbon::now()->format('d/m/Y');
-        $now = date($format, strtotime("-1 days"));
+        $now = date($format);
         //$now = $now->toRfc850String(); 
         //$to = date($format, strtotime("+30 days")); --}}
-        $to = date($format /*, strtotime("+1 days")*/);
+        $to = date($format, strtotime("-1 days"));
+        $last_invoice = DB::table('order_details')->pluck('invoice_number')->last();  
 
         $constraints = [
             'from' => $now,
             'to' => $to,
             'proj' => '',
-            'proj_name' => '' 
-             
+            'proj_name' => '',
+            'last_invoice' => $last_invoice
         ];
 
         $orders = DB::table('order_details')
         ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
         ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
-        ->where('order_details.created_at','>=',$now)
-        ->where('order_details.created_at','<=',$to)
-        ->select('order_details.invoice_number', 'order_details.quantity', 
+        ->where('order_details.created_at','<=',$now)
+        ->where('order_details.created_at','>=',$to)
+        ->select('order_details.invoice_number', 'order_details.set_rate','order_details.quantity', 
         'suppliers.name as supplier_name','items.name', 'items.rate','order_details.created_at')
         ->get();
        // dd($orders);
+        $last_invoice = DB::table('order_details')->pluck('invoice_number')->last();    
 
         $projects = DB::table('projects')->pluck('title')->all();
 
@@ -56,11 +58,15 @@ class ProjectReportController extends Controller
 
     public function exportPDF(Request $request) {
        $proj_name = DB::table('projects')->where('id','=', $request->input('project_id'))->pluck('title')->first(); 
+        $last_invoice = DB::table('order_details')->pluck('invoice_number')->last();    
+
+
          $constraints = [
             'from' => $request['from'],
             'to' => $request['to'],
             'proj' => $request->input('project_id'),
-            'proj_name' => $proj_name 
+            'proj_name' => $proj_name,
+            'last_invoice' => $last_invoice
         ]; 
 
         $projects = DB::table('projects')->pluck('title')->all();
@@ -78,13 +84,17 @@ class ProjectReportController extends Controller
         $projID = DB::table('projects')
             ->where('title', '=', $request->input('project'))
             ->pluck('id')->first();
+
+        $last_invoice = DB::table('order_details')->pluck('invoice_number')->last();    
+
+
             
         $constraints = [
             'from' => $request['from'],
             'to' => $request['to'],
             'proj' => $projID,
-            'proj_name' => $proj_name 
-            
+            'proj_name' => $proj_name, 
+            'last_invoice' => $last_invoice
         ];
 
         $orders = $this->getOrderList($constraints);
@@ -96,10 +106,10 @@ class ProjectReportController extends Controller
       
         $orders = OrderDetail::leftJoin('items', 'order_details.item_id', '=', 'items.id')
         ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
-        ->select('order_details.invoice_number', 'order_details.quantity', 
+        ->select('order_details.invoice_number', 'order_details.quantity', 'order_details.set_rate',
         'suppliers.name as supplier_name','items.name', 'items.rate','order_details.created_at')
-        ->where('order_details.created_at', '>=', $constraints['from'])
-        ->where('order_details.created_at', '<=', $constraints['to'])
+        ->where('order_details.created_at', '<=', $constraints['from'])
+        ->where('order_details.created_at', '>=', $constraints['to'])
         ->where('order_details.project_id','=',$constraints['proj'])
         ->get();
         return $orders;
@@ -110,10 +120,10 @@ class ProjectReportController extends Controller
         return DB::table('order_details')
         ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
         ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
-        ->select('order_details.invoice_number', 'order_details.quantity', 
+        ->select('order_details.invoice_number', 'order_details.quantity', 'order_details.set_rate',
         'suppliers.name as supplier_name','items.name', 'items.rate','order_details.created_at')
-        ->where('order_details.created_at', '>=', $constraints['from'])
-        ->where('order_details.created_at', '<=', $constraints['to'])
+        ->where('order_details.created_at', '<=', $constraints['from'])
+        ->where('order_details.created_at', '>=', $constraints['to'])
         ->where('order_details.project_id','=',$constraints['proj'])
         ->get()
         ->map(function ($item, $key) {

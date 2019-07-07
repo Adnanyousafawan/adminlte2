@@ -2,10 +2,14 @@
 
 namespace App;
 
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class Project extends Model implements Searchable
 {
+    protected $table = 'projects';
+
     protected $fillable = [
         "title",
         "location",
@@ -24,13 +28,25 @@ class Project extends Model
     ];
 
     protected $hidden = [
-        "created_at",
+        "created_at", 
         "updated_at"
     ] ;
 
     public function getImageAttribute()
     {
         return $this->contract_image;
+    }
+
+
+    public function getSearchResult(): SearchResult
+    {
+        $url = route('projects.view', $this->id);
+ 
+        return new SearchResult(
+            $this,
+            $this->title,
+            $url
+        );
     }
 
 //    public function labors(){

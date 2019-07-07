@@ -1,6 +1,6 @@
 @extends('reports.base')
 @section('action-content')
-
+@include('common')
 
 <style type="text/css">
   .blank_row
@@ -10,7 +10,7 @@
 }
 </style>
     <!-- Main content -->
-<div class="row"> </div>
+<div class="row">
 <div class="box" style="width: 100%;"> 
   <div class="box-header">
     <div class="row">
@@ -69,11 +69,13 @@
           'oldVals' => [isset($searchingVals) ? $searchingVals['from'] : '', isset($searchingVals) ? $searchingVals['to'] : '']])
           @endcomponent
          @endcomponent
-      </form>
-    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+      </form> 
+
+   
       <div class="row">
         <div class="col-md-12">
-          <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+            <div class="table-responsive" style="margin-top: 10px; ">
+          <table id="example2" class="table table-bordered table-hover dataTable project" role="grid" aria-describedby="example2_info">
             <thead>
              <tr role="row">
                <th width = "10%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Invoice Number</th>
@@ -99,7 +101,6 @@
                    
                   </tr>
  --}}
-            
                   <td style="background-color: #D3D3D3;">{{ $order->invoice_number }}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order->supplier_name }}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order->project_id }}</td>
@@ -156,18 +157,16 @@
             </tfoot>
           </table>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">Showing 1 to {{count($orders)}} of {{count($orders)}} entries</div>
         </div>
       </div>
-    </div>
+
   </div>
   <!-- /.box-body -->
 </div>
 </div>
     {{-- </section> --}}
     <!-- /.content -->
-  
+  @yield('datatable_stylesheets')
+
+  @yield('datatable_script')
 @endsection

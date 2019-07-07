@@ -89,7 +89,7 @@
 
 
 @endsection
-
+ 
 @section('datatable_script')
 
     <script type="text/javascript">

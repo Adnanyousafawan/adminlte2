@@ -52,6 +52,16 @@ class MiscellaneousExpenseController extends Controller
 
 //$insert_data = array();
 
+    $expense_number = DB::table('miscellaneous_expenses')->pluck('expense_number')->last();
+    if($expense_number == 0)
+    {
+      $expense_number = 1000;
+    }
+    else
+    {
+      $expense_number++;
+    }
+ 
 
     for($count = 0; $count < count($name); $count++){
       //  return response()->json($item_id[$count]);
@@ -59,8 +69,9 @@ class MiscellaneousExpenseController extends Controller
       $obj = new MiscellaneousExpense([
       'name' => $name[$count],
       'description' =>  $description[$count],
-      'project_id' =>DB::table('projects')->where('title','=',  $project_id)->pluck('id')->first(),
+      'project_id' => DB::table('projects')->where('title','=',  $project_id)->pluck('id')->first(),
       'expense' => $expenses[$count],
+      'expense_number' => $expense_number,
       
       ]); 
 
