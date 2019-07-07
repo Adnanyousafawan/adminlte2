@@ -19,7 +19,6 @@ class CreateSuppliersTable extends Migration
             $table->string('phone');
             $table->string('address');
             $table->string('city');
-           
             $table->timestamps();
         });
     }

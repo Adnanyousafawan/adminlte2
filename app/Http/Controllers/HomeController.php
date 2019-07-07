@@ -51,9 +51,21 @@ class HomeController extends Controller
         {
             abort(420,'You Are not Allowed to access this site');
         }
-
+        $check = DB::table('projects')->get()->count();
+       
+        if($check == 0 )
+        {
+            return view('firstview');
+        }
+        if($check >= 1)
+        {
         //_________________________ Dashboard Boxes Count _____________________________________
-        $status_id = DB::table('project_status')->where('name','=','Completed')->pluck('id')->all();
+        $status_id = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
+        $completed_projects = DB::table('projects')->where('status_id', '=', $status_id)->count();
+        if($status_id == 0)
+        {
+            return view('firstview')->with('message',"Completed Project Status Doesnot Exist");
+        }
         $expense = DB::table('miscellaneous_expenses')->sum('expense');
         $projects = DB::table('projects')->get();
         $total_contractors = DB::table('users')->where('id','=',3)->count();
@@ -99,6 +111,7 @@ class HomeController extends Controller
 
        // dd($completed_projects);
         return view('home', compact('projects','total_contractors','completed_projects','current_projects','expense','orders'));
+        }
        
     }
 

@@ -8,7 +8,8 @@ class Item extends Model
 {
      protected $fillable = [
         'name',
-        'rate',
+        'purchase_rate',
+        'selling_rate',
         'unit',
         'supplier_id',
     ];

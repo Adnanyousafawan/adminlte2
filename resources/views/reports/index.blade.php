@@ -105,10 +105,10 @@
                   <td  style="background-color: #D3D3D3;">{{ $order->supplier_name }}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order->project_id }}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order->name }}</td>
-                  <td  style="background-color: #D3D3D3;">{{ $order->rate }}</td>
+                  <td  style="background-color: #D3D3D3;">{{ $order->set_rate }}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order->quantity }}</td>
                   <?php
-                  $total =  $order->rate * $order->quantity
+                  $total =  $order->set_rate * $order->quantity
                     ?>
                   <td  style="background-color: #D3D3D3;">{{$total}}</td>
                   <td  style="background-color: #D3D3D3;">{{ Carbon\Carbon::parse($order->created_at)->format('d/M/Y') }}</td>
@@ -126,11 +126,11 @@
                   <td style="background-color: #A9A9A9;">{{ $order->supplier_name }}</td>
                   <td  style="background-color: #A9A9A9;">{{ $order->project_id }}</td>
                   <td style="background-color: #A9A9A9;">{{ $order->name }}</td>
-                  <td style="background-color: #A9A9A9;">{{ $order->rate }}</td>
+                  <td style="background-color: #A9A9A9;">{{ $order->set_rate }}</td>
                   <td style="background-color: #A9A9A9;">{{ $order->quantity }}</td>
                  
                 <?php 
-                  $total =  $order->rate * $order->quantity;
+                  $total =  $order->set_rate * $order->quantity;
                 
                   ?>
  

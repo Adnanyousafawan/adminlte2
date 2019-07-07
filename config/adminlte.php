@@ -137,12 +137,6 @@ return [
             'url'  => 'home',
             'icon' => 'file',
         ],
-        [
-            'text' => 'Create Project',
-            'url'  => 'projects/create',
-            //'icon' => 'glyphicon glyphicon-plus'
-            'icon_color' => 'aqua',
-        ],
          [
             'text' => 'Add Expense',
             'url'  => 'expenses/create',

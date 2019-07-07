@@ -34,8 +34,7 @@ class MiscellaneousExpenseController extends Controller
            'project_id*'  => 'required',
            'description.*'  => 'required',
            'expenses.*'  => 'required'
-          );
-          
+          ); 
           $error = Validator::make($request->all(), $rules);
           if($error->fails())
           {
@@ -43,6 +42,7 @@ class MiscellaneousExpenseController extends Controller
             'error'  => $error->errors()->all()
            ]);
           }
+
 
    	$name = $request['name'];
     $project_id = $request['project_id'];

@@ -34,22 +34,35 @@ class ReportController extends Controller
 
         $constraints = [
             'from' => $now,
-            'to' => $to,
+            'to' => $to, 
         ];
-       
-        $orders = DB::table('order_details')
-        ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
-        ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
-        ->where('order_details.created_at','<=',$now)
-        ->where('order_details.created_at','>=',$to)
-        ->select('project_id','order_details.invoice_number', 'order_details.quantity', 
-        'suppliers.name as supplier_name','items.name', 'items.rate','order_details.created_at')
-        ->get();
-        return view('reports/index', ['orders' => $orders, 'searchingVals' => $constraints]);
+       $check = DB::table('projects')->get()->count();
+       if($check == 0)
+       {
+         return redirect()->intended('home')->with('message',"Cant Generate reports. No Project exist");
+       }
+       else
+       {
+            $check = DB::table('items')->get()->count();
+            if($check == 0)
+            {
+                return redirect()->intended('home')->with('message',"Cant Generate reports. As there are no Items");
+            }
+            else
+            {
+                $orders = DB::table('order_details')
+                ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
+                ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
+                ->where('order_details.created_at','<=',$now)
+                ->where('order_details.created_at','>=',$to)
+                ->select('project_id','order_details.invoice_number', 'order_details.quantity', 
+                'suppliers.name as supplier_name','items.name', 'items.rate','order_details.created_at')
+                ->get();
+                return view('reports/index', ['orders' => $orders, 'searchingVals' => $constraints]);
+            }
+       } 
     }
-
-
-
+ 
 public function weekly() {
         date_default_timezone_set('asia/ho_chi_minh');
         $format = 'Y/m/d';
@@ -65,7 +78,10 @@ public function weekly() {
             'to' => $to,
         ];
         //dd($constraints['type']);
-      
+        if($count == 0)
+       {
+         return redirect('firstview')->with('message',"Cant Generate reports. No Project exist");
+       }
 
         $orders = DB::table('order_details')
         ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
@@ -97,7 +113,10 @@ public function monthly() {
             'to' => $to,
         ]; 
         
-      
+        if($count == 0)
+       {
+         return redirect('firstview')->with('message',"Cant Generate reports. No Project exist");
+       }
         $orders = DB::table('order_details')
         ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
         ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')

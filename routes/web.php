@@ -24,8 +24,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('search', 'SearchController@search')->name('search.result');
 
 // display records routes
-Route::get('orderdetails/{slug}', 'OrderDetailsController@show')->name('orderdetails.show');
-Route::get('projects/{slug}', 'ProjectController@show')->name('projects.show');
+Route::get('orderdetail/{slug}', 'OrderDetailsController@show')->name('orderdetails.show');
+Route::get('project/{slug}', 'ProjectController@show')->name('projects.show');
  
 // search routes
 Route::get('laravelssearch', 'SearchController@index')->name('search.index');
@@ -149,8 +149,8 @@ Route::get('materialrequest/pending','MaterialRequestController@pending')->name(
 Route::post('materialrequest/insert','MaterialRequestController@insert')->name('requests.insert');
 //Route::delete('materialrequest/destroy/{id}', 'MaterialRequestController@destroy')->name('requests.destroy');
 
-Route::post('materialrequest/test/{id}','MaterialRequestController@tester')->name('test.request');
-
+//Route::post('materialrequest/test/{id}','MaterialRequestController@tester')->name('test.request');
+ 
 //-----------------------------------User Management------------------------------------//
  
 //Route::resource('users', 'UserController');
