@@ -40,7 +40,7 @@ class MaterialRequestController extends Controller
             }
         }
         $materialrequests = DB::table('material_requests')->get()->all();
-        return view('materialrequest/testrequest', compact('materialrequests'));
+        return view('materialrequest/index', compact('materialrequests'));
     }
 
     public function tester($id)

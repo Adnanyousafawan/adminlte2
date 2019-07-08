@@ -62,7 +62,7 @@ class SupplierController extends Controller
         ]);
         $supplier->save();
 
-        return redirect('suppliers/index')->with('success', 'New project has created');
+        return redirect('suppliers/index')->with('success', 'New Supplier has created');
     }
 
     /**
@@ -133,14 +133,14 @@ class SupplierController extends Controller
             'city' => 'required'
             
         ]);
-
+ 
         $suppliers = Supplier::find($id);
         $suppliers->name = $request->get('name');
-        $suppliers->phone_number = $request->get('phone');
+        $suppliers->phone = $request->get('phone');
         $suppliers->address = $request->get('address');
         $suppliers->city = $request->get('city');
         $suppliers->save();
-        return redirect()->route('suppliers.index')->with('success', 'Data Updated');
+        return redirect()->route('suppliers.all')->with('success', 'Data Updated');
     }
 
     /**

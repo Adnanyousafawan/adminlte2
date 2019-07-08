@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->nullable();
-            $table->string('profile_image')->nullable();
+            $table->string('profile_image')->nullable()->default('images/profile/userprofile.png');
             $table->string('email')->unique();
             $table->string('address')->nullable();
             $table->string('cnic')->nullable();
@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
             //adding foreign key constraint on role_id
             $table->foreign('role_id')
                 ->references('id')
-                ->on('roles');
+                ->on('roles'); 
             $table->rememberToken();
             $table->timestamps();
         });

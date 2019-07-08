@@ -31,8 +31,8 @@
                         </div>
                     </div>
                 </div>
-                <div
-                    class="box box-primary col-md-7 col-md-offset-0 col-xs-10 col-xs-offset-1" {{-- style="max-width: 90%; margin-left: 5%; --}}>
+                 <div class="col-md-7 col-md-offset-0 col-xs-10 col-xs-offset-1 col-lg-7 col-lg-offset-0 col-sm-10 col-sm-offset-1" >
+                <div class="box box-primary" {{-- style="max-width: 90%; margin-left: 5%; --}}>
                     <div class="box-body">
                         <div class="col-md-9 col-md-offset-2">
                             <div class="box-header">

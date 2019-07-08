@@ -137,12 +137,6 @@ return [
             'url'  => 'home',
             'icon' => 'file',
         ],
-        [
-            'text' => 'Create Project',
-            'url'  => 'projects/create',
-            //'icon' => 'glyphicon glyphicon-plus'
-            'icon_color' => 'aqua',
-        ],
          [
             'text' => 'Add Expense',
             'url'  => 'expenses/create',
@@ -234,10 +228,24 @@ return [
                     'text' => 'Add Expenses',
                     'url'  => 'expenses/create',
                 ],
-               
-              
             ],
         ],
+         [
+            'text'    => 'Items',
+            'icon'    => 'share',
+            'submenu' => [
+                [
+                    'text' => 'View All Items',
+                    'url' => 'items',
+                ],
+                [
+                    'text' => 'Add Items',
+                    'url'  => 'items/create',
+                ],
+            ],
+        ],
+
+
        
          [
             'text'    => 'User',
@@ -262,17 +270,18 @@ return [
             'icon'    => 'share',
             'submenu' => [
                 [
-                    'text' => 'Add Supplier',
-                    'url'  => 'suppliers/create',
-                ],
-                [
                     'text' => 'View All Supplier',
                     'url' => 'suppliers/all',
                 ],
+                [
+                    'text' => 'Add Supplier',
+                    'url'  => 'suppliers/create',
+                ],
+               
               
             ],
         ],
-
+        
         'Reports Management',
                 [
                     'text' => 'Daily',

@@ -22,6 +22,7 @@ class ProjectController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+
     }
 
     /**
@@ -68,24 +69,45 @@ class ProjectController extends Controller
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
-     */
+     */ 
     public function create()
     {
-         if(Gate::allows('isContractor'))
+        //dd('in admin');
+        if(Gate::allows('isContractor'))
         {
             abort(420,'You Are not Allowed to access this site');
         }
-        if (Gate::allows('isAdmin')) 
+        if(Gate::allows('isManager') || Gate::allows('isAdmin'))
         {
-             $contractors = DB::table('users')->where('role_id', '=', 3)->get();
-            return View('projects/create')->with('contractors', $contractors);
-        }
-        if (Gate::allows('isManager')) {
-
-        $contractors = DB::table('users')->where('role_id', '=', 3)->get();
-        return View('projects/create')->with('contractors', $contractors);
-        }
-      
+            $check = DB::table('project_phase')->get()->count();
+            if($check != 0)
+            {
+                $check = DB::table('project_status')->get()->count();
+                if($check != 0)
+                { 
+                    $rollID = DB::table('roles')->where('name','=','Contractor')->pluck('id')->first();
+                    $check = DB::table('users')->where('role_id','=',$rollID)->get()->count();
+                    if($check != 0)
+                    {
+                         $contractors = DB::table('users')->where('role_id', '=', 3)->get();
+                         return view('projects/create')->with('contractors', $contractors);
+                    }
+                    else
+                    {
+                        return redirect()->intended('home')->with('message',"Please Add Contractors before Adding New Projects ");
+                    }
+                   
+                }
+                else
+                {
+                    return redirect()->intended('home')->with('message',"Please Add Project Status before Adding New Projects ");
+                }
+            } 
+            else
+            {   
+                return redirect()->intended('home')->with('message',"Please Add Project Phases before creating new Projects");
+            }
+        } 
     }
 
     /**
@@ -119,6 +141,8 @@ class ProjectController extends Controller
             'description' => 'required',
             'contract_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
         ]);
+            
+
              $contractor = DB::table('users')
             ->where('name', '=', $request->input('assigned_to'))
             ->select('id')
@@ -220,7 +244,7 @@ class ProjectController extends Controller
         //dd($customers);
         //join('customers','customers.id','=','projects.customer_id')->take(10)->get();
         //$customers = DB::table('customers')->get();// \App\Customer::all();
-        return view('projects/projects', compact('projects','contractors'));
+        return view('projects/create', compact('projects','contractors'));
     }
 
     public function labors_by_projects()
