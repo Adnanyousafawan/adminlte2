@@ -14,7 +14,7 @@ class CreateOrderDetailsTable extends Migration
     public function up()
     {
         Schema::create('order_details', function (Blueprint $table) {
-             $table->bigIncrements('id');
+                $table->bigIncrements('id');
                 $table->unsignedBigInteger('item_id');
                 $table->unsignedBigInteger('project_id');
                 $table->unsignedBigInteger('supplier_id');
@@ -23,6 +23,7 @@ class CreateOrderDetailsTable extends Migration
                 $table->string('status')->default('pending');
                 $table->string('set_rate')->default('0')->nullable();
                 $table->string('invoice_number')->default('100000');
+                  $table->timestamps();
 
                 $table->foreign('item_id')
                     ->references('id')
@@ -36,9 +37,7 @@ class CreateOrderDetailsTable extends Migration
                     ->references('id')
                     ->on('suppliers');
 
-
-
-            $table->timestamps();
+          
         });
     }
 

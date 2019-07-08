@@ -219,10 +219,7 @@ return [
                     'text' => 'Create Project',
                     'url'  => 'projects/create',
                 ],
-                [
-                    'text' => 'Labor by Projects',
-                    'url'  => 'projects/labor_by_projects',
-                ],
+               
             ],
         ],
 
@@ -231,15 +228,20 @@ return [
             'icon'    => 'share',
             'submenu' => [
                  [
-                    'text' => 'View All Expenses',
+                    'text' => 'Project Expenses',
                     'url' => '/expenses',
                 ],
                 [
-                    'text' => 'Add Expenses',
+                    'text' => 'Company Expenses',
+                    'url' => '/company-expenses',
+                ],
+                [
+                    'text' => 'Add Expense',
                     'url'  => 'expenses/create',
                 ],
             ],
         ],
+
         [
             'text'    => 'Payments',
             'icon'    => 'share',

@@ -8,25 +8,66 @@ use App\MiscellaneousExpense;
 use Validator;
 use View;
 use Gate;
+use Auth;
 class MiscellaneousExpenseController extends Controller
 {
-    
     function index()
     {
        if(Gate::allows('isContractor'))
         {
             abort(420,'You Are not Allowed to access this site');
         }
-		    	 
-		  $expenses = DB::table('miscellaneous_expenses')->get();
+        if(Gate::allows('isManager'))
+        {
+            $expenses = DB::table('miscellaneous_expenses')
+          ->leftjoin('projects','projects.id','=','miscellaneous_expenses.project_id')
+          ->where('projects.assigned_by','=',Auth::user()->id)
+          ->where('miscellaneous_expenses.project_id','!=',null)
+          ->select('miscellaneous_expenses.id','projects.title','miscellaneous_expenses.project_id','miscellaneous_expenses.expense','miscellaneous_expenses.name','miscellaneous_expenses.description','miscellaneous_expenses.created_at')
+          ->get();
+        }
+        if(Gate::allows('isAdmin'))
+        {
+          $expenses = DB::table('miscellaneous_expenses')
+          ->leftjoin('projects','projects.id','=','miscellaneous_expenses.project_id')
+          ->where('miscellaneous_expenses.project_id','!=',null)
+          ->select('miscellaneous_expenses.id','projects.title','miscellaneous_expenses.project_id','miscellaneous_expenses.expense','miscellaneous_expenses.name','miscellaneous_expenses.description','miscellaneous_expenses.created_at')
+          ->get();
+        }
+            $projects = DB::table('projects')->get();
+		       return view('expenses/allexpenses',compact('expenses','projects')); 
+        }
 
-		  return view('expenses/allexpenses',['expenses' => $expenses]);
-		     
-    }
+    function company_expense()
+    {
+       if(Gate::allows('isContractor'))
+        {
+            abort(420,'You Are not Allowed to access this site');
+        }
+        if(Gate::allows('isManager'))
+        {
+            $expenses = DB::table('miscellaneous_expenses')
+          ->leftjoin('projects','projects.id','=','miscellaneous_expenses.project_id')
+          ->where('projects.assigned_by','=',Auth::user()->id)
+          ->where('miscellaneous_expenses.others','=',1)
+          ->select('miscellaneous_expenses.id','miscellaneous_expenses.project_id','miscellaneous_expenses.expense','miscellaneous_expenses.name','miscellaneous_expenses.description','miscellaneous_expenses.created_at')
+          ->get();
+        }
+        if(Gate::allows('isAdmin'))
+        {
+          $expenses = DB::table('miscellaneous_expenses')
+          ->leftjoin('projects','projects.id','=','miscellaneous_expenses.project_id')
+          ->where('miscellaneous_expenses.others','=',1)
+          ->select('miscellaneous_expenses.id','miscellaneous_expenses.project_id','miscellaneous_expenses.expense','miscellaneous_expenses.name','miscellaneous_expenses.description','miscellaneous_expenses.created_at')
+          ->get();
+        }
+           
+           return view('expenses/company_expense',compact('expenses')); 
+        }
+
 
     function insert(Request $request)
     {  
-
          if($request->ajax())
          {
           $rules = array(
@@ -52,11 +93,10 @@ class MiscellaneousExpenseController extends Controller
     {
         $others = 0;
         $project_id = $request['project_id'];
-        
     }
         $name = $request['name'];
 
- $description = $request['description'];
+        $description = $request['description'];
         $expenses =$request['expenses'];
     // $rate = $request->rate
 
@@ -70,7 +110,7 @@ class MiscellaneousExpenseController extends Controller
     else
     {
       $expense_number++;
-    }
+    } 
  
 
     for($count = 0; $count < count($name); $count++){
@@ -84,11 +124,8 @@ class MiscellaneousExpenseController extends Controller
       'expense' => $expenses[$count],
       'others' => $others,
       'expense_number' => $expense_number,
-      
       ]); 
-
       // dd($obj);
-    
       $obj->save();
     }
 
@@ -100,6 +137,63 @@ class MiscellaneousExpenseController extends Controller
 
     } 
 }
+
+public function update(Request $request, $id)
+{
+            $request->validate([
+            'project_id' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'expense' => 'required',
+          
+        ]);
+ 
+       $expenses = MiscellaneousExpense::find($id);
+
+       $expenses->project_id = $request->input('project_id');
+       $expenses->name = $request->input('name');
+       $expenses->description = $request->input('description');
+       $expenses->expense = $request->input('expense');
+
+       if($expenses->save())
+       {
+        return redirect()->back()->with('success',"Order Updated successfully");
+       }
+       else
+       {
+        return redirect()->back()->with('message',"Order is not Updated");
+       }
+}
+
+
+public function update_company_expense(Request $request, $id)
+{
+            $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'expense' => 'required',
+          
+        ]);
+ 
+       $expenses = MiscellaneousExpense::find($id);
+
+       $expenses->name = $request->input('name');
+       $expenses->description = $request->input('description');
+       $expenses->expense = $request->input('expense');
+
+       if($expenses->save())
+       {
+        return redirect()->back()->with('success',"Order Updated successfully");
+       }
+       else
+       {
+        return redirect()->back()->with('message',"Order is not Updated");
+       }
+
+
+
+}
+
   function create()
       {
            if(Gate::allows('isContractor'))

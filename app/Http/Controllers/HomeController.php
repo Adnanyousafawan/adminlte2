@@ -37,12 +37,11 @@ class HomeController extends Controller
 
     public function goBackToHome()
     {
-         
-        return view('welcome');
-         if(Gate::allows('isContractor'))
+        if(Gate::allows('isContractor'))
         {
             abort(420,'You Are not Allowed to access this site');
         }
+        return view('welcome');
     }
 
     public function index()

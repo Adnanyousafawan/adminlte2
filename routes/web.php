@@ -76,7 +76,11 @@ Route::post('expensereport/pdf', 'ExpenseReportController@exportPDF')->name('exp
 Route::get('expenses/create', 'MiscellaneousExpenseController@create')->name('expense.create');
 Route::post('expenses/miscellaneousexpenses/insert', 'MiscellaneousExpenseController@insert')->name('expenses.insert');
 Route::get('expenses', 'MiscellaneousExpenseController@index')->name('expenses.list');
+Route::post('expenses/update/{id}', 'MiscellaneousExpenseController@update')->name('expenses.update');
 Route::delete('epenses/destroy/{id}', 'MiscellaneousExpenseController@destroy')->name('expenses.destroy');
+
+Route::get('company-expenses', 'MiscellaneousExpenseController@company_expense')->name('company-expenses.list');
+Route::post('company-expenses/update/{id}', 'MiscellaneousExpenseController@update_company_expense')->name('company-expenses.update');
 
 //-----------------------------------Customer Management------------------------------------//
 
@@ -95,6 +99,9 @@ Route::post('orders/orderdetails/insert', 'OrderDetailsController@insert')->name
 Route::get('orders', 'OrderDetailsController@index')->name('orders.list');
 Route::get('orders/recieved', 'OrderDetailsController@recieved')->name('orders.recieved');
 Route::get('orders/cancelled', 'OrderDetailsController@cancelled')->name('orders.cancelled');
+Route::get('orders/pending', 'OrderDetailsController@pending')->name('orders.pending');
+Route::post('orders/cancelorder/{id}', 'OrderDetailsController@cancelorder')->name('orders.cancelorder');
+
 Route::delete('orders/destroy/{id}', 'OrderDetailsController@destroy')->name('orders.destroy');
 Route::get('orders/projectorders/{id}', 'OrderDetailsController@projectorders')->name('orders.projectorders');
 Route::post('orders/update/{id}', 'OrderDetailsController@update')->name('orders.update');

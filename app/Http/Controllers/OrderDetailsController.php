@@ -9,18 +9,27 @@ use Gate;
 class OrderDetailsController extends Controller
 {
  function index()
- {
+ { 
    if(Gate::allows('isContractor'))
         {
             abort(420,'You Are not Allowed to access this site');
-        }
-      $orders = DB::table('order_details')->get();
+        } 
+
+        $orders = DB::table('order_details')
+                ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
+                ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
+                ->select('order_details.id','project_id','order_details.invoice_number', 'order_details.quantity', 
+                'suppliers.name as supplier_name','items.name', 'items.selling_rate','order_details.created_at',
+                'order_details.status')  
+                ->get(); 
+                //dd($orders);
+    //  $orders = DB::table('order_details')->get();
       $items = DB::table('items')->get();
       $suppliers = DB::table('suppliers')->get();
-      $projects = DB::table('projects')->get();
-      return view('orders/allorders',compact('orders','suppliers','projects','items'));
+     $projects = DB::table('projects')->get();
+      return view('orders/allorders',compact('orders','projects','items','suppliers'));
 }
-
+ 
 function insert(Request $request)
 { 
   
@@ -130,7 +139,7 @@ function create()
             'project_id' => 'required',
          
         ]);
-
+ 
        $orders = OrderDetail::find($id);
 
        $orders->project_id = DB::table('projects')->where('title','=', $request->input('project_id'))->pluck('id')->first();
@@ -149,9 +158,17 @@ function create()
 
     }
 
-   public function show()
+   public function pending()
     {
-        $orders = DB::table('order_details')->get();
+       $orders = DB::table('order_details')
+                ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
+                ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
+                ->where('order_details.status','=','Pending')
+                ->select('order_details.id','project_id','order_details.invoice_number', 'order_details.quantity', 
+                'suppliers.name as supplier_name','items.name', 'items.selling_rate','order_details.created_at',
+                'order_details.status')  
+                ->get(); 
+        //$orders = DB::table('order_details')->get();
         $items = DB::table('items')->get();
         $suppliers = DB::table('suppliers')->get();
         $projects = DB::table('projects')->get();
@@ -161,7 +178,15 @@ function create()
     }
       public function cancelled()
     {
-      $orders = DB::table('order_details')->where('order_details.status','=','sad')->get();
+       $orders = DB::table('order_details')
+                ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
+                ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
+                ->where('order_details.status','=','Cancelled')
+                ->select('order_details.id','project_id','order_details.invoice_number', 'order_details.quantity', 
+                'suppliers.name as supplier_name','items.name', 'items.selling_rate','order_details.created_at',
+                'order_details.status')  
+                ->get(); 
+      //$orders = DB::table('order_details')->where('order_details.status','=','sad')->get();
        $items = DB::table('items')->get();
         $suppliers = DB::table('suppliers')->get();
         $projects = DB::table('projects')->get();
@@ -169,11 +194,38 @@ function create()
     }
     public function recieved()
     {
-      $orders = DB::table('order_details')->where('order_details.status','=','ok')->get();
+       $orders = DB::table('order_details')
+                ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
+                ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
+                ->where('order_details.status','=','Received')
+                ->select('order_details.id','project_id','order_details.invoice_number', 'order_details.quantity', 
+                'suppliers.name as supplier_name','items.name', 'items.selling_rate','order_details.created_at',
+                'order_details.status')  
+                ->get(); 
+      //$orders = DB::table('order_details')->where('order_details.status','=','ok')->get();
        $items = DB::table('items')->get();
         $suppliers = DB::table('suppliers')->get();
         $projects = DB::table('projects')->get();
       return view('orders/allorders',compact('orders','suppliers','projects','items'));
+    }
+     public function cancelorder($id)
+    {
+      $order = OrderDetail::find($id);
+      // DB::table('order_details')->where('id','=',$id)->get();
+      //dd($order);
+      //$obj = OrderDetail
+      $order->status = 'Cancelled';
+      if($order->save())
+      {
+         return redirect()->back()->with('message'," Order is Cancelled");
+      } 
+      else
+      {
+         return redirect()->back()->with('succes'," Order is Cancelled"); 
+      }
+
+       
+     // return view('orders/allorders',compact('orders','suppliers','projects','items'));
     }
 
 

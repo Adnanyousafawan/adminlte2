@@ -1,77 +1,99 @@
 @extends('adminlte::page')
-@section('title', 'Customer Payments')
-@include('common')
-@yield('meta_tags')
-@yield('datatable_stylesheets')
-
-
-   {{--  <meta charset="utf-8">
+@section('title', 'Expenses List')
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/bootstrap-3.4.1.css">
     <link rel="stylesheet" href="/css/jquery.dataTables.css">
-    <link rel="stylesheet" href="/css/jquery.dataTables.css"> --}}
+    <link rel="stylesheet" href="/css/jquery.dataTables.css">
     {{-- <link rel="stylesheet" href="/images"> --}}
-   {{--  <script src="/js/jquery-3.4.1.js"></script>
+    <script src="/js/jquery-3.4.1.js"></script>
     <script src="/js/jquery.dataTables.js"></script>
-  --}}
+ 
 @section('content')
-@yield('bootstrap_jquery')
-@yield('error_logs')
-@yield('breadcrumbs')
+
+<ol class="breadcrumb">
+    <li><a href="{{ route('home')}}"><i class="fa fa-dashboard"></i> &nbsp;Home</a></li>
+    <?php $segments = ''; ?>
+    @foreach(Request::segments() as $segment)
+        <?php $segments .= '/'.$segment; ?>
+        <li>
+            <a href="{{ $segments }}">{{$segment}}</a>
+        </li>
+    @endforeach
+</ol>
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>
+                        {{ $error }}
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
+     @if (session('message'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('message') }}
+        </div>
+    @endif
 
 
 <div class="box-body" id="screen">
         <div class="box box-body" style=" background-color: #f4f4f487; padding: 0px;">
             <div class="box-header">
                 <h3><span
-                        class="col-xs-6 col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 col-xl-offset-0"
-                        style="margin-bottom: 10px; padding: 0px;">Customer Payments List</span></h3>
+                        class="col-xs-6 col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
+                        style="margin-bottom: 10px; padding: 0px;">Company Expense List</span></h3>
                         <div class="box-tools pull-right">
-                            <a type="links" href="{{ route('customerpayment.create') }}" class="btn btn-primary pul-right">Add new Payment</a>
+                            <a type="links" href="{{ route('expense.create') }}" class="btn btn-primary pul-right">Add Expense</a>
                         </div>
-<div class="vendor-list-status">
-  <div class="row">
-      <div class="btn-group">
-                     
-  </div>
-</div>
-          
+                    </div>
 
-            {{-- _________________________________All User DataTable_____________________________________--}}
+
+            {{-- _________________________________All Expenses DataTable_____________________________________--}}
             <div
-                class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 col-md-offset-0 col-lg-offset-0 col-xl-offset-0"
+                class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
         
                 style="padding: 5px;">
 
-
                 <div class="box" style="margin-bottom: 10px; margin-top: 1%;">
                     <div class="box-header with-border ">
-                        <h4><span class="box-title col-md-8">Payment Details</span></h4>
+                        <h4><span class="box-title col-md-8">Expenses Details</span></h4>
+                     
                     </div>
 
                     <div class="table-responsive" style="margin-top: 10px; padding: 10px;">
                         <table class="table no-margin table-bordered table-striped project">
                             <thead>
                                 <tr>
-                                <th>Payment ID</th>
-                                <th>Project ID</th>
-                                <th>Project Title</th>
-                                <th>Received</th>
-                                {{-- <th>Receivable</th> --}}
-                                <th>Budget Left</th>
+                                <th>Expense ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Expense Cost</th>
+                                <th>Date</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
 
-                            @foreach ($payments as $payment)
+                            @foreach ($expenses as $expense)
                                 <tr>
-                                    <td>0000{{ $payment->id }}</td>
-                                    <td>0000{{ $payment->project_id }}</td>
-                                    <td>{{ $payment->title }}</td>
-                                    <td>{{ $payment->received }}</td>
-                                    {{-- <td>{{ $payment->budget - $payment->received }} </td> --}}
-                                    <td>{{ $payment->budget }}</td>    
+                                    <td>0000{{ $expense->id }}</td>
+                                    <td>{{ $expense->name }}</td>
+                                    <td>{{ $expense->description }}</td>
+                                    <td>{{ $expense->expense }}</td>
+                                    <td>{{ $expense->created_at }}</td>
                                     <td style="max-width: 50px;">
                                         
                     <div class="btn-group">
@@ -83,13 +105,10 @@
                     </button>
 
                     <ul role="menu" class="dropdown-menu">
-                      <li><a type="links" data-toggle="modal" data-target="#EditModal-{{ $payment->id }}"><i class="fa fa-edit"></i>Edit</a></li>
+                      <li><a type="links" data-toggle="modal" data-target="#EditModal-{{ $expense->id }}" ><i class="fa fa-edit"></i>Edit</a></li>
                        
-                        {{-- <li><a href="{{ route('users.edit', ['id' => $user->id]) }}"><i class="fa fa-edit"></i>Edit</a></li> --}}
-                                             
-                        <li><a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $payment->id }}"><i class="fa fa-remove"></i>Delete</a></li>
+                        <li><a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $expense->id }}"><i class="fa fa-remove"></i>Delete</a></li>
                                           </ul>
-
                   </div>
                                       {{--   <a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"
                                            style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">View</a>
@@ -98,14 +117,13 @@
                                            style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">Edit</a>
                                         <a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $project->id }}"
                                            style="color: red; margin-left: 3px;  margin-top: 0px;">Delete</a> --}}
-
+ 
                             </td>
                             </tr>
 
-
    {{-- ______________________________EdiT  Modal ______________________________________________--}}
 
-                                            <div id="EditModal-{{ $payment->id }}" class="modal fade"
+                                            <div id="EditModal-{{ $expense->id }}" class="modal fade"
                                                  tabindex="-1" role="dialog"
                                                  aria-labelledby="custom-width-modalLabel" 
                                                  style="display: none;">
@@ -113,66 +131,45 @@
                                                      style="min-width:40%; align-content: center; ">
                                                     <div class="modal-content">
                                                             <form
-                                                                 action=" {{ route('customerpayment.update', ['id' => $payment->id]) }}"
+                                                                 action=" {{ route('company-expenses.update', ['id' => $expense->id]) }}"
                                                                 method="POST" >
                                                                 {{ csrf_field() }}
-
-
-                                                                {{-- {{ method_field('POST') }} --}}
-                                                               
-                                                             
-
+                                                         
                                                                 <div class="modal-header">
                                                                     <button type="button" class="close"
                                                                             data-dismiss="modal"
                                                                             aria-hidden="true">×
                                                                     </button>
                                                                     <h4 class="modal-title text-center"
-                                                                        id="custom-width-modalLabel">Edit Payment Details
+                                                                        id="custom-width-modalLabel">Edit Expense Details
                                                                     </h4>
-                                                                </div>
-                                                                <div class="row">
+                                                                </div> 
                                                                 <div class="modal-body">
-                                                                    <div class="col-md-10 col-md-offset-1 form-group ">
-                                                                         {{-- <div class="form-group">
-                                                                            <label for="project_id">Projects</label>
-                                                                            <select class="form-control" id="project_id" name="project_id">
-                                                                                <option value="">{{ DB::table('Projects')->where('id','=',$order->project_id)->pluck('title')->first() }}</option>
-                                                                                @foreach($projects as $project)
-                                                                                <option>{{ $project->title }}</option>
-                                                                                @endforeach
-                                                                            </select>
+                                                                <div class="row">
+                                                                <div class="col-md-10 col-md-offset-1 form-group ">
+                                                                   
+
+                                                                    <div class="form-group">
+                                                                            <label for="name">Name</label>
+                                                                            <input type="text" class="form-control" id="quantity" name="name" placeholder="Name" value="{{ $expense->name }}">
                                                                         </div>
- --}}
-                                                                        {{-- <div class="form-group">
-                                                                            <label for="item_id">Items</label>
-                                                                            <select class="form-control" id="item_id" name="item_id">
-                                                                                <option value="">{{ DB::table('items')->where('id','=',$order->item_id)->pluck('name')->first() }}</option>
-                                                                                @foreach($items as $item)
-                                                                                <option>{{ $item->name }}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div> --}}
-                                                                        {{-- <div class="form-group">
-                                                                            <label for="supplier_id">Supplier</label>
-                                                                            <select class="form-control" id="supplier_id" name="supplier_id">
-                                                                                <option value="">{{ DB::table('suppliers')->where('id','=',$order->supplier_id)->pluck('name')->first() }}</option>
-                                                                                @foreach($suppliers as $supplier)
-                                                                                <option>{{ $supplier->name }}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div> --}}
-                                                                         <div class="form-group">
-                                                                            <label for="received">Amount</label>
-                                                                            <input type="text" class="form-control" id="received" name="received" placeholder="Received Amount" value="{{ $payment->received }}">
+                                                                        <div class="form-group">
+                                                                            <label for="description">Description</label>
+                                                                            <input type="text" class="form-control" id="description" name="description" placeholder="Description" value="{{ $expense->description }}">
                                                                         </div>
+                                                                        <div class="form-group">
+                                                                            <label for="expense">Expense</label>
+                                                                            <input type="text" class="form-control" id="expense" name="expense" placeholder="Expense" value="{{ $expense->expense }}">
+                                                                        </div>
+                                                               
 
                                                                     </div>
 
-            
+
+            </div>
                                                                     </div>
                                                                   
-                                                                </div>
+                                                                
                                                                 <div class="modal-footer">
                                                                     <button type="button"
                                                                             class="btn btn-default waves-effect"
@@ -189,22 +186,19 @@
                                             </div>
                                             </div>
 
-
-
-
 {{-- ______________________________Delete Modal ______________________________________________--}}
 
-                                <div id="applicantDeleteModal-{{ $payment->id }}" class="modal fade" tabindex="-1" role="dialog"
+                                <div id="applicantDeleteModal-{{ $expense->id }}" class="modal fade" tabindex="-1" role="dialog"
                                      aria-labelledby="custom-width-modalLabel" aria-hidden="true"
                                      style="display: none;">
                                     <div class="modal-dialog"
                                          style="min-width:40%; align-content: center; text-align: center;">
                                         <div class="modal-content">
                                             <form class="row" method="POST"
-                                                  action="{{ route('customerpayment.destroy', ['id' => $payment->id]) }}">
+                                                  action="{{ route('expenses.destroy', ['id' => $expense->id]) }}">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <form action=" {{ route('customerpayment.destroy', ['id' => $payment->id]) }}"
+                                                <form action=" {{ route('expenses.destroy', ['id' => $expense->id]) }}"
                                                       method="POST" class="remove-record-model">
                                                     {{ method_field('delete') }}
                                                     {{ csrf_field() }}
@@ -251,7 +245,7 @@
 
         $('.project').DataTable({
             select: true,
-            "order": [[0, "dsc"]],
+            "order": [[0, "asc"]],
             //"scrollY"  : "380px",
             "scrollCollapse": true,
             "paging": true,

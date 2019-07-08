@@ -28,7 +28,7 @@ class ProjectReportController extends Controller
         $now = date($format);
         //$now = $now->toRfc850String(); 
         //$to = date($format, strtotime("+30 days")); --}}
-        $to = date($format, strtotime("-2 days"));
+        $to = date($format, strtotime("-1 days"));
         $last_invoice = DB::table('order_details')->pluck('invoice_number')->last();  
 
         $constraints = [
@@ -48,7 +48,7 @@ class ProjectReportController extends Controller
         'suppliers.name as supplier_name','items.name', 'items.selling_rate','order_details.created_at')
         ->get();
        // dd($orders);
-        $last_invoice = DB::table('order_details')->pluck('invoice_number')->last();    
+        
 
         $projects = DB::table('projects')->pluck('title')->all();
 

@@ -66,12 +66,7 @@
                 class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
         
                 style="padding: 5px;">
-<div class="container">
-    <a class="active" href=" {{ route('expenses.list') }}" style="font-size: 20px;">All &nbsp; | &nbsp; </a> 
-{{--     <a class="active" href=" {{ route('expenses.recieved') }}" style="font-size: 20px;">Recieved &nbsp; | &nbsp;</a>
-    <a class="active" href=" {{ route('expenses.cancelled') }}"  style="font-size: 20px;">Cancelled</a> --}}
-  
-</div>
+
                 <div class="box" style="margin-bottom: 10px; margin-top: 1%;">
                     <div class="box-header with-border ">
                         <h4><span class="box-title col-md-8">Expenses Details</span></h4>
@@ -95,11 +90,11 @@
 
                             @foreach ($expenses as $expense)
                                 <tr>
-                                    <td>EX0000{{ $expense->id }}</td>
-                                    <td>{{ $expense->project_id }}</td>
+                                    <td>0000{{ $expense->id }}</td>
+                                    <td>{{ $expense->title }}</td>
                                     <td>{{ $expense->name }}</td>
                                     <td>{{ $expense->description }}</td>
-                                    <td>{{ $expense->description }}</td>
+                                    <td>{{ $expense->expense }}</td>
                                     <td>{{ $expense->created_at }}</td>
                                     <td style="max-width: 50px;">
                                         
@@ -112,13 +107,10 @@
                     </button>
 
                     <ul role="menu" class="dropdown-menu">
-                      <li><a target="_blank" href="{{-- {{ route('users.view', ['id' => $user->id]) }} --}}"><i class="fa fa-edit"></i>View</a></li>
+                      <li><a type="links" data-toggle="modal" data-target="#EditModal-{{ $expense->id }}" ><i class="fa fa-edit"></i>Edit</a></li>
                        
-                        {{-- <li><a href="{{ route('users.edit', ['id' => $user->id]) }}"><i class="fa fa-edit"></i>Edit</a></li> --}}
-                                             
                         <li><a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $expense->id }}"><i class="fa fa-remove"></i>Delete</a></li>
                                           </ul>
-
                   </div>
                                       {{--   <a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"
                                            style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">View</a>
@@ -127,10 +119,82 @@
                                            style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">Edit</a>
                                         <a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $project->id }}"
                                            style="color: red; margin-left: 3px;  margin-top: 0px;">Delete</a> --}}
-
+ 
                             </td>
                             </tr>
 
+   {{-- ______________________________EdiT  Modal ______________________________________________--}}
+
+                                            <div id="EditModal-{{ $expense->id }}" class="modal fade"
+                                                 tabindex="-1" role="dialog"
+                                                 aria-labelledby="custom-width-modalLabel" 
+                                                 style="display: none;">
+                                                <div class="modal-dialog"
+                                                     style="min-width:40%; align-content: center; ">
+                                                    <div class="modal-content">
+                                                            <form
+                                                                 action=" {{ route('expenses.update', ['id' => $expense->id]) }}"
+                                                                method="POST" >
+                                                                {{ csrf_field() }}
+                                                         
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close"
+                                                                            data-dismiss="modal"
+                                                                            aria-hidden="true">×
+                                                                    </button>
+                                                                    <h4 class="modal-title text-center"
+                                                                        id="custom-width-modalLabel">Edit Expense Details
+                                                                    </h4>
+                                                                </div> 
+                                                                <div class="modal-body">
+                                                                <div class="row">
+                                                                <div class="col-md-10 col-md-offset-1 form-group ">
+                                                                    <div class="form-group">
+                                                                            <label for="project_id">Projects</label>
+                                                                            <select class="form-control" id="project_id" name="project_id">
+                                                                                <option value="{{ $expense->project_id }}">{{ $expense->title }}</option>
+                                                                                @foreach($projects as $project)
+                                                                                <option value="{{ $project->id }}" >{{ $project->title }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+
+                                                                    <div class="form-group">
+                                                                            <label for="name">Name</label>
+                                                                            <input type="text" class="form-control" id="quantity" name="name" placeholder="Name" value="{{ $expense->name }}">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="description">Description</label>
+                                                                            <input type="text" class="form-control" id="description" name="description" placeholder="Description" value="{{ $expense->description }}">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="expense">Expense</label>
+                                                                            <input type="text" class="form-control" id="expense" name="expense" placeholder="Expense" value="{{ $expense->expense }}">
+                                                                        </div>
+                                                               
+
+                                                                    </div>
+
+
+            </div>
+                                                                    </div>
+                                                                  
+                                                                
+                                                                <div class="modal-footer">
+                                                                    <button type="button"
+                                                                            class="btn btn-default waves-effect"
+                                                                            data-dismiss="modal">Close
+                                                                    </button>
+                                                                    <button type="save"
+                                                                            class="btn btn-primary">
+                                                                        Save
+                                                                    </button>
+                                                                </div>
+                                                    </form>
+                                                 
+                                                </div>
+                                            </div>
+                                            </div>
 
 {{-- ______________________________Delete Modal ______________________________________________--}}
 
@@ -138,7 +202,7 @@
                                      aria-labelledby="custom-width-modalLabel" aria-hidden="true"
                                      style="display: none;">
                                     <div class="modal-dialog"
-                                         style="min-width:40%; align-content: center;">
+                                         style="min-width:40%; align-content: center; text-align: center;">
                                         <div class="modal-content">
                                             <form class="row" method="POST"
                                                   action="{{ route('expenses.destroy', ['id' => $expense->id]) }}">
