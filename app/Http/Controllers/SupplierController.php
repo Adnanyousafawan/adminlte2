@@ -16,12 +16,11 @@ class SupplierController extends Controller
      */
     public function index()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
         $suppliers = DB::table('suppliers')->paginate(10);
-        return view('suppliers/index',compact('suppliers'));
+        return view('suppliers/index', compact('suppliers'));
     }
 
     /**
@@ -31,9 +30,8 @@ class SupplierController extends Controller
      */
     public function create()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
         return view('suppliers/add_supplier');
     }
@@ -45,7 +43,7 @@ class SupplierController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    { 
+    {
         $request->validate([$request,
             'name' => 'required',
             'phone' => 'required',
@@ -58,7 +56,7 @@ class SupplierController extends Controller
             'phone' => $request->get('phone'),
             'address' => $request->get('address'),
             'city' => $request->get('city')
-           
+
         ]);
         $supplier->save();
 
@@ -73,9 +71,8 @@ class SupplierController extends Controller
      */
     public function show()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
         $suppliers = Supplier::paginate(20);
         return view('suppliers/index', compact('suppliers'));
@@ -127,13 +124,13 @@ class SupplierController extends Controller
     {
         $request->validate([$request,
             'name' => 'required',
-           
+
             'phone' => 'required',
             'address' => 'required',
             'city' => 'required'
-            
+
         ]);
- 
+
         $suppliers = Supplier::find($id);
         $suppliers->name = $request->get('name');
         $suppliers->phone = $request->get('phone');

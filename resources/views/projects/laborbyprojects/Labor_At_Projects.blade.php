@@ -1,14 +1,12 @@
 @include('common')
-@yield('datatable_stylesheets')
-
 @section('labor_by_projects')
 
     <div class="box-body">
         <div class="table-responsive">
             <table class="table no-margin table-bordered table-striped project">
                 <thead>
-                <tr>
-                    <th>Project ID</th>
+                <tr> 
+                    <th>Project ID</th> 
                     <th>Title</th>
                     <th>Labor</th>
                     <th>Cost</th>

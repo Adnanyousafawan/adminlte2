@@ -14,10 +14,10 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
  
-
+ 
 Route::get('/', 'CustomerController@goBackToHome')->name('redirect-to-main');
 
-Auth::routes(); 
+Auth::routes();  
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -39,6 +39,7 @@ Route::get('charts', 'ChartController@index')->name('chart.index');
 //Route::resource('item', 'ItemController');
 Route::get('items/create', 'ItemController@create')->name('item.create');
 Route::post('items/itemDetails/insert', 'ItemController@insert')->name('item.insert');
+Route::post('items/update/{id}', 'ItemController@update')->name('items.update');
 Route::get('items', 'ItemController@index')->name('items.list');
 Route::delete('items/destroy/{id}', 'ItemController@destroy')->name('items.destroy');
 //----------------------------------------------------------
@@ -127,11 +128,13 @@ Route::get('projects/view/{id}', 'ProjectController@viewuser')->name('projects.v
 
 //-----------------------------------Project Details Management------------------------------------//
 
-Route::get('projects/pending', 'ProjectController@pending')->name('projects.pending');
+Route::get('projects/not-started', 'ProjectController@notstarted')->name('projects.notstarted');
 Route::get('projects/completed', 'ProjectController@completed')->name('projects.completed');
-Route::get('projects/cancelled', 'ProjectController@cancelled')->name('projects.cancelled');
-Route::get('projects/current', 'ProjectController@current')->name('projects.current');
+Route::get('projects/halt', 'ProjectController@halt')->name('projects.halt');
+Route::get('projects/in-progress', 'ProjectController@inprogress')->name('projects.inprogress');
 Route::get('projects/all', 'ProjectController@all')->name('projects.all');
+Route::get('projects/stopped', 'ProjectController@stopped')->name('projects.stopped');
+
 Route::get('projects/labor_by_projects','ProjectController@labors_by_projects')->name('projects.labor_by_projects');
  
 //--------------------------------Project Phase Management------------------------------

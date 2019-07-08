@@ -61,7 +61,7 @@
                         </div>
 
                         <div class="table-responsive" style="margin-top: 10px; padding: 10px;">
-                            <table class="table no-margin table-bordered table-striped project">
+                            <table class="table no-margin table-bordered table-striped project" style="text-align: center;">
                                 <thead>
                                 <tr>
 
@@ -90,8 +90,14 @@
                                 <tbody>
 
                                 @foreach ($users as $user)
-                                    <tr>
-                                        <td>Profile Image</td>
+                                    <tr><?php $check = 'images/profile/userprofile.png';?>
+                                        <td>@if($user->profile_image == $check )
+                                            <img style="min-width: 40%; max-width: 40%; min-height: 20px; max-height: 50px; margin-left: 25%;" class=" img-responsive" src="/storage/{{ $user->profile_image }}" alt="User Image">
+                                            @endif
+                                            @if($user->profile_image != $check )
+                                            <img style="min-width: 48%; max-width: 48%; min-height: 20px; max-height: 100px; margin-left: 25%;" class=" img-responsive" src="/storage/{{ $user->profile_image }}" alt="User Image">
+                                            @endif
+                                        </td>
                                         <td>{{ $user->id }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email}}</td>
@@ -99,7 +105,7 @@
                                         <td>{{ $user->phone}}</td>
                                         <td>{{ $user->cnic}}</td>
                                         @can('isAdmin')
-                                        <td>{{ $user->role_id }}</td>
+                                        <td>{{ $user->role_name }}</td>
                                         @endcan
                                         @can('isManager') 
                                         <td>Project ID</td>
@@ -108,8 +114,8 @@
                                         <td style="min-width: 60px;">
 
                                             <div class="btn-group">
-                                                <button class="btn btn-sm btn-success" type="button">Action</button>
-                                                <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
+                                                <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action</button>
+                                                <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle" type="button">
                                                     <span class="caret"></span>
                                                     <span class="sr-only">Toggle Dropdown</span>
                                                 </button>
@@ -128,18 +134,9 @@
                                                 </ul>
 
                                             </div>
-                                            {{--   <a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"
-                                                 style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">View</a>
-
-                                              <a type="links" href="{{ route('projects.edit', ['id' => $project->id]) }}"
-                                                 style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">Edit</a>
-                                              <a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $project->id }}"
-                                                 style="color: red; margin-left: 3px;  margin-top: 0px;">Delete</a> --}}
-
                                         </td>
                                     </tr>
-
-
+ 
                                     {{-- ______________________________Delete Modal ______________________________________________--}}
 
                                     <div id="applicantDeleteModal-{{ $user->id }}" class="modal fade" tabindex="-1"
@@ -273,8 +270,9 @@
                                                                 <div class="form-group">
                                                                     <label for="role">Select Role</label>
                                                                     <select class="form-control" id="role" name="role">
+                                                                        {{-- <option value="{{ $user->role_id }}">{{ $user->role_name }}</option> --}}
                                                                         @foreach($roles as $role)
-                                                                            <option>{{ $role->name }}</option>
+                                                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>                                                                        

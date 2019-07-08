@@ -30,7 +30,7 @@ class SupplierPaymentsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +41,7 @@ class SupplierPaymentsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\supplier_payments  $supplier_payments
+     * @param \App\supplier_payments $supplier_payments
      * @return \Illuminate\Http\Response
      */
     public function show(supplier_payments $supplier_payments)
@@ -52,7 +52,7 @@ class SupplierPaymentsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\supplier_payments  $supplier_payments
+     * @param \App\supplier_payments $supplier_payments
      * @return \Illuminate\Http\Response
      */
     public function edit(supplier_payments $supplier_payments)
@@ -63,8 +63,8 @@ class SupplierPaymentsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\supplier_payments  $supplier_payments
+     * @param \Illuminate\Http\Request $request
+     * @param \App\supplier_payments $supplier_payments
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, supplier_payments $supplier_payments)
@@ -75,7 +75,7 @@ class SupplierPaymentsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\supplier_payments  $supplier_payments
+     * @param \App\supplier_payments $supplier_payments
      * @return \Illuminate\Http\Response
      */
     public function destroy(supplier_payments $supplier_payments)

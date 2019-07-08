@@ -18,12 +18,11 @@ class PhaseController extends Controller
      */
     public function index()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
         $phases = DB::table('project_phase')->get()->all();
-        return view('projectphase/index',compact('phases'));
+        return view('projectphase/index', compact('phases'));
     }
 
     /**
@@ -33,11 +32,10 @@ class PhaseController extends Controller
      */
     public function create()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
-       return view('projectphase/create');  
+        return view('projectphase/create');
     }
 
     /**
@@ -48,39 +46,37 @@ class PhaseController extends Controller
      */
     function insert(Request $request)
     {
-    if($request->ajax())
-       {
-          $rules = array(
+        if ($request->ajax()) {
+            $rules = array(
 
-             'name.*'  => 'required'
-         );
+                'name.*' => 'required'
+            );
 
-          $error = Validator::make($request->all(), $rules);
-          if($error->fails())
-          {
-             return response()->json([
-                'error'  => $error->errors()->all()
-            ]);
-         }
+            $error = Validator::make($request->all(), $rules);
+            if ($error->fails()) {
+                return response()->json([
+                    'error' => $error->errors()->all()
+                ]);
+            }
 
-         $name = $request['name'];
+            $name = $request['name'];
 
 
-         for($count = 0; $count < count($name); $count++)
-         {
-   
-          $obj = new ProjectPhase([
-              'name' => $name[$count],
+            for ($count = 0; $count < count($name); $count++) {
 
-          ]);
-          //
-          $obj->save();
-      }
-      return response()->json([
-       'success'  => 'Data Added successfully.']
-    );
+                $obj = new ProjectPhase([
+                    'name' => $name[$count],
+
+                ]);
+                //
+                $obj->save();
+            }
+            return response()->json([
+                    'success' => 'Data Added successfully.']
+            );
+        }
     }
-}
+
     public function store(Request $request)
     {
         //
@@ -106,7 +102,7 @@ class PhaseController extends Controller
     public function edit($id)
     {
         $phase = DB::table('project_phase')->find($id);
-        return redirect()->back()->with('message','Think about Editing');
+        return redirect()->back()->with('message', 'Think about Editing');
     }
 
     /**
@@ -129,16 +125,13 @@ class PhaseController extends Controller
      */
     public function destroy($id)
     {
-        $count = DB::table('projects')->where('phase_id','=',$id)->count();
-       if($count == 0)
-       {
+        $count = DB::table('projects')->where('phase_id', '=', $id)->count();
+        if ($count == 0) {
             ProjectPhase::where('id', $id)->delete();
-            return redirect()->back()->with('success','Phase Deleted Successfully.');
-       }
-       else
-       {
-            return redirect()->back()->with('message','Some projects are in this Phase. Edit Phase Instead');
-       }
-       
+            return redirect()->back()->with('success', 'Phase Deleted Successfully.');
+        } else {
+            return redirect()->back()->with('message', 'Some projects are in this Phase. Edit Phase Instead');
+        }
+
     }
 }

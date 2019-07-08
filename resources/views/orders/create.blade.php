@@ -53,7 +53,7 @@
                             <div class="form-group">
                                 <label for="project_id">Select Project</label>
                                 <select class="form-control" id="project_id" name="project_id" required>
-                                    <option value="">Select Project</option>
+                                    <option>Select Project</option>
                                     @foreach($projects as $project)
                                         <option>{{ $project->title}}</option>
                                     @endforeach
@@ -74,14 +74,10 @@
                         </div>
                     
                     </div>
-
-                    {{--      @csrf
-                     @method('POST') --}}
                     <span id="result"></span>
                     <table class="table table-bordered table-striped" id="user_table">
                         <thead>
                         <tr>
-                            {{-- <th width="21%">Project ID</th> --}}
                             <th>Item</th>
                             <th>Quatity</th>
                             <th>Action</th>

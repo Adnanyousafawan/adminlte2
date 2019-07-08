@@ -141,7 +141,7 @@
 
                         <div class="form-group">
                             <label for="name">Customer Name</label>
-                            <input type="text" class="form-control" id=_name" placeholder="Customer Name"
+                            <input type="text" class="form-control" id="name" placeholder="Customer Name"
                                    value="{{ $customer->name }}"
                                    name="name">
                             @if ($errors->has('name'))

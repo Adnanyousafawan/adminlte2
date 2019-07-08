@@ -13,7 +13,7 @@
                                             <th>Instructions</th>
                                             @can('isAdmin')
                                             <th>Seen</th>
-                                            @endcan
+                                            @endcan 
                                             <th>Status</th>
                                            
                                             <th style="max-width: 20px;">Action</th>
@@ -222,42 +222,5 @@
               @endsection
 
 @section('script_datatable')
-
-<script type="text/javascript">
-            //$(document).ready(function () {
-     
-            // $.ajaxSetup({
-            //     headers: {
-            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //     }
-            // });
-             
-
-            //   var $valu = '1';
-
-            // $('#accept').click(function () {
-               
-            //     //insert = insert.toString();
-            //     $.ajax({
-            //         type: 'POST',
-            //         url: 'materialrequest/insert',
-            //         data: { value: $valu},
-                
-            //         //console.log("in ajax");
-             
-            //         success: function (data) {
-            //             //console.log(data);
-            //             if (data.error) {
-            //                 $('#result').html(data);
-            //             } else 
-            //                 $('#result').html(data);
-            //             }
-            //         });
-            //     });
-            // });
-
-
-        // });
-    </script>
 
 @endsection

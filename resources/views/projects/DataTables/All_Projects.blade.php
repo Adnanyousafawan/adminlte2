@@ -20,14 +20,17 @@
 
                     <div class="container" style="padding-left: 0px;">
                         {{-- <a class="active" href=" {{ route('orders.list') }}" style="font-size: 18px;">All &nbsp; | &nbsp; </a>  --}}
-                        <a class="active" href=" {{ route('projects.current') }}" style="font-size: 18px;">Current
-                            Projects &nbsp; | &nbsp;</a>
+                        <a class="active" href=" {{ route('projects.notstarted') }}" style="font-size: 18px;">Not Started
+                            &nbsp; | &nbsp;</a>
+                        <a class="active" href=" {{ route('projects.inprogress') }}" style="font-size: 18px;">In Progress
+                            &nbsp; | &nbsp;</a>
                         <a class="active" href=" {{ route('projects.completed') }}" style="font-size: 18px;">Completed
                             &nbsp; | &nbsp;</a>
-                        <a class="active" href=" {{ route('projects.pending') }}" style="font-size: 18px;">Pending
+                        <a class="active" href=" {{ route('projects.stopped') }}" style="font-size: 18px;">Stopped
                             &nbsp; | &nbsp;</a>
-                        <a class="active" href=" {{ route('projects.cancelled') }}" style="font-size: 18px;">Cancelled
+                        <a class="active" href=" {{ route('projects.halt') }}" style="font-size: 18px;">Halt
                             &nbsp; | &nbsp;</a>
+                           
                     </div>
                 </div>
                 
@@ -54,16 +57,16 @@
                             {{-- <td style="max-width: 10px;"><b>PR-</b></td> --}}
                             <td>0000{{ $project->id }}</td>
                             <td>{{ $project->title }}</td>
-                            <td>{{ $project->customer_id }}</td>
-                            <td>{{ $project->assigned_to}}</td>
-                            <td>{{ $project->estimated_budget}}</td>
+                            <td>{{ $project->customer_name }}</td>
+                            <td>{{ $project->contractor_name}}</td>
+                            <td>{{ $project->budget}}</td>
                             <td>25000</td>
                             <td style="min-width: 65px;">
-
+ 
                                 <div class="btn-group">
 
-                                    <button class="btn btn-sm btn-success" type="button">Action</button>
-                                    <button data-toggle="dropdown" class="btn btn-success dropdown-toggle"
+                                    <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action</button>
+                                    <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle"
                                             type="button">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
@@ -79,7 +82,7 @@
                                                data-target="#applicantDeleteModal-{{ $project->id }}"><i
                                                     class="fa fa-remove"></i>Delete</a></li>
                                     </ul>
-
+ 
                                 </div>
                                 {{--   <a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"
                                      style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">View</a>

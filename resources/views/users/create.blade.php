@@ -71,7 +71,7 @@
                         <label for="role">Select Role <span style="color: red;">*</span></label>
                         <select class="form-control" id="role" name="role">
                             @foreach($roles as $role)
-                                <option>{{ $role->name }}</option>
+                                <option value="{{ $role->id }}">{{ $role->name }}</option>
                                 {{--  <option>Manager</option>
                                  <option>Contractor</option> --}}
                             @endforeach

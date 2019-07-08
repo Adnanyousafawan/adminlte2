@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Phase;
 use Illuminate\Http\Request;
 use App\ProjectStatus;
 use Validator;
 use DB;
 use Gate;
-
 
 
 class ProjectStatusController extends Controller
@@ -19,16 +19,14 @@ class ProjectStatusController extends Controller
      */
     public function index()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
-     if(Gate::allows('isAdmin'))
-        {
-          
-        $statuses = DB::table('project_status')->get()->all();
-        return view('projectstatus/index',compact('statuses'));
-    }
+        if (Gate::allows('isAdmin')) {
+
+            $statuses = DB::table('project_status')->get()->all();
+            return view('projectstatus/index', compact('statuses'));
+        }
     }
 
     /**
@@ -38,15 +36,13 @@ class ProjectStatusController extends Controller
      */
     public function create()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
-         if(Gate::allows('isAdmin'))
-        {
-           
-       return view('projectstatus/create');  
-   }
+        if (Gate::allows('isAdmin')) {
+
+            return view('projectstatus/create');
+        }
     }
 
     /**
@@ -57,39 +53,37 @@ class ProjectStatusController extends Controller
      */
     function insert(Request $request)
     {
-    if($request->ajax())
-       {
-          $rules = array(
+        if ($request->ajax()) {
+            $rules = array(
 
-             'name.*'  => 'required'
-         );
+                'name.*' => 'required'
+            );
 
-          $error = Validator::make($request->all(), $rules);
-          if($error->fails())
-          {
-             return response()->json([
-                'error'  => $error->errors()->all()
-            ]);
-         }
+            $error = Validator::make($request->all(), $rules);
+            if ($error->fails()) {
+                return response()->json([
+                    'error' => $error->errors()->all()
+                ]);
+            }
 
-         $name = $request['name'];
+            $name = $request['name'];
 
 
-         for($count = 0; $count < count($name); $count++)
-         {
-   
-          $obj = new ProjectStatus([
-              'name' => $name[$count],
+            for ($count = 0; $count < count($name); $count++) {
 
-          ]);
-          //
-          $obj->save();
-      }
-      return response()->json([
-       'success'  => 'Status Added successfully.']
-    );
+                $obj = new ProjectStatus([
+                    'name' => $name[$count],
+
+                ]);
+                //
+                $obj->save();
+            }
+            return response()->json([
+                    'success' => 'Status Added successfully.']
+            );
+        }
     }
-}
+
     public function store(Request $request)
     {
         //
@@ -115,7 +109,7 @@ class ProjectStatusController extends Controller
     public function edit($id)
     {
         $status = DB::table('project_status')->find($id);
-        return redirect()->back()->with('message','Think about Editing');
+        return redirect()->back()->with('message', 'Think about Editing');
     }
 
     /**
@@ -138,16 +132,13 @@ class ProjectStatusController extends Controller
      */
     public function destroy($id)
     {
-        $count = DB::table('projects')->where('status_id','=',$id)->count();
-           if($count == 0)
-           {
-                ProjectStatus::where('id', $id)->delete();
-                return redirect()->back()->with('success','Status Deleted Successfully.');
-           }
-           else
-           {
-                return redirect()->back()->with('message','Some projects are in this Status. Edit Status Instead');
-           }
-        
+        $count = DB::table('projects')->where('status_id', '=', $id)->count();
+        if ($count == 0) {
+            ProjectStatus::where('id', $id)->delete();
+            return redirect()->back()->with('success', 'Status Deleted Successfully.');
+        } else {
+            return redirect()->back()->with('message', 'Some projects are in this Status. Edit Status Instead');
+        }
+
     }
 }

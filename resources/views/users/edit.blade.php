@@ -5,25 +5,11 @@
 @can('isManager')
 @section('title', 'Update Contractor')
 @endcan
+@include('common')
+
 @section('content')
-
-    @if (session('message'))
-     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        <div class="alert alert-danger" role="alert">
-            {{ session('message') }}
-        </div>
-    @endif
-
-    @if (session('success'))
-     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        <div class="alert alert-success" role="alert">
-            {{ session('success') }}
-        </div>
-    @endif
+@yield('error_logs')
+@yield('breadcrumbs')
  
 <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
     <div class="box box-primary">
@@ -120,19 +106,13 @@
                         <label for="role">Select Role <span style="color: red;">*</span></label>
                         <select class="form-control" id="role" name="role" value="{{ $current_role }}">
                                 @foreach($roles as $role)
-                                <option>
+                                <option value="{{ $role->id }}">
                                 {{ $role->name }}
                                  </option>
                                 @endforeach
                         </select>
                     </div>
                     @endcan
-                    {{--
-                                <div class="form-group">
-                                  <label for="profile_image">Upload Profile</label>
-                                    <input type="file" class="form-control custom-file-input" id="profile_image" name="profile_image">
-                                    </div>
-                 --}}
                     @can('isAdmin')
                     <button type="submit" class="btn btn-block btn-primary btn-xs form-control" style="margin-bottom: 20px;">Update User</button>
                     @endcan

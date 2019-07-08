@@ -4,11 +4,11 @@
 
 @include('projects.DataTables.All_Projects')
 @include('projects.laborbyprojects.Labor_At_Projects')
-@yield('meta_tags')
+
 @section('content')
-{{-- @yield('bootstrap_jquery') --}}
-@yield('error_logs')
-@yield('breadcrumbs')
+    @yield('meta_tags')
+    @yield('error_logs')
+    @yield('breadcrumbs')
 
 
     <div class="box-body" id="screen"
@@ -29,8 +29,42 @@
                             <h3 class="box-title">Labor By Projects</h3>
                         </div>
                         <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table class="table no-margin table-bordered table-striped">
+                                    <tr>
+                                        <th>Project ID</th>
+                                        <th>Title</th>
+                                        <th>Labor</th>
+                                        <th>Cost</th>
+                                        <th>Contractor</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($labor_by_projects as $lproject)
+                                        <tr>
+                                            <td><a href=" {{ route('projects.view', ['id' => $lproject->id])   }}"
+                                                   type="links">0000{{ $lproject->id }}</a></td>
+                                            <td>{{ $lproject->title }}</td>
+                                            <td>
+                                                <div
+                                                    class="label label-warning col-md-8 col-md-offset-2">{{ 1000 * DB::table('labors')->where('project_id','=',$lproject->id)->count('id')  }}</div>
+                                            </td>
+                                            <td>
+                                                <div class="sparkbar" data-color="#00a65a"
+                                                     data-height="20">2000
+                                                </div>
+                                            </td>
+                                            <td>{{ $lproject->contractor_name }}
+                                                {{-- {{ DB::table('projects')->where('assigned_to','=', $contractors->id ) }} --}}</td>
 
-                        @yield('labor_by_projects')
+                                        </tr>
+                                    @endforeach
+
+                                    {{-- @yield('labor_by_projects') --}}
+                                </table>
+                            </div>
+                        </div>
 
                         <div class="box-footer clearfix">
                             <a href="{{ route('projects.labor_by_projects')}}"
@@ -63,7 +97,7 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-12 col-md-12 col-sm-12  col-lg-12 col-xl-12">
-                        <div class="box"  style="margin-bottom: 13px;">
+                        <div class="box" style="margin-bottom: 13px;">
                             <div class="box-header">
                                 <h2 class="box-title">Working Labor</h2>
                                 <span class="info-box-number label label-warning pull-right"
@@ -77,7 +111,7 @@
                     </div>
 
                     <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                        <div class="box"  style="margin-bottom: 13px;">
+                        <div class="box" style="margin-bottom: 13px;">
                             <div class="box-header">
                                 <h2 class="box-title">Available Labor</h2>
                                 <span class="info-box-number label label-success pull-right"
@@ -91,7 +125,7 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                        <div class="box"  style="margin-bottom: 13px;">
+                        <div class="box" style="margin-bottom: 13px;">
                             <div class="box-header">
                                 <h2 class="box-title">Total Cost</h2>
                                 <span class="info-box-number label  label-danger pull-right"
@@ -104,7 +138,7 @@
                         <!-- /.info-box -->
                     </div>
                     <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                        <div class="box"  style="margin-bottom: 14px;">
+                        <div class="box" style="margin-bottom: 14px;">
                             <div class="box-header">
                                 <h2 class="box-title">Total Projects</h2>
                                 <span class="info-box-number label label-info pull-right"
@@ -117,7 +151,7 @@
                         <!-- /.info-box -->
                     </div>
                     <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                        <div class="box"  style="margin-bottom: 14px;">
+                        <div class="box" style="margin-bottom: 14px;">
                             <div class="box-header">
                                 <h2 class="box-title">Current Projects</h2>
                                 <span class="info-box-number label label-info pull-right"
@@ -127,7 +161,7 @@
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
                         </div>
                         <!-- /.info-box-content -->
-                         <!-- /.info-box -->
+                        <!-- /.info-box -->
                     </div>
                 </div>
             </div>
@@ -137,8 +171,8 @@
 
         </div>
     </div>
-@yield('datatable_stylesheets')
-@yield('datatable_script')
+    @yield('datatable_stylesheets')
+    @yield('datatable_script')
 
 @stop
 

@@ -4,17 +4,7 @@
 @yield('meta_tags')
 @yield('datatable_stylesheets')
 
-
-   {{--  <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/css/bootstrap-3.4.1.css">
-    <link rel="stylesheet" href="/css/jquery.dataTables.css">
-    <link rel="stylesheet" href="/css/jquery.dataTables.css"> --}}
-    {{-- <link rel="stylesheet" href="/images"> --}}
-   {{--  <script src="/js/jquery-3.4.1.js"></script>
-    <script src="/js/jquery.dataTables.js"></script>
-  --}}
-@section('content')
+@section('content') 
 @yield('bootstrap_jquery')
 @yield('error_logs')
 @yield('breadcrumbs')
@@ -77,8 +67,8 @@
                             @foreach ($orders as $order)
                                 <tr>
                                     <td>0000{{ $order->id }}</td>
-                                    <td>0000{{ $order->project_id }}</td>
-                                    <td>{{ $order->name }}</td>
+                                    <td>{{ $order->project_title }}</td>
+                                    <td>{{ $order->item_name }}</td>
                                     <td>{{ $order->quantity }}</td>
                                     <td>{{ $order->supplier_name }}</td>
                                     <td>{{ $order->selling_rate }}</td>
@@ -152,9 +142,9 @@
                                                                          <div class="form-group">
                                                                             <label for="project_id">Projects</label>
                                                                             <select class="form-control" id="project_id" name="project_id">
-                                                                                <option value="">{{ DB::table('Projects')->where('id','=',$order->project_id)->pluck('title')->first() }}</option>
+                                                                                <option value="{{$order->project_id }}">{{ $order->project_title }}</option>
                                                                                 @foreach($projects as $project)
-                                                                                <option>{{ $project->title }}</option>
+                                                                                <option value="{{ $project->id }}">{{ $project->title }}</option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
@@ -162,18 +152,18 @@
                                                                         <div class="form-group">
                                                                             <label for="item_id">Items</label>
                                                                             <select class="form-control" id="item_id" name="item_id">
-                                                                                <option value="">{{-- {{ DB::table('items')->where('id','=',$order->item_id)->pluck('name')->first() }} --}}{{ $order->name }} </option>
+                                                                                <option value="{{$order->item_id}}">{{ $order->item_name }} </option>
                                                                                 @foreach($items as $item)
-                                                                                <option>{{ $item->name }}</option>
+                                                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="supplier_id">Supplier</label>
                                                                             <select class="form-control" id="supplier_id" name="supplier_id">
-                                                                                <option value="">{{-- {{ DB::table('suppliers')->where('id','=',$order->supplier_id)->pluck('name')->first() }} --}} {{ $order->supplier_name }}</option>
+                                                                                <option value="{{ $order->supplier_id }}">{{ $order->supplier_name }}</option>
                                                                                 @foreach($suppliers as $supplier)
-                                                                                <option>{{ $supplier->name }}</option>
+                                                                                <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
