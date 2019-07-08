@@ -58,7 +58,7 @@ function insert(Request $request)
 
     for($count = 0; $count < count($item_id); $count++){
       //  return response()->json($item_id[$count]);
-      $set_rate = DB::table('items')->where('id','=',$item_id[$count])->pluck('rate')->first();
+      $set_rate = DB::table('items')->where('id','=',$item_id[$count])->pluck('selling_rate')->first();
       $obj = new OrderDetail([
 
       'item_id' => $item_id[$count],
@@ -116,10 +116,8 @@ function create()
 
   public function destroy($id)
     {
-      
         OrderDetail::where('id', $id)->delete();
         return redirect()->intended('orders'); 
-      
     }
 
     public function update(Request $request,$id)

@@ -191,7 +191,7 @@
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">Showing 1 to {{count($expense)}} of {{count($expense)}} entries</div>
+          <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">Showing 1 to {{-- {{count($expense)}} of {{count($expense)}}  --}}entries</div>
         </div>
       </div>
     </div>

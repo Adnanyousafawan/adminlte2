@@ -12,6 +12,7 @@ class MiscellaneousExpense extends Model
         'description',
         'project_id',
         'expense_number',
+        'others',
     ];
     
 }

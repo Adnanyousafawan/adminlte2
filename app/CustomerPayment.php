@@ -9,6 +9,7 @@ class CustomerPayment extends Model
     protected $fillable = [ 
         "received",
         "receivable",
+        'project_id',
     ];
      protected $hidden = [
         "created_at", 

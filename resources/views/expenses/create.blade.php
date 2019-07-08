@@ -47,7 +47,7 @@
    <br />
    <div class="table-responsive">
     <form id="dynamic_form">
-      @csrf
+      @csrf 
       @method('POST')
         <div class="col-md-10 col-xl-10 col-lg-10 col-sm-10 col-xs-12 col-md-offset-1 col-xl-offset-1 col-lg-offset-1 col-sm-offset-1 col-xs-offset-0 " style="margin-bottom: 70px;">
           <div class="row">
@@ -55,9 +55,9 @@
                   <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="assigned_to">Select Project</label>
                             <select class="form-control" id="project_id" name="project_id" required>
-                              <option disabled selected value> -- select an option -- </option>
+                              <option value="0">Company Expense</option>
                                 @foreach($projects as $project)
-                                    <option>{{ $project->title}}</option>
+                                    <option value="{{$project->id}}">{{ $project->title}}</option>
                                 @endforeach
                             </select>
                         </div>

@@ -52,27 +52,49 @@ class HomeController extends Controller
             abort(420,'You Are not Allowed to access this site');
         }
         $check = DB::table('projects')->get()->count();
-       
         if($check == 0 )
         {
             return view('firstview');
         }
-        if($check >= 1)
+        else
+        {
+        if(Gate::allows('isManager'))
         {
         //_________________________ Dashboard Boxes Count _____________________________________
         $status_id = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
-        $completed_projects = DB::table('projects')->where('status_id', '=', $status_id)->count();
+        $completed_projects = DB::table('projects')->where('status_id', '=', $status_id)
+        ->where('assigned_by','=',Auth::User()->id)->count();
         if($status_id == 0)
         {
-            return view('firstview')->with('message',"Completed Project Status Doesnot Exist");
-        }
-        $expense = DB::table('miscellaneous_expenses')->sum('expense');
-        $projects = DB::table('projects')->get();
-        $total_contractors = DB::table('users')->where('id','=',3)->count();
-        $completed_projects = DB::table('projects')->where('status_id', '=', $status_id)->count();
-        $current_projects =  DB::table('projects')->where('status_id', '!=', $status_id)->count();
-        //_______________________________________________________________________________________
+            $current_projects =  DB::table('projects')->where('status_id', '!=', $status_id)
+                                ->where('assigned_by','=',Auth::User()->id)
+                                ->count();
+            $projects = DB::table('projects')->where('assigned_by','=',Auth::User()->id)->get();
+            //dd($projects);
+            $expense = 0;
+            $expenses = 0;
+            $orders = 0;
+            foreach ($projects as $project)
+            {
+                $expense = DB::table('miscellaneous_expenses')->where('project_id','=',$project->id)->pluck('expense')->first();
+                if($expense == 0)
+                {
+                    $expense = 0;
+                }
+                else
+                {
+                    $expense = $expense + $expenses;
+                    $expenses = $expense;
+                }
+            }
+            //dd($expense);
+            $total_contractors = DB::table('users')->where('id','=',3)->count();
 
+            //$completed_projects = DB::table('projects')->where('status_id', '=', $status_id)->count();
+            
+            //_______________________________________________________________________________________
+                $orders = DB::table('order_details')->paginate(5);
+  
 
         //_________________________ Monthly Graph _______________________________________________
 
@@ -92,7 +114,7 @@ class HomeController extends Controller
 
         //____________________________Order Details______________________________________________
 
-         $orders = DB::table('order_details')->paginate(5);
+         
 
 
 
@@ -112,6 +134,61 @@ class HomeController extends Controller
        // dd($completed_projects);
         return view('home', compact('projects','total_contractors','completed_projects','current_projects','expense','orders'));
         }
+        }
+        if(Gate::allows('isAdmin'))
+        {
+            $status_id = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
+            $completed_projects = DB::table('projects')->where('status_id', '=', $status_id)
+            //->where('assigned_by','=',Auth::User()->id)
+            ->count();
+            if($status_id == 0)
+            {
+            $current_projects =  DB::table('projects')->where('status_id', '!=', $status_id)
+                                //->where('assigned_by','=',Auth::User()->id)
+                                ->count();
+            $projects = DB::table('projects')
+            //->where('assigned_by','=',Auth::User()->id)
+            ->get();
+            //dd($projects);
+           //       --------------------------------Need to separate company expense and projects ===========
+
+                 $expense = DB::table('miscellaneous_expenses')
+                ->where('project_id','!=',null)
+                ->sum('expense');
+                 $company_expense = DB::table('miscellaneous_expenses')
+                ->where('others','=',1)
+                ->sum('expense');
+               
+            
+            //dd($expense);
+            $total_contractors = DB::table('users')->where('id','=',3)->count();
+
+            //$completed_projects = DB::table('projects')->where('status_id', '=', $status_id)->count();
+            
+            //_______________________________________________________________________________________
+                $orders = DB::table('order_details')->paginate(5);
+  
+
+      
+
+        //____________________________Users Box__________________________________________________
+            
+        // $total_free_contractors = DB::table('users')->where('id','=',3)->count();
+        // $working_contractors = 
+
+        //_______________________________________________________________________________________
+
+
+        //DB::table()->where('status_id','=',$status_id)->get()->count();
+
+       // dd($completed_projects);
+        return view('home', compact('projects','total_contractors','completed_projects','current_projects','expense','orders','company_expense'));
+
+        }
+       
+       
+        }
+    }
        
     }
 

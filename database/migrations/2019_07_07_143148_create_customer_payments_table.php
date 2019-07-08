@@ -17,8 +17,9 @@ class CreateCustomerPaymentsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('received')->nullable()->default("0");
             $table->integer('receivable')->nullable()->default("0");
-            $table->unsignedBigInteger('project_id')->nullable()->default(1);
+            $table->unsignedBigInteger('project_id')->nullable();
             $table->timestamps();
+
               $table
                 ->foreign('project_id')
                 ->references('id')

@@ -28,7 +28,7 @@ class ProjectReportController extends Controller
         $now = date($format);
         //$now = $now->toRfc850String(); 
         //$to = date($format, strtotime("+30 days")); --}}
-        $to = date($format, strtotime("-1 days"));
+        $to = date($format, strtotime("-2 days"));
         $last_invoice = DB::table('order_details')->pluck('invoice_number')->last();  
 
         $constraints = [
@@ -45,7 +45,7 @@ class ProjectReportController extends Controller
         ->where('order_details.created_at','<=',$now)
         ->where('order_details.created_at','>=',$to)
         ->select('order_details.invoice_number', 'order_details.set_rate','order_details.quantity', 
-        'suppliers.name as supplier_name','items.name', 'items.rate','order_details.created_at')
+        'suppliers.name as supplier_name','items.name', 'items.selling_rate','order_details.created_at')
         ->get();
        // dd($orders);
         $last_invoice = DB::table('order_details')->pluck('invoice_number')->last();    
@@ -107,7 +107,7 @@ class ProjectReportController extends Controller
         $orders = OrderDetail::leftJoin('items', 'order_details.item_id', '=', 'items.id')
         ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
         ->select('order_details.invoice_number', 'order_details.quantity', 'order_details.set_rate',
-        'suppliers.name as supplier_name','items.name', 'items.rate','order_details.created_at')
+        'suppliers.name as supplier_name','items.name', 'items.selling_rate','order_details.created_at')
         ->where('order_details.created_at', '<=', $constraints['from'])
         ->where('order_details.created_at', '>=', $constraints['to'])
         ->where('order_details.project_id','=',$constraints['proj'])
@@ -121,7 +121,7 @@ class ProjectReportController extends Controller
         ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
         ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
         ->select('order_details.invoice_number', 'order_details.quantity', 'order_details.set_rate',
-        'suppliers.name as supplier_name','items.name', 'items.rate','order_details.created_at')
+        'suppliers.name as supplier_name','items.name', 'items.selling_rate','order_details.created_at')
         ->where('order_details.created_at', '<=', $constraints['from'])
         ->where('order_details.created_at', '>=', $constraints['to'])
         ->where('order_details.project_id','=',$constraints['proj'])

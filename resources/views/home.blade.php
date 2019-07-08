@@ -106,20 +106,7 @@
                 <!-- ion ion-ios-gear-outline -->
 
                 <div class="info-box-content">
-                    <span class="info-box-text">All Projects Budget</span>
-                    <span class="info-box-number">{{ DB::table('projects')->sum('estimated_budget') }}</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">Balance</span>
+                    <span class="info-box-text">Company Balance</span>
                     <span class="info-box-number">{{ DB::table('projects')->sum('estimated_budget') -  DB::table('miscellaneous_expenses')->sum('expense') }}</span>
                 </div>
                 <!-- /.info-box-content -->
@@ -150,6 +137,19 @@
                 <div class="info-box-content">
                     <span class="info-box-text">Total Labor</span>
                     <span class="info-box-number">{{ DB::table('labors')->count('id') }}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+         <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Company Expenses</span>
+                    <span class="info-box-number">{{$company_expense}}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
