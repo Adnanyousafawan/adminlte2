@@ -7,7 +7,6 @@ use App\Labor;
 use App\LaborAttendance;
 use App\LaborStatus;
 use App\MaterialRequest;
-use App\OrderDetail;
 use App\Project;
 use App\ProjectPhase;
 use App\ProjectStatus;
@@ -416,11 +415,11 @@ class APIController extends Controller
     public function api_projects_longpress_dialog_update(Request $request)
     {
         $status = $request->get("status");
-        $phase = $request->get("phase");
+//        $phase = $request->get("phase");
         $project_title = $request->get("project_title");
 
         $statusID = DB::table('project_status')->where('name', '=', $status)->get('id')->first();
-        $phaseID = DB::table('project_phase')->where('name', '=', $phase)->get('id')->first();
+//        $phaseID = DB::table('project_phase')->where('name', '=', $phase)->get('id')->first();
 
         $projectID = DB::table('projects')
             ->where('title', '=', $project_title)
@@ -430,7 +429,7 @@ class APIController extends Controller
         $project = Project::find($projectID->id);
 
         $project->status_id = $statusID->id;
-        $project->phase_id = $phaseID->id;
+//        $project->phase_id = $phaseID->id;
 
         if ($project->save()) {
             return "success";
@@ -714,8 +713,6 @@ class APIController extends Controller
                 ->where('name', '=', $labor_attendance['attendance'][$i]['labor'])
                 ->pluck('id')
                 ->first();
-
-//            dd($paid);
 
             if (($selected_yyyy < $current_yyyy) ||
                 (($selected_yyyy >= $current_yyyy) && ($selected_mm < $current_mm)) ||
@@ -1510,17 +1507,52 @@ class APIController extends Controller
             $response[$index] = [
                 'title' => $project->title,
                 'floors' => $project->floor,
+                'current_developed_floor' => $project->current_developed_floor,
                 'phase' => DB::table('project_phase')->where('id', '=', $project->phase_id)->pluck('name')->first(),
                 'status' => DB::table('project_status')->where('id', '=', $project->status_id)->pluck('name')->first()
-
             ];
             $index++;
         }
+
+//        dd($response);
 
         $phases = ProjectPhase::all()->pluck('name');
         $statuses = ProjectStatus::all()->pluck('name');
 
         return response()->json(['projects' => $response, 'phases' => $phases, 'statuses' => $statuses]);
+
+    }
+
+    public function api_update_project_phase_store(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $project_id = DB::table('projects')
+            ->where('title', '=', $request->get('project_tile'))
+            ->pluck('id')
+            ->first();
+
+        $project = Project::find($project_id);
+
+        $phase = $request->get('project_phase');
+
+        $phaseID = DB::table('project_phase')
+            ->where('name', '=', $phase)
+            ->pluck('id')
+            ->first();
+
+
+        $project->current_developed_floor = $request->get('project_floor');
+        $project->phase_id = $phaseID;
+
+        if ($project->save()) {
+            return "Request has been performed Successfully.";
+        } else {
+            return "Unable to perform request.";
+        }
 
     }
 
@@ -1583,7 +1615,34 @@ class APIController extends Controller
             ->where('invoice_number', '=', $invoice_number)
             ->get();
 
-        return response()->json($items);
+        if ($items != null) {
+            $order_details = [];
+            $index = 0;
+            foreach ($items as $item) {
+                $order_details[$index] = [
+                    'invoice_number' => $item->invoice_number,
+                    'item_name' => DB::table('items')
+                        ->where('id', '=', $item->item_id)
+                        ->pluck('name')
+                        ->first(),
+                    'project_title' => DB::table('projects')
+                        ->where('id', '=', $item->project_id)
+                        ->pluck('title')
+                        ->first(),
+                    'supplier_name' => DB::table('suppliers')
+                        ->where('id', '=', $item->supplier_id)
+                        ->pluck('name')
+                        ->first(),
+                    "quantity" => $item->quantity,
+                    "status" => $item->status,
+                ];
+                $index++;
+            }
+        } else {
+            return "No item in this order";
+        }
+
+        return response()->json($order_details);
     }
 
     public function api_orders_received(Request $request)
@@ -1752,6 +1811,59 @@ class APIController extends Controller
         ]);
     }
 
+    public function api_labor_details(Request $request)
+    {
+        $labor_id = DB::table('labors')
+            ->where('id', '=', $request->get('labor_id'))
+            ->get()
+            ->first();
 
+        if ($labor_id != null) {
+            $labor_record = [
+                'labor_name' => $labor_id->name,
+                'labor_address' => $labor_id->address,
+                'labor_cnic' => $labor_id->cnic,
+                'labor_city' => $labor_id->city,
+                'labor_phone' => $labor_id->phone,
+                'labor_per_day_rate' => $labor_id->rate,
+                'project_title' => DB::table('projects')
+                    ->where('id', '=', $labor_id->project_id)
+                    ->pluck('title')
+                    ->first(),
+                'days_worked' => LaborAttendance::all()
+                    ->where('labor_id', '=', $labor_id->id)
+                    ->where('status', '=', 1)
+                    ->count(),
+                'days_paid' => DB::table('labor_attendances')
+                    ->where('labor_id', '=', $labor_id->id)
+                    ->where('paid', '=', 1)
+                    ->count(),
+            ];
+        } else {
+            return "Labor does not exists";
+        }
+
+
+        return response()->json($labor_record);
+    }
+
+    public function api_labor_details_update(Request $request)
+    {
+        $id = $request->get('labor_id');
+        $labor = Labor::find($id);
+
+        $labor->name = $request->get('labor_name');
+        $labor->address = $request->get('labor_address');
+        $labor->rate = $request->get('labor_per_day_rate');
+        $labor->cnic = $request->get('labor_cnic');
+        $labor->phone = $request->get('labor_phone');
+        $labor->city = $request->get('labor_city');
+
+        if ($labor->save()) {
+            return "Labor record updated successfully";
+        } else {
+            return "Error Saving!";
+        }
+    }
 
 }

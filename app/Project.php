@@ -21,6 +21,7 @@ class Project extends Model
         "floor",
         "contract_image",
         "status",
+        "current_developed_floor"
     ];
 
     protected $hidden = [
