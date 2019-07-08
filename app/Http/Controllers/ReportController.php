@@ -56,7 +56,7 @@ class ReportController extends Controller
                 ->where('order_details.created_at','<=',$now)
                 ->where('order_details.created_at','>=',$to)
                 ->select('project_id','order_details.invoice_number', 'order_details.quantity', 
-                'suppliers.name as supplier_name','items.name', 'items.rate','order_details.created_at')
+                'suppliers.name as supplier_name','items.name', 'items.selling_rate','order_details.created_at')
                 ->get();
                 return view('reports/index', ['orders' => $orders, 'searchingVals' => $constraints]);
             }
@@ -78,9 +78,11 @@ public function weekly() {
             'to' => $to,
         ];
         //dd($constraints['type']);
-        if($count == 0)
+       $check = DB::table('projects')->get()->count();
+    
+    if($check == 0)
        {
-         return redirect('firstview')->with('message',"Cant Generate reports. No Project exist");
+         return redirect()->intended('firstview')->with('message',"Cant Generate reports. No Project exist");
        }
 
         $orders = DB::table('order_details')
@@ -89,7 +91,7 @@ public function weekly() {
         ->where('order_details.created_at','<=',$now)
         ->where('order_details.created_at','>=',$to)
         ->select('project_id','order_details.invoice_number', 'order_details.quantity', 
-        'suppliers.name as supplier_name','items.name', 'items.rate','order_details.created_at')
+        'suppliers.name as supplier_name','items.name', 'items.selling_rate','order_details.created_at')
         ->get();
        
 
@@ -112,10 +114,11 @@ public function monthly() {
             'from' => $now,
             'to' => $to,
         ]; 
+       $check = DB::table('projects')->get()->count();
         
-        if($count == 0)
+        if($check == 0)
        {
-         return redirect('firstview')->with('message',"Cant Generate reports. No Project exist");
+         return redirect()->intended('firstview')->with('message',"Cant Generate reports. No Project exist");
        }
         $orders = DB::table('order_details')
         ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
@@ -123,7 +126,7 @@ public function monthly() {
         ->where('order_details.created_at','<=',$now)
         ->where('order_details.created_at','>=',$to)
         ->select('project_id','order_details.invoice_number', 'order_details.quantity', 
-        'suppliers.name as supplier_name','items.name', 'items.rate','order_details.created_at')
+        'suppliers.name as supplier_name','items.name', 'items.selling_rate','order_details.created_at')
         ->get();
        
         return view('reports/index', ['orders' => $orders,'searchingVals' => $constraints]);
@@ -177,7 +180,7 @@ public function monthly() {
         $orders = OrderDetail::leftJoin('items', 'order_details.item_id', '=', 'items.id')
         ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
         ->select('project_id','order_details.invoice_number', 'order_details.quantity', 
-        'suppliers.name as supplier_name','items.name', 'items.rate','order_details.created_at')
+        'suppliers.name as supplier_name','items.name', 'items.selling_rate','order_details.created_at')
         ->where('order_details.created_at', '<=', $constraints['from'])
         ->where('order_details.created_at', '>=', $constraints['to'])
         //->where('order_details.project_id','=',$constraints['proj'])
@@ -191,7 +194,7 @@ public function monthly() {
         ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
         ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
         ->select('project_id','order_details.invoice_number', 'order_details.quantity', 
-        'suppliers.name as supplier_name','items.name', 'items.rate','order_details.created_at')
+        'suppliers.name as supplier_name','items.name', 'items.selling_rate','order_details.created_at')
         ->where('order_details.created_at', '<=', $constraints['from'])
         ->where('order_details.created_at', '>=', $constraints['to'])
         //->where('order_details.project_id','=',$constraints['proj'])

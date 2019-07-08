@@ -34,7 +34,7 @@ Route::get('laravelssearch', 'SearchController@index')->name('search.index');
 
 Route::get('charts', 'ChartController@index')->name('chart.index');
 
-//-----------------------------------Items Management------------------------------------//
+//-----------------------------------Items Management-- ----------------------------------//
 
 //Route::resource('item', 'ItemController');
 Route::get('items/create', 'ItemController@create')->name('item.create');
@@ -42,6 +42,12 @@ Route::post('items/itemDetails/insert', 'ItemController@insert')->name('item.ins
 Route::get('items', 'ItemController@index')->name('items.list');
 Route::delete('items/destroy/{id}', 'ItemController@destroy')->name('items.destroy');
 //----------------------------------------------------------
+
+Route::get('customer-payment/create', 'CustomerPaymentsController@create')->name('customerpayment.create');
+Route::post('customer-payment/customerpayment/insert', 'CustomerPaymentsController@insert')->name('customerpayment.insert');
+Route::get('customer-payment', 'CustomerPaymentsController@index')->name('customerpayment');
+Route::delete('customer-payment/destroy/{id}', 'CustomerPaymentsController@destroy')->name('customerpayment.destroy');
+Route::post('customer-payment/update/{id}', 'CustomerPaymentsController@update')->name('customerpayment.update');
 
 
 Route::get('report', 'ReportController@index')->name('report.daily');
@@ -53,7 +59,7 @@ Route::post('report/search', 'ReportController@search')->name('report.search');
 Route::post('report/pdf', 'ReportController@exportPDF')->name('report.pdf');
 
 
-Route::get('projectreport', 'ReportController@index')->name('projectreport.index');
+Route::get('projectreport', 'ProjectReportController@index')->name('projectreport.index');
 Route::post('projectreport/search', 'ProjectReportController@search')->name('projectreport.search');
 //Route::post('report/excel', 'ReportController@exportExcel')->name('report.excel');
 Route::post('projectreport/pdf', 'ProjectReportController@exportPDF')->name('projectreport.pdf');

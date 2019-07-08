@@ -23,7 +23,7 @@ class CustomerController extends Controller
         $customers = DB::table('customers')->get();
         return view('customers/allcustomers', ['customers' => $customers]);
     }
-
+ 
     /**
      * Show the form for creating a new resource.
      *

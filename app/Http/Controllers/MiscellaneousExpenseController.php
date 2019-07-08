@@ -43,11 +43,21 @@ class MiscellaneousExpenseController extends Controller
            ]);
           }
 
+    if($request['project_id'] == 0)
+    {
+      $others = 1;
+      $project_id = null;
+    }
+    else
+    {
+        $others = 0;
+        $project_id = $request['project_id'];
+        
+    }
+        $name = $request['name'];
 
-   	$name = $request['name'];
-    $project_id = $request['project_id'];
-    $description = $request['description'];
-    $expenses =$request['expenses'];
+ $description = $request['description'];
+        $expenses =$request['expenses'];
     // $rate = $request->rate
 
 //$insert_data = array();
@@ -69,8 +79,10 @@ class MiscellaneousExpenseController extends Controller
       $obj = new MiscellaneousExpense([
       'name' => $name[$count],
       'description' =>  $description[$count],
-      'project_id' => DB::table('projects')->where('title','=',  $project_id)->pluck('id')->first(),
+      'project_id' => $project_id,
+      //DB::table('projects')->where('title','=',  $project_id)->pluck('id')->first(),
       'expense' => $expenses[$count],
+      'others' => $others,
       'expense_number' => $expense_number,
       
       ]); 

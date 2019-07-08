@@ -138,6 +138,16 @@ return [
             'icon' => 'file',
         ],
          [
+            'text' => 'Create Project',
+            'url'  => 'projects/create',
+            'icon_color' => 'red',
+        ],
+         [
+            'text' => 'Add Customer Payment',
+            'url'  => 'customer-payment/create',
+            'icon_color' => 'red',
+        ],
+         [
             'text' => 'Add Expense',
             'url'  => 'expenses/create',
             'icon_color' => 'red',
@@ -230,6 +240,20 @@ return [
                 ],
             ],
         ],
+        [
+            'text'    => 'Payments',
+            'icon'    => 'share',
+            'submenu' => [
+                 [
+                    'text' => 'View Customer Payments',
+                    'url' => 'customer-payment',
+                ],
+                [
+                    'text' => 'Add Customer Payment',
+                    'url'  => 'customer-payment/create',
+                ],
+            ],
+        ],
          [
             'text'    => 'Items',
             'icon'    => 'share',
@@ -244,9 +268,6 @@ return [
                 ],
             ],
         ],
-
-
-       
          [
             'text'    => 'User',
             'icon'    => 'share',
@@ -263,8 +284,6 @@ return [
               
             ],
         ],
-
-  
          [
             'text'    => 'Supplier',
             'icon'    => 'share',
@@ -281,8 +300,25 @@ return [
               
             ],
         ],
+
         
         'Reports Management',
+         [
+            'text'    => 'Reports',
+            'icon'    => 'share',
+            'submenu' => [
+                [
+                    'text' => 'Project Expenses',
+                    'url' => 'expensereport',
+                ],
+                [
+                    'text' => 'Project Orders',
+                    'url'  => 'projectreport',
+                ],
+               
+              
+            ],
+        ],
                 [
                     'text' => 'Daily',
                     'url' => 'report',

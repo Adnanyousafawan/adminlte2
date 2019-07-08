@@ -50,17 +50,14 @@
     @endif
 
 
-
-<div class="col-md-offset-1 col-lg-offset-1 col-xl-offset-1">
-
-<div class="container">
+{{-- <div class="container">
     <a class="active" href=" {{ route('projects.all') }}" style="font-size: 18px;">All &nbsp; | &nbsp; </a> 
     <a class="active" href=" {{ route('projects.current') }}" style="font-size: 18px;">Current Projects &nbsp; | &nbsp;</a>
     <a class="active" href=" {{ route('projects.completed') }}"  style="font-size: 18px;">Completed &nbsp; | &nbsp;</a>
      <a class="active" href=" {{ route('projects.pending') }}"  style="font-size: 18px;">Pending &nbsp; | &nbsp;</a>
     <a class="active" href=" {{ route('projects.cancelled') }}"  style="font-size: 18px;">Cancelled &nbsp; | &nbsp;</a>
   </div>
-</div>
+</div> --}}
 <div class="row">
             {{-- _________________________________All Customers DataTable_____________________________________--}}
         <div class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
@@ -110,7 +107,7 @@
                     <ul role="menu" class="dropdown-menu">
                       {{-- <li><a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"><i class="fa fa-edit"></i>View</a></li> --}}
                        
-                        {{-- <li><a href="{{ route('projects.edit', ['id' => $projects->id]) }}"><i class="fa fa-edit"></i>Edit</a></li> --}}
+                        {{-- <li><a href="{{ route('projects.edit', ['id' => $customer->id]) }}"><i class="fa fa-edit"></i>Edit</a></li> --}}
                                              
                         {{-- <li><a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $project->id }}"><i class="fa fa-remove"></i>Delete</a></li> --}}
                     </ul>
@@ -185,11 +182,10 @@
                     </div>
                 </div>
                 </div> 
-</div>
+
 
 
                 <script type="text/javascript">
-
 
         $('.project').DataTable({
             select: true,
