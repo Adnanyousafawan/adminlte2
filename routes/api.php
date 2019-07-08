@@ -62,16 +62,7 @@ Route::post('/update/project/phase/store', 'APIController@api_update_project_pha
 Route::post('/orders/all', 'APIController@api_orders_all');
 Route::post('/orders/pending', 'APIController@api_orders_pending');
 Route::post('/orders/received', 'APIController@api_orders_received');
-<<<<<<< HEAD
-Route::post('/orders/details', 'APIController@api_orders_details');
-
-
-
-
-
-=======
 Route::post('/orders/partially-received', 'APIController@api_orders_partially_received');
 Route::post('/orders/details', 'APIController@api_orders_details');
 Route::post('/labor/details/', 'APIController@api_labor_details');
 Route::post('/labor/details/update', 'APIController@api_labor_details_update');
->>>>>>> APIs
