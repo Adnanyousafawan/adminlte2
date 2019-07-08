@@ -145,19 +145,11 @@ class APIController extends Controller
 
     public function api_add_labor(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'rate' => 'required',
-            'address' => 'required',
-            'city' => 'required',
-            'phone' => 'required',
-            'cnic' => 'required',
-            'project_id' => 'required'
-        ]);
+
 
         $id = Project::all()
             ->where('title', '=', $request->input('project_id'))
-            ->sortByDesc('created_at');
+            ->get();
 
         if ($id->pluck('title')->first() != $request->input('project_id')) {
             return "Error";
@@ -170,7 +162,8 @@ class APIController extends Controller
             'city' => $request->input('city'),
             'phone' => $request->input('phone'),
             'cnic' => $request->input('cnic'),
-            'project_id' => $id->pluck('id')->first()
+            'project_id' => $id->pluck('id')
+                ->first()
         ]);
 
         if ($labor->save()) {
