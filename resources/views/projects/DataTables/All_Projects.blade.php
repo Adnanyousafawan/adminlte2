@@ -1,9 +1,5 @@
 @include('projects.modal')
-@include('common')
-
-
 @section('project_datatable')
-
     {{-- _________________________________All Projects DataTable_____________________________________--}}
     <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 col-md-offset-0 col-lg-offset-0 col-xl-offset-0" style="padding-left: 0px; padding-right: 0px; " 
          >
@@ -12,14 +8,12 @@
                 <div class="row">
                 <h4><span class="box-title col-md-8">Project Record</span></h4>
                 <div class="box-tools pull-right" style="margin-right: 10px;">
-                    <a type="links" {{-- href="{{ route('projects.create') }}" --}}  data-toggle="modal"
+                    <a type="links" data-toggle="modal"
                        data-target="#applicantADDModal" class="btn btn-primary pull-right">Add Project</a>
                 </div>
                 </div>
                 <div class="col-md-offset-0 col-lg-offset-0 col-xl-offset-0" style="margin-top: 10px;">
-
                     <div class="container" style="padding-left: 0px;">
-                        {{-- <a class="active" href=" {{ route('orders.list') }}" style="font-size: 18px;">All &nbsp; | &nbsp; </a>  --}}
                         <a class="active" href=" {{ route('projects.notstarted') }}" style="font-size: 18px;">Not Started
                             &nbsp; | &nbsp;</a>
                         <a class="active" href=" {{ route('projects.inprogress') }}" style="font-size: 18px;">In Progress
@@ -28,14 +22,10 @@
                             &nbsp; | &nbsp;</a>
                         <a class="active" href=" {{ route('projects.stopped') }}" style="font-size: 18px;">Stopped
                             &nbsp; | &nbsp;</a>
-                        <a class="active" href=" {{ route('projects.halt') }}" style="font-size: 18px;">Halt
-                            &nbsp; | &nbsp;</a>
-                           
+                        <a class="active" href=" {{ route('projects.halt') }}" style="font-size: 18px;">Halt&nbsp; | &nbsp;</a>
                     </div>
                 </div>
-                
             </div>
-
             <div class="table-responsive" style="margin-top: 10px; ">
                 <table class="table no-margin table-bordered table-striped project">
                     <thead>
@@ -51,7 +41,6 @@
                     </tr>
                     </thead>
                     <tbody>
-
                     @foreach ($projects as $project)
                         <tr>
                             {{-- <td style="max-width: 10px;"><b>PR-</b></td> --}}
@@ -62,9 +51,7 @@
                             <td>{{ $project->budget}}</td>
                             <td>25000</td>
                             <td style="min-width: 65px;">
- 
                                 <div class="btn-group">
-
                                     <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action</button>
                                     <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle"
                                             type="button">
@@ -82,20 +69,9 @@
                                                data-target="#applicantDeleteModal-{{ $project->id }}"><i
                                                     class="fa fa-remove"></i>Delete</a></li>
                                     </ul>
- 
                                 </div>
-                                {{--   <a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"
-                                     style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">View</a>
-
-                                  <a type="links" href="{{ route('projects.edit', ['id' => $project->id]) }}"
-                                     style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">Edit</a>
-                                  <a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $project->id }}"
-                                     style="color: red; margin-left: 3px;  margin-top: 0px;">Delete</a> --}}
-
                             </td>
                         </tr>
-
-
                         {{-- ______________________________Delete Modal ______________________________________________--}}
 
                         <div id="applicantDeleteModal-{{ $project->id }}" class="modal fade" tabindex="-1" role="dialog"
@@ -122,7 +98,6 @@
                                             </div>
                                             <div class="modal-body">
                                                 @yield('delete_modal')
-
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default waves-effect"
@@ -133,38 +108,24 @@
                                                     Delete
                                                 </button>
                                             </div>
-
-
                                         </form>
-
                                     </form>
-
                                 </div>
                             </div>
                         </div>
-
                     @endforeach
-
                     </tbody>
-
                 </table>
-
             </div>
         </div>
     </div>
-
-
-
-
     {{-- _______________________________________Model Add New PROJECT_______________________________--}}
 
     <div id="applicantADDModal" class="modal fade" tabindex="-1" role="dialog"
          aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog" style="min-width:70%; align-content: center; ">
             <div class="modal-content">
-
                 <form method="post" action="{{ route('projects.store') }}" enctype="multipart/form-data">
-
                     @csrf
                     <div class="modal-header">
                         <button type="button" class="close pull-right" data-dismiss="modal"
@@ -174,43 +135,12 @@
                                 Project</h3></strong>
                     </div>
                     <div class="modal-body">
-
                         @yield('add_form_project')
-
                     </div>
-
-
                 </form>
             </div>
         </div>
     </div>
 
-
-
-
-@endsection
-
-@section('datatable_script')
-
-    <script type="text/javascript">
-
-
-        $('.project').DataTable({
-            select: true,
-            "order": [[0, "asc"]],
-            //"scrollY"  : "380px",
-            "scrollCollapse": true,
-            "paging": true,
-            "bProcessing": true,
-            // fixedHeader: {
-            //     header: false,
-            //     // headerOffset: 100,
-            //     },
-            //scrollX: true,
-            // scrollY: true
-        });
-
-
-    </script>
 
 @endsection

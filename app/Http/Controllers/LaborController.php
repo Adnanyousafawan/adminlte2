@@ -28,7 +28,7 @@ class LaborController extends Controller
             ->leftjoin('labors','labors.project_id','=','projects.id')
             ->where('projects.assigned_by','=',Auth::user()->id)
             ->select('labors.id','projects.id','projects.title','labors.rate','users.name as contractor_name')
-            ->get();
+            ->paginate(5);
             $labors = DB::table('labors')
             ->leftjoin('projects','projects.id','=','labors.project_id')
             ->where('projects.assigned_by','=',Auth::user()->id)
@@ -39,13 +39,14 @@ class LaborController extends Controller
             return view('labors/index', compact('labors', 'totallabors', 'projects', 'labor_by_projects'));
 
         }
-        if (Gate::allows('isAdmin')) {
+        if (Gate::allows('isAdmin')) 
+        {
            
             $labor_by_projects = DB::table('projects')
             ->leftjoin('users','projects.assigned_to','=','users.id')
             ->leftjoin('labors','labors.project_id','=','projects.id')
             ->select('labors.id','projects.id','projects.title','labors.rate','users.name as contractor_name')
-            ->get();
+            ->paginate(5);
              $labors = DB::table('labors')->get();
             $totallabor = DB::table('labors')->count();
             $projects = DB::table('projects')->get();
@@ -65,7 +66,15 @@ class LaborController extends Controller
         if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
         }
-        return view('labors/add_labor');
+        if(Gate::allows('isManager'))
+        {
+            $projects = DB::table('projects')->where('assigned_by', '=', Auth::user()->id)->get();
+        }
+        if(Gate::allows('isAdmin'))
+        {
+            $projects = DB::table('projects')->get();
+        }
+        return view('labors/add_labor',compact('projects'));
     }
 
     /**

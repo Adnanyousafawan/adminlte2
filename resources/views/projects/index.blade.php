@@ -1,15 +1,14 @@
 @extends('adminlte::page')
 @section('title', 'All Projects')
 
-
 @include('projects.DataTables.All_Projects')
 @include('projects.laborbyprojects.Labor_At_Projects')
+@include('common')
 
 @section('content')
     @yield('meta_tags')
     @yield('error_logs')
     @yield('breadcrumbs')
-
 
     <div class="box-body" id="screen"
          style="/*max-width: 94%; margin-left: 3%; margin-top: 1%; */ background-color: #f4f4f487;">
@@ -19,7 +18,6 @@
                         class="col-xs-6 col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 col-xl-offset-0"
                         style="margin-bottom: 10px; padding: 0px;">Projects Details</span></h3>
             </div>
-
             <div class="row" style="padding: 0px;">
                 {{-- <div class="row" style="margin-top: 30px;"> --}}
                 <div
@@ -157,22 +155,14 @@
                                 <span class="info-box-number label label-info pull-right"
                                       style="margin-top: 0px; font-size: 16px;">{{ DB::table('projects')->where('status_id','=','1')->count('id')}}</span>
                             </div>
-                            <!-- /.box-header -->
-                            <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
                         </div>
-                        <!-- /.info-box-content -->
-                        <!-- /.info-box -->
                     </div>
                 </div>
             </div>
-            <!-- /.col -->
-
             @yield('project_datatable')
-
         </div>
     </div>
     @yield('datatable_stylesheets')
     @yield('datatable_script')
-
 @stop
 

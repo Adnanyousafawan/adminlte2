@@ -20,7 +20,6 @@ class ChartController extends Controller
             ->responsive(true)
             ->groupByMonth(date('Y'), true);
 
-
         $pie_chart = Charts::create('pie', 'highcharts')
             ->title('Pie Chart Demo')
             ->labels(['Product 1', 'Product 2', 'Product 3'])

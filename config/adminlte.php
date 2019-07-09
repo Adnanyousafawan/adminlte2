@@ -328,12 +328,12 @@ return [
                 ],
                 [
                     'text' => 'Weekly',
-                    'url' => 'home',
+                    'url' => 'report/weekly',
                     'icon' => 'file'
                 ],
-                [
+                [ 
                     'text' => 'Monthly',
-                    'url' => 'home',
+                    'url' => 'report/monthly',
                     'icon' => 'file'
                 ],
       /*  'LABELS',

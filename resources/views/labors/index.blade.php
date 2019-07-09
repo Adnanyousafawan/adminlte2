@@ -2,20 +2,10 @@
 @section('title', 'Labor Details')
 @include('common')
 
-{{-- 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" href="/css/bootstrap-3.4.1.css">
-    <link rel="stylesheet" href="/css/jquery.dataTables.css">
-    <link rel="stylesheet" href="/css/jquery.dataTables.css">
-    <script src="/js/jquery-3.4.1.js"></script>
-    <script src="/js/jquery.dataTables.js"></script>
- --}}
 @section('content')
-@yield('meta_tags')
-@yield('error_logs')
-@yield('breadcrumbs')
+    @yield('meta_tags')
+    @yield('error_logs')
+    @yield('breadcrumbs')
 
 
     <div class="box-body" id="screen"
@@ -26,11 +16,11 @@
                         class="col-xs-6 col-sm-6 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
                         style="margin-bottom: 10px; padding: 0px;">Labor Details</span></h3>
             </div>
- 
+
 
             <div class="row" style="padding: 0px;">
                 {{-- <div class="row" style="margin-top: 30px;"> --}}
-                 <div
+                <div
                     class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xl-offset-1 col-md-offset-1 col-lg-offset-1">
                     <div class="box" style="margin-bottom: 20px;">
                         <div class="box-header with-border">
@@ -90,14 +80,13 @@
                 </div>
 
 
-
-
                 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4  col-xl-4" style="padding: 0px;">
                     <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
                         <div class="box" style="margin-top: 0px;">
                             <div class="box-header">
                                 <h2 class="box-title">Total Labor</h2>
-                                <span class="info-box-number label label-primary pull-right" style="margin-top: 0px; font-size: 16px;">112</span>
+                                <span class="info-box-number label label-primary pull-right"
+                                      style="margin-top: 0px; font-size: 16px;">112</span>
                             </div>
                             <!-- /.box-header -->
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -138,7 +127,8 @@
                         <div class="box">
                             <div class="box-header">
                                 <h2 class="box-title">Total Cost</h2>
-                                <span class="info-box-number label label-danger pull-right" style="margin-top: 0px; font-size: 16px;">20,0000</span>
+                                <span class="info-box-number label label-danger pull-right"
+                                      style="margin-top: 0px; font-size: 16px;">20,0000</span>
                             </div>
                             <!-- /.box-header -->
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -160,11 +150,12 @@
                         <!-- /.info-box -->
                     </div>
                 </div>
-                
+
 
             </div>
             <!-- /.col -->
-            <div class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
+            <div
+                class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
                 style="padding: 5px;">
                 <div class="box" style="margin-bottom: 10px; margin-top: 1%;">
                     <div class="box-header with-border ">
@@ -177,7 +168,7 @@
                     <div class="table-responsive" style="margin-top: 10px; padding: 10px;">
                         <table class="table no-margin table-bordered table-striped project">
                             <thead>
-                                <tr>
+                            <tr>
 
                                 <th>Labor ID</th>
                                 <th>Name</th>
@@ -200,30 +191,34 @@
                                     <td>25000</td>
                                     <td>
 
-                                            <div class="btn-group">
-                                                <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action</button>
-                                                <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle"
-                                                        type="button">
-                                                    <span class="caret"></span>
-                                                    <span class="sr-only">Toggle Dropdown</span>
-                                                </button>
+                                        <div class="btn-group">
+                                            <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">
+                                                Action
+                                            </button>
+                                            <button data-toggle="dropdown"
+                                                    class="btn btn-success btn-sm dropdown-toggle"
+                                                    type="button">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
 
-                                                <ul role="menu" class="dropdown-menu">
+                                            <ul role="menu" class="dropdown-menu">
 
-                                                    <li><a href="{{ route('labors.edit', ['id' => $labor->id]) }}"><i
-                                                                class="fa fa-edit"></i>Edit</a></li>
+                                                <li><a href="{{ route('labors.edit', ['id' => $labor->id]) }}"><i
+                                                            class="fa fa-edit"></i>Edit</a></li>
 
-                                                    <li><a type="links" data-toggle="modal"
-                                                           data-target="#applicantDeleteModal-{{ $labor->id }}"><i
-                                                                class="fa fa-remove"></i>Delete</a></li>
-                                                </ul>
+                                                <li><a type="links" data-toggle="modal"
+                                                       data-target="#applicantDeleteModal-{{ $labor->id }}"><i
+                                                            class="fa fa-remove"></i>Delete</a></li>
+                                            </ul>
 
-                                            </div>
+                                        </div>
 
-                                        </td>
+                                    </td>
                                 </tr>
 
-                                <div id="applicantDeleteModal-{{ $labor->id }}" class="modal fade" tabindex="-1" role="dialog"
+                                <div id="applicantDeleteModal-{{ $labor->id }}" class="modal fade" tabindex="-1"
+                                     role="dialog"
                                      aria-labelledby="custom-width-modalLabel" aria-hidden="true"
                                      style="display: none;">
                                     <div class="modal-dialog"
@@ -235,32 +230,32 @@
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                 {{-- <form action="{{ route('labors.destroy', ['id' => $labor->id]) }}"
                                                       method="POST" class="remove-record-model"> --}}
-                                                    {{ method_field('delete') }}
-                                                    {{ csrf_field() }}
+                                                {{ method_field('delete') }}
+                                                {{ csrf_field() }}
 
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                                aria-hidden="true">×
-                                                        </button>
-                                                        <h4 class="modal-title text-center"
-                                                            id="custom-width-modalLabel">Delete Labor Record</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <strong><b><h3>Are You Sure? <br>You Want Delete This Record?
-                                                                </h3></b></strong>
-                                                        <input type="hidden" , name="applicant_id" id="app_id">
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default waves-effect"
-                                                                data-dismiss="modal">Close
-                                                        </button>
-                                                        <button type="submit"
-                                                                class="btn btn-danger waves-effect remove-data-from-delete-form">
-                                                            Delete
-                                                        </button>
-                                                    </div>
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-hidden="true">×
+                                                    </button>
+                                                    <h4 class="modal-title text-center"
+                                                        id="custom-width-modalLabel">Delete Labor Record</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <strong><b><h3>Are You Sure? <br>You Want Delete This Record?
+                                                            </h3></b></strong>
+                                                    <input type="hidden" , name="applicant_id" id="app_id">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default waves-effect"
+                                                            data-dismiss="modal">Close
+                                                    </button>
+                                                    <button type="submit"
+                                                            class="btn btn-danger waves-effect remove-data-from-delete-form">
+                                                        Delete
+                                                    </button>
+                                                </div>
 
-                                              
+
                                             </form>
                                         </div>
                                     </div>
@@ -269,113 +264,133 @@
                             </tbody>
                         </table>
                     </div>
-                    </div>
                 </div>
+            </div>
 
-                {{--____________________________   This is ADD MODAL CODE  ______________________________ --}}
-
-
-                <div id="applicantADDModal" class="modal fade" tabindex="-1" role="dialog"
-                     aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
-                    <div class="modal-dialog" style="min-width:70%; align-content: center;">
-                        <div class="modal-content">
-                <form method="post" action="{{ route('labors.store') }}" enctype="">
-                                @csrf
-                                <div class="modal-header">
-                                    <button type="button" class="close pull-right" data-dismiss="modal"
-                                            aria-hidden="true">x
-                                    </button>
-                                    <strong><h3 class="modal-title text-center" id="custom-width-modalLabel">Add
-                                            Labor</h3></strong>
-                                </div>
-                                <div class="modal-body">
-
-                                    <div style=" width: 100%; margin-bottom: 10px;">
-
-                                        <div class="row">
-                                            <div
-                                                class="col-sm-12  col-sm-offset-0 col-xs-12 col-lg-10 col-xl-10 col-lg-offset-1 col-xl-offset-1 col-md-10 col-md-offset-1"
-                                                style="/*max-width: 70%;*/ padding-bottom: 30px;">
-                                                <div>
-                                                    <div class="box-body">
-
-                                                        <div class="col-lg-9 col-lg-offset-2">
-                                                            <div class="form-group">
+            {{--____________________________   This is ADD MODAL CODE  ______________________________ --}}
 
 
-                                                                <label for="name">Labor Name</label>
-                                                                <input type="text" class="form-control" id="name"
-                                                                       placeholder="Labor Name" name="name">
+            <div id="applicantADDModal" class="modal fade" tabindex="-1" role="dialog"
+                 aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog" style="min-width:70%; align-content: center;">
+                    <div class="modal-content">
+                        <form method="post" action="{{ route('labors.store') }}" enctype="">
+                            @csrf
+                            <div class="modal-header">
+                                <button type="button" class="close pull-right" data-dismiss="modal"
+                                        aria-hidden="true">x
+                                </button>
+                                <strong><h3 class="modal-title text-center" id="custom-width-modalLabel">Add
+                                        Labor</h3></strong>
+                            </div>
+                            <div class="modal-body">
 
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="cnic">Labor CNIC</label>
-                                                                <input type="text" class="form-control" id="cnic"
-                                                                       placeholder="Labor CNIC" name="cnic">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="phone">Labor Contact</label>
-                                                                <div class="input-group">
-                                                                    <div class="input-group-addon">
-                                                                        <i class="fa fa-phone"></i>
-                                                                    </div>
-                                                                    <input type="text" maxlength="14"
-                                                                           class="form-control"
-                                                                           
-                                                                           data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']"
-                                                                           data-mask="" id="phone" name="phone">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="address">Labor Address</label>
-                                                                <input type="text" class="form-control" id="address"
-                                                                       placeholder="Home Address"
-                                                                       name="address">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="city">Labor City</label>
-                                                                <input type="text" class="form-control" id="city"
-                                                                       placeholder="Home City" name="city">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="rate">Labor Price</label>
-                                                                <input type="text" class="form-control" id="rate"
-                                                                       placeholder="Labor Rate(per Day)"
-                                                                       name="rate">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="project_id">Project ID</label>
-                                                                <select class="form-control" id="project_id" name="project_id">
-                                                                    @foreach($projects as $project)
-                                                                        <option>{{ $project->title }}</option>
-                                                                    @endforeach
-                                                                
-                                                                </select>
-                                                                
-                                                            </div>
+                                <div style=" width: 100%; margin-bottom: 10px;">
 
-                                                            <button type="submit"
-                                                                    class="btn btn-block btn-primary btn-xs form-control"
-                                                                    style="margin-top: 20px;">Add Labor
-                                                            </button>
+                                    <div class="row">
+                                        <div
+                                            class="col-sm-12  col-sm-offset-0 col-xs-12 col-lg-10 col-xl-10 col-lg-offset-1 col-xl-offset-1 col-md-10 col-md-offset-1"
+                                            style="/*max-width: 70%;*/ padding-bottom: 30px;">
+                                            <div>
+                                                <div class="box-body">
+
+                                                    <div class="col-lg-9 col-lg-offset-2">
+                                                        <div class="form-group">
+                                                            <label for="name">Name <span
+                                                                    style="color: red;">*</span></label>
+                                                            <input type="text" class="form-control" id="name"
+                                                                   name="name"
+                                                                   pattern="[A-Za-z0-9\w]{2,50}"
+                                                                   title="Minimum 2 letters required for Name"
+                                                                   placeholder="Name" required>
                                                         </div>
+
+                                                        <div class="form-group">
+                                                            <label for="cnic">CNIC <span
+                                                                    style="color: red;">*</span></label>
+                                                            <input type="text" maxlength="13" pattern="[0-9]{13}"
+                                                                   class="form-control"
+                                                                   id="cnic"
+                                                                   name="cnic" placeholder="CNIC"
+                                                                   title="Enter !3 digit CNIC Number. Example: ( 3434359324554 )"
+                                                                   required>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="address">Address <span
+                                                                    style="color: red;">*</span></label>
+                                                            <input type="text" class="form-control" id="address"
+                                                                   name="address"
+                                                                   pattern="[A-Za-z0-9\w]{4,100}"
+                                                                   title=" Minimum 4 letters required"
+                                                                   placeholder="Home Address" required>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="phone">Contact <span
+                                                                    style="color: red;">*</span></label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-phone"></i>
+                                                                </div>
+                                                                <input type="text" maxlength="11" class="form-control"
+                                                                       placeholder="Contact Number"
+                                                                       pattern="[0-9]{11}"
+                                                                       title="Enter 11 Digit Number. Example:(03330234334)"
+                                                                       id="phone" name="phone" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="city">City<span
+                                                                    style="color: red;">*</span></label>
+                                                            <input type="text" class="form-control" id="city"
+                                                                   placeholder="Home City"
+                                                                   name="city" pattern="[A-Za-z0-9\w]{4,100}"
+                                                                   title=" Minimum 4 letters required" required>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="rate">Labor Rate <span
+                                                                    style="color: red;">*</span></label>
+                                                            <input type="text" class="form-control" id="rate"
+                                                                   placeholder="Labor Rate(per Day)"
+                                                                   name="rate" pattern="[0-9]{3,100}"
+                                                                   title=" Minimum 3 digit number required" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="project_id">Project ID<span style="color: red;">*</span></label>
+                                                            <select class="form-control" id="project_id"
+                                                                    name="project_id" required>
+                                                                @foreach($projects as $project)
+                                                                    <option>{{ $project->title }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+
+                                                        <button type="submit"
+                                                                class="btn btn-block btn-primary btn-xs form-control"
+                                                                style="margin-top: 20px;">Add Labor
+                                                        </button>
                                                     </div>
                                                 </div>
-
-
                                             </div>
+
+
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                            </form>
-                        </div>
-                    </div> 
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
- @yield('datatable_stylesheets')
-@yield('datatable_script')
+    </div>
+    @yield('datatable_stylesheets')
+    @yield('datatable_script')
 
 @stop
 

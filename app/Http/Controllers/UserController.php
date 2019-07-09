@@ -177,10 +177,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
         if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
         }
-
+        $check = DB::table('users')->where('email','=',$request->input('email'))->count();
+           if($check == 1)
+           {
+                return redirect()->back()->with('message','Email is already in Use');
+           }
+           else
+           {
         $request->validate([
             'name' => 'required',
             'email' => 'required',
@@ -192,18 +199,7 @@ class UserController extends Controller
             'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
 
         ]);
-       // dd($request->input('role'));
-       /* if (Gate::allows('isAdmin')) {
-            $rollID = DB::table('roles')
-                ->where('name', '=', $request->input('role'))
-                ->pluck('id')->first();
-        }
-        if (Gate::allows('isManager')) {
-            $rollID = DB::table('roles')
-                ->where('name', '=', 'Contractor')
-                ->pluck('id')->first();
-        }
-        */
+   
         $password = Hash::make('init1234');
 
         $user = new User([
@@ -244,6 +240,7 @@ class UserController extends Controller
             return redirect()->route('users.all')->with(['status' => 'User added successfully.']);
         } else {
             return redirect()->route('users.all')->with(['error' => 'User not added successfully.']);
+        }
         }
     }
 

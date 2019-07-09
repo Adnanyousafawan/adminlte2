@@ -108,9 +108,9 @@
        {
         html = '<tr>';
        
-        html += '<td><input type="text" name="name[]" class="form-control"></td>';
-        html += '<td><input type="text" name="description[]" class="form-control"/></td>';
-        html += '<td><input type="number" name="expenses[]" class="form-control"/></td>';
+        html += '<td><input type="text" name="name[]" class="form-control" pattern="[A-Za-z0-9\w]{2,50}" title="Minimum 2 letters required for Name"></td>';
+        html += '<td><input type="text" name="description[]" class="form-control" pattern="[A-Za-z0-9\w]{4,100}" title=" Minimum 4 letters required" /></td>';
+        html += '<td><input type="number" name="expenses[]" class="form-control" pattern="[0-9]{3,100}" title=" Minimum 3 digit number required"/></td>';
         
         if(number > 1)
         {

@@ -122,7 +122,6 @@ class ProjectController extends Controller
                 'assigned_to' => 'required',
                 'estimated_completion_time' => 'required',
                 'estimated_budget' => 'required',
-                'description' => 'required',
                 'contract_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
             ]);
 
@@ -540,7 +539,6 @@ class ProjectController extends Controller
             //'assigned_to' => 'required',
             'estimated_completion_time' => 'required',
             'estimated_budget' => 'required',
-            // 'description' => 'required',
             'contract_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
 
         ]);

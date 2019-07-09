@@ -73,9 +73,9 @@
                   <td  style="background-color: #D3D3D3;">{{ $order['supplier_name'] }}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order['project_id'] }}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order['name'] }}</td>
-                  <td  style="background-color: #D3D3D3;">{{ $order['rate'] }}</td>
+                  <td  style="background-color: #D3D3D3;">{{ $order['set_rate'] }}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order['quantity'] }}</td>
-                  {{ $total =  $order['rate'] * $order['quantity'] }} 
+                  {{ $total =  $order['set_rate'] * $order['quantity'] }} 
                   {{ $subtotal = $total + $subtotal }}
                   {{-- {{ $invoice_total = $subtotal }} --}}
                   <td  style="background-color: #D3D3D3;">{{$total}}</td>
@@ -98,9 +98,9 @@
                   <td style="background-color: #A9A9A9;">{{ $order['supplier_name'] }}</td>
                    <td  style="background-color: #A9A9A9;">{{ $order['project_id'] }}</td>
                   <td style="background-color: #A9A9A9;">{{ $order['name'] }}</td>
-                  <td style="background-color: #A9A9A9;">{{ $order['rate'] }}</td>
+                  <td style="background-color: #A9A9A9;">{{ $order['set_rate'] }}</td>
                   <td style="background-color: #A9A9A9;">{{ $order['quantity'] }}</td>
-                  {{ $total =  $order['rate'] * $order['quantity'] }} 
+                  {{ $total =  $order['set_rate'] * $order['quantity'] }} 
                   {{ $subtotal = $total + $subtotal }}
                   {{-- {{ $invoice_total = $subtotal }} --}}
                   <td style="background-color: #A9A9A9;">{{ $total }}</td>

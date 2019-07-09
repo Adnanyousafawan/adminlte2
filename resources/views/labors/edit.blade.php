@@ -12,20 +12,6 @@
 </head>
 </html>
 
-
-
-<ol class="breadcrumb">
-    <li><a href="{{ route('home')}}"><i class="fa fa-dashboard"></i>  &nbsp;Dashboard</a></li>
-    <?php $segments = ''; ?>
-    @foreach(Request::segments() as $segment)
-        <?php $segments .= '/'.$segment; ?>
-        <li>
-            <a href="{{ $segments }}">{{$segment}}</a>
-        </li>
-    @endforeach
-</ol>
-
-
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -47,12 +33,16 @@
         </div>
     @endif
 
-     @if (session('message'))
-        <div class="alert alert-danger" role="alert">
-            {{ session('message') }}
-        </div>
-    @endif
-
+<ol class="breadcrumb">
+    <li><a href="{{ route('home')}}"><i class="fa fa-dashboard"></i>  &nbsp;Dashboard</a></li>
+    <?php $segments = ''; ?>
+    @foreach(Request::segments() as $segment)
+        <?php $segments .= '/'.$segment; ?>
+        <li>
+            <a href="{{ $segments }}">{{$segment}}</a>
+        </li>
+    @endforeach
+</ol>
 
 
 <div class="box" style="background-color: #f4f4f487;">
@@ -73,9 +63,10 @@
 
                         <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
 
-                            <label for="name">Labor Name</label>
+                            <label for="name">Labor Name  <span style="color: red;">*</span></label>
                             <input type="text" class="form-control" id="name" placeholder="Name"
-                                   value="{{ $labors->name }}" name="name">
+                             pattern="[A-Za-z0-9\w]{2,50}" title="Minimum 2 letters required for Name"
+                                   value="{{ $labors->name }}" name="name" required>
                             @if ($errors->has('name'))
                                 <span class="help-block">
                         <strong>{{ $errors->first('name') }}</strong>                              
@@ -83,11 +74,11 @@
                             @endif
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group {{ $errors->has('cnic') ? ' has-error' : '' }}">
 
-                            <label for="cnic">Labor CNIC</label>
+                            <label for="cnic">Labor CNIC  <span style="color: red;">*</span></label>
                             <input type="text" class="form-control" id="cnic" placeholder="Labor CNIC"
-                                   value="{{ $labors->cnic }}" name="cnic">
+                                   value="{{ $labors->cnic }}" name="cnic" maxlength="13" pattern="[0-9]{13}"title="Enter 13 digit CNIC Number. Example: ( 3434359324554 )" required>
 
                             @if ($errors->has('cnic'))
                                 <span class="help-block">
@@ -96,17 +87,17 @@
                             @endif
                         </div>
 
-                        <div class="form-group">
-                            <label for="phone">Labor Contact</label>
+                        <div class="form-group {{ $errors->has('phone') ? ' has-error' : '' }}">
+                            <label for="phone">Labor Contact  <span style="color: red;">*</span></label>
                             <div class="input-group">
                                 <div class="input-group-addon">
                                     <i class="fa fa-phone"></i>
                                 </div>
 
                                 <input type="text" class="form-control" placeholder="Contact Number"
-                                       value="{{ $labors->phone }}"
-                                       data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']"
-                                       data-mask="" id="phone" name="phone">
+                                    value="{{ $labors->phone }}" maxlength="11" 
+                                    pattern="[0-9]{11}"
+                                    title="Enter 11 Digit Number. Example:(03330234334)" id="phone" name="phone">
                                 @if ($errors->has('phone'))
                                     <span class="help-block">
                         <strong>{{ $errors->first('phone') }}</strong>                              
@@ -114,32 +105,35 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group {{ $errors->has('address') ? ' has-error' : '' }}">
 
-                            <label for="address">Labor Address</label>
+                            <label for="address">Labor Address  <span style="color: red;">*</span></label>
                             <input type="text" class="form-control" id="address" placeholder="Home Address"
-                                   value="{{ $labors->address }}" name="address">
+                                   value="{{ $labors->address }}" name="address"  pattern="[A-Za-z0-9\w]{4,100}"
+                                               title=" Minimum 4 letters required" required> 
                             @if ($errors->has('address'))
                                 <span class="help-block">
                         <strong>{{ $errors->first('address') }}</strong>                              
                       </span>
                             @endif
                         </div>
-                        <div class="form-group">
+                        <div class="form-group {{ $errors->has('city') ? ' has-error' : '' }}">
 
-                            <label for="city">Labor City</label>
+                            <label for="city">Labor City  <span style="color: red;">*</span></label>
                             <input type="text" class="form-control" id="city" placeholder="Home City"
-                                   value="{{ $labors->city }}" name="city">
+                                   value="{{ $labors->city }}" name="city" pattern="[A-Za-z0-9\w]{4,100}"
+                                               title=" Minimum 4 letters required" required>
                             @if ($errors->has('city'))
-                                <span class="help-block">
+                                 <span class="help-block">
                         <strong>{{ $errors->first('city') }}</strong>                              
                       </span>
                             @endif
                         </div>
-                        <div class="form-group">
-                            <label for="rate">Labor Rate</label>
+                        <div class="form-group {{ $errors->has('rate') ? ' has-error' : '' }}">
+                            <label for="rate">Labor Rate  <span style="color: red;">*</span></label>
                             <input type="text" class="form-control" id="rate" placeholder="Labor Rate(per Day)"
-                                   value="{{ $labors->rate }}" name="rate">
+                                   value="{{ $labors->rate }}" name="rate" pattern="[0-9]{3,100}"
+                                               title=" Minimum 3 digit number required" required>
                             @if ($errors->has('rate'))
                                 <span class="help-block">
                         <strong>{{ $errors->first('rate') }}</strong>                              

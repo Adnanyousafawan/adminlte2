@@ -51,7 +51,7 @@ class ReportController extends Controller
                     ->where('order_details.created_at', '<=', $now)
                     ->where('order_details.created_at', '>=', $to)
                     ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
-                        'suppliers.name as supplier_name', 'items.name', 'items.selling_rate', 'order_details.created_at')
+                        'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
                     ->get();
                 return view('reports/index', ['orders' => $orders, 'searchingVals' => $constraints]);
             }
@@ -86,7 +86,7 @@ class ReportController extends Controller
             ->where('order_details.created_at', '<=', $now)
             ->where('order_details.created_at', '>=', $to)
             ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
-                'suppliers.name as supplier_name', 'items.name', 'items.selling_rate', 'order_details.created_at')
+                'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
             ->get();
 
 
@@ -120,7 +120,7 @@ class ReportController extends Controller
             ->where('order_details.created_at', '<=', $now)
             ->where('order_details.created_at', '>=', $to)
             ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
-                'suppliers.name as supplier_name', 'items.name', 'items.selling_rate', 'order_details.created_at')
+                'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
             ->get();
 
         return view('reports/index', ['orders' => $orders, 'searchingVals' => $constraints]);
@@ -175,7 +175,7 @@ class ReportController extends Controller
         $orders = OrderDetail::leftJoin('items', 'order_details.item_id', '=', 'items.id')
             ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
             ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
-                'suppliers.name as supplier_name', 'items.name', 'items.selling_rate', 'order_details.created_at')
+                'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
             ->where('order_details.created_at', '<=', $constraints['from'])
             ->where('order_details.created_at', '>=', $constraints['to'])
             //->where('order_details.project_id','=',$constraints['proj'])
@@ -190,7 +190,7 @@ class ReportController extends Controller
             ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
             ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
             ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
-                'suppliers.name as supplier_name', 'items.name', 'items.selling_rate', 'order_details.created_at')
+                'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
             ->where('order_details.created_at', '<=', $constraints['from'])
             ->where('order_details.created_at', '>=', $constraints['to'])
             //->where('order_details.project_id','=',$constraints['proj'])
