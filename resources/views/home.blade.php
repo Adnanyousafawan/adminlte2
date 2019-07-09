@@ -39,7 +39,7 @@
             </div>
             <div class="icon">
               <i class="fa fa-check-square"></i>
-               {{-- ion ion-stats-bars --}}
+                {{-- ion ion-stats-bars --}} 
             </div>
             <a href="{{ route('projects.completed') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
