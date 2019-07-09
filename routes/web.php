@@ -50,6 +50,12 @@ Route::get('customer-payment', 'CustomerPaymentsController@index')->name('custom
 Route::delete('customer-payment/destroy/{id}', 'CustomerPaymentsController@destroy')->name('customerpayment.destroy');
 Route::post('customer-payment/update/{id}', 'CustomerPaymentsController@update')->name('customerpayment.update');
 
+Route::get('supplier-payment/create', 'SupplierPaymentsController@create')->name('supplierpayment.create');
+Route::post('supplier-payment/supplierpayment/insert', 'SupplierPaymentsController@insert')->name('supplierpayment.insert');
+Route::get('supplier-payment', 'SupplierPaymentsController@index')->name('supplierpayment');
+Route::delete('supplier-payment/destroy/{id}', 'SupplierPaymentsController@destroy')->name('supplierpayment.destroy');
+Route::post('supplier-payment/update/{id}', 'SupplierPaymentsController@update')->name('supplierpayment.update');
+
 
 Route::get('report', 'ReportController@index')->name('report.daily');
 Route::get('report/weekly', 'ReportController@weekly')->name('report.weekly');

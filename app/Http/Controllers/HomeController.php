@@ -60,7 +60,9 @@ class HomeController extends Controller
                 //_________________________ Dashboard Boxes Count _____________________________________
                 $status_id = DB::table('project_status')->where('name', '=', 'Completed')->pluck('id')->first();
                 $completed_projects = DB::table('projects')->where('status_id', '=', $status_id)
-                    ->where('assigned_by', '=', Auth::User()->id)->count();
+                    //->where('assigned_by', '=', Auth::User()->id)
+                ->count();
+
                 if ($status_id == 0) {
                     $current_projects = DB::table('projects')->where('status_id', '!=', $status_id)
                         ->where('assigned_by', '=', Auth::User()->id)
@@ -97,8 +99,10 @@ class HomeController extends Controller
             ->title("Expense Details")
             ->elementLabel("Company Expenses")
             ->dimensions(1000, 500)
-            ->responsive(true)
-            ->groupByMonth(date('Y'), true);
+            ->responsive(true);
+            //->groupByMonth(date('Y'), true);
+
+
 
             //___________________________________________________________
 
@@ -190,9 +194,9 @@ class HomeController extends Controller
                             ->groupByMonth(date('Y'), true);
 
                         $pie_chart = Charts::create('pie', 'highcharts')
-                            ->title('Pie Chart Demo')
+                            ->title('Company Chart')
                             ->labels(['Company Balance', 'Company Expenses', 'Receivable'])
-                            ->values([$company_balance, $company_expense, 50])
+                            ->values([$company_balance, $company_expense, 10000])
                             ->dimensions(1000, 500)
                             ->responsive(true);
 

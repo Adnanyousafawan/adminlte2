@@ -254,6 +254,14 @@ return [
                     'text' => 'Add Customer Payment',
                     'url'  => 'customer-payment/create',
                 ],
+                 [
+                    'text' => 'Supplier Payments',
+                    'url' => 'supplier-payment',
+                ],
+                [
+                    'text' => 'Add Supplier Payment',
+                    'url'  => 'supplier-payment/create',
+                ],
             ],
         ],
          [

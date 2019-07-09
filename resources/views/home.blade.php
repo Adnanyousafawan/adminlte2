@@ -155,8 +155,6 @@
         </div>
         <!-- /.col -->
     </div>
-
-@endcan
     
         <div class="panel panel-primary">
 
@@ -242,6 +240,7 @@
     {!! $donut_chart->script() !!} --}}
 
     <!-- TABLE: LATEST ORDERS -->
+    @endcan
 <div class="row">
 {{-- <div class="col-md-12">
           <div class="box">

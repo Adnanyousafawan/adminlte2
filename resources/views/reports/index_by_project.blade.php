@@ -85,8 +85,6 @@
                    
                   </tr>
  --}}
-              
-
                   <td style="background-color: #D3D3D3;">{{ $order->invoice_number }}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order->supplier_name }}</td>
 

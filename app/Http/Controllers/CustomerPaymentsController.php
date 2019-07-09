@@ -1,5 +1,5 @@
 <?php
-
+ 
 namespace App\Http\Controllers;
 
 use App\CustomerPayment;
@@ -150,6 +150,6 @@ class CustomerPaymentsController extends Controller
     public function destroy($id)
     {
         CustomerPayment::where('id', $id)->delete();
-        return redirect()->back()->with('success', 'Item Deleted Succuessfully.');
+        return redirect()->back()->with('success', 'Payment Deleted Succuessfully.');
     }
 }
