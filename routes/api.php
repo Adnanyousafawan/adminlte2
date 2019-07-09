@@ -66,3 +66,9 @@ Route::post('/orders/partially-received', 'APIController@api_orders_partially_re
 Route::post('/orders/details', 'APIController@api_orders_details');
 Route::post('/labor/details/', 'APIController@api_labor_details');
 Route::post('/labor/details/update', 'APIController@api_labor_details_update');
+Route::post('/add/note', 'APIController@api_add_note');
+Route::post('/get/note', 'APIController@api_get_note');
+Route::post('/update/note', 'APIController@api_update_note');
+Route::post('/delete/note', 'APIController@api_delete_note');
+Route::post('/all/notes', 'APIController@api_all_notes');
+
