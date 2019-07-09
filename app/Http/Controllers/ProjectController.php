@@ -535,7 +535,8 @@ class ProjectController extends Controller
 
 
  
-            $expense_chart = MiscellaneousExpense::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))->get();
+            $expense_chart = MiscellaneousExpense::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))
+                            ->where('project_id','=',$id)->get();
                         $chart = Charts::database($expense_chart, 'bar', 'highcharts')
                             ->title("Expenses")
                             ->elementLabel("Extra Expense")
