@@ -150,7 +150,7 @@ class APIController extends Controller
 
         $id = DB::table('projects')
             ->where('title', '=', $request->input('project_id'))
-            ->get();
+            ->pluck('id')->first();
 
         if ($id->pluck('title')->first() != $request->input('project_id')) {
             return "Error";
