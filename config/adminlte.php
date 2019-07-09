@@ -1,5 +1,4 @@
 <?php
-
 return [
 
     /*
@@ -136,27 +135,27 @@ return [
          [
             'text' => 'Create Project',
             'url'  => 'projects/create',
-            'icon' => 'ion-android-add',
+            'icon' => 'ion ion-android-add-circle',
         ],
          [
             'text' => 'Add Customer Payment',
             'url'  => 'customer-payment/create',
-            'icon_color' => 'red',
-        ],
-         [
-            'text' => 'Add Expense',
-            'url'  => 'expenses/create',
-            'icon_color' => 'red',
+            'icon' => 'ion ion-cash',
         ],
          [
             'text' => 'Material Requests',
             'url' => '/materialrequest',
-            'icon_color' => 'usr',
-            
+            'icon' => 'ion ion-pull-request',  
+        ],
+        [
+            'text' => 'Add Expense',
+            'url'  => 'expenses/create',
+            'icon' => 'ion ion-cash',
         ],
          [
-                    'text' => 'Add Order',
-                    'url'  => 'orders/create',
+            'text' => 'Add Order',
+            'url'  => 'orders/create',
+            'icon' => 'ion ion-android-add'
         ],
         'Customers',
         [
@@ -169,15 +168,17 @@ return [
         'Manage',
         [
             'text'    => 'Orders',
-            'icon'    => 'share',
+            'icon'    => 'ion ion-ios-albums-outline',
             'submenu' => [
                 [
                     'text' => 'View All Orders',
                     'url' => '/orders',
+                    'icon' => 'ion ion-ios-list-outline'
                 ],
                 [
                     'text' => 'Add Order',
                     'url'  => 'orders/create',
+                    'icon' => 'ion ion-android-add-circle'
                 ],
                 
               
@@ -190,6 +191,7 @@ return [
                 [
                     'text' => 'View All Labors',
                     'url' => '/labors',
+                    'icon' => 'ion ion-ios-list-outline'
                     
                 ],
                 [
@@ -203,19 +205,22 @@ return [
         ],
         [
             'text'    => 'Projects',
-            'icon'    => 'share',
+            'icon'    => 'ion ion-home',
             'submenu' => [
                  [
-                    'text' => 'Projects Index',
+                    'text' => 'Projects Detail',
                     'url'  => 'projects',
+                    'icon' => 'ion ion-ios-list'
                 ],
                  [
                     'text' => 'All Projects',
                     'url'  => 'projects/all',
+                    'icon' => 'ion ion-ios-list-outline'
                 ],
                 [
                     'text' => 'Create Project',
                     'url'  => 'projects/create',
+                    'icon' => 'ion ion-android-add-circle'
                 ],
                
             ],
@@ -223,56 +228,68 @@ return [
 
          [
             'text'    => 'Expenses',
-            'icon'    => 'share',
+            'icon'    => 'ion ion-ios-browsers-outline',
             'submenu' => [
                  [
                     'text' => 'Project Expenses',
                     'url' => '/expenses',
+                    'icon' => 'ion ion-ios-list-outline'
                 ],
                 [
                     'text' => 'Company Expenses',
                     'url' => '/company-expenses',
+                    'icon' => 'ion ion-ios-list-outline'
                 ],
                 [
                     'text' => 'Add Expense',
                     'url'  => 'expenses/create',
+                    'icon' => 'ion ion-android-add-circle'
+
                 ],
             ],
         ],
 
         [
             'text'    => 'Payments',
-            'icon'    => 'share',
+            'icon'    => 'ion ion-ios-barcode-outline',
             'submenu' => [
                  [
                     'text' => 'View Customer Payments',
                     'url' => 'customer-payment',
+                    'icon' => 'ion ion-ios-list-outline'
                 ],
                 [
                     'text' => 'Add Customer Payment',
                     'url'  => 'customer-payment/create',
+                    'icon' => 'ion ion-cash'
+
                 ],
                  [
                     'text' => 'Supplier Payments',
                     'url' => 'supplier-payment',
+                    'icon' => 'ion ion-ios-list-outline'
                 ],
                 [
                     'text' => 'Add Supplier Payment',
                     'url'  => 'supplier-payment/create',
+                    'icon' => 'ion ion-cash'
                 ],
             ],
         ],
          [
             'text'    => 'Items',
-            'icon'    => 'share',
+            'icon'    => 'ion ion-ios-infinite',
             'submenu' => [
                 [
                     'text' => 'View All Items',
                     'url' => 'items',
+                    'icon' => 'ion ion-ios-list-outline'
                 ],
                 [
                     'text' => 'Add Items',
                     'url'  => 'items/create',
+                    'icon' => 'ion ion-android-add-circle'
+
                 ],
             ],
         ],
@@ -283,6 +300,7 @@ return [
                  [
                     'text' => 'View All User',
                     'url' => 'users',
+                    'icon' => 'ion ion-ios-list-outline'
                 ],
                 [
                     'text' => 'Add User',
@@ -295,15 +313,17 @@ return [
         ],
          [
             'text'    => 'Supplier',
-            'icon'    => 'share',
+            'icon'    => 'fa fa-handshake-o',
             'submenu' => [
                 [
                     'text' => 'View All Supplier',
                     'url' => 'suppliers/all',
+                    'icon' => 'ion ion-ios-list-outline'
                 ],
                 [
                     'text' => 'Add Supplier',
                     'url'  => 'suppliers/create',
+                    'icon' => 'ion ion-android-add-circle'
                 ],
                
               
@@ -314,15 +334,17 @@ return [
         'Reports Management',
          [
             'text'    => 'Reports',
-            'icon'    => 'share',
+            'icon'    => 'ion ion-stats-bars',
             'submenu' => [
                 [
                     'text' => 'Project Expenses',
                     'url' => 'expensereport',
+                    'icon' => 'ion ion-alert'
                 ],
                 [
                     'text' => 'Project Orders',
                     'url'  => 'projectreport',
+                    'icon' => 'ion ion-grid:'
                 ],
                
               
