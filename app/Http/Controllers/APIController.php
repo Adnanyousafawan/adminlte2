@@ -7,6 +7,7 @@ use App\Labor;
 use App\LaborAttendance;
 use App\LaborStatus;
 use App\MaterialRequest;
+use App\Note;
 use App\Project;
 use App\ProjectPhase;
 use App\ProjectStatus;
@@ -1858,5 +1859,105 @@ class APIController extends Controller
             return "Error Saving!";
         }
     }
+
+    function api_add_note(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $title = $request->get('title');
+        $body = $request->get('body');
+
+
+        $note = new Note([
+            'title' => $title,
+            'body' => $body,
+            'contractor_id' => $id
+        ]);
+
+
+        if ($note->save()) {
+            return "New note has been created successfully.";
+        } else {
+            return "A problem has been occurred while creating new note.";
+        }
+    }
+
+    function api_get_note(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')->first();
+
+        $title = $request->get('title');
+
+        $note = Note::all()
+            ->where('title', '=', $title)
+            ->where('contractor_id', '=', $id)
+            ->first();
+
+        return response()->json($note);
+    }
+
+    function api_update_note(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')->first();
+
+        $previous_title = $request->get('previous_title');
+
+        $note_id = Note::all()
+            ->where('title', '=', $previous_title)
+            ->pluck('id')->first();
+
+        $title = $request->get('title');
+        $body = $request->get('body');
+
+        $note = Note::findOrFail($note_id);
+
+        $note->title = $title;
+        $note->body = $body;
+
+        if ($note->save()) {
+            return "Note updated.";
+        } else {
+            return "Error has been occurred while updating note.";
+        }
+    }
+
+    function api_delete_note(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')->first();
+
+        $title = $request->get('title');
+
+        $result = DB::table('notes')
+            ->where('title', '=', $title)
+            ->where('contractor_id', '=', $id)
+            ->delete();
+
+        if ($result > 0) {
+            return "Note has been removed.";
+        } else {
+            return "Error occurred while removing note.";
+        }
+    }
+
+    function api_all_notes(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')->first();
+
+        $notes = Note::all()->where('contractor_id', '=', $id);
+
+        return response()->json($notes);
+    }
+
 
 }
