@@ -118,11 +118,12 @@ return [
     */
 
     'menu' => [
+       
         'MAIN NAVIGATION',
-        [
-            'text' => 'Blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
+         [
+            'text' => 'Dashboard',
+            'url'  => 'home',
+            'icon' => 'dashboard',
         ],
         [
             'text'        => 'Profile',
@@ -132,15 +133,10 @@ return [
             'label_color' => 'success',*/
         ],
         'General links',
-        [
-            'text' => 'Home',
-            'url'  => 'home',
-            'icon' => 'file',
-        ],
          [
             'text' => 'Create Project',
             'url'  => 'projects/create',
-            'icon_color' => 'red',
+            'icon' => 'ion-android-add',
         ],
          [
             'text' => 'Add Customer Payment',
@@ -166,7 +162,7 @@ return [
         [
             'text' => 'Customers',
             'url'  => '/allcustomers',
-            'icon' => 'file',
+            'icon' => 'ion ion-ios-people-outline',
         ],
       
 
@@ -189,15 +185,17 @@ return [
         ],
         [
             'text'    => 'Labors',
-            'icon'    => 'share',
+            'icon'    => 'ion ion-ios-people-outline',
             'submenu' => [
                 [
                     'text' => 'View All Labors',
                     'url' => '/labors',
+                    
                 ],
                 [
                     'text' => 'Add Labor',
                     'url'  => 'labors/create',
+                    'icon' => 'ion ion-person-add'
                 ],
                 
               
@@ -280,7 +278,7 @@ return [
         ],
          [
             'text'    => 'User',
-            'icon'    => 'share',
+            'icon'    => 'ion ion-ios-people-outline',
             'submenu' => [
                  [
                     'text' => 'View All User',
@@ -289,6 +287,7 @@ return [
                 [
                     'text' => 'Add User',
                     'url'  => 'users/create',
+                    'icon' => 'ion ion-person-add'
                 ],
                
               

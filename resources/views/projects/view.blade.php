@@ -78,11 +78,11 @@
                                 <p class="text-muted text-center"> {{ $projects->area }}  </p>
                                 <b><p class="text-muted text-center"> {{ $projects->city }}  </p></b>
                                 <hr>
-                                <strong><i class="fa fa-book margin-r-5"></i>Customer Name</strong>
+                                <strong>Customer Name</strong>
                                 <p class="text-muted float-right">
                                     {{ $customers->name }}
                                 </p>
-                                <strong><i class="fa fa-book margin-r-5"></i>Customer Contact</strong>
+                                <strong>Customer Contact</strong>
                                 <b><p class="text-muted float-right">
                                         {{ $customers->phone }}
                                     </p>
@@ -126,11 +126,13 @@
                     </div>
         <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
             <div class="row" style="margin-top: 3%;">
-            <div class="col-md-6"> 
+            <div class="col-md-4"> 
                {!! $percentage_chart->html() !!}
             </div>
-
-             <div class="col-md-6"> 
+             <div class="col-md-4"> 
+               {!! $percentage_chart_received->html() !!}
+            </div>
+             <div class="col-md-4"> 
                {!! $percentage_chart_budget->html() !!}
             </div>
          </div>
@@ -140,9 +142,9 @@
 
                             <div class="box">
                                 <div class="box-header">
-                                    <h2 class="box-title">Received</h2>
+                                    <h2 class="box-title">Payable</h2>
                                     <span class="info-box-number label label-warning pull-right"
-                                          style="margin-top: 0px; font-size: 16px;">{{ $received_payments }}</span>
+                                          style="margin-top: 0px; font-size: 16px;">0</span>
                                 </div>
                                 <!-- /.box-header -->
                                 <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -168,7 +170,7 @@
                                 <div class="box-header">
                                     <h2 class="box-title">Receivable</h2>
                                     <span class="info-box-number label label-success pull-right"
-                                          style="margin-top: 0px; font-size: 16px;"> {{ $projects->estimated_budget }}</span>
+                                          style="margin-top: 0px; font-size: 16px;"> {{ $balance }}</span>
                                 </div>
                                 <!-- /.box-header -->
                                 <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -190,16 +192,16 @@
 
                                 <ul class="list-group list-group-unbordered">
                                     <li class="list-group-item">
-                                        <b>Number of Workers</b> <a class="pull-right">1,322</a>
+                                        <b>Number of Workers</b> <a class="pull-right">15</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <b>Current Phase</b> <a class="pull-right">5</a>
+                                        <b>Current Phase</b> <a class="pull-right">Flooring</a>
                                     </li>
                                     <li class="list-group-item">
                                         <b>Project Status</b> <a class="pull-right">In Progress</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <b>Floor Number</b> <a class="pull-right">2</a>
+                                        <b>Floor Number</b> <a class="pull-right">1</a>
                                     </li>
 
                                 </ul>
@@ -222,7 +224,6 @@
             </div>
             <br/><br/> 
            
-            
             <div class="col-md-6">  
                {!! $pie_chart->html() !!}
             </div>
@@ -239,6 +240,8 @@
     {!! $pie_chart->script() !!}
     {!! $percentage_chart->script() !!}
 {!! $percentage_chart_budget->script() !!}
+{!! $percentage_chart_received->script() !!}
+
 
 </div>
                     <div class="col-md-6 col-md-offset-1 col-sm-12 col-sm-offset-0 col-lg-6 col-lg-offset-1">

@@ -503,6 +503,7 @@ class ProjectController extends Controller
         $expense = DB::table('miscellaneous_expenses')->where('project_id', '=', $id)->sum('expense');
         
         $total_orders =DB::table('order_details')->where('order_details.project_id','=',$id)->get();
+        
         $orders_sum = 0;
         $total = 0;
             foreach ($total_orders as $order)
@@ -512,8 +513,6 @@ class ProjectController extends Controller
             }
            
         $projects = DB::table('projects')->where('id', '=', $id)->get()->first();
-       
-
         $spent = $orders_sum + $expense;
         $balance = $projects->estimated_budget - $spent;
 
@@ -559,13 +558,10 @@ class ProjectController extends Controller
       $percentage_chart = Charts::create('percentage', 'justgage')
             ->title('Project Completed')
             ->elementLabel('%')
-            ->values([65, 0, 100])
+            ->values([15, 0, 100])
             ->responsive(true)
             ->height(300)
             ->width(0);
-
-
-
 
              $percentage_chart_budget = Charts::create('percentage', 'justgage')
             ->title('Budget Used')
@@ -574,15 +570,18 @@ class ProjectController extends Controller
             ->responsive(true)
             ->height(300)
             ->width(0);
-
-
-
-
-
+$percent = $percent + $percent;
+             $percentage_chart_received = Charts::create('percentage', 'justgage')
+            ->title('Received Amount')
+            ->elementLabel('%')
+            ->values([$percent, 0, 100])
+            ->responsive(true)
+            ->height(300)
+            ->width(0);
 
         $total_pending_requests = DB::table('material_requests')->where('request_status_id', '=', $request_status)->count();
 
-        return view('projects/view', compact('projects', 'customers', 'labors', 'orders', 'contractors', 'total_orders_count','spent','balance', 'expense_chart', 'materialrequests', 'total_pending_requests', 'pie_chart','chart','percentage_chart','percentage_chart_budget','received_payments'));
+        return view('projects/view', compact('projects', 'customers', 'labors', 'orders', 'contractors', 'total_orders_count','spent','balance', 'expense_chart', 'materialrequests', 'total_pending_requests', 'pie_chart','chart','percentage_chart','percentage_chart_budget','received_payments','percentage_chart_received'));
     } 
 
 
