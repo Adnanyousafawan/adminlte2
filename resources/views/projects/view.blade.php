@@ -22,7 +22,7 @@
                                 <div class="box-header">
                                     <h2 class="box-title">Spent</h2>
                                     <span class="info-box-number label label-warning pull-right"
-                                          style="margin-top: 0px; font-size: 16px;">{{ $expense }}</span>
+                                          style="margin-top: 0px; font-size: 16px;">{{ $spent }}</span>
                                 </div>
                                 <!-- /.box-header -->
                                 <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -34,7 +34,7 @@
                         <div class="col-xs-12 col-md-4 col-sm-4 col-lg-4 col-xl-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h2 class="box-title">Balance</h2>
+                                    <h2 class="box-title">Budget Left</h2>
                                     <span class="info-box-number label label-danger pull-right"
                                           style="margin-top: 0px; font-size: 16px;">{{ $balance }}</span>
                                 </div>
@@ -49,7 +49,7 @@
                         <div class="col-xs-12 col-md-3 col-sm-4 col-lg-4 col-xl-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h2 class="box-title">Budget</h2>
+                                    <h2 class="box-title">Total Budget</h2>
                                     <span class="info-box-number label label-success pull-right"
                                           style="margin-top: 0px; font-size: 16px;"> {{ $projects->estimated_budget }}</span>
                                 </div>
@@ -64,7 +64,6 @@
 
                 </div>
                 <div class="row">
-
 
                     <div class="col-md-4 col-md-offset-1 col-sm-6 col-lg-4 col-lg-offset-1">
 
@@ -125,9 +124,63 @@
                             </div>
                         </div>
                     </div>
+        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+            <div class="row" style="margin-top: 3%;">
+            <div class="col-md-6"> 
+               {!! $percentage_chart->html() !!}
+            </div>
 
+             <div class="col-md-6"> 
+               {!! $percentage_chart_budget->html() !!}
+            </div>
+         </div>
+     </div>
 
-                    <div class="col-md-6 col-lg-6 col-sm-6">
+                        <div class="col-xs-12 col-md-3 col-sm-6 col-lg-3 col-xl-12" style="margin-top: 2%;">
+
+                            <div class="box">
+                                <div class="box-header">
+                                    <h2 class="box-title">Received</h2>
+                                    <span class="info-box-number label label-warning pull-right"
+                                          style="margin-top: 0px; font-size: 16px;">{{ $received_payments }}</span>
+                                </div>
+                                <!-- /.box-header -->
+                                <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
+                            </div>
+                            <!-- /.info-box-content -->
+                            <!-- /.info-box -->
+                        </div>
+{{-- 
+                        <div class="col-xs-12 col-md-3 col-sm-4 col-lg-2 col-xl-12" style="margin-top: 2%;">
+                            <div class="box">
+                                <div class="box-header">
+                                    <h2 class="box-title">Balance</h2>
+                                    <span class="info-box-number label label-danger pull-right"
+                                          style="margin-top: 0px; font-size: 16px;">{{ $balance }}</span>
+                                </div>
+                              
+                            </div>
+                         --}}
+                 
+                    <!-- /.col -->
+                        <div class="col-xs-12 col-md-3 col-sm-6 col-lg-3 col-xl-12" style="margin-top: 2%;">
+                            <div class="box">
+                                <div class="box-header">
+                                    <h2 class="box-title">Receivable</h2>
+                                    <span class="info-box-number label label-success pull-right"
+                                          style="margin-top: 0px; font-size: 16px;"> {{ $projects->estimated_budget }}</span>
+                                </div>
+                                <!-- /.box-header -->
+                                <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
+                            </div>
+                            <!-- /.info-box-content -->
+                            <!-- /.info-box -->
+                        </div>
+
+          
+
+             
+                    <div class="col-md-6 col-lg-6 col-sm-12" style="margin-top: 2%;">
                         <div class="box box-primary" style="">
                             <div class="box-header with-border">
                                 <h3 class="box-title">About Project</h3>
@@ -154,230 +207,40 @@
                         </div><!-- /.box -->
                     </div>
 
+      </div>
+<div class="row">
 
-                    <div class="col-md-6 col-sm-12 col-lg-6">
-                        <div class="nav-tabs-custom" style="cursor: move;">
-                            <!-- Tabs within a box -->
-                            <ul class="nav nav-tabs pull-right ui-sortable-handle">
-                                <li class="active"><a href="#revenue-chart" data-toggle="tab">Area</a></li>
-                                <li><a href="#sales-chart" data-toggle="tab">Donut</a></li>
-                                <li class="pull-left header"><i class="fa fa-inbox"></i> Sales</li>
-                            </ul>
-                            <div class="tab-content no-padding">
-                                <!-- Morris chart - Sales -->
-                                <div class="chart tab-pane active" id="revenue-chart"
-                                     style="position: relative; height: 300px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
-                                    <svg height="300" version="1.1" width="611" xmlns="http://www.w3.org/2000/svg"
-                                         xmlns:xlink="http://www.w3.org/1999/xlink"
-                                         style="overflow: hidden; position: relative;">
-                                        <desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with
-                                            Raphaël 2.2.0
-                                        </desc>
-                                        <defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs>
-                                        <text x="49.21875" y="261.5" text-anchor="end" font-family="sans-serif"
-                                              font-size="12px" stroke="none" fill="#888888"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;"
-                                              font-weight="normal">
-                                            <tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.25">0
-                                            </tspan>
-                                        </text>
-                                        <path fill="none" stroke="#aaaaaa" d="M61.71875,261.5H586" stroke-width="0.5"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
-                                        <text x="49.21875" y="202.375" text-anchor="end" font-family="sans-serif"
-                                              font-size="12px" stroke="none" fill="#888888"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;"
-                                              font-weight="normal">
-                                            <tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.25">
-                                                7,500
-                                            </tspan>
-                                        </text>
-                                        <path fill="none" stroke="#aaaaaa" d="M61.71875,202.375H586" stroke-width="0.5"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
-                                        <text x="49.21875" y="143.25" text-anchor="end" font-family="sans-serif"
-                                              font-size="12px" stroke="none" fill="#888888"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;"
-                                              font-weight="normal">
-                                            <tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.25">
-                                                15,000
-                                            </tspan>
-                                        </text>
-                                        <path fill="none" stroke="#aaaaaa" d="M61.71875,143.25H586" stroke-width="0.5"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
-                                        <text x="49.21875" y="84.12500000000003" text-anchor="end"
-                                              font-family="sans-serif" font-size="12px" stroke="none" fill="#888888"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;"
-                                              font-weight="normal">
-                                            <tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-                                                   dy="4.250000000000028">22,500
-                                            </tspan>
-                                        </text>
-                                        <path fill="none" stroke="#aaaaaa" d="M61.71875,84.12500000000003H586"
-                                              stroke-width="0.5"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
-                                        <text x="49.21875" y="25.00000000000003" text-anchor="end"
-                                              font-family="sans-serif" font-size="12px" stroke="none" fill="#888888"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;"
-                                              font-weight="normal">
-                                            <tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-                                                   dy="4.250000000000028">30,000
-                                            </tspan>
-                                        </text>
-                                        <path fill="none" stroke="#aaaaaa" d="M61.71875,25.00000000000003H586"
-                                              stroke-width="0.5"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
-                                        <text x="489.8074498784933" y="274" text-anchor="middle"
-                                              font-family="sans-serif" font-size="12px" stroke="none" fill="#888888"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;"
-                                              font-weight="normal" transform="matrix(1,0,0,1,0,6.75)">
-                                            <tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.25">
-                                                2013
-                                            </tspan>
-                                        </text>
-                                        <text x="256.65199726609967" y="274" text-anchor="middle"
-                                              font-family="sans-serif" font-size="12px" stroke="none" fill="#888888"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;"
-                                              font-weight="normal" transform="matrix(1,0,0,1,0,6.75)">
-                                            <tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.25">
-                                                2012
-                                            </tspan>
-                                        </text>
-                                        <path fill="#74a5c2" stroke="none"
-                                              d="M61.71875,219.46606666666668C76.37059538274605,219.97848333333334,105.67428614823815,223.04214375,120.3261315309842,221.51573333333334C134.97797691373026,219.98932291666668,164.28166767922235,209.52570027322403,178.9335130619684,207.25478333333334C193.42609925577156,205.00855027322405,222.4112716433779,205.26325625,236.90385783718105,203.44713333333334C251.3964440309842,201.63101041666667,280.3816164185905,195.27290284608378,294.8742026123937,192.7258C309.5260479951397,190.15070701275044,338.8297387606318,182.85093958333334,353.48158414337786,182.95835C368.1334295261239,183.06576041666668,397.43712029161605,204.56019107468126,412.0889656743621,193.58508333333333C426.58155186816526,182.7292702413479,455.56672425577153,102.10697044198895,470.0593104495747,95.63466666666667C484.392637454435,89.23348710865562,513.0592914641555,135.37136634615388,527.3926184690158,142.09115000000003C542.0444638517619,148.9602621794872,571.348154617254,148.015475,586,149.99025L586,261.5L61.71875,261.5Z"
-                                              fill-opacity="1"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></path>
-                                        <path fill="none" stroke="#3c8dbc"
-                                              d="M61.71875,219.46606666666668C76.37059538274605,219.97848333333334,105.67428614823815,223.04214375,120.3261315309842,221.51573333333334C134.97797691373026,219.98932291666668,164.28166767922235,209.52570027322403,178.9335130619684,207.25478333333334C193.42609925577156,205.00855027322405,222.4112716433779,205.26325625,236.90385783718105,203.44713333333334C251.3964440309842,201.63101041666667,280.3816164185905,195.27290284608378,294.8742026123937,192.7258C309.5260479951397,190.15070701275044,338.8297387606318,182.85093958333334,353.48158414337786,182.95835C368.1334295261239,183.06576041666668,397.43712029161605,204.56019107468126,412.0889656743621,193.58508333333333C426.58155186816526,182.7292702413479,455.56672425577153,102.10697044198895,470.0593104495747,95.63466666666667C484.392637454435,89.23348710865562,513.0592914641555,135.37136634615388,527.3926184690158,142.09115000000003C542.0444638517619,148.9602621794872,571.348154617254,148.015475,586,149.99025"
-                                              stroke-width="3"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
-                                        <circle cx="61.71875" cy="219.46606666666668" r="4" fill="#3c8dbc"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="120.3261315309842" cy="221.51573333333334" r="4" fill="#3c8dbc"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="178.9335130619684" cy="207.25478333333334" r="4" fill="#3c8dbc"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="236.90385783718105" cy="203.44713333333334" r="4" fill="#3c8dbc"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="294.8742026123937" cy="192.7258" r="4" fill="#3c8dbc"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="353.48158414337786" cy="182.95835" r="4" fill="#3c8dbc"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="412.0889656743621" cy="193.58508333333333" r="4" fill="#3c8dbc"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="470.0593104495747" cy="95.63466666666667" r="4" fill="#3c8dbc"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="527.3926184690158" cy="142.09115000000003" r="4" fill="#3c8dbc"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="586" cy="149.99025" r="4" fill="#3c8dbc" stroke="#ffffff"
-                                                stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <path fill="#eaf3f6" stroke="none"
-                                              d="M61.71875,240.48303333333334C76.37059538274605,240.2623,105.67428614823815,241.81334583333333,120.3261315309842,239.6001C134.97797691373026,237.38685416666667,164.28166767922235,223.7569693078324,178.9335130619684,222.77706666666666C193.42609925577156,221.80781514116575,222.4112716433779,233.67380416666666,236.90385783718105,231.80348333333333C251.3964440309842,229.9331625,280.3816164185905,209.67950066029144,294.8742026123937,207.8145C309.5260479951397,205.9290048269581,338.8297387606318,214.84052083333333,353.48158414337786,216.8015C368.1334295261239,218.76247916666668,397.43712029161605,232.818839435337,412.0889656743621,223.50233333333335C426.58155186816526,214.28709360200367,455.56672425577153,148.48789790515656,470.0593104495747,142.67451666666668C484.392637454435,136.92501873848988,513.0592914641555,170.77857834249085,527.3926184690158,177.25081666666668C542.0444638517619,183.8668825091575,571.348154617254,190.58350416666667,586,195.02773333333334L586,261.5L61.71875,261.5Z"
-                                              fill-opacity="1"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></path>
-                                        <path fill="none" stroke="#a0d0e0"
-                                              d="M61.71875,240.48303333333334C76.37059538274605,240.2623,105.67428614823815,241.81334583333333,120.3261315309842,239.6001C134.97797691373026,237.38685416666667,164.28166767922235,223.7569693078324,178.9335130619684,222.77706666666666C193.42609925577156,221.80781514116575,222.4112716433779,233.67380416666666,236.90385783718105,231.80348333333333C251.3964440309842,229.9331625,280.3816164185905,209.67950066029144,294.8742026123937,207.8145C309.5260479951397,205.9290048269581,338.8297387606318,214.84052083333333,353.48158414337786,216.8015C368.1334295261239,218.76247916666668,397.43712029161605,232.818839435337,412.0889656743621,223.50233333333335C426.58155186816526,214.28709360200367,455.56672425577153,148.48789790515656,470.0593104495747,142.67451666666668C484.392637454435,136.92501873848988,513.0592914641555,170.77857834249085,527.3926184690158,177.25081666666668C542.0444638517619,183.8668825091575,571.348154617254,190.58350416666667,586,195.02773333333334"
-                                              stroke-width="3"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
-                                        <circle cx="61.71875" cy="240.48303333333334" r="4" fill="#a0d0e0"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="120.3261315309842" cy="239.6001" r="4" fill="#a0d0e0"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="178.9335130619684" cy="222.77706666666666" r="4" fill="#a0d0e0"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="236.90385783718105" cy="231.80348333333333" r="4" fill="#a0d0e0"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="294.8742026123937" cy="207.8145" r="4" fill="#a0d0e0"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="353.48158414337786" cy="216.8015" r="4" fill="#a0d0e0"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="412.0889656743621" cy="223.50233333333335" r="4" fill="#a0d0e0"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="470.0593104495747" cy="142.67451666666668" r="4" fill="#a0d0e0"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="527.3926184690158" cy="177.25081666666668" r="4" fill="#a0d0e0"
-                                                stroke="#ffffff" stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                        <circle cx="586" cy="195.02773333333334" r="4" fill="#a0d0e0" stroke="#ffffff"
-                                                stroke-width="1"
-                                                style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle>
-                                    </svg>
-                                    <div class="morris-hover morris-default-style" style="display: none;"></div>
-                                </div>
-                                <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-                                    <svg height="342" version="1.1" width="512" xmlns="http://www.w3.org/2000/svg"
-                                         xmlns:xlink="http://www.w3.org/1999/xlink"
-                                         style="overflow: hidden; position: relative;">
-                                        <desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with
-                                            Raphaël 2.2.0
-                                        </desc>
-                                        <defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs>
-                                        <path fill="none" stroke="#3c8dbc"
-                                              d="M320.5,243.33333333333331A93.33333333333333,93.33333333333333,0,0,0,408.7277551949771,180.44625304313007"
-                                              stroke-width="2" opacity="0"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 0;"></path>
-                                        <path fill="#3c8dbc" stroke="#ffffff"
-                                              d="M320.5,246.33333333333331A96.33333333333333,96.33333333333333,0,0,0,411.56364732624417,181.4248826052307L448.1151459070204,194.03833029452744A135,135,0,0,1,320.5,285Z"
-                                              stroke-width="3"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
-                                        <path fill="none" stroke="#f56954"
-                                              d="M408.7277551949771,180.44625304313007A93.33333333333333,93.33333333333333,0,0,0,236.78484627831412,108.73398312817662"
-                                              stroke-width="2" opacity="1"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;"></path>
-                                        <path fill="#f56954" stroke="#ffffff"
-                                              d="M411.56364732624417,181.4248826052307A96.33333333333333,96.33333333333333,0,0,0,234.09400205154566,107.40757544301087L194.92726941747117,88.10097469226493A140,140,0,0,1,452.8416327924656,195.6693795646951Z"
-                                              stroke-width="3"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
-                                        <path fill="none" stroke="#00a65a"
-                                              d="M236.78484627831412,108.73398312817662A93.33333333333333,93.33333333333333,0,0,0,320.47067846904883,243.333328727518"
-                                              stroke-width="2" opacity="0"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 0;"></path>
-                                        <path fill="#00a65a" stroke="#ffffff"
-                                              d="M234.09400205154566,107.40757544301087A96.33333333333333,96.33333333333333,0,0,0,320.46973599126824,246.3333285794739L320.4575884998742,284.9999933380171A135,135,0,0,1,199.4120097954186,90.31165416754118Z"
-                                              stroke-width="3"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
-                                        <text x="320.5" y="140" text-anchor="middle" font-family="&quot;Arial&quot;"
-                                              font-size="15px" stroke="none" fill="#000000"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: Arial; font-size: 15px; font-weight: 800;"
-                                              font-weight="800" transform="matrix(1,0,0,1,0,0)">
-                                            <tspan dy="140" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
-                                                In-Store Sales
-                                            </tspan>
-                                        </text>
-                                        <text x="320.5" y="160" text-anchor="middle" font-family="&quot;Arial&quot;"
-                                              font-size="14px" stroke="none" fill="#000000"
-                                              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: Arial; font-size: 14px;"
-                                              transform="matrix(1,0,0,1,0,0)">
-                                            <tspan dy="160" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">30
-                                            </tspan>
-                                        </text>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<div class="col-md-10 col-md-offset-1" style="padding: 1%;">
+    <div class="panel panel-primary" >
+
+         <div class="panel-heading">Charts</div>
+
+          <div class="panel-body">    
+            <div class="row">
+            <div class="col-md-6"> 
+               {!! $chart->html() !!}
+            </div>
+            <br/><br/> 
+           
+            
+            <div class="col-md-6">  
+               {!! $pie_chart->html() !!}
+            </div>
+         </div>
+
+        </div>
+      </div>
+   
+  
 
 
-                </div>
+    {!! Charts::scripts() !!}
+    {!! $chart->script() !!}
+    {!! $pie_chart->script() !!}
+    {!! $percentage_chart->script() !!}
+{!! $percentage_chart_budget->script() !!}
 
-                <div class="row">
-
+</div>
                     <div class="col-md-6 col-md-offset-1 col-sm-12 col-sm-offset-0 col-lg-6 col-lg-offset-1">
                         <div class="box box-primary" style="margin-bottom: 10px;">
                             <div class="box-header with-border">
@@ -531,7 +394,7 @@
                                         <div class="dataTables_info" id="example2_info" role="status"
                                              aria-live="polite">
                                             Showing 1
-                                            to {{count($orders)}} of {{ $total_orders }} entries
+                                            to {{count($orders)}} of {{ $total_orders_count }} entries
                                         </div>
                                     </div>
                                     <div class="col-sm-7">

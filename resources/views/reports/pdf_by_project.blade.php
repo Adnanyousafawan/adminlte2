@@ -67,14 +67,6 @@
           </address>
     </li>
         <!-- /.col -->
-        <div class="col-sm-4 invoice-col">
-          <b>Invoice #007612</b><br>
-          <br>
-          <b>Order ID:</b> 4F3S8J<br>
-          <b>Payment Due:</b> 2/22/2014<br>
-          <b>Account:</b> 968-34567
-        </div>
-        <!-- /.col -->
       </div>
     </div>
   <body>
@@ -125,9 +117,11 @@
                   <td  style="background-color: #D3D3D3;">{{ $order['name'] }}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order['set_rate'] }}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order['quantity'] }}</td>
+                 
                   {{ $total =  $order['set_rate'] * $order['quantity'] }} 
                   {{ $subtotal = $total + $subtotal }}
                   {{ $invoice_total = $total + $invoice_total }}
+                  
                   <td  style="background-color: #D3D3D3;">{{$total}}</td>
                   <td  style="background-color: #D3D3D3;">{{ $order['created_at'] }}</td>
                   {{  $lcheck = $order['invoice_number'] }}

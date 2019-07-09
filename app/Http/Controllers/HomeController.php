@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
 use App\Traits\UploadTrait;
 use Project;
 use Gate;
-use Charts;
+use Charts; 
 
 
 class HomeController extends Controller
@@ -99,8 +99,8 @@ class HomeController extends Controller
             ->title("Expense Details")
             ->elementLabel("Company Expenses")
             ->dimensions(1000, 500)
-            ->responsive(true);
-            //->groupByMonth(date('Y'), true);
+            ->responsive(true)
+            ->groupByMonth(date('Y'), true);
 
 
 
@@ -199,7 +199,6 @@ class HomeController extends Controller
                             ->values([$company_balance, $company_expense, 10000])
                             ->dimensions(1000, 500)
                             ->responsive(true);
-
                     //DB::table()->where('status_id','=',$status_id)->get()->count();
 
                     // dd($completed_projects);
