@@ -9,6 +9,7 @@ class SupplierPayment extends Model
     protected $fillable = [ 
         "paid",
         "payable",
+        "supplier_id"
     ];
      protected $hidden = [
         "created_at", 

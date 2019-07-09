@@ -14,10 +14,10 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
  
-
+ 
 Route::get('/', 'CustomerController@goBackToHome')->name('redirect-to-main');
 
-Auth::routes(); 
+Auth::routes();  
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -39,6 +39,7 @@ Route::get('charts', 'ChartController@index')->name('chart.index');
 //Route::resource('item', 'ItemController');
 Route::get('items/create', 'ItemController@create')->name('item.create');
 Route::post('items/itemDetails/insert', 'ItemController@insert')->name('item.insert');
+Route::post('items/update/{id}', 'ItemController@update')->name('items.update');
 Route::get('items', 'ItemController@index')->name('items.list');
 Route::delete('items/destroy/{id}', 'ItemController@destroy')->name('items.destroy');
 //----------------------------------------------------------
@@ -48,6 +49,12 @@ Route::post('customer-payment/customerpayment/insert', 'CustomerPaymentsControll
 Route::get('customer-payment', 'CustomerPaymentsController@index')->name('customerpayment');
 Route::delete('customer-payment/destroy/{id}', 'CustomerPaymentsController@destroy')->name('customerpayment.destroy');
 Route::post('customer-payment/update/{id}', 'CustomerPaymentsController@update')->name('customerpayment.update');
+
+Route::get('supplier-payment/create', 'SupplierPaymentsController@create')->name('supplierpayment.create');
+Route::post('supplier-payment/supplierpayment/insert', 'SupplierPaymentsController@insert')->name('supplierpayment.insert');
+Route::get('supplier-payment', 'SupplierPaymentsController@index')->name('supplierpayment');
+Route::delete('supplier-payment/destroy/{id}', 'SupplierPaymentsController@destroy')->name('supplierpayment.destroy');
+Route::post('supplier-payment/update/{id}', 'SupplierPaymentsController@update')->name('supplierpayment.update');
 
 
 Route::get('report', 'ReportController@index')->name('report.daily');
@@ -76,7 +83,11 @@ Route::post('expensereport/pdf', 'ExpenseReportController@exportPDF')->name('exp
 Route::get('expenses/create', 'MiscellaneousExpenseController@create')->name('expense.create');
 Route::post('expenses/miscellaneousexpenses/insert', 'MiscellaneousExpenseController@insert')->name('expenses.insert');
 Route::get('expenses', 'MiscellaneousExpenseController@index')->name('expenses.list');
+Route::post('expenses/update/{id}', 'MiscellaneousExpenseController@update')->name('expenses.update');
 Route::delete('epenses/destroy/{id}', 'MiscellaneousExpenseController@destroy')->name('expenses.destroy');
+
+Route::get('company-expenses', 'MiscellaneousExpenseController@company_expense')->name('company-expenses.list');
+Route::post('company-expenses/update/{id}', 'MiscellaneousExpenseController@update_company_expense')->name('company-expenses.update');
 
 //-----------------------------------Customer Management------------------------------------//
 
@@ -95,6 +106,9 @@ Route::post('orders/orderdetails/insert', 'OrderDetailsController@insert')->name
 Route::get('orders', 'OrderDetailsController@index')->name('orders.list');
 Route::get('orders/recieved', 'OrderDetailsController@recieved')->name('orders.recieved');
 Route::get('orders/cancelled', 'OrderDetailsController@cancelled')->name('orders.cancelled');
+Route::get('orders/pending', 'OrderDetailsController@pending')->name('orders.pending');
+Route::post('orders/cancelorder/{id}', 'OrderDetailsController@cancelorder')->name('orders.cancelorder');
+
 Route::delete('orders/destroy/{id}', 'OrderDetailsController@destroy')->name('orders.destroy');
 Route::get('orders/projectorders/{id}', 'OrderDetailsController@projectorders')->name('orders.projectorders');
 Route::post('orders/update/{id}', 'OrderDetailsController@update')->name('orders.update');
@@ -120,11 +134,13 @@ Route::get('projects/view/{id}', 'ProjectController@viewuser')->name('projects.v
 
 //-----------------------------------Project Details Management------------------------------------//
 
-Route::get('projects/pending', 'ProjectController@pending')->name('projects.pending');
+Route::get('projects/not-started', 'ProjectController@notstarted')->name('projects.notstarted');
 Route::get('projects/completed', 'ProjectController@completed')->name('projects.completed');
-Route::get('projects/cancelled', 'ProjectController@cancelled')->name('projects.cancelled');
-Route::get('projects/current', 'ProjectController@current')->name('projects.current');
+Route::get('projects/halt', 'ProjectController@halt')->name('projects.halt');
+Route::get('projects/in-progress', 'ProjectController@inprogress')->name('projects.inprogress');
 Route::get('projects/all', 'ProjectController@all')->name('projects.all');
+Route::get('projects/stopped', 'ProjectController@stopped')->name('projects.stopped');
+
 Route::get('projects/labor_by_projects','ProjectController@labors_by_projects')->name('projects.labor_by_projects');
  
 //--------------------------------Project Phase Management------------------------------

@@ -19,128 +19,131 @@ class UserController extends Controller
      */
     public function index()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
-/*
-         if (Gate::allows('isAdmin')) {
-            $roles = DB::table('roles')->where('id', '!=', 1)->get();
-            $users = DB::table('users')->get();
-            return view('users/index', compact('users','roles'));
-        }
-        
-
-
-           $users = DB::table('users')->get();
-            $roles = DB::table('roles')->where('id', '!=', 1)->get();
-           return view('users/index',compact('users','roles'));
-                if (Gate::allows('isAdmin')) {
-                    $users = DB::table('users')->where('role_id', '!=', 1)->get();
-                    return view('users/index', compact('users'));
-
-                    //abort(404, "Sorry, You cant  Access this Page");
+        /*
+                 if (Gate::allows('isAdmin')) {
+                    $roles = DB::table('roles')->where('id', '!=', 1)->get();
+                    $users = DB::table('users')->get();
+                    return view('users/index', compact('users','roles'));
                 }
 
-                if (Gate::allows('isManager')) {
-                    $users = DB::table('users')->where('role_id', '=', 3)->get();
-                    return view('users/index', compact('users'));
-                }
-                */
 
-    } 
+
+                   $users = DB::table('users')->get();
+                    $roles = DB::table('roles')->where('id', '!=', 1)->get();
+                   return view('users/index',compact('users','roles'));
+                        if (Gate::allows('isAdmin')) {
+                            $users = DB::table('users')->where('role_id', '!=', 1)->get();
+                            return view('users/index', compact('users'));
+
+                            //abort(404, "Sorry, You cant  Access this Page");
+                        }
+
+                        if (Gate::allows('isManager')) {
+                            $users = DB::table('users')->where('role_id', '=', 3)->get();
+                            return view('users/index', compact('users'));
+                        }
+                        */
+
+    }
 
     public function profile($id)
     {
 
-        $users = DB::table('users')->where('id','=',$id)->get()->first();
+        $users = DB::table('users')->where('id', '=', $id)->get()->first();
 
-        if($users->role_id == 2)
-        {
-        
-                $projects = DB::table('projects')->where('assigned_by','=',$id)->get()->all();
-                $pie_chart = Charts::create('pie', 'highcharts')
+        if ($users->role_id == 2) {
+
+            $projects = DB::table('projects')->where('assigned_by', '=', $id)->get()->all();
+            $pie_chart = Charts::create('pie', 'highcharts')
                 ->title('Pie Chart Demo')
                 ->labels(['Completed', 'Loss', 'Cancelled'])
-                ->values([60,30,10])
-                ->dimensions(1000,500)
+                ->values([60, 30, 10])
+                ->dimensions(1000, 500)
                 ->responsive(true);
-                return view('users/profile',['users' => $users] ,compact('projects','pie_chart'));
+            return view('users/profile', ['users' => $users], compact('projects', 'pie_chart'));
         }
-        if($users->role_id == 3)
-        {
-                $projects = DB::table('projects')->where('assigned_to','=',$id)->get()->all();
-                $pie_chart = Charts::create('pie', 'highcharts')
+        if ($users->role_id == 3) {
+            $projects = DB::table('projects')->where('assigned_to', '=', $id)->get()->all();
+            $pie_chart = Charts::create('pie', 'highcharts')
                 ->title('Pie Chart Demo')
                 ->labels(['Current', 'Loss', 'Profit'])
-                ->values([60,30,10])
-                ->dimensions(1000,500)
+                ->values([60, 30, 10])
+                ->dimensions(1000, 500)
                 ->responsive(true);
-                return view('users/profile',['users' => $users] ,compact('projects','pie_chart'));
+            return view('users/profile', ['users' => $users], compact('projects', 'pie_chart'));
         }
 
-       
 
     }
 
     public function manager()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
-        }
-;
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
+        };
         if (Gate::allows('isAdmin')) {
-
-            $roles = DB::table('roles')->where('id', '!=', 1)->get();
-
-            $users = User::all()->where('role_id', '=', 2);
+            $roleID = DB::table('roles')->where('name','=','Manager')->pluck('id')->first();
+            $users = DB::table('users')
+            ->leftjoin('roles','users.role_id','=','roles.id')
+            ->where('users.role_id','=',$roleID)
+            ->select('users.id','users.name','users.profile_image','users.phone','users.address','users.cnic','users.email','roles.id as role_id','roles.name as role_name')
+            ->get();
+            $roles = DB::table('roles')->where('id', '=',$roleID)->get();
             return view('users/index', compact('users', 'roles'));
-
         }
         if (Gate::allows('isManager')) {
             abort(404, "Sorry, You cant  Access this Page");
         }
-
-    }
+    } 
 
     public function contractor()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
         if (Gate::allows('isAdmin')) {
-            $roles = DB::table('roles')->where('id', '!=', 1)->get();
-            $users = DB::table('users')->where('role_id', '=', 3)->get();
-            return view('users/index', compact('users','roles'));
+            $roleID = DB::table('roles')->where('name','=','Contractor')->pluck('id')->first();
+            $users = DB::table('users')
+            ->leftjoin('roles','users.role_id','=','roles.id')
+            ->where('users.role_id','=',$roleID)
+            ->select('users.id','users.name','users.profile_image','users.phone','users.address','users.cnic','users.email','roles.id as role_id','roles.name as role_name')
+            ->get();
+            $roles = DB::table('roles')->where('id', '=',$roleID)->get();
+            return view('users/index', compact('users', 'roles'));
         }
-        if (Gate::allows('isManager')) {
-            $roles = DB::table('roles')->where('id', '=', 3)->get();
-            $users = DB::table('users')->where('role_id','=', 3)->get();
-            return view('users/index', compact('users','roles'));
+         if (Gate::allows('isManager')) {
+            abort(404, "Sorry, You cant  Access this Page");
         }
-
     }
-
+ 
     public function all()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
         if (Gate::allows('isAdmin')) {
-            $roles = DB::table('roles')->where('id', '!=', 1)->get();
-            $users = DB::table('users')->where('role_id', '!=', 1)->get();
-
-            return view('users/index', compact('users', 'roles'));
+            $roleID = DB::table('roles')->where('name','=','Admin')->pluck('id')->first();
+            $users = DB::table('users')
+            ->leftjoin('roles','users.role_id','=','roles.id')
+            ->where('users.role_id','!=',$roleID)
+            ->select('users.id','users.name','users.profile_image','users.phone','users.address','users.cnic','users.email','roles.id as role_id','roles.name as role_name')
+            ->get();
+            $roles = DB::table('roles')->where('id', '!=',$roleID)->get();
         }
         if (Gate::allows('isManager')) {
-            $roles = DB::table('roles')->where('id', '=', 3)->get();
-            $users = DB::table('users')->where('role_id', '=', 3)->get();
-            return view('users/index', compact('users', 'roles'));
+
+            $roleID = DB::table('roles')->where('name','=','Contractor')->pluck('id')->first();
+            $users = DB::table('users')
+            ->leftjoin('roles','users.role_id','=','roles.id')
+            ->where('users.role_id','=',$roleID)
+            ->select('users.id','users.name','users.profile_image','users.phone','users.address','users.cnic','users.email','roles.id as role_id','roles.name as role_name')
+            ->get();
+            $roles = DB::table('roles')->where('id', '=',$roleID)->get();
         }
-       
+            return view('users/index', compact('users', 'roles'));
     }
 
     /**
@@ -150,9 +153,8 @@ class UserController extends Controller
      */
     public function create()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
 
         if (Gate::allows('isAdmin')) {
@@ -163,7 +165,7 @@ class UserController extends Controller
             $roles = DB::table('roles')->where('id', '=', 3)->get();
             return view('users/create', compact('roles'));
         }
-       
+
 
     }
 
@@ -175,11 +177,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
-        }
 
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
+        }
+        $check = DB::table('users')->where('email','=',$request->input('email'))->count();
+           if($check == 1)
+           {
+                return redirect()->back()->with('message','Email is already in Use');
+           }
+           else
+           {
         $request->validate([
             'name' => 'required',
             'email' => 'required',
@@ -191,19 +199,9 @@ class UserController extends Controller
             'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
 
         ]);
-        if(Gate::allows('isAdmin'))
-        {
-            $rollID = DB::table('roles')
-            ->where('name', '=', $request->input('role'))
-            ->pluck('id')->first();
-        }
-        if(Gate::allows('isManager'))
-        {
-            $rollID = DB::table('roles')
-            ->where('name', '=', 'Contractor')
-            ->pluck('id')->first();
-        }
+   
         $password = Hash::make('init1234');
+
         $user = new User([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
@@ -211,7 +209,7 @@ class UserController extends Controller
             'cnic' => $request->input('cnic'),
             'password' => $password,
             'phone' => $request->input('phone'),
-            'role_id' => $rollID,
+            'role_id' => $request->input('role'),
             'profile_image' => $request->get('profile_image')
         ]);
 
@@ -232,12 +230,17 @@ class UserController extends Controller
             // Set user profile image path in database to filePath
             $user->upload_profile = $filePath;
         }
+        else 
+        { 
+            $user->profile_image = 'images/profile/userprofile.png';
+        }
 
         // Persist user record to database
         if ($user->save()) {
             return redirect()->route('users.all')->with(['status' => 'User added successfully.']);
         } else {
             return redirect()->route('users.all')->with(['error' => 'User not added successfully.']);
+        }
         }
     }
 
@@ -249,9 +252,8 @@ class UserController extends Controller
      */
     public function show()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
         $users = User::paginate(10);
         return view('users/index', compact('users'));
@@ -288,11 +290,10 @@ class UserController extends Controller
         if ($users == null || count($users) == 0) {
             return redirect()->intended('/users/index');
         }
+        
 
         $roles = DB::table('roles')->where('id', '!=', 1)->get();
         $current_role = DB::table('roles')->where('id', '=', $users->role_id)->pluck('name')->first();
-        //dd($current_role);
-        //$users = User::paginate(10);
         return view('/users/edit', compact('users', 'roles', 'current_role'));
     }
 
@@ -415,13 +416,13 @@ class UserController extends Controller
 
 
     }
- 
+
     public function view_user($id)
     {
         /*$userbyid = DB::table('users')
         ->join('roles','users.role_id','=','roles.id')
         ->select('users.*','')*/
-        
+
 
     }
 

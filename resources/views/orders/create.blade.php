@@ -53,7 +53,7 @@
                             <div class="form-group">
                                 <label for="project_id">Select Project</label>
                                 <select class="form-control" id="project_id" name="project_id" required>
-                                    <option value="">Select Project</option>
+                                    <option>Select Project</option>
                                     @foreach($projects as $project)
                                         <option>{{ $project->title}}</option>
                                     @endforeach
@@ -63,7 +63,7 @@
                             <div class="col-md-6 col-md-offset-0">
                             <div class="form-group">
                                 <label for="project_id">Select Supplier</label>
-                                <select name="supplier_id" id="supplier_id" class="form-control" required><option value="0">Select Supplier</option>
+                                <select name="supplier_id" id="supplier_id" class="form-control" required><option value="">Select Supplier</option>
                                     @foreach($suppliers['data'] as $supplier)
                                     <option value="{{$supplier->id}}">
                                         {{ $supplier->name }}
@@ -74,14 +74,10 @@
                         </div>
                     
                     </div>
-
-                    {{--      @csrf
-                     @method('POST') --}}
                     <span id="result"></span>
                     <table class="table table-bordered table-striped" id="user_table">
                         <thead>
                         <tr>
-                            {{-- <th width="21%">Project ID</th> --}}
                             <th>Item</th>
                             <th>Quatity</th>
                             <th>Action</th>
@@ -140,61 +136,6 @@
             $(document).on('click', '#add', function () {
                 count++;
                 temp++;
-
-                var t = "#item_id"+temp;
-      
-         var id = $(this).val();
-         $(t).find('option').not(':first').remove();
-  //dd('ajax');
-         // AJAX request 
-         $.ajax({
-
-           url: 'getItems/'+id,
-           type: 'get',
-           dataType: 'json',
-           success: function(response){
-
-
-             var len = 0;
-             if(response['data'] != null){
-               len = response['data'].length;
-             }
-           
-                if(len > 0){
-                var dropdown = '<select id="'+t+'" name="'+t+'">';
-
-                $(t).append(dropdown);
-                var option1 = "<option value='"+t+"'>"+t+"</option>"; 
-                 //window.alert("id " +option);
-                
-                $(t).append(option1); 
-               for(var i=0; i<len; i++){
-                 // console.log(temp);
-               // for (var j = 0; j <=temp; i++) 
-                //{
-                  
-                var id = response['data'][i]['id'];
-                 var name = response['data'][i]['name'];
-
-
-                 var option = "<option value='"+id+"'>"+name+"</option>"; 
-                 //window.alert("id " +option);
-                
-                $(t).append(option); 
-                }
-                 var dropdownclose = '</select>';
-                 $(t).append(dropdownclose);
-                 temp++;
-
-
-
-                 
-               }
-                  // }
-             
-
-           }
-        });
                 dynamic_field(count);
 
             });
@@ -249,7 +190,7 @@
       $('#supplier_id').click(function()
       {
         var t = "#item_id"+temp;
-        t = "";
+
          var id = $(this).val();
          $(t).find('option').not(':first').remove();
   //dd('ajax');
@@ -274,7 +215,7 @@
                 var option1 = "<option value='"+t+"'>"+t+"</option>"; 
                  //window.alert("id " +option);
                 
-                $(t).append(option1); 
+                // $(t).append(option1); 
                for(var i=0; i<len; i++){
                  // console.log(temp);
                // for (var j = 0; j <=temp; i++) 
@@ -292,9 +233,6 @@
                  var dropdownclose = '</select>';
                  $(t).append(dropdownclose);
                  temp++;
-
-
-
                  
                }
                   // }

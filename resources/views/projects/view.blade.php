@@ -121,10 +121,9 @@
 
                                     <a href="{{ route('projects.edit', ['id' => $projects->id]) }}"
                                        class="btn btn-primary btn-block"><b>Edit</b></a>
+                                </b>
                             </div>
-                            <!-- /.box-body -->
                         </div>
-                        <!-- /.box -->
                     </div>
 
 
@@ -385,7 +384,8 @@
                                 <h3 class="box-title">Material Requests</h3>
 
                                 <div class="box-tools pull-right">
-                                    <a href="{{ route('order.create')}}" class="btn btn-sm btn-primary btn-flat pull-left">Place
+                                    <a href="{{ route('order.create')}}"
+                                       class="btn btn-sm btn-primary btn-flat pull-left">Place
                                         Order</a>
 
 
@@ -396,19 +396,71 @@
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
-                                 @yield('matrial_request_table')
+
+                                <div class="table-responsive" style="margin-top: 10px; padding: 10px;">
+                                    <table class="table no-margin table-bordered table-striped project">
+                                        <thead>
+                                        <tr>
+                                            <th>Request ID</th>
+
+                                            <th>Item Name</th>
+                                            <th>Quantity</th>
+
+                                            <th>Instructions</th>
+                                            @can('isAdmin')
+                                                <th>Seen</th>
+                                            @endcan
+                                            <th>Status</th>
+
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        @foreach ($materialrequests as $materialrequest)
+                                            <tr>
+                                                <td>MR0000{{ $materialrequest->id }}</td>
+
+                                                <td>{{ $materialrequest->item_name }}</td>
+                                                <td>{{ $materialrequest->quantity }}</td>
+
+                                                <td>{{ $materialrequest->instructions }}</td>
+                                                @can('isAdmin')
+                                                    <td>@if($materialrequest->seen==1)
+
+                                                            <div class="label label-success col-md-12">Seen</div>
+                                                        @endif
+                                                        @if($materialrequest->seen==0)
+
+                                                            <div class="label label-warning col-md-12">Not Seen</div>
+                                                        @endif
+                                                    </td>
+                                                @endcan
+                                                <td>{{ $materialrequest->status_name }}</td>
+
+
+                                            </tr>
+
+
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer clearfix">
 
-                                <a href="{{ route('requests.pending')}}" class="btn btn-sm btn-primary btn-flat pull-right">View All
+                                <a href="{{ route('requests.pending')}}"
+                                   class="btn btn-sm btn-primary btn-flat pull-right">View All
                                     Requests</a>
                                 <div class="row">
                                     <div class="col-sm-5">
                                         <div class="dataTables_info" id="example2_info" role="status"
                                              aria-live="polite">
-                                          Shhowing {{ count($materialrequests) }} of {{ $total_pending_requests }} Pending Requests
-                                            
+                                            Showing {{ count($materialrequests) }} of {{ $total_pending_requests }}
+                                            Pending Requests
+
                                         </div>
                                     </div>
                                     <div class="col-sm-7">
@@ -495,13 +547,12 @@
                     </div>
 
 
-
                 </div>
 
 
-                <div style="padding: 0px 2px;" 
-                    class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1" 
-                    {{--   style="padding: 5px;" --}}  >
+                <div style="padding: 0px 2px;"
+                     class="col-xs-12 col-md-10 col-sm-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
+                    {{--   style="padding: 5px;" --}} >
                     <div class="box" style="margin-bottom: 10px; margin-top: 1%;">
                         <div class="box-header with-border ">
                             <h4><span class="box-title col-md-8">Labor Record</span></h4>
@@ -535,18 +586,17 @@
                                         <td>{{ $labor->rate }}</td>
                                         <td>25000</td>
 
-                                        <td>
+                                        <td> 
 
                                             <div class="btn-group">
-                                                {{-- <button class="btn btn-success btn-flat" type="button">Action</button> --}}
-                                                <button data-toggle="dropdown" class="btn btn-success dropdown-toggle"
+                                                <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action</button>
+                                                <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle"
                                                         type="button">
                                                     <span class="caret"></span>
                                                     <span class="sr-only">Toggle Dropdown</span>
                                                 </button>
 
                                                 <ul role="menu" class="dropdown-menu">
-
 
                                                     <li><a href="{{ route('labors.edit', ['id' => $labor->id]) }}"><i
                                                                 class="fa fa-edit"></i>Edit</a></li>
@@ -620,15 +670,6 @@
                     <div class="modal-dialog" style="min-width:70%; align-content: center;">
                         <div class="modal-content">
 
-                            {{--   <form class="row" method="POST"
-                                            action="{{ route('labors.destroy', ['id' => $labor->id]) }}">
-                                          <input type="hidden" name="_method" value="DELETE">
-                                          <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                              <form action="{{ route('labors.destroy', ['id' => $labor->id]) }}" method="POST" class="remove-record-model">
-                                         {{ method_field('delete') }}
-                                         {{ csrf_field() }}
-
---}}
                             <form method="post" action="{{ route('labors.store') }}" enctype="">
                                 @csrf
                                 <div class="modal-header">
@@ -715,12 +756,8 @@
             </div>
         </div>
     </div>
-    </div>
-    </div>
-    </div>
-    </div>
 
-@yield('datatable_stylesheets')
+    @yield('datatable_stylesheets')
     <script type="text/javascript">
 
         $('.labor').DataTable({

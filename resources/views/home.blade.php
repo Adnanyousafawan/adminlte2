@@ -44,7 +44,7 @@
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <a href="{{ route('projects.current') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="{{ route('projects.inprogress') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -59,7 +59,7 @@
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="{{ route('projects.current') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="{{ route('projects.completed') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -67,7 +67,7 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>{{ $total_contractors }}</h3>
+              <h3>{{ $total_contractors }}</h3> 
 
               <p>Total Contrators</p>
             </div>
@@ -82,7 +82,7 @@
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>{{ $expense }}</h3>
+              <h3>{{ $expenses }}</h3> 
 
               <p>Expenses History</p>
             </div>
@@ -107,15 +107,13 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Company Balance</span>
-                    <span class="info-box-number">{{ DB::table('projects')->sum('estimated_budget') -  DB::table('miscellaneous_expenses')->sum('expense') }}</span>
+                    <span class="info-box-number">{{ $company_balance }}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
         </div>
         <!-- /.col -->
-
-        <div class="clearfix visible-sm-block"></div>
 
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
@@ -126,7 +124,7 @@
                     <span class="info-box-number">{{ DB::table('customers')->count('id') }}</span>
                 </div>
                 <!-- /.info-box-content -->
-            </div>
+            </div> 
             <!-- /.info-box -->
         </div>
         <!-- /.col -->
@@ -157,13 +155,94 @@
         </div>
         <!-- /.col -->
     </div>
-
-@endcan
     
+        <div class="panel panel-primary">
+
+         <div class="panel-heading">Charts</div>
+
+          <div class="panel-body">    
+            <div class="row">
+            <div class="col-md-6"> 
+               {!! $chart->html() !!}
+            </div>
+
+            <br/><br/>
+
+            <div class="col-md-6">  
+               {!! $pie_chart->html() !!}
+            </div>
+            {{-- 
+
+            <br/><br/>
+            
+            <div class="col-md-6"> 
+               {!! $line_chart->html() !!}
+            </div>
+
+            <br/><br/>
+            
+            <div class="col-md-6"> 
+               {!! $areaspline_chart->html() !!}
+            </div>
+
+            <br/><br/>
+            
+
+            <div class="col-md-6"> 
+               {!! $geo_chart->html() !!}
+            </div>
+
+            <br/><br/>
+            
+
+            <div class="col-md-6"> 
+               {!! $area_chart->html() !!}
+            </div>
+
+            <br/><br/>
+            
+            <div class="col-md-6"> 
+               {!! $donut_chart->html() !!}
+            </div>
+
+
+            <br/><br/>
+            
+            <div class="col-md-6"> 
+               {!! $percentage_chart->html() !!}
+            </div>
+
+ --}}
+         </div>
+
+        </div>
+      </div>
+   
+  
+
+
+    {!! Charts::scripts() !!}
+    {!! $chart->script() !!}
+     {!! $pie_chart->script() !!}
+{{-- 
+   
+
+    {!! $line_chart->script() !!}
+
+    {!! $areaspline_chart->script() !!}
+
+    {!! $percentage_chart->script() !!}
+
+    {!! $geo_chart->script() !!}
+
+    {!! $area_chart->script() !!}
+
+    {!! $donut_chart->script() !!} --}}
 
     <!-- TABLE: LATEST ORDERS -->
+    @endcan
 <div class="row">
-<div class="col-md-12">
+{{-- <div class="col-md-12">
           <div class="box">
             <div class="box-header with-border">
               <h3 class="box-title">Monthly Recap Report</h3>
@@ -292,6 +371,8 @@
           <!-- /.box -->
         </div>
 
+ --}}
+{{-- 
 
 <div class="col-md-6">
     
@@ -407,8 +488,9 @@
           </div>
 </div>
 
+ --}}
 
-        <div class="col-md-6">
+       {{--  <div class="col-md-6">
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Current Projects</h3>
@@ -495,7 +577,7 @@
                 <!-- /.box-footer -->
             </div>
             <!-- /.box -->
-        </div>
+        </div> --}}
         <!-- /.col -->
 
 <div class="col-md-6">
@@ -551,7 +633,7 @@
             <!-- /.box -->
         </div>
         <!-- /.col -->
- {{--    
+{{--     
 <div class="col-md-4">  
   <div class="box box-default">
             <div class="box-header with-border">
@@ -600,8 +682,8 @@
             </div>
             <!-- /.footer -->
           </div>
-</div>
- --}}
+</div> --}}
+
              {{--  <!-- USERS LIST -->
               <div class="box box-danger">
                 <div class="box-header with-border">

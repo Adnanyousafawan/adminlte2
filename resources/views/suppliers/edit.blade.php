@@ -62,30 +62,51 @@
                 <form method="post" action="{{ route('suppliers.update',['id' => $suppliers->id]) }}">
                     @method('PATCH')
                     @csrf
-                    <div class="form-group">
-                      
-                        <label for="name">Supplier Name</label>
-                        <input type="text" class="form-control" id="name" placeholder="Supplier Name" name="name"  value="{{ $suppliers->name }}">
+                    <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
+                        <label for="name">Name <span style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="name" placeholder="Supplier Name" name="name" pattern="[A-Za-z0-9\w]{2,50}" title="Minimum 2 letters required for Name" value="{{ $suppliers->name }}" required>
+                         @if ($errors->has('name'))
+                            <span class="help-block alert-danger">
+                        <strong>{{ $errors->first('name') }}</strong>                              
+                      </span>
+                        @endif
                     </div>
                    
-                    <div class="form-group">
-                        <label for="phone_number">Supplier Contact</label>
+                    <div class="form-group {{ $errors->has('phone') ? ' has-error' : '' }}">
+                        <label for="phone">Contact <span style="color: red;">*</span></label>
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-phone"></i>
                             </div>
-                            <input type="text" class="form-control" placeholder="Contact Number"
-                                   data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']"
-                                   data-mask="" id="phone" name="phone"  value="{{ $suppliers->phone }}">
+                            <input type="text" class="form-control" placeholder="Contact Number" maxlength="11" 
+                                    pattern="[0-9]{11}" title="Enter 11 Digit Number. Example:(03330234334)" 
+                                  id="phone" name="phone"  value="{{ $suppliers->phone }}" required>
+                                   @if ($errors->has('phone'))
+                            <span class="help-block alert-danger">
+                        <strong>{{ $errors->first('phone') }}</strong>                              
+                      </span>
+                        @endif
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <input type="text" class="form-control" id="address" placeholder="Home Address" name="address"  value="{{ $suppliers->address }}">
+                    <div class="form-group {{ $errors->has('address') ? ' has-error' : '' }}">
+                        <label for="address">Address <span style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="address" placeholder="Home Address" name="address" pattern="[A-Za-z0-9\w]{4,100}" 
+                        title=" Minimum 4 letters required"  value="{{ $suppliers->address }}" required>
+                         @if ($errors->has('address'))
+                            <span class="help-block alert-danger">
+                        <strong>{{ $errors->first('address') }}</strong>                              
+                      </span>
+                        @endif
                     </div>
-                    <div class="form-group">
-                        <label for="city">City</label>
-                        <input type="text" class="form-control" id="city" placeholder="Home City" name="city" value="{{ $suppliers->city }}">
+                    <div class="form-group {{ $errors->has('city') ? ' has-error' : '' }}">
+                        <label for="city">City <span style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="city" placeholder="Home City" name="city" value="{{ $suppliers->city }}" pattern="[A-Za-z0-9\w]{4,100}" 
+                        title=" Minimum 4 letters required" required>
+                         @if ($errors->has('city'))
+                            <span class="help-block alert-danger">
+                        <strong>{{ $errors->first('ciity') }}</strong>                              
+                      </span>
+                        @endif
                     </div>
 
                     <button type="submit" class="btn btn-block btn-primary btn-xs form-control">Update Supplier</button>

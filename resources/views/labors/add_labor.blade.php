@@ -1,124 +1,95 @@
 @extends('adminlte::page')
-@section('title', 'AdminLTE')
+@section('title', 'Add Labor')
+@include('common')
 @section('content')
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-     <link rel="stylesheet" href="/css/bootstrap-3.4.1.css">
-    <script src="/js/jquery-3.4.1.js"></script>
-</head>
-</html>
+    @yield('meta_tags')
+    @yield('error_logs')
+    @yield('breadcrumbs')
 
-
-
-<ol class="breadcrumb">
-    <li><a href="{{ route('home')}}"><i class="fa fa-dashboard"></i>  &nbsp;Dashboard</a></li>
-    <?php $segments = ''; ?>
-    @foreach(Request::segments() as $segment)
-        <?php $segments .= '/'.$segment; ?>
-        <li>
-            <a href="{{ $segments }}">{{$segment}}</a>
-        </li>
-    @endforeach
-</ol>
-
-
-    @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>
-                        {{ $error }}
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    @if (session('success'))
-        <div class="alert alert-success" role="alert">
-            {{ session('success') }}
-        </div>
-    @endif
-
-     @if (session('message'))
-        <div class="alert alert-danger" role="alert">
-            {{ session('message') }}
-        </div>
-    @endif
-
-
-
-<div class="box" style="background-color: #f4f4f487;">
-
-    <div class="row" style="margin-top: 30px;">
-        <form method="post" action="{{ route('labors.store') }}" enctype="">
-            @csrf
-        
-            <div class="box box-primary col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1 col-lg-offset-1 col-lg-10 col-sm-10 col-sm-offset-1 col-xl-10 col-xl-offset-1"
-                 style="padding-bottom: 30px; ">
-                <div class="box-header">
-                    <h2 class="text-center">Add Labor</h2>
-                </div>
-                <div class="box-body">
-
-                    <div class="col-lg-9 col-lg-offset-2">
-                        <div class="form-group">
-                            @csrf
-
-                            <label for="name">Labor Name</label>
-                            <input type="text" class="form-control" id="name" placeholder="Labor Name" name="name">
-
+    <div class="box" style="background-color: #f4f4f487;">
+        <div class="row" style="margin-top: 30px;">
+            <form method="post" action="{{ route('labors.store') }}" enctype="">
+                @csrf
+                <div
+                    class="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1 col-lg-8 col-lg-offset-2 col-sm-10 col-sm-offset-1 col-xl-8 col-xl-offset-2">
+                    <div class="box box-primary"
+                         style="padding-bottom: 30px;">
+                        <div class="box-header">
+                            <h2 class="text-center">Add Labor</h2>
                         </div>
-                        <div class="form-group">
-                            <label for="cnic">Labor CNIC</label>
-                            <input type="text" class="form-control" id="cnic" placeholder="Labor CNIC" name="cnic">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Labor Contact</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-phone"></i>
+                        <div class="box-body">
+                            <div class="col-lg-8 col-lg-offset-2">
+                                <div class="form-group">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="name">Name <span style="color: red;">*</span></label>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                               pattern="[A-Za-z0-9\w]{2,50}" title="Minimum 2 letters required for Name"
+                                               placeholder="Name" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="cnic">CNIC <span style="color: red;">*</span></label>
+                                        <input type="text"  class="form-control"
+                                               id="cnic"
+                                               name="cnic" placeholder="CNIC"
+                                               maxlength="13" pattern="[0-9]{13}"title="Enter 13 digit CNIC Number. Example: ( 3434359324554 )" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="address">Address <span style="color: red;">*</span></label>
+                                        <input type="text" class="form-control" id="address" name="address"
+                                               pattern="[A-Za-z0-9\w]{4,100}"
+                                               title=" Minimum 4 letters required"
+                                               placeholder="Home Address" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="phone">Contact <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-phone"></i>
+                                            </div>
+                                            <input type="text" maxlength="11" class="form-control"
+                                                   placeholder="Contact Number"
+                                                   pattern="[0-9]{11}"
+                                                   title="Enter 11 Digit Number. Example:(03330234334)"
+                                                   id="phone" name="phone" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="city">City<span style="color: red;">*</span></label>
+                                        <input type="text" class="form-control" id="city" placeholder="Home City"
+                                               name="city" pattern="[A-Za-z0-9\w]{4,100}"
+                                               title=" Minimum 4 letters required" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="rate">Labor Rate <span style="color: red;">*</span></label>
+                                        <input type="text" class="form-control" id="rate"
+                                               placeholder="Labor Rate(per Day)"
+                                               name="rate" pattern="[0-9]{3,100}"
+                                               title=" Minimum 3 digit number required" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="project_id">Project ID<span style="color: red;">*</span></label>
+                                        <select class="form-control" id="project_id" name="project_id" required>
+                                            @foreach($projects as $project)
+                                                <option>{{ $project->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-block btn-primary btn-xs form-control"
+                                            style="margin-top: 20px;">Add Labor
+                                    </button>
                                 </div>
-                                <input type="text" maxlength="14" class="form-control" placeholder="Contact Number"
-                                       data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']"
-                                       data-mask="" id="phone" name="phone">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="address">Labor Address</label>
-                            <input type="text" class="form-control" id="address" placeholder="Home Address"
-                                   name="address">
-                        </div>
-                        <div class="form-group">
-                            <label for="city">Labor City</label>
-                            <input type="text" class="form-control" id="city" placeholder="Home City" name="city">
-                        </div>
-                        <div class="form-group">
-                            <label for="rate">Labor Price</label>
-                            <input type="text" class="form-control" id="rate" placeholder="Labor Rate(per Day)"
-                                   name="rate">
-                        </div>
-                        <div class="form-group">
-                            <label for="project_id">Project ID</label>
-                            <input type="number" class="form-control" id="project_id" placeholder="Proect ID"
-                                   name="project_id" required>
-                        </div>
-
-
-                        <button type="submit" class="btn btn-block btn-primary btn-xs form-control"
-                                style="margin-top: 20px;">Add Labor
-                        </button>
                     </div>
                 </div>
-            </div>
-
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 @stop

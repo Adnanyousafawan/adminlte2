@@ -13,21 +13,22 @@
                                             <th>Instructions</th>
                                             @can('isAdmin')
                                             <th>Seen</th>
+                                            @endcan 
                                             <th>Status</th>
-                                            @endcan
+                                           
                                             <th style="max-width: 20px;">Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
 
-                                        @foreach ($materialrequests as $materialrequest)
+                                         @foreach ($materialrequests as $materialrequest)
                                             <tr>
                                                 <td>MR0000{{ $materialrequest->id }}</td>
-                                                <td>{{ $materialrequest->project_id }}</td>
-                                                <td>{{ $materialrequest->item_id }}</td>
+                                                <td>{{ $materialrequest->title }}</td>
+                                                <td>{{ $materialrequest->item_name }}</td>
                                                 <td>{{ $materialrequest->quantity }}</td>
-                                                <td>{{ $materialrequest->requested_by }}</td>
-                                                <td>{{  $materialrequest->instructions }}</td>
+                                                <td>{{ $materialrequest->contractor_name }}</td>
+                                                <td>{{ $materialrequest->instructions }}</td>
                                                 @can('isAdmin')
                                                 <td>@if($materialrequest->seen==1)
                                                  
@@ -38,7 +39,8 @@
                                                    <div class="label label-warning col-md-12">Not Seen</div>
                                                 @endif
                                             </td>
-                                                    <td>{{ $materialrequest->request_status_id }}</td>
+                                             @endcan
+                                                    <td>{{ $materialrequest->status_name }}</td>
                                                      <td style="max-width: 20px;">
                                                         <a type="links" data-toggle="modal" data-target="#EditModal-{{ $materialrequest->id }}"><i class="fa fa-edit col-md-offset-4"></i></a>
 
@@ -71,8 +73,8 @@
                                                          style="color: red; margin-left: 3px;  margin-top: 0px;">Delete</a> --}}
 
                                                 </td>
-                                                @endcan
-                                                @can('isManager')
+                                               
+                                              {{--   @can('isManager')
                                                 <td>
                                                 @if($materialrequest->request_status_id == 3)
                                                 <form method="POST" id="actionform">
@@ -93,7 +95,7 @@
                                                 </td>
 
 
-                                                @endcan
+                                                @endcan --}}
 
                                             </tr>
  
@@ -126,11 +128,11 @@
                                                                 <div class="modal-body">
                                                                     <div class="col-md-10 col-md-offset-1 form-group ">
                                                                     <label class="form-control" for="project">Project:</label> 
-                                                                    <p id="project">{{ $materialrequest->project_id }}</p>
+                                                                    <p id="project">{{ $materialrequest->title }}</p>
                                                                       <label class="form-control" for="contractor">Contractor:</label> 
-                                                                    <p id="contractor">{{ $materialrequest->requested_by }}</p>
+                                                                    <p id="contractor">{{ $materialrequest->contractor_name }}</p>
                                                                       <label class="form-control" for="item">Item:</label> 
-                                                                    <p id="item">{{ $materialrequest->item_id }}</p>
+                                                                    <p id="item">{{ $materialrequest->item_name }}</p>
                                                                       <label class="form-control" for="quantity">Quantity:</label> 
                                                                     <p id="quantity">{{ $materialrequest->quantity }}</p>
                                                                       <label class="form-control" for="instructions">Instruction:</label> 
@@ -220,42 +222,5 @@
               @endsection
 
 @section('script_datatable')
-
-<script type="text/javascript">
-            //$(document).ready(function () {
-     
-            // $.ajaxSetup({
-            //     headers: {
-            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //     }
-            // });
-             
-
-            //   var $valu = '1';
-
-            // $('#accept').click(function () {
-               
-            //     //insert = insert.toString();
-            //     $.ajax({
-            //         type: 'POST',
-            //         url: 'materialrequest/insert',
-            //         data: { value: $valu},
-                
-            //         //console.log("in ajax");
-             
-            //         success: function (data) {
-            //             //console.log(data);
-            //             if (data.error) {
-            //                 $('#result').html(data);
-            //             } else 
-            //                 $('#result').html(data);
-            //             }
-            //         });
-            //     });
-            // });
-
-
-        // });
-    </script>
 
 @endsection

@@ -25,9 +25,9 @@
             <div class="box-header">
                 <h3><span
                         class="col-xs-6 col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 col-xl-offset-0"
-                        style="margin-bottom: 10px; padding: 0px;">Customer Payments List</span></h3>
+                        style="margin-bottom: 10px; padding: 0px;">Supplier Payments List</span></h3>
                         <div class="box-tools pull-right">
-                            <a type="links" href="{{ route('customerpayment.create') }}" class="btn btn-primary pul-right">Add new Payment</a>
+                            <a type="links" href="{{ route('supplierpayment.create') }}" class="btn btn-primary pul-right">Add new Payment</a>
                         </div>
 <div class="vendor-list-status">
   <div class="row">
@@ -54,11 +54,10 @@
                             <thead>
                                 <tr>
                                 <th>Payment ID</th>
-                                <th>Project ID</th>
-                                <th>Project Title</th>
-                                <th>Received</th>
-                                {{-- <th>Receivable</th> --}}
-                                <th>Budget Left</th>
+                                <th>Supplier ID</th>
+                                <th>Supplier Name</th>
+                                <th>Paid</th>
+                                <th>Payable</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -67,11 +66,12 @@
                             @foreach ($payments as $payment)
                                 <tr>
                                     <td>0000{{ $payment->id }}</td>
-                                    <td>0000{{ $payment->project_id }}</td>
-                                    <td>{{ $payment->title }}</td>
-                                    <td>{{ $payment->received }}</td>
-                                    {{-- <td>{{ $payment->budget - $payment->received }} </td> --}}
-                                    <td>{{ $payment->budget }}</td>    
+                                    <td>0000{{ $payment->supplier_id }}</td>
+                                    <td>{{ $payment->name }}</td>
+                                    <td>{{ $payment->paid }}</td>
+                                    <td>{{ $payment->payable }}</td>
+
+                                    {{-- <td>{{ $payment->budget - $payment->received }} </td> --}} 
                                     <td style="max-width: 50px;">
                                         
                     <div class="btn-group">
@@ -113,7 +113,7 @@
                                                      style="min-width:40%; align-content: center; ">
                                                     <div class="modal-content">
                                                             <form
-                                                                 action=" {{ route('customerpayment.update', ['id' => $payment->id]) }}"
+                                                                 action=" {{ route('supplierpayment.update', ['id' => $payment->id]) }}"
                                                                 method="POST" >
                                                                 {{ csrf_field() }}
 
@@ -163,8 +163,8 @@
                                                                             </select>
                                                                         </div> --}}
                                                                          <div class="form-group">
-                                                                            <label for="received">Amount</label>
-                                                                            <input type="text" class="form-control" id="received" name="received" placeholder="Received Amount" value="{{ $payment->received }}">
+                                                                            <label for="paid_amount">Amount</label>
+                                                                            <input type="text" class="form-control" id="paid_amount" name="paid_amount" placeholder="Received Amount" value="{{ $payment->paid }}">
                                                                         </div>
 
                                                                     </div>
@@ -201,10 +201,10 @@
                                          style="min-width:40%; align-content: center; text-align: center;">
                                         <div class="modal-content">
                                             <form class="row" method="POST"
-                                                  action="{{ route('customerpayment.destroy', ['id' => $payment->id]) }}">
+                                                  action="{{ route('supplierpayment.destroy', ['id' => $payment->id]) }}">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <form action=" {{ route('customerpayment.destroy', ['id' => $payment->id]) }}"
+                                                <form action=" {{ route('supplierpayment.destroy', ['id' => $payment->id]) }}"
                                                       method="POST" class="remove-record-model">
                                                     {{ method_field('delete') }}
                                                     {{ csrf_field() }}

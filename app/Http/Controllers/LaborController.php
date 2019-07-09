@@ -10,33 +10,50 @@ use Auth;
 
 class LaborController extends Controller
 {
-    /** 
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {  
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+    {
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
-        if(Gate::allows('isManager'))
-        {
+        if (Gate::allows('isManager')) {
             // ____________________________ADD query to show just record of specific manager projects labors____________
-            $labors = DB::table('labors')->get();
+
+             $labor_by_projects = DB::table('projects')
+            ->leftjoin('users','projects.assigned_to','=','users.id')
+            ->leftjoin('labors','labors.project_id','=','projects.id')
+            ->where('projects.assigned_by','=',Auth::user()->id)
+            ->select('labors.id','projects.id','projects.title','labors.rate','users.name as contractor_name')
+            ->paginate(5);
+            $labors = DB::table('labors')
+            ->leftjoin('projects','projects.id','=','labors.project_id')
+            ->where('projects.assigned_by','=',Auth::user()->id)
+            ->select('labors.id','labors.name','labors.project_id','labors.rate')
+            ->get();
             $totallabor = DB::table('labors')->count();
-            $projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->get();   
-            return view('labors/index', compact('labors','totallabors','projects'));
+            $projects = DB::table('projects')->where('assigned_by', '=', Auth::user()->id)->get();
+            return view('labors/index', compact('labors', 'totallabors', 'projects', 'labor_by_projects'));
+
         }
-        if(Gate::allows('isAdmin'))
+        if (Gate::allows('isAdmin')) 
         {
-            $labors = DB::table('labors')->get();
+           
+            $labor_by_projects = DB::table('projects')
+            ->leftjoin('users','projects.assigned_to','=','users.id')
+            ->leftjoin('labors','labors.project_id','=','projects.id')
+            ->select('labors.id','projects.id','projects.title','labors.rate','users.name as contractor_name')
+            ->paginate(5);
+             $labors = DB::table('labors')->get();
             $totallabor = DB::table('labors')->count();
             $projects = DB::table('projects')->get();
-            return view('labors/index', compact('labors','totallabors','projects'));
+            return view('labors/index', compact('labors', 'totallabors', 'projects','labor_by_projects'));
         }
-       
+             
+
     }
 
     /**
@@ -46,11 +63,18 @@ class LaborController extends Controller
      */
     public function create()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
-        return view('labors/add_labor');
+        if(Gate::allows('isManager'))
+        {
+            $projects = DB::table('projects')->where('assigned_by', '=', Auth::user()->id)->get();
+        }
+        if(Gate::allows('isAdmin'))
+        {
+            $projects = DB::table('projects')->get();
+        }
+        return view('labors/add_labor',compact('projects'));
     }
 
     /**
@@ -61,6 +85,11 @@ class LaborController extends Controller
      */
     public function store(Request $request)
     {
+        $labor_status = DB::table('labor_status')->count('id');
+        if($labor_status == 0)
+        {
+            return redirect()->back()->with('message',"Contact Your Admin. Please Add Labor Status first");
+        }
         $request->validate([$request,
             'name' => 'required',
             'rate' => 'required',
@@ -97,9 +126,8 @@ class LaborController extends Controller
      */
     public function show()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
         $labors = DB::table('labors')->get();
         return view('labors/index', compact('labors'));
@@ -169,16 +197,13 @@ class LaborController extends Controller
         $labors->cnic = $request->input('cnic');
         $labors->phone = $request->input('phone');
         $labors->rate = $request->input('rate');
-        
-        if($labors->save())
-        {
-             return redirect()->back()->with('success', 'Data Updated');
+
+        if ($labors->save()) {
+            return redirect()->back()->with('success', 'Data Updated');
+        } else {
+            return redirect()->back()->with('error', 'Labor Record is not Updated');
         }
-        else
-        {
-             return redirect()->back()->with('error', 'Labor Record is not Updated');
-        }
-       
+
     }
 
     /**
@@ -189,41 +214,24 @@ class LaborController extends Controller
      */
     public function destroy($id)
     {
-        
+
         //return redirect()->intended('labors/index');
 
-        $labor_attendances = DB::table('labor_attendances')->where('labor_id','=',$id)->count();
+        $labor_attendances = DB::table('labor_attendances')->where('labor_id', '=', $id)->count();
         //$orders = DB::table('order_details')->where('project_id','=',$id)->count();
-        if($labor_attendances <= 0)
-        {
+        if ($labor_attendances <= 0) {
             Labor::where('id', $id)->delete();
-            return redirect()->back()->with('success', 'Labor has been deleted');   
-        }  
-        else
-        {
-            if(Gate::allows('isAdmin'))
-            {
-                 return redirect()->back()->with('message',' Labor Attendance Exists. Please delete Labor Attendance from project first');
+            return redirect()->back()->with('success', 'Labor has been deleted');
+        } else {
+            if (Gate::allows('isAdmin')) {
+                return redirect()->back()->with('message', ' Labor Attendance Exists. Please delete Labor Attendance from project first');
             }
-            if(Gate::allows('isManager'))
-            {
-                 return redirect()->back()->with('message',' Labor Attendance Exists. Please Contact Admin to Delete Attendance from project first');
+            if (Gate::allows('isManager')) {
+                return redirect()->back()->with('message', ' Labor Attendance Exists. Please Contact Admin to Delete Attendance from project first');
             }
 
-        } 
-
-         /*if ($labors <= 0)
-            {
-                Project::where('id', $id)->delete();
-                return redirect()->back()->with('success', 'Project Deleted Succuessfully.');
-            } 
-            else {
-                return redirect()->back()->with('message', 'Labor Exists. Please delete labors from project first.');
-
-            }   
-            */
-       
+        }
     }
 
-    
+
 }

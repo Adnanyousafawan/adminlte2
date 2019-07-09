@@ -4,17 +4,7 @@
 @yield('meta_tags')
 @yield('datatable_stylesheets')
 
-
-   {{--  <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/css/bootstrap-3.4.1.css">
-    <link rel="stylesheet" href="/css/jquery.dataTables.css">
-    <link rel="stylesheet" href="/css/jquery.dataTables.css"> --}}
-    {{-- <link rel="stylesheet" href="/images"> --}}
-   {{--  <script src="/js/jquery-3.4.1.js"></script>
-    <script src="/js/jquery.dataTables.js"></script>
-  --}}
-@section('content')
+@section('content') 
 @yield('bootstrap_jquery')
 @yield('error_logs')
 @yield('breadcrumbs')
@@ -36,7 +26,6 @@
   </div>
 </div>
           
-
             {{-- _________________________________All User DataTable_____________________________________--}}
             <div
                 class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 col-md-offset-0 col-lg-offset-0 col-xl-offset-0"
@@ -51,7 +40,9 @@
                         <div class="container">
     <a class="active" href=" {{ route('orders.list') }}" style="font-size: 20px;">All &nbsp; | &nbsp; </a> 
     <a class="active" href=" {{ route('orders.recieved') }}" style="font-size: 20px;">Recieved &nbsp; | &nbsp;</a>
-    <a class="active" href=" {{ route('orders.cancelled') }}"  style="font-size: 20px;">Cancelled</a>
+    <a class="active" href=" {{ route('orders.cancelled') }}"  style="font-size: 20px;">Cancelled &nbsp; | &nbsp;</a>
+    <a class="active" href=" {{ route('orders.pending') }}"  style="font-size: 20px;">Pending</a>
+
   </div>
                      
                     </div>
@@ -60,7 +51,7 @@
                         <table class="table no-margin table-bordered table-striped project">
                             <thead>
                                 <tr>
-                                <th>Project ID</th>
+                                <th>Order ID</th>
                                 <th>Project ID</th>
                                 <th>Item Name</th>
                                 <th>Quantity</th>
@@ -75,20 +66,21 @@
 
                             @foreach ($orders as $order)
                                 <tr>
-                                    <td>OR0000{{ $order->id }}</td>
-                                    <td>{{ DB::table('Projects')->where('id','=',$order->project_id)->pluck('title')->first() }}</td>
-                                    <td>{{ DB::table('items')->where('id','=',$order->item_id)->pluck('name')->first() }}</td>
+                                    <td>0000{{ $order->id }}</td>
+                                    <td>{{ $order->project_title }}</td>
+                                    <td>{{ $order->item_name }}</td>
                                     <td>{{ $order->quantity }}</td>
-                                    <td>{{ DB::table('suppliers')->where('id','=',$order->supplier_id)->pluck('name')->first() }}</td>
-                                    <td>join price</td>
-                                    <td>find total</td>
+                                    <td>{{ $order->supplier_name }}</td>
+                                    <td>{{ $order->selling_rate }}</td>
+                                    <?php $Total = $order->selling_rate * $order->quantity  ?>
+                                    <td>{{ $Total }}</td>
                                     <td>{{ $order->status }}</td>
                                    
                                     <td style="max-width: 50px;">
                                         
                     <div class="btn-group">
 
-                    {{-- <button class="btn btn-success" type="button">Action</button> --}}
+                    <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action</button>
                     <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
                       <span class="caret"></span>
                       <span class="sr-only">Toggle Dropdown</span>
@@ -96,6 +88,7 @@
 
                     <ul role="menu" class="dropdown-menu">
                       <li><a type="links" data-toggle="modal" data-target="#EditModal-{{ $order->id }}"><i class="fa fa-edit"></i>Edit</a></li>
+                      <li><a type="links" data-toggle="modal" data-target="#CancelModal-{{ $order->id }}"><i class="fa fa-edit"></i>Cancel</a></li>
                        
                         {{-- <li><a href="{{ route('users.edit', ['id' => $user->id]) }}"><i class="fa fa-edit"></i>Edit</a></li> --}}
                                              
@@ -149,9 +142,9 @@
                                                                          <div class="form-group">
                                                                             <label for="project_id">Projects</label>
                                                                             <select class="form-control" id="project_id" name="project_id">
-                                                                                <option value="">{{ DB::table('Projects')->where('id','=',$order->project_id)->pluck('title')->first() }}</option>
+                                                                                <option value="{{$order->project_id }}">{{ $order->project_title }}</option>
                                                                                 @foreach($projects as $project)
-                                                                                <option>{{ $project->title }}</option>
+                                                                                <option value="{{ $project->id }}">{{ $project->title }}</option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
@@ -159,18 +152,18 @@
                                                                         <div class="form-group">
                                                                             <label for="item_id">Items</label>
                                                                             <select class="form-control" id="item_id" name="item_id">
-                                                                                <option value="">{{ DB::table('items')->where('id','=',$order->item_id)->pluck('name')->first() }}</option>
+                                                                                <option value="{{$order->item_id}}">{{ $order->item_name }} </option>
                                                                                 @foreach($items as $item)
-                                                                                <option>{{ $item->name }}</option>
+                                                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="supplier_id">Supplier</label>
                                                                             <select class="form-control" id="supplier_id" name="supplier_id">
-                                                                                <option value="">{{ DB::table('suppliers')->where('id','=',$order->supplier_id)->pluck('name')->first() }}</option>
+                                                                                <option value="{{ $order->supplier_id }}">{{ $order->supplier_name }}</option>
                                                                                 @foreach($suppliers as $supplier)
-                                                                                <option>{{ $supplier->name }}</option>
+                                                                                <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
@@ -200,8 +193,101 @@
                                                 </div>
                                             </div>
                                             </div>
+{{--__________________________________________Cancel Model _______________________________________  --}}
+
+                                        <div id="CancelModal-{{ $order->id }}" class="modal fade"
+                                                 tabindex="-1" role="dialog"
+                                                 aria-labelledby="custom-width-modalLabel" 
+                                                 style="display: none;">
+                                                <div class="modal-dialog"
+                                                     style="min-width:40%; align-content: center; text-align: center;">
+                                                    <div class="modal-content">
+                                                            <form
+                                                                 action=" {{ route('orders.cancelorder', ['id' => $order->id]) }}"
+                                                                method="POST" >
+                                                                {{ csrf_field() }}
+
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close"
+                                                                            data-dismiss="modal"
+                                                                            aria-hidden="true">×
+                                                                    </button>
+                                                                    <h4 class="modal-title text-center"
+                                                                        id="custom-width-modalLabel">Cancel Order
+                                                                    </h4>
+                                                                </div>
+                                                                <div class="row">
+                                                                <div class="modal-body">
+                                                                    <strong><b><h3>Are You Sure? <br>You Want Cancel This Order?
+                                                                    </h3></b></strong>
+                                                                    <input type="hidden" , name="cancel_order" id="cancel_order">
 
 
+                                                                    </div>
+
+            
+                                                                    </div>
+                                                                  
+                                                             
+                                                                <div class="modal-footer">
+                                                                    <button type="button"
+                                                                            class="btn btn-default waves-effect"
+                                                                            data-dismiss="modal">Close
+                                                                    </button>
+                                                                    <button type="save"
+                                                                            class="btn btn-primary">
+                                                                        Save
+                                                                    </button>
+                                                                </div>
+                                                    </form>
+                                                 
+                                                </div>
+                                            </div>
+                                            </div>
+
+  {{--                                           
+  <div id="applicantDeleteModal-{{ $order->id }}" class="modal fade" tabindex="-1" role="dialog"
+                                     aria-labelledby="custom-width-modalLabel" aria-hidden="true"
+                                     style="display: none;">
+                                    <div class="modal-dialog"
+                                         style="min-width:40%; align-content: center; text-align: center;">
+                                        <div class="modal-content">
+                                            <form class="row" method="POST"
+                                                  action="{{ route('orders.destroy', ['id' => $order->id]) }}">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <form action=" {{ route('orders.destroy', ['id' => $order->id]) }}"
+                                                      method="POST" class="remove-record-model">
+                                                    {{ method_field('delete') }}
+                                                    {{ csrf_field() }}
+
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-hidden="true">×
+                                                        </button>
+                                                        <h4 class="modal-title text-center"
+                                                            id="custom-width-modalLabel">Delete Applicant Record</h4>
+                                                    </div>
+                                                      <div class="modal-body">
+                                                        <strong><b><h3>Are You Sure? <br>You Want Delete This Record?
+                                                                </h3></b></strong>
+                                                        <input type="hidden" , name="applicant_id" id="app_id">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default waves-effect"
+                                                                data-dismiss="modal">Close
+                                                        </button>
+                                                        <button type="submit"
+                                                                class="btn btn-danger waves-effect remove-data-from-delete-form">
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </form>
+                                                    </div>
+                                        </div>
+                                    </div>
+  --}}
 
 
 {{-- ______________________________Delete Modal ______________________________________________--}}
@@ -242,13 +328,11 @@
                                                             Delete
                                                         </button>
                                                     </div>
-                                                    </div>
-
                                                 </form>
                                             </form>
+                                                    </div>
                                         </div>
                                     </div>
-                                </div>
                             @endforeach
                         </tbody>
                     </table>

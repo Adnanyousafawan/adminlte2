@@ -16,14 +16,13 @@ class CustomerController extends Controller
      */
     public function index()
     {
-         if(Gate::allows('isContractor'))
-        {
-            abort(420,'You Are not Allowed to access this site');
+        if (Gate::allows('isContractor')) {
+            abort(420, 'You Are not Allowed to access this site');
         }
         $customers = DB::table('customers')->get();
         return view('customers/allcustomers', ['customers' => $customers]);
     }
- 
+
     /**
      * Show the form for creating a new resource.
      *

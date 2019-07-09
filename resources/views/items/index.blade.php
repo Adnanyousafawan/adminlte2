@@ -4,16 +4,6 @@
 @yield('meta_tags')
 @yield('datatable_stylesheets')
 
-
-   {{--  <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/css/bootstrap-3.4.1.css">
-    <link rel="stylesheet" href="/css/jquery.dataTables.css">
-    <link rel="stylesheet" href="/css/jquery.dataTables.css"> --}}
-    {{-- <link rel="stylesheet" href="/images"> --}}
-   {{--  <script src="/js/jquery-3.4.1.js"></script>
-    <script src="/js/jquery.dataTables.js"></script>
-  --}}
 @section('content')
 @yield('bootstrap_jquery')
 @yield('error_logs')
@@ -70,7 +60,7 @@
                                 <tr>
                                     <td>0000{{ $item->id }}</td>                              
                                     <td>{{ $item->name }}</td>
-                                    <td>{{  $item->supplier_id  }}</td>
+                                    <td>{{  $item->supplier_name  }}</td>
                                     <td>{{  $item->purchase_rate }}</td>
                                     <td>{{  $item->selling_rate }}</td>
                                     <td>{{  $item->unit }}</td>
@@ -107,7 +97,7 @@
 
    {{-- ______________________________EdiT  Modal ______________________________________________--}}
 
-                {{--                             <div id="EditModal-{{ $item->id }}" class="modal fade"
+                                            <div id="EditModal-{{ $item->id }}" class="modal fade"
                                                  tabindex="-1" role="dialog"
                                                  aria-labelledby="custom-width-modalLabel" 
                                                  style="display: none;">
@@ -115,58 +105,49 @@
                                                      style="min-width:40%; align-content: center; ">
                                                     <div class="modal-content">
                                                             <form
-                                                                 action=" {{ route('orders.update', ['id' => $order->id]) }}"
+                                                                 action=" {{ route('items.update', ['id' => $item->id]) }}"
                                                                 method="POST" >
                                                                 {{ csrf_field() }}
-
-
                                                                  {{ method_field('POST') }}
                                                                
-                                                             
-
                                                                 <div class="modal-header">
                                                                     <button type="button" class="close"
                                                                             data-dismiss="modal"
                                                                             aria-hidden="true">×
                                                                     </button>
                                                                     <h4 class="modal-title text-center"
-                                                                        id="custom-width-modalLabel">Edit Order Details
+                                                                        id="custom-width-modalLabel">Edit Item Details
                                                                     </h4>
                                                                 </div>
                                                                 <div class="row">
                                                                 <div class="modal-body">
                                                                     <div class="col-md-10 col-md-offset-1 form-group ">
-                                                                         <div class="form-group">
-                                                                            <label for="project_id">Projects</label>
-                                                                            <select class="form-control" id="project_id" name="project_id">
-                                                                                <option value="">{{ DB::table('Projects')->where('id','=',$order->project_id)->pluck('title')->first() }}</option>
-                                                                                @foreach($projects as $project)
-                                                                                <option>{{ $project->title }}</option>
-                                                                                @endforeach
-                                                                            </select>
+                                                                        <div class="form-group">
+                                                                            <label for="item_name">Item Name</label>
+                                                                            <input type="text" class="form-control" id="item_name" name="item_name" placeholder="Name" value="{{ $item->name }}">
                                                                         </div>
 
                                                                         <div class="form-group">
-                                                                            <label for="item_id">Items</label>
-                                                                            <select class="form-control" id="item_id" name="item_id">
-                                                                                <option value="">{{ DB::table('items')->where('id','=',$order->item_id)->pluck('name')->first() }}</option>
-                                                                                @foreach($items as $item)
-                                                                                <option>{{ $item->name }}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div>
-                                                                        <div class="form-group">
                                                                             <label for="supplier_id">Supplier</label>
                                                                             <select class="form-control" id="supplier_id" name="supplier_id">
-                                                                                <option value="">{{ DB::table('suppliers')->where('id','=',$order->supplier_id)->pluck('name')->first() }}</option>
+                                                                                <option value="{{ $item->supplier_id }}">{{ $item->supplier_name }}</option>
                                                                                 @foreach($suppliers as $supplier)
-                                                                                <option>{{ $supplier->name }}</option>
+                                                                                <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
                                                                          <div class="form-group">
-                                                                            <label for="quantity">Quantity</label>
-                                                                            <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Quantity" value="{{ $order->quantity }}">
+                                                                            <label for="purchase_rate">Purchase Rate</label>
+                                                                            <input type="text" class="form-control" id="purchase_rate" name="purchase_rate" placeholder="Purchase Rate" value="{{ $item->purchase_rate }}">
+                                                                        </div>
+                                                                         <div class="form-group">
+                                                                            <label for="selling_rate">Selling Rate</label>
+                                                                            <input type="text" class="form-control" id="selling_rate" name="selling_rate" placeholder="Selling Rate" value="{{ $item->selling_rate }}">
+                                                                        </div>
+                                                                        
+                                                                         <div class="form-group">
+                                                                            <label for="unit">Unit</label>
+                                                                            <input type="text" class="form-control" id="unit" name="unit" placeholder="Unit" value="{{ $item->unit }}">
                                                                         </div>
 
                                                                     </div>
@@ -191,7 +172,7 @@
                                             </div>
                                             </div>
 
- --}}
+
 
 
 {{-- ______________________________Delete Modal ______________________________________________--}}

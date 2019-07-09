@@ -2,9 +2,9 @@
 @section('title', 'All Projects')
 @include('projects.DataTables.All_Projects')
 @include('common')
-@yield('meta_tags')
+
 @section('content')
-    @yield('bootstrap_jquery')
+  @yield('meta_tags')
     @yield('error_logs')
     @yield('breadcrumbs')
 
@@ -16,9 +16,9 @@
     </div>
 </div>
 
-    @yield('datatable_stylesheets')
-    @yield('datatable_script')
+@yield('datatable_stylesheets')
+@yield('datatable_script')
 
  
 @stop
-
+ 
