@@ -193,8 +193,8 @@ class HomeController extends Controller
                             ->title("Expense Details")
                             ->elementLabel("Project Expense")
                             ->dimensions(1000, 500)
-                            ->responsive(true)
-                            ->groupByMonth(date('Y'), true);
+                            ->responsive(true);
+                            //->groupByMonth(date('Y'), true);
 
                         $pie_chart = Charts::create('pie', 'highcharts')
                             ->title('Company Chart')

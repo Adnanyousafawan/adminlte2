@@ -10,9 +10,7 @@
 @yield('meta_tags')
 @yield('error_logs')
 @yield('breadcrumbs')
-
  
-
 <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
