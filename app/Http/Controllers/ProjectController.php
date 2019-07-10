@@ -570,7 +570,8 @@ class ProjectController extends Controller
             ->responsive(true)
             ->height(300)
             ->width(0);
-$percent = $percent + $percent;
+        $percent = $percent + $percent;
+    
              $percentage_chart_received = Charts::create('percentage', 'justgage')
             ->title('Received Amount')
             ->elementLabel('%')
