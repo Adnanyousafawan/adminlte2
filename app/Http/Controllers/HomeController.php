@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
 use App\Traits\UploadTrait;
 use Project;
 use Gate;
-use Charts;
+use Charts; 
 
 
 class HomeController extends Controller
@@ -55,7 +55,9 @@ class HomeController extends Controller
         $check = DB::table('projects')->get()->count();
         if ($check == 0) {
             return view('firstview');
-        } else {
+        } 
+        else
+         {
             if (Gate::allows('isManager')) {
                 //_________________________ Dashboard Boxes Count _____________________________________
                 $status_id = DB::table('project_status')->where('name', '=', 'Completed')->pluck('id')->first();
@@ -63,7 +65,7 @@ class HomeController extends Controller
                     //->where('assigned_by', '=', Auth::User()->id)
                 ->count();
 
-                if ($status_id == 0) {
+                //if ($status_id != 0) {
                     $current_projects = DB::table('projects')->where('status_id', '!=', $status_id)
                         ->where('assigned_by', '=', Auth::User()->id)
                         ->count();
@@ -99,8 +101,8 @@ class HomeController extends Controller
             ->title("Expense Details")
             ->elementLabel("Company Expenses")
             ->dimensions(1000, 500)
-            ->responsive(true);
-            //->groupByMonth(date('Y'), true);
+            ->responsive(true)
+            ->groupByMonth(date('Y'), true);
 
 
 
@@ -135,14 +137,15 @@ class HomeController extends Controller
 
                     // dd($completed_projects);
                     return view('home', compact('projects', 'total_contractors', 'completed_projects', 'current_projects', 'expenses', 'orders','chart'));
-                }
+                //}
             }
             if (Gate::allows('isAdmin')) {
                 $status_id = DB::table('project_status')->where('name', '=', 'Completed')->pluck('id')->first();
                 $completed_projects = DB::table('projects')->where('status_id', '=', $status_id)
                     //->where('assigned_by','=',Auth::User()->id)
                     ->count();
-                if ($status_id == 0) {
+              //  if ($status_id != 0) 
+                //{
                     $current_projects = DB::table('projects')->where('status_id', '!=', $status_id)
                         //->where('assigned_by','=',Auth::User()->id)
                         ->count();
@@ -199,12 +202,11 @@ class HomeController extends Controller
                             ->values([$company_balance, $company_expense, 10000])
                             ->dimensions(1000, 500)
                             ->responsive(true);
-
                     //DB::table()->where('status_id','=',$status_id)->get()->count();
 
                     // dd($completed_projects);
                     return view('home', compact('projects', 'total_contractors', 'completed_projects', 'current_projects', 'expenses', 'orders', 'company_balance','company_expense','chart','pie_chart'));
-                }
+                //}
             }
         }
     }
