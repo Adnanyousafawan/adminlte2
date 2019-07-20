@@ -1974,11 +1974,21 @@ class APIController extends Controller
         $description = $request->get('expense_description');
         $amount = $request->get('expense_amount');
 
+        $expense_number = DB::table('miscellaneous_expenses')
+            ->pluck('expense_number')
+            ->last();
+
+        if ($expense_number == 0) {
+            $expense_number = 1000;
+        } else {
+            $expense_number++;
+        }
+
         $obj = new MiscellaneousExpense([
             'name' => $name,
             'description' => $description,
             'expense' => $amount,
-            'expense_number' => 0,
+            'expense_number' => $expense_number,
             'others' => 0,
             'project_id' => $projectID,
         ]);
