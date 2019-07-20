@@ -7,6 +7,7 @@ use App\Labor;
 use App\LaborAttendance;
 use App\LaborStatus;
 use App\MaterialRequest;
+use App\MiscellaneousExpense;
 use App\Note;
 use App\Project;
 use App\ProjectPhase;
@@ -1957,6 +1958,41 @@ class APIController extends Controller
         $notes = Note::all()->where('contractor_id', '=', $id);
 
         return response()->json($notes);
+    }
+
+    function api_add_expense(Request $request)
+    {
+        $id = DB::table('users')
+            ->where('email', '=', $request->get('email'))
+            ->pluck('id')
+            ->first();
+
+        $projectID = DB::table('projects')
+            ->where('title','=', $request->get('project'))
+            ->where('assigned_to','=', $id)
+            ->pluck('id')
+            ->first();
+
+        $name = $request->get('expense_name');
+        $description = $request->get('expense_description');
+        $amount = $request->get('expense_amount');
+
+        $obj = new MiscellaneousExpense([
+            'name' => $name,
+            'description' => $description,
+            'expense' => $amount,
+            'expense_number' => 0,
+            'others' => 0,
+            'project_id' => $projectID,
+        ]);
+
+//        dd($obj);
+
+        if ($obj->save()){
+            return "New expense successfully saved.";
+        } else {
+            return "Error occurred.";
+        }
     }
 
 
