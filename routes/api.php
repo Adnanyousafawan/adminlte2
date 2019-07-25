@@ -71,3 +71,8 @@ Route::post('/get/note', 'APIController@api_get_note');
 Route::post('/update/note', 'APIController@api_update_note');
 Route::post('/delete/note', 'APIController@api_delete_note');
 Route::post('/all/notes', 'APIController@api_all_notes');
+
+//________________________Conflict was occurred on this Route looks fine__________________________
+Route::post('/add/expense', 'APIController@api_add_expense');
+
+
