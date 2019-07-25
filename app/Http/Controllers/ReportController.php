@@ -11,6 +11,7 @@ use Carbon;
 
 class ReportController extends Controller
 {
+    
     /**
      * Create a new controller instance.
      *

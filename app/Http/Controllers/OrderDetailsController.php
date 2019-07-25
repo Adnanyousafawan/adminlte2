@@ -11,6 +11,11 @@ use Auth;
 
 class OrderDetailsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+    }
     function index()
     {
         if (Gate::allows('isContractor')) {

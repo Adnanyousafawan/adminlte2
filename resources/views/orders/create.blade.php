@@ -121,7 +121,7 @@
           console.log(temp);
                 html += '<td><select id="item_id'+temp+'" name="item_id[]" class="form-control"><option value="0">Select Item</option></select></td>';
                 
-                html += '<td><input type="number" name="quantity[]" class="form-control"/></td>';
+                html += '<td><input type="text" class="form-control" placeholder="Quantity" value="" onkeypress="return isNumber(event)" onpaste="return false;" maxlength="11" pattern="[0-9].{0,10}" title="Enter quantity minimum 1" name="quantity[]"/></td>';
                 //html += '<td><input type="text" name="status[]" class="form-control"/></td>';
 
                 if (number > 1) {
@@ -243,16 +243,21 @@
       });
 
     });
-
-
         // });
  
 {{-- </script> <script type='text/javascript'> --}}
 
-   
-
     </script>
-
+<script type="text/javascript">     
+    function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if ( (charCode > 31 && charCode < 48) || charCode > 57) {
+        return false;
+    }
+        return true;
+    }
+</script>
 @stop
 {{--<input type="text" name="item_id[]" class="form-control"/> <select name="item_id[]" class="form-control">@foreach($items as $item)<option>{{$item->name}}</option>@endforeach </select>  --}}
 

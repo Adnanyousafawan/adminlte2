@@ -11,6 +11,11 @@ use Auth;
 
 class MaterialRequestController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -130,7 +135,7 @@ class MaterialRequestController extends Controller
 
         if (Gate::allows('isAdmin')) {
 
-            $request_status = DB::table('material_request_statuses')->where('name', '=', 'approved')->pluck('id')->first();
+            $request_status = DB::table('material_request_statuses')->where('name', '=', 'Rejected')->pluck('id')->first();
 
             $materialrequests = DB::table('material_requests')
                 ->leftjoin('items', 'items.id', '=', 'material_requests.item_id')
@@ -170,7 +175,7 @@ class MaterialRequestController extends Controller
 
         if (Gate::allows('isAdmin')) {
 
-            $request_status = DB::table('material_request_statuses')->where('name', '=', 'approved')->pluck('id')->first();
+            $request_status = DB::table('material_request_statuses')->where('name', '=', 'Pending')->pluck('id')->first();
 
             $materialrequests = DB::table('material_requests')
                 ->leftjoin('items', 'items.id', '=', 'material_requests.item_id')

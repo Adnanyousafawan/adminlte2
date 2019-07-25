@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\MiscellaneousExpense;
-
 use App\Http\Requests;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -49,15 +48,56 @@ class HomeController extends Controller
 
     public function index()
     {
+        $check = DB::table('project_phase')->get()->count();
+        if ($check == 0)
+        {
+                DB::table('project_phase')->insert([
+                    ['name' => 'Not Started'],
+                    ['name' => 'Excavation'],
+                    ['name' => 'Foundation'],
+                    ['name' => 'Flooring'],
+                    ['name' => 'Side Walls'],
+                    ['name' => 'Lantar'],
+                    ['name' => 'Roofing'],
+                    ['name' => 'Sanitary'],
+                    ['name' => 'Electricity Works'],
+                    ['name' => 'Tiling'],
+                    ['name' => 'Paint'],
+                    ['name' => 'Finish']
+                    ]);
+        }
+        $check = DB::table('project_status')->get()->count();
+        if ($check == 0)
+        {
+                DB::table('project_status')->insert([
+                    ['name' => 'Not Started'],
+                    ['name' => 'In Progress'],
+                    ['name' => 'Completed'],
+                    ['name' => 'Stopped'],
+                    ['name' => 'Halt']
+                    ]);
+        }
+        $check = DB::table('labor_status')->get()->count();
+        if ($check == 0)
+        {
+                DB::table('labor_status')->insert([
+                    ['name' => 'Active'],
+                    ['name' => 'Not Active']
+                    ]);
+        }
+
         if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
         }
-        $check = DB::table('projects')->get()->count();
+       /* 
+       $check = DB::table('projects')->get()->count();
         if ($check == 0) {
             return view('firstview');
         } 
+
         else
          {
+             */
             if (Gate::allows('isManager')) {
                 //_________________________ Dashboard Boxes Count _____________________________________
                 $status_id = DB::table('project_status')->where('name', '=', 'Completed')->pluck('id')->first();
@@ -69,6 +109,7 @@ class HomeController extends Controller
                     $current_projects = DB::table('projects')->where('status_id', '!=', $status_id)
                         ->where('assigned_by', '=', Auth::User()->id)
                         ->count();
+                        
                     $projects = DB::table('projects')->where('assigned_by', '=', Auth::User()->id)->get();
                     //dd($projects);
                     
@@ -85,8 +126,9 @@ class HomeController extends Controller
                             $expenses = $expense;
                         }
                     }
-                    //dd($expense);
-                    $total_contractors = DB::table('users')->where('id', '=', 3)->count();
+                    
+                    $total_contractors = DB::table('users')->where('role_id', '=', 3)->count();
+                  
 
                     //$completed_projects = DB::table('projects')->where('status_id', '=', $status_id)->count();
 
@@ -96,118 +138,120 @@ class HomeController extends Controller
 
                     //_________________________ Monthly Graph _______________________________________________
 
-                    //____________________________ $expense = MiscellaneousExpense::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))->get();
-        $chart = Charts::database($expense, 'bar', 'highcharts')
+                    //____________________________ 
+        $CompanyExpense = MiscellaneousExpense::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))->get();
+        $chart = Charts::database($CompanyExpense, 'bar', 'highcharts')
             ->title("Expense Details")
             ->elementLabel("Company Expenses")
             ->dimensions(1000, 500)
             ->responsive(true)
             ->groupByMonth(date('Y'), true);
 
+        $pie_chart = Charts::create('pie', 'highcharts')
+                            ->title('Company Income')
+                            ->labels(['Projects', 'Material'])
+                            ->values([100000,10000])
+                            ->dimensions(1000, 500)
+                            ->responsive(true);
 
-
-            //___________________________________________________________
-
-                    //_______________ ____________ Material List _____________________________________________
-
-
-                    //_______________________________________________________________________________________
-
-                    //____________________________Current Projects___________________________________________
-
-
-                    //_______________________________________________________________________________________
-
-
-                    //____________________________Order Details______________________________________________
-
-
-                    //_______________________________________________________________________________________
-
-
-                    //____________________________Users Box__________________________________________________
-
-                    // $total_free_contractors = DB::table('users')->where('id','=',3)->count();
-                    // $working_contractors =
-
-                    //_______________________________________________________________________________________
-
-
-                    //DB::table()->where('status_id','=',$status_id)->get()->count();
-
-                    // dd($completed_projects);
-                    return view('home', compact('projects', 'total_contractors', 'completed_projects', 'current_projects', 'expenses', 'orders','chart'));
+           
+                    return view('home', compact('projects', 'total_contractors', 'completed_projects', 'current_projects', 'expenses', 'orders','chart','pie_chart'));
                 //}
             }
-            if (Gate::allows('isAdmin')) {
+            if (Gate::allows('isAdmin')) 
+            {
+                //_________________ Completed Projects ___________________________________
                 $status_id = DB::table('project_status')->where('name', '=', 'Completed')->pluck('id')->first();
-                $completed_projects = DB::table('projects')->where('status_id', '=', $status_id)
-                    //->where('assigned_by','=',Auth::User()->id)
-                    ->count();
-              //  if ($status_id != 0) 
-                //{
-                    $current_projects = DB::table('projects')->where('status_id', '!=', $status_id)
-                        //->where('assigned_by','=',Auth::User()->id)
-                        ->count();
-                    $projects = DB::table('projects')
-                        //->where('assigned_by','=',Auth::User()->id)
-                        ->get();
-                    //dd($projects);
-                    //       --------------------------------Need to separate company expense and projects ===========
-
-                    $expenses = DB::table('miscellaneous_expenses')
-                        ->where('project_id', '!=', null)
-                        ->sum('expense');
-                    $temp = 0;
-                    $material_profit = 0;
-                   $checking = DB::table('order_details')
+                $completed_projects = DB::table('projects')->where('status_id', '=', $status_id)->count();
+                //_________________ Current Projects ___________________________________
+                $current_projects = DB::table('projects')->where('status_id', '!=', $status_id)->count();
+                //_________________ Total Contractors ___________________________________
+                $total_contractors = DB::table('users')->where('role_id', '=',3)->count();
+                //_________________ Projects Expense History ___________________________________
+                $expenses = DB::table('miscellaneous_expenses')
+                    ->where('project_id', '!=', null)
+                    ->sum('expense');
+                //_________________ Total Customers ___________________________________
+                $total_customers =  DB::table('customers')->count();
+                //_________________ Total Labor ___________________________________
+                $total_labor =  DB::table('labors')->count();
+                //_________________ Company Expense ___________________________________
+                $company_expense = DB::table('miscellaneous_expenses')
+                    ->where('others', '=', 1)
+                    ->sum('expense');
+                //_________________ Company Balance ___________________________________
+                $temp = 0;
+                $material_profit = 0;
+                $checking = DB::table('order_details')
                    ->leftjoin('items','items.id','=','order_details.item_id')
                    ->select('order_details.quantity','order_details.set_rate','items.purchase_rate')
                    ->get();
-                   foreach($checking as $check)
-                   {
-                        $temp = ($check->set_rate*$check->quantity) - ($check->purchase_rate*$check->quantity);
-                        $material_profit = $temp + $material_profit;
-                   }
-                    $company_expense = DB::table('miscellaneous_expenses')
-                        ->where('others', '=', 1)
-                        ->sum('expense');
+                foreach($checking as $check)
+                {
+                    $temp = ($check->set_rate*$check->quantity) - ($check->purchase_rate*$check->quantity);
+                    $material_profit = $temp + $material_profit;
+                }
+                //$company_balance = $material_profit - $company_expense;
+              
+//____________________________ ADD Customers payments left + matrial profit + profit from projects __________________________________________________
+      
 
-                   $company_balance = $material_profit - $company_expense;
-                     //dd($balance);
-                   
-                    //dd($expense);
-                    $total_contractors = DB::table('users')->where('role_id', '=', 3)->count();
-                    //$completed_projects = DB::table('projects')->where('status_id', '=', $status_id)->count();
-                    //_______________________________________________________________________________________
-                    $orders = DB::table('order_details')->paginate(5);
+        //_________________ Profit From Projects ___________________________________
 
-                    //____________________________Users Box__________________________________________________
+        $ProjectsProfit = 0;
+        $spent = 0;
+        $ProjStatusID = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
+        $all_projects = DB::table('projects')->where('status_id','=',$ProjStatusID)->get();
+        foreach ($all_projects as $project) 
+        {
+            $total_orders = DB::table('order_details')->where('order_details.project_id','=',$project->id)->get();
+            $orders_sum = 0;
+            $total = 0;
+                foreach ($total_orders as $order)
+                {
+                    $total =  $order->set_rate * $order->quantity;
+                    $orders_sum = $total + $orders_sum;
+                }
+            $expense = DB::table('miscellaneous_expenses')->where('miscellaneous_expenses.project_id','=',$project->id)->pluck('expense')->first();
+            $projects = DB::table('projects')->where('id', '=', $project->id)->get()->first();
+            $spent = $orders_sum + $expense;
+            $ProjectsProfit = $projects->estimated_budget - $spent;
+        }
+           // $received_payments = DB::table('customer_payments')->where('project_id','=',$id)->sum('received');
+            $company_balance = $material_profit; 
+
+                //_________________ Orders ___________________________________
+                $orders = DB::table('order_details')->paginate(5);
+
+                //____________________________Users Box__________________________________________________
 
                     // $total_free_contractors = DB::table('users')->where('id','=',3)->count();
                     // $working_contractors =
 
                     //_______________________________________________________________________________________
-                 $expense = MiscellaneousExpense::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))->get();
-                        $chart = Charts::database($expense, 'bar', 'highcharts')
-                            ->title("Expense Details")
-                            ->elementLabel("Project Expense")
-                            ->dimensions(1000, 500)
-                            ->responsive(true)
-                            ->groupByMonth(date('Y'), true);
+                $ProjectExpense = DB::table('miscellaneous_expenses')
+                ->where('project_id', '!=', null)
+                ->where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))
+                ->get();
+                /*$expense = MiscellaneousExpense::where('project_id', '!=', null)where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))->get();*/
+                $chart = Charts::database($ProjectExpense, 'bar', 'highcharts')
+                    ->title("Expense Details")
+                    ->elementLabel("Project Expense")
+                    ->dimensions(1000, 500)
+                    ->responsive(true)
+                    ->groupByMonth(date('Y'), true);
 
-                        $pie_chart = Charts::create('pie', 'highcharts')
-                            ->title('Company Chart')
-                            ->labels(['Company Balance', 'Company Expenses', 'Receivable'])
-                            ->values([$company_balance, $company_expense, 10000])
-                            ->dimensions(1000, 500)
-                            ->responsive(true);
+                $pie_chart = Charts::create('pie', 'highcharts')
+                    ->title('Company Income')
+                    ->labels(['Projects', 'Material'])
+                    ->values([$ProjectsProfit,$material_profit])
+                    ->dimensions(1000, 500)
+                    ->responsive(true);
                     //DB::table()->where('status_id','=',$status_id)->get()->count();
 
                     // dd($completed_projects);
-                    return view('home', compact('projects', 'total_contractors', 'completed_projects', 'current_projects', 'expenses', 'orders', 'company_balance','company_expense','chart','pie_chart'));
-                //}
-            }
+                return view('home', compact('total_contractors', 'completed_projects', 'current_projects', 'expenses', 'orders', 'company_balance','company_expense','chart','pie_chart'));
+            //}
         }
     }
     public function addcontractor()

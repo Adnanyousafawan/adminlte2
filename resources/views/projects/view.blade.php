@@ -113,9 +113,10 @@
                                             </li>
                                         </ul>
                                         <!-- /.box-body -->
-                                        <strong><i class="fa fa-file-text-o "></i> {{ $projects->description }}</strong>
-
-                                        <p></p>
+                                    
+                                        <strong><i class="fa fa-file-text-o" ></i></strong>
+                                        <p style=" word-wrap: break-word; "> {{ $projects->description }}</p>
+                                 
                                     </div>
 
                                     <a href="{{ route('projects.edit', ['id' => $projects->id]) }}"

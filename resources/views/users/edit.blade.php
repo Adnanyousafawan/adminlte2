@@ -18,7 +18,6 @@
         </div>
     @endif
 @yield('breadcrumbs')
- 
 <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
     <div class="box box-primary">
         <div class="box-header">
@@ -33,7 +32,7 @@
                 <div class="col-lg-8 col-lg-offset-2">
                     <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                         <label for="name">Name <span style="color: red;">*</span></label>
-                        <input type="text" class= "form-control" id="name" name="name"pattern="[A-Za-z0-9\w]{2,50}" title="Minimum 2 letters required for Name" 
+                        <input type="text" class= "form-control" id="name" name="name"pattern="[A-Za-z0-9\w].{2,50}" title="Minimum 3 letters required for Name" 
                                value="{{ $users->name }}">
                         @if ($errors->has('name'))
                             <span class="help-block alert-danger">
@@ -68,8 +67,8 @@
 
                     <div class="form-group {{ $errors->has('cnic') ? ' has-error' : '' }}">
                         <label for="cnic">CNIC <span style="color: red;">*</span></label>
-                        <input type="text" class="form-control" id="cnic" name="cnic"  maxlength="13"  pattern="[0-9]{13}"
-                               value="{{ $users->cnic }}" title="Enter 13 digit CNIC Number. Example: ( 3434359324554 )" required>
+                        <input type="text" class="form-control" placeholder="CNIC" id="cnic" name="cnic" onkeypress="return isNumber(event)" onpaste="return false;" maxlength="13" pattern="[0-9].{12,13}"
+                        value="{{ $users->cnic }}" title="Enter 13 digit CNIC Number. Example: ( 3434359324554 )" required>
                         @if ($errors->has('cnic'))
                             <span class="help-block alert-danger">
                         <strong>{{ $errors->first('cnic') }}</strong>                              
@@ -83,9 +82,8 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-phone"></i>
                             </div>
-                            <input type="text" maxlength="11" class="form-control" value="{{ $users->phone }}"
-                                   id="phone" pattern="[0-9]{11}" title="Enter 11 Digit Number. Example:(03330234334)" 
-                                    name="phone" required>
+                            <input type="text" class="form-control" placeholder="Contact Number" id="phone" name="phone" onkeypress="return isNumber(event)" onpaste="return false;" maxlength="11" pattern="[0-9].{10}" class="form-control" value="{{ $users->phone }}" title="Enter 11 Digit Number. Example:(03330234334)" 
+                                 required>
                             @if ($errors->has('phone'))
                                 <span class="help-block alert-danger">
                         <strong>{{ $errors->first('phone') }}</strong>
@@ -98,7 +96,7 @@
                     <div class="form-group {{ $errors->has('address') ? ' has-error' : '' }}">
                         <label for="address">Address <span style="color: red;">*</span></label>
                         <input type="text" class="form-control" id="address" name="address"
-                               value="{{ $users->address }}" pattern="[A-Za-z0-9\w]{4,100}" 
+                        value="{{ $users->address }}" pattern="[A-Za-z0-9\w].{4,100}" 
                         title=" Minimum 4 letters required" required>
                         @if ($errors->has('address'))
                             <span class="help-block alert-danger">
@@ -111,10 +109,13 @@
                     <div class="form-group {{ $errors->has('role') ? ' has-error' : '' }}">
                         <label for="role">Select Role <span style="color: red;">*</span></label>
                         <select class="form-control" id="role" name="role" value="{{ $current_role }}">
+                            <option default style="color: red;">{{ $current_role }}</option>
                                 @foreach($roles as $role)
-                                <option value="{{ $role->id }}">
-                                {{ $role->name }}
+                                  @if($role->name != $current_role)
+                                <option>
+                                         {{ $role->name }}
                                  </option>
+                                 @endif
                                 @endforeach
                         </select>
                     </div>
@@ -130,4 +131,15 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">     
+    function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if ( (charCode > 31 && charCode < 48) || charCode > 57) {
+        return false;
+    }
+        return true;
+    }
+</script>
 @stop

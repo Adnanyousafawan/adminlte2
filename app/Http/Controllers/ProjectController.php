@@ -59,7 +59,7 @@ class ProjectController extends Controller
             ->leftjoin('users','projects.assigned_to','=','users.id')
             ->leftjoin('labors','labors.project_id','=','projects.id')
             ->select('labors.id','projects.id','projects.title','labors.rate','users.name as contractor_name')
-            ->get();
+            ->paginate(5);
             $contractors = User::all()->where('role_id', '=', 3);
 
             return view('projects/index', compact('projects', 'contractors', 'labor_by_projects'));
@@ -466,16 +466,15 @@ class ProjectController extends Controller
             ->where('id', '=', $projects->customer_id)
             ->get()->first();
 
+        $current_contractor = DB::table('users')
+            ->where('id', '=', $projects->assigned_to)
+            ->pluck('name')->first();
         // Redirect to user list if updating user wasn't existed
         if ($projects == null || count($projects) == 0) {
             return redirect()->intended('projects/index');
         }
         //$users = User::paginate(10);
-        return view('projects/edit',
-            compact('customer', 'contractors'),
-            compact('projects')
-//            compact()
-        );
+        return view('projects/edit', compact('customer','contractors','projects','current_contractor'));
     }
 
 
@@ -555,7 +554,7 @@ class ProjectController extends Controller
      $percent =  $percent/$projects->estimated_budget;
      
 
-      $percentage_chart = Charts::create('percentage', 'justgage')
+        $percentage_chart = Charts::create('percentage', 'justgage')
             ->title('Project Completed')
             ->elementLabel('%')
             ->values([15, 0, 100])
@@ -563,14 +562,14 @@ class ProjectController extends Controller
             ->height(300)
             ->width(0);
 
-             $percentage_chart_budget = Charts::create('percentage', 'justgage')
+        $percentage_chart_budget = Charts::create('percentage', 'justgage')
             ->title('Budget Used')
             ->elementLabel('%')
             ->values([$percent, 0, 100])
             ->responsive(true)
             ->height(300)
             ->width(0);
-$percent = $percent + $percent;
+        $percent = $percent + $percent;
              $percentage_chart_received = Charts::create('percentage', 'justgage')
             ->title('Received Amount')
             ->elementLabel('%')
@@ -600,7 +599,6 @@ $percent = $percent + $percent;
             'city' => 'required',
             'plot_size' => 'required',
             'floor' => 'required',
-
             //'assigned_to' => 'required',
             'estimated_completion_time' => 'required',
             'estimated_budget' => 'required',
@@ -608,17 +606,19 @@ $percent = $percent + $percent;
 
         ]);
 
+
         $projects = Project::find($id);
+        
         $projects->title = $request->input('title');
         $projects->area = $request->input('area');
         $projects->city = $request->input('city');
         $projects->plot_size = $request->input('plot_size');
         $projects->floor = $request->input('floor');
-        //$projects->assigned_to = $request->input('assigned_to');
+        $projects->assigned_to = $request->input('assigned_to');
         $projects->estimated_completion_time = $request->input('estimated_completion_time');
         $projects->estimated_budget = $request->input('estimated_budget');
-        //  $projects->description = $request->input('description');
-        // $projects->contract_image = $request->input('contract_image');
+        $projects->description = $request->input('description');
+        $projects->contract_image = $request->input('contract_image');
 
         $projects->contract_image = $request->input('contract_image');
 
@@ -640,6 +640,24 @@ $percent = $percent + $percent;
             $projects->contract_image = $filePath;
         }
         $projects->save();
+
+        
+        $customer = Customer::find($projects->customer_id);
+                $customer->name = $request->input('name');
+                $customer->cnic = $request->input('cnic');
+                $customer->phone = $request->input('phone');
+                $customer->address = $request->input('address');
+            $customer->save();
+        
+/* 
+            $customerId = DB::table('customers')
+                ->where('id', '=', $customer->id)
+                ->pluck('id')->first();
+            $projects = Project::find($id);
+            $projects->customer_id = $customerId;
+            $projects->save();
+            */
+
         // Return user back and show a flash message
         return redirect()->back()->with('success', 'Data Updated');
     }

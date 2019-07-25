@@ -6,6 +6,7 @@ use App\Customer;
 use Illuminate\Http\Request;
 use DB;
 use Gate;
+use Carbon\Carbon;
 
 class CustomerController extends Controller
 {
@@ -91,6 +92,25 @@ class CustomerController extends Controller
 
     public function goBackToHome()
     {
+        $check = DB::table('roles')->get()->count();
+        if ($check == 0)
+        {
+            $date = Carbon::now();
+                DB::table('roles')->insert([
+                    ['name' => 'Admin','created_at'=> $date , 'updated_at'=> $date],
+                    ['name' => 'Manager','created_at'=> $date , 'updated_at'=> $date],
+                    ['name' => 'Contractor','created_at'=> $date , 'updated_at'=> $date]
+                    ]); 
+        }
+        $check = DB::table('users')->get()->count();
+        if ($check == 0)
+        {
+            $rollID = DB::table('roles')->where('name','=','Admin')->pluck('id')->first();
+            $date = Carbon::now();
+                DB::table('users')->insert([
+                    ['name' => 'Admin','email'=>'admin@cstms.com','role_id'=>$rollID,'password'=>'$2y$10$UzENq9Ls52fSOPyj2aSONekXSCE3qDPhTEIJxV/fHIVKEHFQp61aO','created_at'=> $date , 'updated_at'=> $date]
+                    ]);
+        }
         return view('welcome');
     }
 }

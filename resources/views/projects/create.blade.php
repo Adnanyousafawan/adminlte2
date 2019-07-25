@@ -1,7 +1,6 @@
 @extends('adminlte::page')
 @section('title', 'Add Project')
 
-
 @include('common')
 @yield('meta-tags')
 @section('content')
@@ -43,16 +42,16 @@
                                 <div class="form-group">
                                     <label for="title">Project Title <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" name="title" id="title"
-                                           pattern="[A-Za-z0-9\w]{3,150}"
-                                           title="Minimum 3 letter word required for Title"
+                                           pattern="[A-Za-z0-9\w].{3,150}"
+                                           title="Minimum 4 letter word required for Title"
                                            placeholder="Project Title" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="area">Project Location <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" name="area" id="area"
-                                           pattern="[A-Za-z0-9\w]{3,150}"
-                                           title=" Minimum 3 letters word is required"
+                                           pattern="[A-Za-z0-9\w].{3,150}"
+                                           title=" Minimum 4 letters word is required"
 
                                            placeholder="Project Location" required>
                                 </div>
@@ -60,23 +59,23 @@
                                 <div class="form-group">
                                     <label for="city">Project City <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" name="city" id="city"
-                                           pattern="[A-Za-z0-9\w]{3,100}"
-                                           title=" Minimum 3 letters word is required"
+                                           pattern="[A-Za-z0-9\w].{3,100}"
+                                           title=" Minimum 4 letters word is required"
                                            placeholder="Project City" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="plot_size">Project Size <span style="color: red;">*</span></label>
+                                    <label for="plot_size">Plot Size <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" name="plot_size" id="plot_size"
-                                           pattern="[A-Za-z0-9\w]{1,50}"
-                                           title=" Minimum 1 letters required"
+                                           pattern="[A-Za-z0-9\w].{2,50}"
+                                           title=" Minimum 3 letters required"
                                            placeholder="Project plot size" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="floor">Project Floors <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" name="floor" id="floor"
-                                           pattern="[A-Za-z0-9\w]{1,10}"
+                                           pattern="[A-Za-z0-9\w].{0,10}"
                                            title=" Minimum 1 letters required"
                                            placeholder="Enter number of floors" required>
                                 </div>
@@ -84,15 +83,14 @@
                                 <div class="form-group">
                                     <label for="name">Customer Name <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="name" placeholder="Customer Name"
-                                           name="name" pattern="[A-Za-z0-9\w]{2,50}"
-                                           title="Minimum 2 letters required for Name" required>
+                                           name="name" pattern="[A-Za-z0-9\w].{2,50}"
+                                           title="Minimum 3 letters required for Name" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="cnic">Customer CNIC <span style="color: red;">*</span></label>
-                                    <input type="text"  class="form-control" id="cnic"
-                                           placeholder="Customer CNIC"
-                                           name="cnic" maxlength="13" pattern="[0-9]{13}" title="Enter 13 digit CNIC Number. Example: ( 3434359324554 )"
+                                    <input  type="text" class="form-control" placeholder="CNIC" value="" id="cnic" name="cnic" onkeypress="return isNumber(event)" onpaste="return false;"
+                        maxlength="13" pattern="[0-9].{12,13}"  title="Enter 13 digit CNIC Number. Example: ( 3434359324554 )" 
                                            required>
                                 </div>
 
@@ -102,10 +100,7 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-phone"></i>
                                         </div>
-                                        <input type="text" maxlength="11" class="form-control"
-                                               placeholder="Contact Number"
-                                               pattern="[0-9]{11}" title="Enter 11 Digit Number. Example:(03330234334)"
-                                               id="phone" name="phone" required>
+                                        <input type="text" class="form-control" placeholder="Contact Number" value="" id="phone" name="phone" onkeypress="return isNumber(event)" onpaste="return false;" maxlength="11" pattern="[0-9].{10}" title="Enter 11 Digit Number. Example:(03330234334)" required>
 
                                     </div>
                                 </div>
@@ -114,7 +109,7 @@
                                 <div class="form-group">
                                     <label for="address">Home Address <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="address" name="address"
-                                           pattern="[A-Za-z0-9\w]{4,100}"
+                                           pattern="[A-Za-z0-9\w].{4,100}"
                                            title=" Minimum 5 letters word required"
                                            placeholder="Home Address" required>
                                 </div>
@@ -147,7 +142,7 @@
                                             style="color: red;">*</span></label>
                                     <input type="text" name="estimated_budget" id="estimated_budget"
                                            class="form-control"
-                                           pattern="[0-9]{4,100}"
+                                           pattern="[0-9].{3,100}"
                                            title=" Minimum 4 digit number required"
                                            placeholder="Home Address" required>
                                 </div>
@@ -155,8 +150,8 @@
                                 <div class="form-group">
                                     <label for="description">Add Description</label>
                                     <textarea class="form-control" id="description" name="description" rows="5"
-                                              pattern="[0-9]{4,250}"
-                                              title=" Minimum 4 digit number">
+                                              pattern="[0-9].{4,250}"
+                                              title=" Minimum 5 digit number">
                         </textarea>
                                 </div>
 
@@ -170,4 +165,16 @@
         </div>
     </div>
 
+@yield('datatable_stylesheets')
+
+<script type="text/javascript">     
+    function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if ( (charCode > 31 && charCode < 48) || charCode > 57) {
+        return false;
+    }
+        return true;
+    }
+</script>
 @stop

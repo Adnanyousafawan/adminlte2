@@ -37,7 +37,7 @@
                         <th>Contractor</th>
                         <th>Budget</th>
                         <th>Cost Spent</th>
-                        <th style="min-width: 65px;">Action</th>
+                        <th style="max-width: 50px;">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -50,7 +50,7 @@
                             <td>{{ $project->contractor_name}}</td>
                             <td>{{ $project->budget}}</td>
                             <td>25000</td>
-                            <td style="min-width: 65px;">
+                            <td style="max-width: 50px;">
                                 <div class="btn-group">
                                     <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action</button>
                                     <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle"
