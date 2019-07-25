@@ -51,15 +51,6 @@ class HomeController extends Controller
         if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
         }
-       /* 
-       $check = DB::table('projects')->get()->count();
-        if ($check == 0) {
-            return view('firstview');
-        } 
-
-        else
-         {
-             */
             if (Gate::allows('isManager')) {
                 //_________________________ Dashboard Boxes Count _____________________________________
                 $status_id = DB::table('project_status')->where('name', '=', 'Completed')->pluck('id')->first();
