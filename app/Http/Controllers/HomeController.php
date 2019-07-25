@@ -48,44 +48,6 @@ class HomeController extends Controller
 
     public function index()
     {
-        $check = DB::table('project_phase')->get()->count();
-        if ($check == 0)
-        {
-                DB::table('project_phase')->insert([
-                    ['name' => 'Not Started'],
-                    ['name' => 'Excavation'],
-                    ['name' => 'Foundation'],
-                    ['name' => 'Flooring'],
-                    ['name' => 'Side Walls'],
-                    ['name' => 'Lantar'],
-                    ['name' => 'Roofing'],
-                    ['name' => 'Sanitary'],
-                    ['name' => 'Electricity Works'],
-                    ['name' => 'Tiling'],
-                    ['name' => 'Paint'],
-                    ['name' => 'Finish']
-                    ]);
-        }
-        $check = DB::table('project_status')->get()->count();
-        if ($check == 0)
-        {
-                DB::table('project_status')->insert([
-                    ['name' => 'Not Started'],
-                    ['name' => 'In Progress'],
-                    ['name' => 'Completed'],
-                    ['name' => 'Stopped'],
-                    ['name' => 'Halt']
-                    ]);
-        }
-        $check = DB::table('labor_status')->get()->count();
-        if ($check == 0)
-        {
-                DB::table('labor_status')->insert([
-                    ['name' => 'Active'],
-                    ['name' => 'Not Active']
-                    ]);
-        }
-
         if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
         }

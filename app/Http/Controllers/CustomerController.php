@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DB;
 use Gate;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -92,6 +93,7 @@ class CustomerController extends Controller
 
     public function goBackToHome()
     {
+       /*
         $check = DB::table('roles')->get()->count();
         if ($check == 0)
         {
@@ -110,7 +112,9 @@ class CustomerController extends Controller
                 DB::table('users')->insert([
                     ['name' => 'Admin','email'=>'admin@cstms.com','role_id'=>$rollID,'password'=>'$2y$10$UzENq9Ls52fSOPyj2aSONekXSCE3qDPhTEIJxV/fHIVKEHFQp61aO','created_at'=> $date , 'updated_at'=> $date]
                     ]);
+                 Auth::logout();
         }
+        */
         return view('welcome');
     }
 }
