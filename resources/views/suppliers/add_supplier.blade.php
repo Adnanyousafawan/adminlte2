@@ -26,14 +26,14 @@
                         @csrf
                                                                  <div class="form-group">
                         <label for="name">Name <span style="color: red;">*</span></label>
-                        <input type="text" class="form-control" id="name" name="name" pattern="[A-Za-z0-9\w]{2,50}" title="Minimum 2 letters required for Name" placeholder="Name" required>
+                        <input type="text" class="form-control" id="name" name="name" pattern="[A-Za-z0-9\w].{2,50}" title="Minimum 3 letters required for Name" placeholder="Name" required>
                     </div>
 
     
                     <div class="form-group">
                         <label for="address">Address <span style="color: red;">*</span></label>
-                        <input type="text" class="form-control" id="address" name="address" pattern="[A-Za-z0-9\w]{4,100}" 
-                        title=" Minimum 4 letters required" 
+                        <input type="text" class="form-control" id="address" name="address" pattern="[A-Za-z0-9\w].{4,100}" 
+                        title=" Minimum 5 letters required" 
                                placeholder="Home Address" required>
                     </div>
 
@@ -43,16 +43,14 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-phone"></i>
                             </div>
-                            <input type="text" maxlength="11" class="form-control" placeholder="Contact Number"
-                                   pattern="[0-9]{11}" title="Enter 11 Digit Number. Example:(03330234334)" 
-                                    id="phone" name="phone" required>
+                            <input type="text" class="form-control" placeholder="Contact Number" value="" id="phone" name="phone" onkeypress="return isNumber(event)" onpaste="return false;" maxlength="11" pattern="[0-9].{10}" title="Enter 11 Digit Number. Example:(03330234334)" required>
                         </div>
                     </div>
  
                        
                     <div class="form-group">
                         <label for="city">City<span style="color: red;">*</span></label>
-                        <input type="text" class="form-control" id="city" placeholder="Home City" name="city" pattern="[A-Za-z0-9\w]{4,100}" 
+                        <input type="text" class="form-control" id="city" placeholder="Home City" name="city" pattern="[A-Za-z0-9\w].{3,100}" 
                         title=" Minimum 4 letters required" required>
                     </div>
 
@@ -64,9 +62,17 @@
     </div>
 </div>
 </div>
-
 </div>
-
-
 @yield('datatable_stylesheets')
+<script type="text/javascript">     
+    function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if ( (charCode > 31 && charCode < 48) || charCode > 57) {
+        return false;
+    }
+        return true;
+    }
+</script>
+
 @stop

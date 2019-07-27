@@ -134,8 +134,12 @@
                                         
 
                                         $request_status = DB::table('material_request_statuses')->where('name','=','Pending')->pluck('id')->first();
-                                        $requests = DB::table('material_requests')->where('request_status_id','=',$request_status)->take(5)->get(); 
-                                        $totalrequests = DB::table('material_requests')->where('request_status_id','=',$request_status)->count();
+                                        $requests = DB::table('material_requests')->where('request_status_id','=',$request_status)
+                                        ->where('seen','=',0)
+                                        ->take(5)->get(); 
+                                        $totalrequests = DB::table('material_requests')->where('request_status_id','=',$request_status)
+                                        ->where('seen','=',0)
+                                        ->count();
                                         $seen = DB::table('material_requests')->pluck('seen')->last();
                                        // dd($seen);
                                         @endphp
@@ -145,9 +149,7 @@
                                                 <i class="fa fa-flag-o"></i>
                                                 <span class="label label-danger">
                                                 @if($seen == 0)
-                                                {
                                                     {{ $totalrequests }}
-                                                }
                                                 @endif
                                                 </span>
                                             </a>

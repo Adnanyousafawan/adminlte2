@@ -69,7 +69,7 @@
                                     <td>0000{{ $order->id }}</td>
                                     <td>{{ $order->project_title }}</td>
                                     <td>{{ $order->item_name }}</td>
-                                    <td>{{ $order->quantity }}</td>
+                                     <td>{{ $order->quantity }}</td>
                                     <td>{{ $order->supplier_name }}</td>
                                     <td>{{ $order->selling_rate }}</td>
                                     <?php $Total = $order->selling_rate * $order->quantity  ?>
@@ -79,12 +79,12 @@
                                     <td style="max-width: 50px;">
                                         
                     <div class="btn-group">
-
-                    <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action</button>
-                    <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
-                      <span class="caret"></span>
-                      <span class="sr-only">Toggle Dropdown</span>
-                    </button>
+                        <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action</button>
+                                    <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle"
+                                            type="button">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
 
                     <ul role="menu" class="dropdown-menu">
                       <li><a type="links" data-toggle="modal" data-target="#EditModal-{{ $order->id }}"><i class="fa fa-edit"></i>Edit</a></li>
@@ -166,10 +166,11 @@
                                                                                 <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                                                                                 @endforeach
                                                                             </select>
+
                                                                         </div>
                                                                          <div class="form-group">
                                                                             <label for="quantity">Quantity</label>
-                                                                            <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Quantity" value="{{ $order->quantity }}">
+                                                                            <input type="text" class="form-control" id="quantity" name="quantity"  placeholder="Quantity" onkeypress="return isNumber(event)" onpaste="return false;" maxlength="11" pattern="[0-9].{0,10}" title="Enter quantity minimum 1" placeholder="Quantity" value="{{ $order->quantity }}" required="">
                                                                         </div>
 
                                                                     </div>
@@ -342,25 +343,19 @@
 
             </div>
         </div>
-<script type="text/javascript">
 
+@yield('datatable_stylesheets')
+@yield('datatable_script')
 
-        $('.project').DataTable({
-            select: true,
-            "order": [[0, "dsc"]],
-            //"scrollY"  : "380px",
-            "scrollCollapse": true,
-            "paging": true,
-            "bProcessing": true,
-            // fixedHeader: {
-            //     header: false,
-            //     // headerOffset: 100,
-            //     },
-            //scrollX: true,
-            // scrollY: true
-        });
-
-       
+<script type="text/javascript">     
+    function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if ( (charCode > 31 && charCode < 48) || charCode > 57) {
+        return false;
+    }
+        return true;
+    }
 </script>
 
 @stop

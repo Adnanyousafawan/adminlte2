@@ -12,7 +12,7 @@
 @yield('breadcrumbs')
 
  
-
+ 
 <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -23,7 +23,7 @@
               <p>Current Projects</p> 
             </div>
             <div class="icon">
-              <i class="ion ion-bag"></i>
+              <i class="ion ion-home"></i>
             </div>
             <a href="{{ route('projects.inprogress') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -54,7 +54,7 @@
               <p>Total Contrators</p>
             </div>
             <div class="icon">
-              <i class="ion ion-person-add"></i>
+              <i class="ion ion-ios-people-outline"></i>
             </div>
             <a href="{{ route('users.contractor') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -84,12 +84,12 @@
         <div class="col-md-3 col-sm-6 col-xs-12">
 
             <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-cloud-download-outline"></i></span>
+                <span class="info-box-icon bg-aqua"><i class="ion ion-cash"></i></span>
                 <!-- ion ion-ios-gear-outline -->
 
                 <div class="info-box-content">
                     <span class="info-box-text">Company Balance</span>
-                    <span class="info-box-number">{{ $company_balance }}</span>
+                    <span class="info-box-number">{{-- {{ $company_balance }} --}}1000000</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -97,9 +97,10 @@
         </div> 
         <!-- /.col --> 
 
+
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+                <span class="info-box-icon bg-green"><i class="ion ion-ios-people-outline"></i></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">Total Customers</span>
@@ -125,7 +126,7 @@
         <!-- /.col -->
          <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
-                <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
+                <span class="info-box-icon bg-red"><i class="ion ion-ios-browsers-outline"></i></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">Company Expenses</span>

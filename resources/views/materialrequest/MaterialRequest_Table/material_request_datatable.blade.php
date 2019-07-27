@@ -127,21 +127,21 @@
                                                                 <div class="row">
                                                                 <div class="modal-body">
                                                                     <div class="col-md-10 col-md-offset-1 form-group ">
-                                                                    <label class="form-control" for="project">Project:</label> 
-                                                                    <p id="project">{{ $materialrequest->title }}</p>
-                                                                      <label class="form-control" for="contractor">Contractor:</label> 
-                                                                    <p id="contractor">{{ $materialrequest->contractor_name }}</p>
-                                                                      <label class="form-control" for="item">Item:</label> 
-                                                                    <p id="item">{{ $materialrequest->item_name }}</p>
-                                                                      <label class="form-control" for="quantity">Quantity:</label> 
-                                                                    <p id="quantity">{{ $materialrequest->quantity }}</p>
-                                                                      <label class="form-control" for="instructions">Instruction:</label> 
-                                                                    <p id="instructions">{{ $materialrequest->instructions }}</p>
+                                                                    <label for="project">Project:</label> 
+                                                                    <p class="form-control" id="project">{{ $materialrequest->title }}</p>
+                                                                      <label  for="contractor">Contractor:</label> 
+                                                                    <p class="form-control" id="contractor">{{ $materialrequest->contractor_name }}</p>
+                                                                      <label for="item">Item:</label> 
+                                                                    <p class="form-control" id="item">{{ $materialrequest->item_name }}</p>
+                                                                      <label  for="quantity">Quantity:</label> 
+                                                                    <p class="form-control" id="quantity">{{ $materialrequest->quantity }}</p>
+                                                                      <label  for="instructions">Instruction:</label> 
+                                                                    <p class="form-control" id="instructions">{{ $materialrequest->instructions }}</p>
                                                                     
                                                                     </div>
 
                                                                      <div class="col-md-10 col-md-offset-1 form-group" style="margin-bottom: 20px;">
-                                                                    <label class="radio-inline"><input type="radio" name="optradio" value="1" <?php if($materialrequest->request_status_id==1){echo "checked";}?>  >Approved</label>
+                                                                    <label class="radio-inline"><input type="radio" name="optradio" value="1" <?php if($materialrequest->request_status_id==1){echo "checked";}?>  > Approved</label>
                                                                     <label class="radio-inline"><input type="radio" name="optradio" value="2" <?php if($materialrequest->request_status_id==2){echo "checked";}?>>Reject</label>
                                                                     <label class="radio-inline"><input type="radio" name="optradio" value="3" <?php if($materialrequest->request_status_id==3){echo "checked";}?>>Pending</label>
                                                                     </div>

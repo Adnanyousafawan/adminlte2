@@ -12,6 +12,11 @@ use Charts;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +50,7 @@ class UserController extends Controller
                             $users = DB::table('users')->where('role_id', '=', 3)->get();
                             return view('users/index', compact('users'));
                         }
-                        */
+                         */
 
     }
 
@@ -121,9 +126,12 @@ class UserController extends Controller
  
     public function all()
     {
-        if (Gate::allows('isContractor')) {
+       
+            if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
-        }
+        
+        } 
+       
         if (Gate::allows('isAdmin')) {
             $roleID = DB::table('roles')->where('name','=','Admin')->pluck('id')->first();
             $users = DB::table('users')
@@ -291,7 +299,6 @@ class UserController extends Controller
             return redirect()->intended('/users/index');
         }
         
-
         $roles = DB::table('roles')->where('id', '!=', 1)->get();
         $current_role = DB::table('roles')->where('id', '=', $users->role_id)->pluck('name')->first();
         return view('/users/edit', compact('users', 'roles', 'current_role'));
@@ -312,7 +319,7 @@ class UserController extends Controller
                 'email' => 'required',
                 'address' => 'required',
                 'password' => 'required | min:8',
-                'cnic' => 'required',
+                'cnic' => 'required', 
                 'phone' => 'required',
                 'role' => 'required',
                 // 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096'
