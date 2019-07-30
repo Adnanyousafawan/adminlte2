@@ -46,11 +46,11 @@
                                             <td>{{ $lproject->title }}</td>
                                             <td>
                                                 <div
-                                                    class="label label-warning col-md-8 col-md-offset-2">{{ 1000 * DB::table('labors')->where('project_id','=',$lproject->id)->count('id')  }}</div>
+                                                    class="label label-warning col-md-8 col-md-offset-2"> Value here </div>
                                             </td>
                                             <td>
                                                 <div class="sparkbar" data-color="#00a65a"
-                                                     data-height="20">2000
+                                                     data-height="20"> Value here
                                                 </div>
                                             </td>
                                             <td>{{ $lproject->contractor_name }}
@@ -94,40 +94,13 @@
                         <!-- /.info-box -->
                     </div>
                     <!-- /.col -->
-                    <div class="col-xs-12 col-md-12 col-sm-12  col-lg-12 col-xl-12">
-                        <div class="box" style="margin-bottom: 13px;">
-                            <div class="box-header">
-                                <h2 class="box-title">Working Labor</h2>
-                                <span class="info-box-number label label-warning pull-right"
-                                      style="margin-top: 0px; font-size: 16px;">{{DB::table('labors')->where('status_id','=','1')->count('id') }}</span>
-                            </div>
-                            <!-- /.box-header -->
-                            <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
-                        </div>
-                        <!-- /.info-box-content -->
-                        <!-- /.info-box -->
-                    </div>
-
+                    
                     <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
                         <div class="box" style="margin-bottom: 13px;">
                             <div class="box-header">
-                                <h2 class="box-title">Available Labor</h2>
-                                <span class="info-box-number label label-success pull-right"
-                                      style="margin-top: 0px; font-size: 16px;">{{DB::table('labors')->where('status_id','=','2')->count('id') }}</span>
-                            </div>
-                            <!-- /.box-header -->
-                            <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
-                        </div>
-                        <!-- /.info-box-content -->
-                        <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                        <div class="box" style="margin-bottom: 13px;">
-                            <div class="box-header">
-                                <h2 class="box-title">Total Cost</h2>
+                                <h2 class="box-title">Receivable</h2>
                                 <span class="info-box-number label  label-danger pull-right"
-                                      style="margin-top: 0px; font-size: 16px;">{{ 1000 * DB::table('labors')->count('id') + DB::table('miscellaneous_expenses')->sum('expense')  }}</span>
+                                      style="margin-top: 0px; font-size: 16px;">{{ $projects_receivables }}</span>
                             </div>
                             <!-- /.box-header -->
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -157,6 +130,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-xs-12 col-md-12 col-sm-12  col-lg-12 col-xl-12">
+                        <div class="box" style="margin-bottom: 13px;">
+                            <div class="box-header">
+                                <h2 class="box-title">Completed Projects</h2>
+                                <span class="info-box-number label label-success pull-right"
+                                      style="margin-top: 0px; font-size: 16px;">{{ $completed_projects }}
+                            </div>
+                            <!-- /.box-header -->
+                            <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
+                        </div>
+                        <!-- /.info-box-content -->
+                        <!-- /.info-box -->
+                    </div>
+
                 </div>
             </div>
             @yield('project_datatable')

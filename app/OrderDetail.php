@@ -16,6 +16,7 @@ class OrderDetail extends Model implements Searchable
         'status',
         'project_id',
         'set_rate',
+        'purchase_rate',
         'invoice_number',
         
     ];

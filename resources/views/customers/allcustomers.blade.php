@@ -79,40 +79,40 @@
                                 <th>Phone Number</th>
                                 <th>Address</th>
                                 <th>CNIC</th>
-                                <th>Action</th>
+                                {{-- <th>Action</th> --}}
                             </tr>
                             </thead>
                             <tbody>
-
+ 
                             @foreach ($customers as $customer)
                                 <tr>
-                                    <td>CU0000{{ $customer->id }}</td>
+                                    <td>CU0000{{ $customer->customer_id }}</td>
                                     <td>{{ $customer->name }}</td>
-                                    <td>Project id Here</td>
-                                    <td>Project Title Here</td>
+                                    <td><a type='links' href="{{ route('projects.view', ['id' => $customer->project_id]) }}">PR0000{{ $customer->project_id }}</a></td>
+                                    <td>{{ $customer->title }}</td>
                                     <td>{{ $customer->phone}}</td>
                                     <td>{{ $customer->address}}</td>
                                     <td>{{ $customer->cnic}}</td>
 
-                                    <td style="max-width: 50px;">
+                                    {{-- <td style="max-width: 50px;"> --}}
                                         
-                    <div class="btn-group">
+                  {{--   <div class="btn-group">
 
-                    {{-- <button class="btn btn-success" type="button">Action</button> --}}
+                     <button class="btn btn-success" type="button">Action</button> 
                     <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
                       <span class="caret"></span>
                       <span class="sr-only">Toggle Dropdown</span>
                     </button>
 
-                    <ul role="menu" class="dropdown-menu">
+                    <ul role="menu" class="dropdown-menu"> --}}
                       {{-- <li><a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"><i class="fa fa-edit"></i>View</a></li> --}}
                        
                         {{-- <li><a href="{{ route('projects.edit', ['id' => $customer->id]) }}"><i class="fa fa-edit"></i>Edit</a></li> --}}
                                              
                         {{-- <li><a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $project->id }}"><i class="fa fa-remove"></i>Delete</a></li> --}}
-                    </ul>
+                    {{-- </ul>
 
-                  </div>
+                  </div> --}}
                                       {{--   <a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"
                                            style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">View</a>
 
@@ -120,8 +120,8 @@
                                            style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">Edit</a>
                                         <a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $project->id }}"
                                            style="color: red; margin-left: 3px;  margin-top: 0px;">Delete</a> --}}
-
-                            </td>
+{{-- 
+                            </td> --}}
                             </tr>
 
 

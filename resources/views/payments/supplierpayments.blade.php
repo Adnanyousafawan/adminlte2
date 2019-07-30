@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Customer Payments')
+@section('title', 'Supplier Payments')
 @include('common')
 @yield('meta_tags')
 @yield('datatable_stylesheets')
@@ -36,14 +36,10 @@
   </div>
 </div>
           
-
             {{-- _________________________________All User DataTable_____________________________________--}}
             <div
                 class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 col-md-offset-0 col-lg-offset-0 col-xl-offset-0"
-        
                 style="padding: 5px;">
-
-
                 <div class="box" style="margin-bottom: 10px; margin-top: 1%;">
                     <div class="box-header with-border ">
                         <h4><span class="box-title col-md-8">Payment Details</span></h4>
@@ -56,6 +52,7 @@
                                 <th>Payment ID</th>
                                 <th>Supplier ID</th>
                                 <th>Supplier Name</th>
+                                <th>Balance</th>
                                 <th>Paid</th>
                                 <th>Payable</th>
                                 <th>Action</th>
@@ -63,34 +60,46 @@
                             </thead>
                             <tbody>
 
-                            @foreach ($payments as $payment)
+                            @foreach($payments as $payment)
                                 <tr>
                                     <td>0000{{ $payment->id }}</td>
                                     <td>0000{{ $payment->supplier_id }}</td>
                                     <td>{{ $payment->name }}</td>
                                     <td>{{ $payment->paid }}</td>
-                                    <td>{{ $payment->payable }}</td>
+                                    @if($payment->balance_status > 0)
+                                    <td>{{ $payment->balance_status }}</td>
+                                    @endif
+                                    @if($payment->balance_status <= 0)
+                                    <td>0</td>
+                                    @endif
+                                    @if($payment->balance_status < 0)
+                                    <td>{{ $payment->balance_status }}</td>
+                                    @endif
+                                    @if($payment->balance_status >= 0)
+                                    <td>0</td>
+                                    @endif
 
                                     {{-- <td>{{ $payment->budget - $payment->received }} </td> --}} 
-                                    <td style="max-width: 50px;">
-                                        
+                                    <td class="align-content-center">
+                                        <a style="color: red;" type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $payment->id }}"><i class="fa fa-remove"></i> Delete</a>
+                    {{--                     
                     <div class="btn-group">
 
-                    {{-- <button class="btn btn-success" type="button">Action</button> --}}
-                    <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
+                    <button class="btn btn-success btn-sm" type="button">Action</button>
+                    <button data-toggle="dropdown" class="btn btn-success dropdown-toggle btn-sm" type="button">
                       <span class="caret"></span>
                       <span class="sr-only">Toggle Dropdown</span>
                     </button>
 
                     <ul role="menu" class="dropdown-menu">
-                      <li><a type="links" data-toggle="modal" data-target="#EditModal-{{ $payment->id }}"><i class="fa fa-edit"></i>Edit</a></li>
+ --}}                      {{-- <li><a type="links" data-toggle="modal" data-target="#EditModal-{{ $payment->id }}"><i class="fa fa-edit"></i>Edit</a></li> --}}
                        
                         {{-- <li><a href="{{ route('users.edit', ['id' => $user->id]) }}"><i class="fa fa-edit"></i>Edit</a></li> --}}
                                              
-                        <li><a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $payment->id }}"><i class="fa fa-remove"></i>Delete</a></li>
+                      {{--   <li><a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $payment->id }}"><i class="fa fa-remove"></i>Delete</a></li>
                                           </ul>
 
-                  </div>
+                  </div> --}}
                                       {{--   <a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"
                                            style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">View</a>
 

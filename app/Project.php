@@ -25,7 +25,9 @@ class Project extends Model implements Searchable
         "floor",
         "contract_image",
         "status",
-        "current_developed_floor"
+        "current_developed_floor",
+        "project_balance",
+        "project_spent",
     ];
 
     protected $hidden = [

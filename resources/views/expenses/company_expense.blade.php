@@ -89,16 +89,17 @@
 
                             @foreach ($expenses as $expense)
                                 <tr>
-                                    <td>0000{{ $expense->id }}</td>
+                                    <td>Ex0000{{ $expense->id }}</td>
                                     <td>{{ $expense->name }}</td>
                                     <td>{{ $expense->description }}</td>
                                     <td>{{ $expense->expense }}</td>
-                                    <td>{{ $expense->created_at }}</td>
-                                    <td style="max-width: 50px;">
+                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $expense->created_at)->format('Y-m-d') }}</td>
+                                    <td >
+                                        <a style="color: red;" type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $expense->id }}"><i class="fa fa-remove"></i>Delete</a>
                                         
-                    <div class="btn-group">
+                  {{--   <div class="btn-group">
 
-                    {{-- <button class="btn btn-success" type="button">Action</button> --}}
+                     <button class="btn btn-success" type="button">Action</button> 
                     <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
                       <span class="caret"></span>
                       <span class="sr-only">Toggle Dropdown</span>
@@ -107,9 +108,9 @@
                     <ul role="menu" class="dropdown-menu">
                       <li><a type="links" data-toggle="modal" data-target="#EditModal-{{ $expense->id }}" ><i class="fa fa-edit"></i>Edit</a></li>
                        
-                        <li><a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $expense->id }}"><i class="fa fa-remove"></i>Delete</a></li>
+                        <li></li>
                                           </ul>
-                  </div>
+                  </div> --}}
                                       {{--   <a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"
                                            style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">View</a>
 

@@ -141,11 +141,10 @@
                                                                     </div>
 
                                                                      <div class="col-md-10 col-md-offset-1 form-group" style="margin-bottom: 20px;">
-                                                                    <label class="radio-inline"><input type="radio" name="optradio" value="1" <?php if($materialrequest->request_status_id==1){echo "checked";}?>  > Approved</label>
-                                                                    <label class="radio-inline"><input type="radio" name="optradio" value="2" <?php if($materialrequest->request_status_id==2){echo "checked";}?>>Reject</label>
-                                                                    <label class="radio-inline"><input type="radio" name="optradio" value="3" <?php if($materialrequest->request_status_id==3){echo "checked";}?>>Pending</label>
+                                                                    <label class="radio-inline"><input type="radio" name="optradio" value="2" <?php if($materialrequest->request_status_id==2){echo "checked";}?>> Approved</label>
+                                                                    <label class="radio-inline"><input type="radio" name="optradio" value="3" <?php if($materialrequest->request_status_id==3){echo "checked";}?>> Reject</label>
+                                                                    <label class="radio-inline"><input type="radio" name="optradio" value="1" <?php if($materialrequest->request_status_id==1){echo "checked";}?>> Pending</label>
                                                                     </div>
-            
                                                                     </div>
                                                                   {{-- <input type="hidden", name="requests_id" id="req_id"> --}}
                                                                  

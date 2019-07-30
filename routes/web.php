@@ -189,6 +189,7 @@ Route::patch('users/update/{id}','UserController@update')->name('users.update');
 Route::get('users/profile/{id}', 'UserController@profile')->name('users.profile'); 
 
 
+
 //-----------------------------------Labor Management--------------------------------------//
 
 Route::resource('labors', 'LaborController');
@@ -213,5 +214,7 @@ Route::get('useer', 'HomeController@usermanagement');
 Route::get('starter', 'HomeController@starter')->name('starter');
 Route::get('profile', 'HomeController@profile')->name('profile');
 Route::post('profile/image', 'HomeController@updateImage')->name('profile.image');
+Route::post('user/name/{id}', 'UserController@UpdateName')->name('user.name');
+
 
 

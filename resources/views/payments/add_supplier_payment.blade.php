@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Customer Payment')
+@section('title', 'Supplier Payment')
 @section('content')
     <html>
     <head>

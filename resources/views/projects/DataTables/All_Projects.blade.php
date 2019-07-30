@@ -36,6 +36,7 @@
                         <th>Owner Name</th>
                         <th>Contractor</th>
                         <th>Budget</th>
+                        <th>Balance</th>
                         <th>Cost Spent</th>
                         <th style="max-width: 50px;">Action</th>
                     </tr>
@@ -44,12 +45,13 @@
                     @foreach ($projects as $project)
                         <tr>
                             {{-- <td style="max-width: 10px;"><b>PR-</b></td> --}}
-                            <td>0000{{ $project->id }}</td>
+                            <td><a type='links' href="{{ route('projects.view', ['id' => $project->id]) }}">PR0000{{ $project->id }}</a></td>
                             <td>{{ $project->title }}</td>
                             <td>{{ $project->customer_name }}</td>
                             <td>{{ $project->contractor_name}}</td>
-                            <td>{{ $project->budget}}</td>
-                            <td>25000</td>
+                            <td>{{ $project->budget }}</td>
+                            <td>{{ $project->project_balance }}</td>
+                            <td>{{ $project->project_spent}}</td>
                             <td style="max-width: 50px;">
                                 <div class="btn-group">
                                     <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action</button>

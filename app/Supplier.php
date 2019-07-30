@@ -13,7 +13,8 @@ class Supplier extends Model implements Searchable
     	"phone",
     	"address",
     	"city",
-    	
+        "balance",
+        "material_cost",
     ];
     public function getSearchResult(): SearchResult
     {

@@ -15,9 +15,7 @@ class MiscellaneousExpenseController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-
     }
-    
     function index()
     {
         if (Gate::allows('isContractor')) {
@@ -83,13 +81,6 @@ class MiscellaneousExpenseController extends Controller
                 ]);
             }
 
-            if ($request['project_id'] == 0) {
-                $others = 1;
-                $project_id = null;
-            } else {
-                $others = 0;
-                $project_id = $request['project_id'];
-            }
             $name = $request['name'];
             $description = $request['description'];
             $expenses = $request['expenses'];
@@ -100,7 +91,14 @@ class MiscellaneousExpenseController extends Controller
             } else {
                 $expense_number++;
             }
-
+            if ($request['project_id'] == 0) {
+                $others = 1;
+                $project_id = null;
+            } 
+            else {
+                $others = 0;
+                $project_id = $request['project_id'];
+            }
             for ($count = 0; $count < count($name); $count++) {
                 $obj = new MiscellaneousExpense([
                     'name' => $name[$count],
@@ -110,12 +108,62 @@ class MiscellaneousExpenseController extends Controller
                     'others' => $others,
                     'expense_number' => $expense_number,
                 ]);
+            
+                if($obj->save())
+                {
+                    if ($request['project_id'] == 0) 
+                    {
+                        $check = DB::table('company_balance')->count();
+                        if($check != 0)
+                        {
+                            $comp_blnc_ID = DB::table('company_balance')->pluck('id')->last();
+                            $comp_blnc = DB::table('company_balance')->where('id','=',$comp_blnc_ID)->pluck('balance')->first();
+                            $company_balance = $comp_blnc - $expenses[$count];
+                            DB::table('company_balance')->where('id','=',$comp_blnc_ID)->update([
+                                'balance' => $company_balance]);
 
-                $obj->save();
+                        }
+                        else
+                        {
+                            DB::table('company_balance')
+                                ->insert([
+                                'balance' =>  $expenses[$count]]);
+                        }
+                    } 
+                    else
+                    {
+                        $check = DB::table('company_balance')->count();
+                        if($check != 0)
+                        {
+                            $comp_blnc_ID = DB::table('company_balance')->pluck('id')->last();
+                            $comp_blnc = DB::table('company_balance')->where('id','=',$comp_blnc_ID)->pluck('balance')->first();
+                            $company_balance = $comp_blnc - $expenses[$count];
+                            DB::table('company_balance')->where('id','=',$comp_blnc_ID)->update([
+                                'balance' => $company_balance]);
+
+                        }
+                        else
+                        {
+                            DB::table('company_balance')
+                                ->insert([
+                                'balance' =>  $expenses[$count]]);
+                        }
+
+                    $proj_spent = DB::table('projects')->where('id','=',$request['project_id'])->pluck('project_spent')->first();
+                    $project_spent = $proj_spent + $expenses[$count];
+
+                    $proj_balance_available = DB::table('projects')->where('id','=',$request['project_id'])->pluck('project_balance')->first();
+                    
+                    $proj_balance_available = $proj_balance_available - $expenses[$count];
+
+                    DB::table('projects')->where('id','=',$request['project_id'])->update([
+                        'project_spent' => $project_spent, 'project_balance' => $proj_balance_available]); 
+                    }
+                        }
+
             }
             return response()->json([
                 'success' => 'Data Added successfully.']);
-
         }
     }
 
@@ -126,7 +174,6 @@ class MiscellaneousExpenseController extends Controller
             'name' => 'required',
             'description' => 'required',
             'expense' => 'required',
-
         ]);
 
         $expenses = MiscellaneousExpense::find($id);
@@ -150,9 +197,7 @@ class MiscellaneousExpenseController extends Controller
             'name' => 'required',
             'description' => 'required',
             'expense' => 'required',
-
         ]);
-
         $expenses = MiscellaneousExpense::find($id);
 
         $expenses->name = $request->input('name');
@@ -182,6 +227,33 @@ class MiscellaneousExpenseController extends Controller
 
     public function destroy($id)
     {
+        $old_expense =  MiscellaneousExpense::find($id);
+
+                    if ($old_expense->others == 1) 
+                    {
+                        $comp_blnc_ID = DB::table('company_balance')->pluck('id')->last();
+                        $comp_blnc = DB::table('company_balance')->where('id','=',$comp_blnc_ID)->pluck('balance')->first();
+                        $company_balance = $comp_blnc + $old_expense->expense;
+                        DB::table('company_balance')->where('id','=',$comp_blnc_ID)->update([
+                                'balance' => $company_balance]);
+                    } 
+                    else
+                    {   
+                        $comp_blnc_ID = DB::table('company_balance')->pluck('id')->last();
+                        $comp_blnc = DB::table('company_balance')->where('id','=',$comp_blnc_ID)->pluck('balance')->first();
+                        $company_balance = $comp_blnc + $old_expense->expense;
+                        DB::table('company_balance')->where('id','=',$comp_blnc_ID)->update([
+                                'balance' => $company_balance]);
+
+                        $proj_spent = DB::table('projects')->where('id','=',$old_expense->project_id)->pluck('project_spent')->first();
+                        $project_spent = $proj_spent - $old_expense->expense;
+
+                        $proj_balance_available = DB::table('projects')->where('id','=',$old_expense->project_id)->pluck('project_balance')->first();
+                        $proj_balance_available = $proj_balance_available + $old_expense->expense;;
+
+                        DB::table('projects')->where('id','=',$old_expense->project_id)->update([
+                            'project_spent' => $project_spent, 'project_balance' => $proj_balance_available]); 
+                    } 
         MiscellaneousExpense::where('id', $id)->delete();
         return redirect()->intended('expenses')->with('success', 'Record Successfully Deleted.');
     }

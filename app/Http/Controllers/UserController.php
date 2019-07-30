@@ -54,6 +54,19 @@ class UserController extends Controller
 
     }
 
+public function UpdateName(Request $request,$id)
+{
+    $user = User::find($id);
+
+    $user->name = $request->input('name');
+
+    $user->save();
+
+    return redirect()->back()->with('success','Name is updated successfully');
+
+
+}
+
     public function profile($id)
     {
 

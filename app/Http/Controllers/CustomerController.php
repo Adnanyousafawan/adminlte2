@@ -19,7 +19,10 @@ class CustomerController extends Controller
         if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
         }
-        $customers = DB::table('customers')->get();
+        $customers = DB::table('projects')
+        ->leftjoin('customers','projects.customer_id','=','customers.id')
+        ->select('projects.customer_id','projects.title','projects.id as project_id','customers.name','customers.phone','customers.address','customers.cnic')
+        ->get();
         return view('customers/allcustomers', ['customers' => $customers]);
     }
 

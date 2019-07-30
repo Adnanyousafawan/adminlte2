@@ -82,21 +82,25 @@
 <div class="row">
         
         <div class="col-md-3 col-sm-6 col-xs-12">
-
             <div class="info-box">
                 <span class="info-box-icon bg-aqua"><i class="ion ion-cash"></i></span>
                 <!-- ion ion-ios-gear-outline -->
 
                 <div class="info-box-content">
+                  @if($company_balance >= 0)
                     <span class="info-box-text">Company Balance</span>
-                    <span class="info-box-number">{{-- {{ $company_balance }} --}}1000000</span>
+                    <span class="info-box-number">{{ $company_balance }}</span>
+                  @endcan
+                  @if($company_balance < 0)
+                    <span class="info-box-text">Company Receivable</span>
+                    <span class="info-box-number">{{ $company_balance }}</span>
+                  @endcan
                 </div>
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
         </div> 
         <!-- /.col --> 
-
 
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
@@ -308,15 +312,12 @@
             <div class="vendor-info-count">
               <ul>
                 @can('isAdmin')
-                 <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{ route('users.all') }}">{{  DB::table('users')->count('id') }} &nbsp;&nbsp;Total User</a></li>
-          
-                 <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{ route('users.manager') }}">{{  DB::table('users')->where('role_id','=','2')->count() }} &nbsp;&nbsp;Total Managers</a></li>
+                 <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{ route('users.all') }}">{{  DB::table('users')->where('role_id','!=',1)->count() }} &nbsp;&nbsp;  Users</a></li>
+                 <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{ route('users.manager') }}">{{  DB::table('users')->where('role_id','=','2')->count() }} &nbsp;&nbsp;  Managers</a></li>
                 @endcan
-                
-                <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}">{{  DB::table('users')->where('role_id','=','3')->count() }} &nbsp;&nbsp;Total Contrators</a></li>
-                <li><i class="fa fa-check"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}">{{  DB::table('users')->where('role_id','=','3')->count() }} &nbsp;&nbsp;Working Contractors</a></li>
-                <li><i class="fa fa-close"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}"> &nbsp;&nbsp;Free Contractors</a></li>
-
+                <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('users.contractor') }}">{{  DB::table('users')->where('role_id','=','3')->count() }} &nbsp;&nbsp; Contrators</a></li>
+                <li><i class="fa fa-users"></i>&nbsp;&nbsp; <a href="{{route('labors.index') }}">{{  DB::table('labors')->count() }} &nbsp;&nbsp; Labors</a></li>
+    
                 
               </ul>
             </div>
