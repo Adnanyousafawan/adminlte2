@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Expenses List')
+@section('title', 'Projects Expenses')
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/bootstrap-3.4.1.css">
@@ -54,7 +54,7 @@
             <div class="box-header">
                 <h3><span
                         class="col-xs-6 col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 col-xl-offset-1"
-                        style="margin-bottom: 10px; padding: 0px;">Expenses List</span></h3>
+                        style="margin-bottom: 10px; padding: 0px;">Projects Expenses List</span></h3>
                         <div class="box-tools pull-right">
                             <a type="links" href="{{ route('expense.create') }}" class="btn btn-primary pul-right">Add Expense</a>
                         </div>
@@ -90,17 +90,19 @@
 
                             @foreach ($expenses as $expense)
                                 <tr>
-                                    <td>0000{{ $expense->id }}</td>
+                                    <td>Ex0000{{ $expense->id }}</td>
                                     <td>{{ $expense->title }}</td>
                                     <td>{{ $expense->name }}</td>
                                     <td>{{ $expense->description }}</td>
                                     <td>{{ $expense->expense }}</td>
-                                    <td>{{ $expense->created_at }}</td>
-                                    <td style="max-width: 50px;">
-                                        
-                    <div class="btn-group">
+                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $expense->created_at)->format('Y-m-d') }}</td> 
 
-                    {{-- <button class="btn btn-success" type="button">Action</button> --}}
+                                    <td>
+                                        <a style="color: red; " type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $expense->id }}"><i class="fa fa-remove"></i>Delete</a>
+                                        
+                   {{--  <div class="btn-group">
+
+                    <button class="btn btn-success" type="button">Action</button> 
                     <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
                       <span class="caret"></span>
                       <span class="sr-only">Toggle Dropdown</span>
@@ -109,9 +111,9 @@
                     <ul role="menu" class="dropdown-menu">
                       <li><a type="links" data-toggle="modal" data-target="#EditModal-{{ $expense->id }}" ><i class="fa fa-edit"></i>Edit</a></li>
                        
-                        <li><a type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $expense->id }}"><i class="fa fa-remove"></i>Delete</a></li>
+                        <li></li>
                                           </ul>
-                  </div>
+                  </div> --}}
                                       {{--   <a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"
                                            style="margin-left: 3px; margin-top: 0px; color: #f0ad4e;">View</a>
 

@@ -250,7 +250,7 @@ class MaterialRequestController extends Controller
         $materialrequest = MaterialRequest::find($id);
 
         $materialrequest->request_status_id = $request->get('optradio');
-        if ($materialrequest->save()) {
+        if ($materialrequest->save()) { 
             return redirect()->back()->with('success', "Material Request Status Updated");
         } else {
             return redirect()->back()->with('message', "Material Request Status is not Updated");

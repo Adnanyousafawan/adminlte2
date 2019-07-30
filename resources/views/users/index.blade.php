@@ -111,11 +111,11 @@
                                         <td style="min-width: 60px;">
 
                                             <div class="btn-group">
-                                                <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action</button>
-                                                <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle" type="button">
+                                                <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action<span class="glyphicon glyphicon-triangle-bottom"></button>
+                                               {{--  <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle" type="button">
                                                     <span class="caret"></span>
                                                     <span class="sr-only">Toggle Dropdown</span>
-                                                </button>
+                                                </button> --}}
 
                                                 <ul role="menu" class="dropdown-menu">
                                                     <li><a target="_blank"

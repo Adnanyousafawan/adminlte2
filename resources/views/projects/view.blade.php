@@ -22,7 +22,7 @@
                                 <div class="box-header">
                                     <h2 class="box-title">Spent</h2>
                                     <span class="info-box-number label label-warning pull-right"
-                                          style="margin-top: 0px; font-size: 16px;">{{ $spent }}</span>
+                                          style="margin-top: 0px; font-size: 16px;">{{ $labor_project_spent_new }}</span>
                                 </div>
                                 <!-- /.box-header -->
                                 <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -36,7 +36,7 @@
                                 <div class="box-header">
                                     <h2 class="box-title">Budget Left</h2>
                                     <span class="info-box-number label label-danger pull-right"
-                                          style="margin-top: 0px; font-size: 16px;">{{ $balance }}</span>
+                                          style="margin-top: 0px; font-size: 16px;">{{ $labor_project_budget_new }}</span>
                                 </div>
                                 <!-- /.box-header -->
                                 <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -138,14 +138,20 @@
             </div>
          </div>
      </div>
-
                         <div class="col-xs-12 col-md-3 col-sm-6 col-lg-3 col-xl-12" style="margin-top: 2%;">
 
                             <div class="box">
                                 <div class="box-header">
-                                    <h2 class="box-title">Payable</h2>
-                                    <span class="info-box-number label label-warning pull-right"
-                                          style="margin-top: 0px; font-size: 16px;">0</span>
+                                    <h2 class="box-title">Balance</h2>
+                                    <?php   ?>
+                                    @if($labor_project_balance_new >= 0)
+                                        <span class="info-box-number label label-warning pull-right"
+                                              style="margin-top: 0px; font-size: 16px;">{{ $labor_project_balance_new }}</span>
+                                    @endif
+                                    @if($labor_project_balance_new < 0)
+                                        <span class="info-box-number label label-warning pull-right"
+                                        style="margin-top: 0px; font-size: 16px;">0</span>
+                                    @endif
                                 </div>
                                 <!-- /.box-header -->
                                 <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -170,8 +176,20 @@
                             <div class="box">
                                 <div class="box-header">
                                     <h2 class="box-title">Receivable</h2>
+                                    <?php $check = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first(); ?>
+
+                                    @if($labor_project_balance_new < 0 && $projects->status_id != $check)
                                     <span class="info-box-number label label-success pull-right"
-                                          style="margin-top: 0px; font-size: 16px;"> {{ $balance }}</span>
+                                          style="margin-top: 0px; font-size: 16px;"> {{ $labor_project_balance_new }}</span>
+                                    @endif
+                                    @if($labor_project_balance_new >= 0 && $projects->status_id != $check)
+                                    <span class="info-box-number label label-success pull-right"
+                                          style="margin-top: 0px; font-size: 16px;">0</span>
+                                    @endif
+                                    @if($current_status == 'Completed')
+                                    <span class="info-box-number label label-success pull-right"
+                                          style="margin-top: 0px; font-size: 16px;"> {{ $labor_project_budget_new }}</span>
+                                    @endif
                                 </div>
                                 <!-- /.box-header -->
                                 <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -193,16 +211,16 @@
 
                                 <ul class="list-group list-group-unbordered">
                                     <li class="list-group-item">
-                                        <b>Number of Workers</b> <a class="pull-right">15</a>
+                                        <b>Number of Workers</b> <a class="pull-right">{{ $working_labors }}</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <b>Current Phase</b> <a class="pull-right">Flooring</a>
+                                        <b>Current Phase</b> <a class="pull-right">{{ $current_phase }}</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <b>Project Status</b> <a class="pull-right">In Progress</a>
+                                        <b>Project Status</b> <a class="pull-right">{{ $current_status }}</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <b>Floor Number</b> <a class="pull-right">1</a>
+                                        <b>Floor Number</b> <a class="pull-right">{{ $projects->floor }}</a>
                                     </li>
 
                                 </ul>
@@ -303,7 +321,8 @@
                                                         @endif
                                                     </td>
                                                 @endcan
-                                                <td>{{ $materialrequest->status_name }}</td>
+                                                <td><span
+                                                        class="label label-warning col-md-12"> {{ $materialrequest->status_name }} </span></td>
 
 
                                             </tr>
@@ -445,13 +464,17 @@
                                 <tbody>
 
                                 @foreach ($labors as $labor)
+                                <?php 
+                                $attendances = DB::table('labor_attendances')->where('labor_id','=',$labor->id)->sum('status');
+                                $cost = $attendances * $labor->rate;
+                                ?>
                                     <tr>
                                         <td>lb0000{{ $labor->id }}</td>
                                         <td>{{ $labor->name }}</td>
                                         <td>PR0000{{ $labor->project_id}}</td>
-                                        <td>23</td>
+                                        <td>{{$attendances}}</td>
                                         <td>{{ $labor->rate }}</td>
-                                        <td>25000</td>
+                                        <td>{{ $cost }}</td>
 
                                         <td> 
 

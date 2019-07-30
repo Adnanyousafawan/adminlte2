@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSupplierPaymentsTable extends Migration
+class CreateCustomerReceivableTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,16 @@ class CreateSupplierPaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('supplier_payments', function (Blueprint $table) {
+        Schema::create('customer_receivable', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->float('paid')->nullable()->default("0");
-            $table->unsignedBigInteger('supplier_id')->nullable();
+            $table->unsignedBigInteger('project_id')->nullable();
+            $table->float('receivable')->nullable()->default("0");
             $table->timestamps();
-              $table
-                ->foreign('supplier_id')
+               $table
+                ->foreign('project_id')
                 ->references('id')
-                ->on('suppliers');
+                ->on('projects');
         });
- 
-//            $table->timestamps();
-          
     }
 
     /**
@@ -35,6 +32,6 @@ class CreateSupplierPaymentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('supplier_payments');
+        Schema::dropIfExists('customer_receivable');
     }
 }

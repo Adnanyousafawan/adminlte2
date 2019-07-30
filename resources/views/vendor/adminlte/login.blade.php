@@ -42,12 +42,15 @@
                     @endif
                 </div>
                 <div class="row">
+
                     <div class="col-xs-8">
-                        <div class="checkbox icheck">
+                         <a href="{{ url(config('adminlte.password_reset_url', 'password/reset')) }}" class="text-center">
+                         {{ trans('adminlte::adminlte.i_forgot_my_password') }}</a>
+                      {{--   <div class="checkbox icheck">
                             <label>
                                 <input type="checkbox" name="remember"> {{ trans('adminlte::adminlte.remember_me') }}
                             </label>
-                        </div>
+                        </div> --}}
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">

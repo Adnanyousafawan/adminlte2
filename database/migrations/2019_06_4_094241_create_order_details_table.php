@@ -22,8 +22,9 @@ class CreateOrderDetailsTable extends Migration
                 $table->string('received_quantity')->nullable()->default("0");
                 $table->string('status')->default('pending');
                 $table->float('set_rate')->default('0')->nullable();
+                $table->float('purchase_rate')->default('0')->nullable();
                 $table->string('invoice_number')->default('100000');
-                  $table->timestamps();
+                $table->timestamps();
 
                 $table->foreign('item_id')
                     ->references('id')

@@ -31,9 +31,8 @@ class SupplierPaymentsController extends Controller
         $payments = DB::table('supplier_payments')
             ->leftJoin('suppliers', 'supplier_payments.supplier_id', '=', 'suppliers.id')
             ->select('supplier_payments.id', 'suppliers.id as supplier_id', 'suppliers.name', 'supplier_payments.paid',
-                'supplier_payments.payable', 'supplier_payments.created_at','supplier_payments.payable')
+                'suppliers.balance as balance_status', 'supplier_payments.created_at')
             ->get();
-
 
         return view('payments/supplierpayments', compact('payments'));
     }
@@ -67,11 +66,38 @@ class SupplierPaymentsController extends Controller
                 ]);
                 //dd($obj);
                 $obj->save();
+
+                $supplier_blnc = DB::table('suppliers')->where('id','=',$supplier_id)->pluck('balance')->first();
+                $supplier_blnc = $supplier_blnc + $paid_amount[$count];
+
+                DB::table('suppliers')->where('id','=',$supplier_id)->update([
+                        'balance' => $supplier_blnc]);
+
+                $check = DB::table('company_balance')->count();
+                if($check != 0)
+                {
+                    $comp_blnc_ID = DB::table('company_balance')->pluck('id')->last();
+                    $comp_blnc = DB::table('company_balance')->where('id','=',$comp_blnc_ID)->pluck('balance')->first();
+                    $company_balance = $comp_blnc - $paid_amount[$count];
+                    DB::table('company_balance')->where('id','=',$comp_blnc_ID)->update([
+                        'balance' => $company_balance]);
+                }
+                else
+                {
+                    DB::table('company_balance')
+                        ->insert([
+                        'balance' => 0 ]);
+                    $comp_blnc_ID = DB::table('company_balance')->pluck('id')->last();
+                    $comp_blnc = DB::table('company_balance')->where('id','=',$comp_blnc_ID)->pluck('balance')->first();
+                    $company_balance = $comp_blnc - $paid_amount[$count];
+                    DB::table('company_balance')->where('id','=',$comp_blnc_ID)->update([
+                        'balance' => $company_balance]);
+                }
             }
 
             // DB::table('order_details')->insert($data);
             return response()->json([
-                    'success' => 'Data Added successfully.']
+                    'success' => 'Supplier payment added successfully.']
             );
         }
     }
@@ -151,7 +177,25 @@ class SupplierPaymentsController extends Controller
      */
     public function destroy($id)
     {
+        $payments = SupplierPayment::find($id);
+
+        $temp = $payments->paid;
+        $comp_blnc_ID = DB::table('company_balance')->pluck('id')->last();
+        $comp_blnc = DB::table('company_balance')->where('id','=',$comp_blnc_ID)->pluck('balance')->first();
+        $company_balance = $comp_blnc + $temp;
+
+        DB::table('company_balance')->where('id','=',$comp_blnc_ID)->update([
+        'balance' => $company_balance]);
+
+        $supplier_blnc_ID = DB::table('supplier_payments')->where('id','=',$payments->id)->pluck('supplier_id')->first();
+        $supplier_blnc = DB::table('suppliers')->where('id','=',$supplier_blnc_ID)->pluck('balance')->first();
+
+        $supplier_balance = $supplier_blnc - $temp;
+
+        DB::table('suppliers')->where('id','=',$supplier_blnc_ID)->update([
+                        'balance' => $supplier_balance]);
         SupplierPayment::where('id', $id)->delete();
+
         return redirect()->back()->with('success', 'Payment Deleted Succuessfully.');
     }
 }

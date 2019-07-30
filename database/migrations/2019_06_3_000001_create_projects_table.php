@@ -30,6 +30,8 @@ class CreateProjectsTable extends Migration
             $table->unsignedBigInteger('assigned_by')->nullable();
             $table->unsignedBigInteger('status_id')->nullable()->default(1);
             $table->unsignedBigInteger('phase_id')->nullable()->default(1);
+            $table->float('project_balance')->nullable()->default("0");
+            $table->float('project_spent')->nullable()->default("0");
             $table->timestamps();
 
 

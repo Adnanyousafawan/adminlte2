@@ -68,11 +68,11 @@
                                         
                     <div class="btn-group">
 
-                    {{-- <button class="btn btn-success" type="button">Action</button> --}}
-                    <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
+                    <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle" type="button">Action <span class="glyphicon glyphicon-triangle-bottom"></button> 
+                    {{-- <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle " type="button">
                       <span class="caret"></span>
                       <span class="sr-only">Toggle Dropdown</span>
-                    </button>
+                    </button> --}}
 
                     <ul role="menu" class="dropdown-menu">
                       <li><a type="links" data-toggle="modal" data-target="#EditModal-{{ $item->id }}"><i class="fa fa-edit"></i>Edit</a></li>
@@ -229,9 +229,9 @@
 
             </div>
         </div>
-<script type="text/javascript">
-
-
+         @yield('datatable_stylesheets')
+    @yield('datatable_script')
+{{-- <script type="text/javascript">
         $('.project').DataTable({
             select: true,
             "order": [[0, "dsc"]],
@@ -248,7 +248,7 @@
         });
 
        
-</script>
+</script> --}}
 
 @stop
 

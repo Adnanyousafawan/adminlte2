@@ -43,8 +43,10 @@ class ProjectController extends Controller
             $projects = DB::table('projects')
             ->leftjoin('users','projects.assigned_to','=','users.id')
             ->leftjoin('customers','projects.customer_id','=','customers.id')
-            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name')
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
             ->get();
+            $projects_receivables = DB::table('projects')->where('project_balance','<',0)->sum('project_balance');
+            $completed_projects = DB::table('projects')->where('status_id','=',3)->count();
         }
 
         if (Gate::allows('isManager')) {
@@ -52,8 +54,11 @@ class ProjectController extends Controller
             ->leftjoin('users','projects.assigned_to','=','users.id')
             ->leftjoin('customers','projects.customer_id','=','customers.id')
             ->where('projects.assigned_by', '=', Auth::user()->id)
-            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name')
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
             ->get();
+            $completed_projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->where('status_id','=',3)->count();
+            $projects_receivables = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->where('project_balance','<',0)->sum('project_balance');
+
         }
             $labor_by_projects = DB::table('projects')
             ->leftjoin('users','projects.assigned_to','=','users.id')
@@ -61,8 +66,8 @@ class ProjectController extends Controller
             ->select('labors.id','projects.id','projects.title','labors.rate','users.name as contractor_name')
             ->paginate(5);
             $contractors = User::all()->where('role_id', '=', 3);
-
-            return view('projects/index', compact('projects', 'contractors', 'labor_by_projects'));
+            
+            return view('projects/index', compact('projects', 'contractors', 'labor_by_projects','completed_projects','projects_receivables'));
     }
  
     /**
@@ -342,7 +347,7 @@ class ProjectController extends Controller
             ->leftjoin('users','projects.assigned_to','=','users.id')
             ->leftjoin('customers','projects.customer_id','=','customers.id')
             ->leftjoin('project_status','projects.status_id','=','project_status.id')
-            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name')
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
             ->get();
             //$projectstotal = DB::table('projects')->get();//Project::all();
             $contractors = DB::table('users')->where('role_id', '=', 3)->get();
@@ -354,7 +359,7 @@ class ProjectController extends Controller
             ->leftjoin('customers','projects.customer_id','=','customers.id')
             ->leftjoin('project_status','projects.status_id','=','project_status.id')
             ->where('projects.assigned_by', '=', Auth::user()->id)
-            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name')
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
             ->get();
             /* ->join('users', 'users.id', '=', 'projects.assigned_to')
             ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
@@ -470,9 +475,6 @@ class ProjectController extends Controller
             ->where('id', '=', $projects->assigned_to)
             ->pluck('name')->first();
         // Redirect to user list if updating user wasn't existed
-        if ($projects == null || count($projects) == 0) {
-            return redirect()->intended('projects/index');
-        }
         //$users = User::paginate(10);
         return view('projects/edit', compact('customer','contractors','projects','current_contractor'));
     }
@@ -484,46 +486,63 @@ class ProjectController extends Controller
             abort(420, 'You Are not Allowed to access this site');
         }
 
-        $projects = DB::table('projects')->where('id', '=', $id)->get()->first();
-
-        $labors = DB::table('labors')->where('project_id', '=', $id)->get()->all();
-      
-        $orders = DB::table('order_details')->where('project_id', '=', $id)->paginate(5);
-
-        $total_orders_count = DB::table('order_details')->where('project_id', '=', $id)->count();
-
-        $selectedproject = DB::table('projects')->where('id', '=', $id)->pluck('id')->first();
-
-        $customers = DB::table('customers')->where('id', '=', $selectedproject)->get()->first();
-      
-        $contractors = DB::table('projects')->join('users', 'users.id', '=', 'projects.assigned_to')
-            ->where('projects.id', '=', $id)->get()->first();
-
-        $expense = DB::table('miscellaneous_expenses')->where('project_id', '=', $id)->sum('expense');
-        
-        $total_orders =DB::table('order_details')->where('order_details.project_id','=',$id)->get();
-        
-        $orders_sum = 0;
-        $total = 0;
-            foreach ($total_orders as $order)
-            {
-                $total =  $order->set_rate * $order->quantity;
-                $orders_sum = $total + $orders_sum;
-            }
-           
-        $projects = DB::table('projects')->where('id', '=', $id)->get()->first();
-        $spent = $orders_sum + $expense;
-        $balance = $projects->estimated_budget - $spent;
-
-        $received_payments = DB::table('customer_payments')->where('project_id','=',$id)->sum('received');
-
        
-        if ($projects == null || count($projects) == 0) {
-            return redirect()->intended('projects/index');
-        }
-        $request_status = DB::table('material_request_statuses')->where('name', '=', 'pending')->pluck('id')->first();
+        if(Gate::allows('isAdmin'))
+        {
+            $total_labor_cost = 0;
+            $projects = DB::table('projects')->where('id', '=', $id)->get()->first();
 
-         $materialrequests = DB::table('material_requests')
+            $labors = DB::table('labors')->where('project_id', '=', $id)->get()->all();
+                foreach ($labors as $labor) 
+                {
+                    $temp = DB::table('labor_attendances')->where('labor_id','=',$labor->id)->sum('status');
+                    $cost = $temp * $labor->rate;
+                    $total_labor_cost = $total_labor_cost + $cost;
+                }
+
+            
+            $working_labors = DB::table('labors')->where('project_id','=',$id)->count();
+            $orders = DB::table('order_details')->where('project_id', '=', $id)->paginate(5);
+
+            $total_orders_count = DB::table('order_details')->where('project_id', '=', $id)->count();
+
+            $customers = DB::table('customers')->where('id', '=', $id)->get()->first();
+          
+            $contractors = DB::table('projects')->join('users', 'users.id', '=', 'projects.assigned_to')
+                ->where('projects.id', '=', $id)->get()->first();
+
+            $expense = DB::table('miscellaneous_expenses')->where('project_id', '=', $id)->sum('expense');
+            
+            $total_orders =DB::table('order_details')->where('order_details.project_id','=',$id)->get();
+            
+            $current_project_Phase_ID = DB::table('projects')->where('id','=',$id)->pluck('phase_id')->first();
+            $current_phase = DB::table('project_phase')->where('id','=',$current_project_Phase_ID)->pluck('name')->first();
+            $current_project_Phase_ID = DB::table('projects')->where('id','=',$id)->pluck('status_id')->first();
+
+            $current_status = DB::table('project_status')
+            ->where('id','=',$current_project_Phase_ID)->pluck('name')->first();
+            dd($current_status);
+
+
+            $orders_sum = 0;
+            $total = 0;
+                foreach ($total_orders as $order)
+                {
+                    $total =  $order->set_rate * $order->quantity;
+                    $orders_sum = $total + $orders_sum;
+                }
+               
+            /*
+            $projects = DB::table('projects')->where('id', '=', $id)->get()->first();
+            $spent = $orders_sum + $expense;
+            
+    */
+            $budget_left = $projects->estimated_budget - $projects->project_spent;
+
+            $received_payments = DB::table('customer_payments')->where('project_id','=',$id)->sum('received');
+
+        $request_status = DB::table('material_request_statuses')->where('name', '=', 'pending')->pluck('id')->first();
+            $materialrequests = DB::table('material_requests')
                 ->leftjoin('items', 'items.id', '=', 'material_requests.item_id')
                 ->leftjoin('material_request_statuses', 'material_request_statuses.id', '=', 'material_requests.request_status_id')
                 ->leftjoin('projects', 'projects.id', '=', 'material_requests.project_id')
@@ -531,8 +550,95 @@ class ProjectController extends Controller
                 ->where('material_requests.request_status_id', '=', $request_status)
                 ->select('material_requests.id', 'material_request_statuses.name as status_name', 'material_request_statuses.id as request_status_id', 'material_requests.quantity', 'material_requests.seen', 'material_requests.instructions', 'projects.title', 'items.name as item_name', 'users.name as contractor_name')->paginate(5);
 
+                $labor_project_balance_new = $projects->project_balance - $total_labor_cost;
+                $labor_project_spent_new = $projects->project_spent + $total_labor_cost;
+                $labor_project_budget_new = $budget_left - $total_labor_cost;
+        }
 
- 
+        if(Gate::allows('isManager'))
+        {
+            $total_labor_cost =0;
+            $cost = 0;
+            $projects = DB::table('projects')
+            ->where('id', '=', $id)
+            ->where('projects.assigned_by', '=', Auth::user()->id)
+            ->get()->first();
+
+            $labors = DB::table('labors')
+                ->leftjoin('projects','projects.id','=','labors.project_id')
+                ->where('projects.assigned_by', '=', Auth::user()->id)
+                ->where('project_id', '=', $id)
+                ->select('labors.name','labors.id','labors.rate','labors.address','labors.phone','projects.id as project_id')
+                ->get()
+                ->all();
+                foreach ($labors as $labor) 
+                {
+                    $temp = DB::table('labor_attendances')->where('labor_id','=',$labor->id)->sum('status');
+                    $cost = $temp * $labor->rate;
+                    $total_labor_cost = $total_labor_cost + $cost;
+                }
+                
+            $orders = DB::table('order_details')
+            ->leftjoin('projects','projects.id','=','order_details.project_id')
+            ->where('projects.assigned_by','=',Auth::user()->id)
+            ->where('project_id', '=', $id)
+            ->paginate(5);
+
+            $total_orders_count = DB::table('order_details')->where('project_id', '=', $id)->count();
+            $working_labors = DB::table('labors')->where('project_id','=',$id)->count();
+
+
+            $customers = DB::table('customers')->where('id', '=', $id)->get()->first();
+          
+            $contractors = DB::table('projects')->join('users', 'users.id', '=', 'projects.assigned_to')
+                ->where('projects.id', '=', $id)->get()->first();
+
+            $expense = DB::table('miscellaneous_expenses')->where('project_id', '=', $id)->sum('expense');
+            
+            $total_orders =DB::table('order_details')->where('order_details.project_id','=',$id)->get();
+            
+            $current_project_Phase_ID = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->where('id','=',$id)->pluck('phase_id')->first();
+            $current_phase = DB::table('project_phase')->where('id','=',$current_project_Phase_ID)->pluck('name')->first();
+            $current_project_Phase_ID = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->where('id','=',$id)->pluck('status_id')->first();
+
+            $current_status = DB::table('project_status')
+            ->where('id','=',$current_project_Phase_ID)->pluck('name')->first();
+    
+
+            $orders_sum = 0;
+            $total = 0;
+                foreach ($total_orders as $order)
+                {
+                    $total =  $order->set_rate * $order->quantity;
+                    $orders_sum = $total + $orders_sum;
+                }
+               
+            /*
+            $projects = DB::table('projects')->where('id', '=', $id)->get()->first();
+            $spent = $orders_sum + $expense;
+            
+    */
+            $budget_left = $projects->estimated_budget - $projects->project_spent;
+
+            $received_payments = DB::table('customer_payments')->where('project_id','=',$id)->sum('received');
+
+            $request_status = DB::table('material_request_statuses')->where('name', '=', 'pending')->pluck('id')->first();
+                $materialrequests = DB::table('material_requests')
+                    ->leftjoin('items', 'items.id', '=', 'material_requests.item_id')
+                    ->leftjoin('material_request_statuses', 'material_request_statuses.id', '=', 'material_requests.request_status_id')
+                    ->leftjoin('projects', 'projects.id', '=', 'material_requests.project_id')
+                    ->leftjoin('users', 'users.id', '=', 'material_requests.requested_by')
+                    ->where('projects.assigned_by', '=', Auth::user()->id)
+                    ->where('material_requests.request_status_id', '=', $request_status)
+                    ->select('material_requests.id', 'material_request_statuses.name as status_name', 'material_request_statuses.id as request_status_id', 'material_requests.quantity', 'material_requests.seen', 'material_requests.instructions', 'projects.title', 'items.name as item_name', 'users.name as contractor_name')->paginate(5);
+
+                $labor_project_balance_new = $projects->project_balance - $total_labor_cost;
+                $labor_project_spent_new = $projects->project_spent + $total_labor_cost;
+                $labor_project_budget_new = $budget_left - $total_labor_cost;
+        }
+         
+
+
             $expense_chart = MiscellaneousExpense::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))
                             ->where('project_id','=',$id)->get();
                         $chart = Charts::database($expense_chart, 'bar', 'highcharts')
@@ -541,17 +647,20 @@ class ProjectController extends Controller
                             ->dimensions(1000, 500)
                             ->responsive(true)
                             ->groupByMonth(date('Y'), true);
-
+ 
                
                  $pie_chart = Charts::create('pie', 'highcharts')
                             ->title('Cost Comparison')
                             ->labels(['Orders', 'labors', 'Expenses'])
-                            ->values([$orders_sum,5000, $expense])
+                            ->values([$orders_sum,$total_labor_cost, $expense])
                             ->dimensions(120, 3232, 200)
                             ->responsive(true);
      
-     $percent =  $spent * 100;
+     $percent =  $projects->project_spent * 100;
      $percent =  $percent/$projects->estimated_budget;
+     $received_payments_perncent = $received_payments * 100;
+     $received_payments_perncent = $received_payments_perncent/$projects->estimated_budget;
+
      
 
         $percentage_chart = Charts::create('percentage', 'justgage')
@@ -569,18 +678,18 @@ class ProjectController extends Controller
             ->responsive(true)
             ->height(300)
             ->width(0);
-        $percent = $percent + $percent;
+
              $percentage_chart_received = Charts::create('percentage', 'justgage')
             ->title('Received Amount')
             ->elementLabel('%')
-            ->values([$percent, 0, 100])
+            ->values([$received_payments_perncent, 0, 100])
             ->responsive(true)
             ->height(300)
             ->width(0);
 
         $total_pending_requests = DB::table('material_requests')->where('request_status_id', '=', $request_status)->count();
 
-        return view('projects/view', compact('projects', 'customers', 'labors', 'orders', 'contractors', 'total_orders_count','spent','balance', 'expense_chart', 'materialrequests', 'total_pending_requests', 'pie_chart','chart','percentage_chart','percentage_chart_budget','received_payments','percentage_chart_received'));
+        return view('projects/view', compact('projects', 'customers', 'labors', 'orders', 'contractors', 'total_orders_count','spent','budget_left', 'expense_chart', 'materialrequests', 'total_pending_requests', 'pie_chart','chart','percentage_chart','percentage_chart_budget','received_payments','percentage_chart_received','current_phase','current_status','expense','working_labors','total_labor_cost','labor_project_balance_new','labor_project_spent_new','labor_project_budget_new'));
     } 
 
 

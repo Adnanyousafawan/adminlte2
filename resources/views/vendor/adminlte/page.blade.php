@@ -101,7 +101,7 @@
                                      <!-- /.messages-menu --> --}}
 
                                     <!-- Notifications Menu -->
-                                        @can('isAdmin')
+                                       {{--  @can('isAdmin')
 
                                             <li class="dropdown notifications-menu">
                                                 <!-- Menu toggle button -->
@@ -128,7 +128,7 @@
                                                 </ul>
                                             </li>
 
-                                    @endcan
+                                    @endcan --}}
                                     <!-- Tasks Menu -->
                                         @php
                                         
@@ -277,7 +277,7 @@
                                        @can('isAdmin') 
                                         <li>
                                
-                                    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                                    {{-- <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a> --}}
                                
                                   </li> @endcan
                                                             </ul>

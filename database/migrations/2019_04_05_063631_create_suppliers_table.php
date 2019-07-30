@@ -19,6 +19,8 @@ class CreateSuppliersTable extends Migration
             $table->string('phone');
             $table->string('address');
             $table->string('city');
+            $table->float('balance');
+            $table->float('material_cost');
             $table->timestamps();
         });
     }

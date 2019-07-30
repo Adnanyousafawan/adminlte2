@@ -136,8 +136,7 @@ class HomeController extends Controller
                 $temp = 0;
                 $material_profit = 0;
                 $checking = DB::table('order_details')
-                   ->leftjoin('items','items.id','=','order_details.item_id')
-                   ->select('order_details.quantity','order_details.set_rate','items.purchase_rate')
+                   ->select('order_details.quantity','order_details.set_rate','order_details.purchase_rate')
                    ->get();
                 foreach($checking as $check)
                 {
@@ -171,7 +170,8 @@ class HomeController extends Controller
             $ProjectsProfit = $projects->estimated_budget - $spent;
         }
            // $received_payments = DB::table('customer_payments')->where('project_id','=',$id)->sum('received');
-            $company_balance = $material_profit; 
+            $company_balance = DB::table('company_balance')->sum('balance'); 
+
 
                 //_________________ Orders ___________________________________
                 $orders = DB::table('order_details')->paginate(5);
@@ -182,14 +182,14 @@ class HomeController extends Controller
                     // $working_contractors =
 
                     //_______________________________________________________________________________________
-                $ProjectExpense = DB::table('miscellaneous_expenses')
-                ->where('project_id', '!=', null)
+                $CompanyExpense = DB::table('miscellaneous_expenses')
+                ->where('others', '=', 1)
                 ->where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))
                 ->get();
                 /*$expense = MiscellaneousExpense::where('project_id', '!=', null)where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))->get();*/
-                $chart = Charts::database($ProjectExpense, 'bar', 'highcharts')
+                $chart = Charts::database($CompanyExpense, 'bar', 'highcharts')
                     ->title("Expense Details")
-                    ->elementLabel("Project Expense")
+                    ->elementLabel("Company Expense")
                     ->dimensions(1000, 500)
                     ->responsive(true)
                     ->groupByMonth(date('Y'), true);
@@ -255,7 +255,6 @@ class HomeController extends Controller
         $user->name = Auth::user()->name;
 
         $request->validate([
-            'name' => 'required',
             'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:4096'
         ]);
 

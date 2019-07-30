@@ -16,7 +16,6 @@ class CreateCustomerPaymentsTable extends Migration
         Schema::create('customer_payments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('received')->nullable()->default("0");
-            $table->integer('receivable')->nullable()->default("0");
             $table->unsignedBigInteger('project_id')->nullable();
             $table->timestamps();
 

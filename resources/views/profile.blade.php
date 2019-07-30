@@ -50,17 +50,34 @@
 
         <div class="box box-primary">
             <div class="box-body">
-                <img class="profile-user-img img-responsive" src="/storage/{{ Auth::user()->profile_image }}"  alt="Project Image" style="min-width: 300px; min-height: 250px; margin-bottom: 50px; margin-top: 40px;">
+                <img class="profile-user-img img-responsive" src="/storage/{{ Auth::user()->profile_image }}"  alt="Project Image" style="min-width: 300px; min-height: 250px; max-width: 350px; max-height: 200px; margin-bottom: 50px; image-rendering: center; margin-top: 40px;">
                 <hr>
                
                 <div class="col-md-10 col-md-offset-1" style="margin-bottom: 50px;">
 
-                    <form method="post" action="{{ route('profile.image') }}" role="form" enctype="multipart/form-data" >
+                       @if(Auth::user()->role_id == 1)
+                        <div class="form-group">
+                            <lable for="name">Name:</lable>
+                            <input type="text" class="form-control disabled" name="name" id="name" value="{{ Auth::user()->name }}" disabled="">
+                        </div>
+                        @endcan
+                         @if(Auth::user()->role_id == 2)
+                    <form method="post" action="{{ route('user.name',['id' => Auth::user()->id]) }}" role="form" enctype="multipart/form-data" >
                         @csrf
                         <div class="form-group">
                             <lable for="name">Name:</lable>
-                            <input type="text" class="form-control disabled" name="name" id="name" value="{{ Auth::user()->name }}">
+                            <input type="text" class="form-control" name="name" id="name" value="{{ Auth::user()->name }}">
                         </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Update Name</button> 
+                        </div>
+                    </form>
+                    @endcan
+
+                    <form method="post" action="{{ route('profile.image') }}" role="form" enctype="multipart/form-data" >
+                        @csrf
+                     
+
                         <div class="form-group">
                             <lable for="email">Email:</lable>
                             <input type="email" class="form-control disabled" name="email" id="email" value="{{ Auth::user()->email }}"
@@ -77,7 +94,7 @@
                         </div>
                     </form>
                     <hr>
-                    <form method="post" action="{{ route('user.changepassword')}}" role="form" enctype="multipart/form-data" >
+                    <form method="post" action="{{ route('user.changepassword',['id' => Auth::user()->id])}}" role="form" enctype="multipart/form-data" >
                         @csrf
                      <div class="form-group">
                             <lable for="old_password">Old Password:</lable>
