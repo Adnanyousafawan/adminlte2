@@ -397,7 +397,7 @@
                                                 <td>{{ $order->quantity}}</td>
                                                 <td>{{ $order->status }}</td>
                                                 <td><span
-                                                        class="label label-success col-md-10">{{ $order->status }}</span>
+                                                        class="label label-success col-md-12">{{ $order->status }}</span>
                                                 </td>
                                             </tr>
                                         @endforeach

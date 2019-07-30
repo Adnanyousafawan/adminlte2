@@ -702,7 +702,34 @@ class OrderDetailsController extends Controller
         if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
         }
-        $orders = DB::table('order_details')->where('project_id', '=', $id)->get();
+        if (Gate::allows('isAdmin')) {
+            $orders = DB::table('order_details')
+                ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
+                ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
+                ->leftJoin('projects', 'order_details.project_id', '=', 'projects.id')
+                ->where('project_id', '=', $id)
+                ->select('order_details.id', 'projects.title as project_title', 'projects.id as project_id', 'order_details.invoice_number', 'order_details.quantity',
+                    'suppliers.name as supplier_name', 'suppliers.id as supplier_id', 'items.id as item_id', 'items.name as item_name', 'items.selling_rate', 'order_details.created_at',
+                    'order_details.status')
+                ->get();
+            $projects = DB::table('projects')->get();
+
+        }
+        if (Gate::allows('isManager')) {
+            $orders = DB::table('order_details')
+                ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
+                ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
+                ->leftJoin('projects', 'order_details.project_id', '=', 'projects.id')
+                ->where('projects.assigned_by', '=', Auth::user()->id)
+                ->where('project_id', '=', $id)
+                ->select('order_details.id', 'projects.title as project_title', 'projects.id as project_id', 'order_details.invoice_number', 'order_details.quantity',
+                    'suppliers.name as supplier_name', 'suppliers.id as supplier_id', 'items.id as item_id', 'items.name as item_name', 'items.selling_rate', 'order_details.created_at',
+                    'order_details.status')
+                ->get();
+            $projects = DB::table('projects')->where('projects.assigned_by', '=', Auth::user()->id)->get();
+        }
+
+
         $items = DB::table('items')->get();
         $suppliers = DB::table('suppliers')->get();
         $projects = DB::table('projects')->get();
