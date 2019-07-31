@@ -2,7 +2,7 @@
 @section('title', 'Customer Payments')
 @include('common')
 @yield('meta_tags')
-@yield('datatable_stylesheets')
+
 
 
    {{--  <meta charset="utf-8">
@@ -81,7 +81,7 @@
                       <span class="caret"></span>
                       <span class="sr-only">Toggle Dropdown</span>
                     </button> --}}
-<div class="btn-group">
+                    <div class="btn-group">
                         <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action<span class="glyphicon glyphicon-triangle-bottom"></span></button>
                     <ul role="menu" class="dropdown-menu">
                       <li><a type="links" data-toggle="modal" data-target="#EditModal-{{ $payment->id }}"><i class="fa fa-edit"></i>Edit</a></li>
@@ -247,26 +247,7 @@
 
             </div>
         </div>
-<script type="text/javascript">
-
-
-        $('.project').DataTable({
-            select: true,
-            "order": [[0, "dsc"]],
-            //"scrollY"  : "380px",
-            "scrollCollapse": true,
-            "paging": true,
-            "bProcessing": true,
-            // fixedHeader: {
-            //     header: false,
-            //     // headerOffset: 100,
-            //     },
-            //scrollX: true,
-            // scrollY: true
-        });
-
-       
-</script>
-
+         @yield('datatable_stylesheets')
+    @yield('datatable_script')
 @stop
 

@@ -486,10 +486,7 @@ class ProjectController extends Controller
         if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
         }
-
-       
-        if(Gate::allows('isAdmin'))
-        {
+            
             $total_phases = ProjectPhase::all()->count();
             $project_for_progress = DB::table('projects')->where('id','=',$id)->get()->first();
 
@@ -502,6 +499,10 @@ class ProjectController extends Controller
                 $progress = (($project_for_progress->phase_id-1)/$total_phases)*100;
             }
         
+       
+        if(Gate::allows('isAdmin'))
+        {
+           
 
             $total_labor_cost = 0;
             $projects = DB::table('projects')->where('id', '=', $id)->get()->first();

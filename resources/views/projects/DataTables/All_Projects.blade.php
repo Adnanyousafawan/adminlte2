@@ -54,12 +54,14 @@
                             <td>{{ $project->project_spent}}</td>
                             <td style="max-width: 50px;">
                                 <div class="btn-group">
-                                    <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action</button>
+                                    <div class="btn-group">
+                        <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action<span class="glyphicon glyphicon-triangle-bottom"></span></button>
+                                    {{-- <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action</button>
                                     <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle"
                                             type="button">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
+                                    </button> --}}
                                     <ul role="menu" class="dropdown-menu">
                                         <li><a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"><i
                                                     class="fa fa-edit"></i>View</a></li>

@@ -396,11 +396,7 @@ public function UpdateName(Request $request,$id)
     public function edit($id)
     {
         $users = User::find($id);
-        // Redirect to user list if updating user wasn't existed
-        if ($users == null || count($users) == 0) {
-            return redirect()->intended('/users/index');
-        }
-        
+        // Redirect to user list if updating user wasn't existed 
         $roles = DB::table('roles')->where('id', '!=', 1)->get();
         $current_role = DB::table('roles')->where('id', '=', $users->role_id)->pluck('name')->first();
         return view('/users/edit', compact('users', 'roles', 'current_role'));

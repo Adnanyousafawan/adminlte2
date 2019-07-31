@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 @can('isAdmin')
-@section('title', 'ADD User')
+@section('title', 'Add User')
 @endcan
 @can('isManager')
-@section('title', 'ADD Contractor')
+@section('title', 'Add Contractor')
 @endcan
 
 @include('common')
@@ -67,10 +67,17 @@
                             @endforeach
                         </select>
                     </div>        
-                   
                     <button type="submit" class="btn btn-block btn-primary btn-xs form-control" style="margin-bottom: 20px;">Add User</button>
                     @endcan
                      @can('isManager')
+                      <div class="form-group">
+                        <label for="role">Role<span style="color: red;">*</span></label>
+                        <select class="form-control" id="role" name="role" required disabled="">
+                            @foreach($roles as $role)
+                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>  
                     <button type="submit" class="btn btn-block btn-primary btn-xs form-control" style="margin-bottom: 20px;">Add Contractor</button>
                     @endcan
 

@@ -76,7 +76,7 @@
                                     <label for="floor">Project Floors <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" name="floor" id="floor"
                                             value="" onkeypress="return isNumber(event)" onpaste="return false;"
-                                           pattern="[A-Za-z0-9\w].{0,10}"
+                                           pattern="[A-Za-z0-9\w].{0}"
                                            title=" Minimum 1 letters required"
                                            placeholder="Enter number of floors" required>
                                 </div>

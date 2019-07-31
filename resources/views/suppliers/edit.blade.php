@@ -64,7 +64,7 @@
                     @csrf
                     <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                         <label for="name">Name <span style="color: red;">*</span></label>
-                        <input type="text" class="form-control" id="name" placeholder="Supplier Name" name="name" pattern="[A-Za-z0-9\w]{2,50}" title="Minimum 2 letters required for Name" value="{{ $suppliers->name }}" required>
+                        <input type="text" class="form-control" id="name" placeholder="Supplier Name" name="name" pattern="[A-Za-z0-9\w].{2,50}" title="Minimum 2 letters required for Name" value="{{ $suppliers->name }}" required>
                          @if ($errors->has('name'))
                             <span class="help-block alert-danger">
                         <strong>{{ $errors->first('name') }}</strong>                              
@@ -79,7 +79,7 @@
                                 <i class="fa fa-phone"></i>
                             </div>
                             <input type="text" class="form-control" placeholder="Contact Number" maxlength="11" 
-                                    pattern="[0-9]{11}" title="Enter 11 Digit Number. Example:(03330234334)" 
+                                    pattern="[0-9].{10}" title="Enter 11 Digit Number. Example:(03330234334)" 
                                   id="phone" name="phone"  value="{{ $suppliers->phone }}" required>
                                    @if ($errors->has('phone'))
                             <span class="help-block alert-danger">
@@ -90,7 +90,7 @@
                     </div>
                     <div class="form-group {{ $errors->has('address') ? ' has-error' : '' }}">
                         <label for="address">Address <span style="color: red;">*</span></label>
-                        <input type="text" class="form-control" id="address" placeholder="Home Address" name="address" pattern="[A-Za-z0-9\w]{4,100}" 
+                        <input type="text" class="form-control" id="address" placeholder="Home Address" name="address" pattern="[A-Za-z0-9\w].{4,100}" 
                         title=" Minimum 4 letters required"  value="{{ $suppliers->address }}" required>
                          @if ($errors->has('address'))
                             <span class="help-block alert-danger">
@@ -100,7 +100,7 @@
                     </div>
                     <div class="form-group {{ $errors->has('city') ? ' has-error' : '' }}">
                         <label for="city">City <span style="color: red;">*</span></label>
-                        <input type="text" class="form-control" id="city" placeholder="Home City" name="city" value="{{ $suppliers->city }}" pattern="[A-Za-z0-9\w]{4,100}" 
+                        <input type="text" class="form-control" id="city" placeholder="Home City" name="city" value="{{ $suppliers->city }}" pattern="[A-Za-z0-9\w].{4,100}" 
                         title=" Minimum 4 letters required" required>
                          @if ($errors->has('city'))
                             <span class="help-block alert-danger">
