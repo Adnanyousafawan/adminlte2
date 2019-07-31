@@ -311,6 +311,14 @@ public function UpdateName(Request $request,$id)
         ]);
    
         $password = Hash::make('init1234');
+        if(Gate::allows('isManager'))
+        {
+            $role = 3;
+        }
+        if(Gate::allows('isAdmin'))
+        {
+            $role = $request->input('role');
+        }
 
         $user = new User([
             'name' => $request->input('name'),
@@ -319,7 +327,7 @@ public function UpdateName(Request $request,$id)
             'cnic' => $request->input('cnic'),
             'password' => $password,
             'phone' => $request->input('phone'),
-            'role_id' => $request->input('role'),
+            'role_id' => $role,
             'profile_image' => $request->get('profile_image')
         ]);
 

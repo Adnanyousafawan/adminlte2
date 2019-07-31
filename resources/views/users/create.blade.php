@@ -70,14 +70,6 @@
                     <button type="submit" class="btn btn-block btn-primary btn-xs form-control" style="margin-bottom: 20px;">Add User</button>
                     @endcan
                      @can('isManager')
-                      <div class="form-group">
-                        <label for="role">Role<span style="color: red;">*</span></label>
-                        <select class="form-control" id="role" name="role" required disabled="">
-                            @foreach($roles as $role)
-                                <option value="{{ $role->id }}">{{ $role->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>  
                     <button type="submit" class="btn btn-block btn-primary btn-xs form-control" style="margin-bottom: 20px;">Add Contractor</button>
                     @endcan
 

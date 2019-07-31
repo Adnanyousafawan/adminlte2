@@ -508,7 +508,11 @@ class ProjectController extends Controller
             $labors = DB::table('labors')->where('project_id', '=', $id)->get()->all();
                 foreach ($labors as $labor) 
                 {
-                    $temp = DB::table('labor_attendances')->where('labor_id','=',$labor->id)->sum('status');
+                    $temp = DB::table('labor_attendances')
+                    ->where('labor_id','=',$labor->id)
+                    ->where('status','=',1)
+                    ->where('paid','=',1)
+                    ->count();
                     $cost = $temp * $labor->rate;
                     $total_labor_cost = $total_labor_cost + $cost;
                 }
@@ -570,6 +574,7 @@ class ProjectController extends Controller
         {
             $total_labor_cost =0;
             $cost = 0;
+            $temp =0;
             $projects = DB::table('projects')
             ->where('id', '=', $id)
             ->where('projects.assigned_by', '=', Auth::user()->id)
@@ -584,7 +589,12 @@ class ProjectController extends Controller
                 ->all();
                 foreach ($labors as $labor) 
                 {
-                    $temp = DB::table('labor_attendances')->where('labor_id','=',$labor->id)->sum('status');
+                    $temp = DB::table('labor_attendances')
+                    ->where('labor_id','=',$labor->id)
+                    ->where('status','=',1)
+                    ->where('paid','=',1)
+                    ->count();
+
                     $cost = $temp * $labor->rate;
                     $total_labor_cost = $total_labor_cost + $cost;
                 }
