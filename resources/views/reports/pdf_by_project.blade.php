@@ -123,7 +123,7 @@
                   {{ $invoice_total = $total + $invoice_total }}
                   
                   <td  style="background-color: #D3D3D3;">{{$total}}</td>
-                  <td  style="background-color: #D3D3D3;">{{ $order['created_at'] }}</td>
+                  <td  style="background-color: #D3D3D3;">{{ Carbon\Carbon::parse($order['created_at'] )->format('d/M/Y') }}</td>
                   {{  $lcheck = $order['invoice_number'] }}
                   {{ $temp++ }}
 
@@ -156,7 +156,7 @@
                   {{ $invoice_total = $total + $invoice_total }}
 
                   <td style="background-color: #A9A9A9;">{{ $total }}</td>
-                  <td style="background-color: #A9A9A9;">{{ $order['created_at'] }}</td>
+                  <td style="background-color: #A9A9A9;">{{ Carbon\Carbon::parse($order['created_at'] )->format('d/M/Y') }}</td>
                   {{ $lcheck = $order['invoice_number'] }}
                   {{ $temp++ }}
                    @endif

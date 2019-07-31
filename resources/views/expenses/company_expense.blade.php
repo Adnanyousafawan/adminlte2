@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Expenses List')
+@section('title', 'Company Expenses')
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/bootstrap-3.4.1.css">

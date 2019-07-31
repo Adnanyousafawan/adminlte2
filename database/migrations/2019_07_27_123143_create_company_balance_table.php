@@ -15,9 +15,9 @@ class CreateCompanyBalanceTable extends Migration
     {
         Schema::create('company_balance', function (Blueprint $table) {
             $table->bigIncrements('id'); 
-            $table->float('balance')->nullable()->default("0");
-            $table->float('projects_balance')->nullable()->default("0");
-            $table->float('profit')->nullable()->default("0");
+            $table->float('balance',25,0)->nullable()->default("0");
+            $table->float('projects_balance',25,0)->nullable()->default("0");
+            $table->float('profit',25,0)->nullable()->default("0");
             $table->timestamps();
         });
     }

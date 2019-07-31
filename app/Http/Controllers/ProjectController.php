@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Customer;
 use App\Http\Requests;
 use App\Project;
+use App\ProjectPhase;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -258,7 +259,7 @@ class ProjectController extends Controller
             ->leftjoin('customers','projects.customer_id','=','customers.id')
             ->leftjoin('project_status','projects.status_id','=','project_status.id')
             ->where('project_status.name','=','Halt')
-            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name')
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
             ->get();
         }
         if(Gate::allows('isManager'))
@@ -269,7 +270,7 @@ class ProjectController extends Controller
             ->leftjoin('project_status','projects.status_id','=','project_status.id')
             ->where('projects.assigned_by', '=', Auth::user()->id)
             ->where('project_status.name','=','Halt')
-            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name')
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
             ->get();
         }
         $contractors = User::all()->where('role_id', '=', 3);
@@ -287,7 +288,7 @@ class ProjectController extends Controller
             ->leftjoin('customers','projects.customer_id','=','customers.id')
             ->leftjoin('project_status','projects.status_id','=','project_status.id')
             ->where('project_status.name','=','Stopped')
-            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name')
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
             ->get();
         }
         if(Gate::allows('isManager'))
@@ -298,7 +299,7 @@ class ProjectController extends Controller
             ->leftjoin('project_status','projects.status_id','=','project_status.id')
             ->where('projects.assigned_by', '=', Auth::user()->id)
             ->where('project_status.name','=','Stopped')
-            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name')
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
             ->get();
         }
         $contractors = User::all()->where('role_id', '=', 3);
@@ -317,7 +318,7 @@ class ProjectController extends Controller
             ->leftjoin('customers','projects.customer_id','=','customers.id')
             ->leftjoin('project_status','projects.status_id','=','project_status.id')
             ->where('project_status.name','=','Completed')
-            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name')
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
             ->get();    
         }
         if(Gate::allows('isManager'))
@@ -328,7 +329,7 @@ class ProjectController extends Controller
             ->leftjoin('project_status','projects.status_id','=','project_status.id')
             ->where('projects.assigned_by', '=', Auth::user()->id)
             ->where('project_status.name','=','Completed')
-            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name')
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
             ->get();    
         }
 
@@ -381,7 +382,7 @@ class ProjectController extends Controller
             ->leftjoin('customers','projects.customer_id','=','customers.id')
             ->leftjoin('project_status','projects.status_id','=','project_status.id')
             ->where('project_status.name','=','Not Started')
-            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name')
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
             ->get();    
         }
         if(Gate::allows('isManager'))
@@ -392,7 +393,7 @@ class ProjectController extends Controller
             ->leftjoin('project_status','projects.status_id','=','project_status.id')
             ->where('projects.assigned_by', '=', Auth::user()->id)
             ->where('project_status.name','=','Not Started')
-            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name')
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
             ->get();    
         }
         $contractors = User::all()->where('role_id', '=', 3);
@@ -411,7 +412,7 @@ class ProjectController extends Controller
             ->leftjoin('customers','projects.customer_id','=','customers.id')
             ->leftjoin('project_status','projects.status_id','=','project_status.id')
             ->where('project_status.name','=','In Progress')
-            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name')
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
             ->get();    
         }
         if(Gate::allows('isManager')) 
@@ -422,7 +423,7 @@ class ProjectController extends Controller
             ->leftjoin('project_status','projects.status_id','=','project_status.id')
             ->where('projects.assigned_by', '=', Auth::user()->id)
             ->where('project_status.name','=','In Progress')
-            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name')
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
             ->get();    
         }
 
@@ -489,6 +490,19 @@ class ProjectController extends Controller
        
         if(Gate::allows('isAdmin'))
         {
+            $total_phases = ProjectPhase::all()->count();
+            $project_for_progress = DB::table('projects')->where('id','=',$id)->get()->first();
+
+            if($project_for_progress->phase_id == 0)
+            {
+                $progress = (($project_for_progress->phase_id)/$total_phases)*100;
+            } 
+            else
+            {
+                $progress = (($project_for_progress->phase_id-1)/$total_phases)*100;
+            }
+        
+
             $total_labor_cost = 0;
             $projects = DB::table('projects')->where('id', '=', $id)->get()->first();
 
@@ -521,8 +535,6 @@ class ProjectController extends Controller
 
             $current_status = DB::table('project_status')
             ->where('id','=',$current_project_Phase_ID)->pluck('name')->first();
-            dd($current_status);
-
 
             $orders_sum = 0;
             $total = 0;
@@ -637,8 +649,6 @@ class ProjectController extends Controller
                 $labor_project_budget_new = $budget_left - $total_labor_cost;
         }
          
-
-
             $expense_chart = MiscellaneousExpense::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))
                             ->where('project_id','=',$id)->get();
                         $chart = Charts::database($expense_chart, 'bar', 'highcharts')
@@ -656,8 +666,9 @@ class ProjectController extends Controller
                             ->dimensions(120, 3232, 200)
                             ->responsive(true);
      
-     $percent =  $projects->project_spent * 100;
-     $percent =  $percent/$projects->estimated_budget;
+     //$projects->project_spent 
+     $percent = $labor_project_spent_new* 100;
+     $percent = $percent/$projects->estimated_budget;
      $received_payments_perncent = $received_payments * 100;
      $received_payments_perncent = $received_payments_perncent/$projects->estimated_budget;
 
@@ -666,7 +677,7 @@ class ProjectController extends Controller
         $percentage_chart = Charts::create('percentage', 'justgage')
             ->title('Project Completed')
             ->elementLabel('%')
-            ->values([15, 0, 100])
+            ->values([$progress, 0, 100])
             ->responsive(true)
             ->height(300)
             ->width(0);
@@ -689,7 +700,7 @@ class ProjectController extends Controller
 
         $total_pending_requests = DB::table('material_requests')->where('request_status_id', '=', $request_status)->count();
 
-        return view('projects/view', compact('projects', 'customers', 'labors', 'orders', 'contractors', 'total_orders_count','spent','budget_left', 'expense_chart', 'materialrequests', 'total_pending_requests', 'pie_chart','chart','percentage_chart','percentage_chart_budget','received_payments','percentage_chart_received','current_phase','current_status','expense','working_labors','total_labor_cost','labor_project_balance_new','labor_project_spent_new','labor_project_budget_new'));
+        return view('projects/view', compact('projects', 'customers', 'labors', 'orders', 'contractors', 'total_orders_count','spent','budget_left', 'expense_chart', 'materialrequests', 'total_pending_requests', 'pie_chart','chart','percentage_chart','percentage_chart_budget','received_payments','percentage_chart_received','current_phase','current_status','expense','working_labors','total_labor_cost','labor_project_balance_new','labor_project_spent_new','labor_project_budget_new','projects'));
     } 
 
 

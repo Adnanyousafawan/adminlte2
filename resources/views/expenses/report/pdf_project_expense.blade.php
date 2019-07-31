@@ -121,7 +121,7 @@
                   {{ $total =  $expense['expense'] }} 
                   {{ $subtotal = $total + $subtotal }}
                   {{ $expense_total = $total + $expense_total }}
-                  <td  style="background-color: #D3D3D3;">{{ $expense['created_at'] }}</td>
+                  <td  style="background-color: #D3D3D3;">{{ Carbon\Carbon::parse($expense['created_at'])->format('d/M/Y') }}</td>
                   {{  $lcheck = $expense['expense_number'] }}
                   {{ $temp++ }}
 
@@ -154,7 +154,7 @@
                   {{ $subtotal = $total + $subtotal }}
                   {{ $expense_total = $total + $expense_total }}
 
-                  <td style="background-color: #A9A9A9;">{{ $expense['created_at'] }}</td>
+                  <td style="background-color: #A9A9A9;">{{ Carbon\Carbon::parse($expense['created_at'])->format('d/M/Y') }}</td>
                   {{ $lcheck = $expense['expense_number'] }}
                   {{ $temp++ }}
                    @endif

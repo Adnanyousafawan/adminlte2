@@ -134,8 +134,13 @@
                                         
 
                                         $request_status = DB::table('material_request_statuses')->where('name','=','Pending')->pluck('id')->first();
-                                        $requests = DB::table('material_requests')->where('request_status_id','=',$request_status)
+                                        $requests = DB::table('material_requests')
+                                        ->leftjoin('projects','projects.id','=','material_requests.project_id')
+                                        ->leftjoin('users','users.id','=','material_requests.requested_by')
+                                        ->leftjoin('items','items.id','=','material_requests.item_id')
+                                        ->where('request_status_id','=',$request_status)
                                         ->where('seen','=',0)
+                                        ->select('projects.title','projects.id as proj_id','material_requests.instructions','users.name','items.name as item_name')
                                         ->take(5)->get(); 
                                         $totalrequests = DB::table('material_requests')->where('request_status_id','=',$request_status)
                                         ->where('seen','=',0)
@@ -157,12 +162,12 @@
                                                 <li class="header">
                                                  @if($seen == 0)
                                                 
-                                                   You Have {{ $totalrequests }} Total Pending Material requests
+                                                   {{ $totalrequests }} Pending Material requests
                                              
                                                 @endif 
                                                  @if($seen == 1)
                                                 
-                                                   You have {{ $totalrequests }} Pending Material Requests 
+                                                   {{ $totalrequests }} Material Requests 
                                                 
                                                 @endif
                                             </li>
@@ -175,11 +180,11 @@
                                                             <!-- Task item -->
                                                             <a href="/materialrequest">
                                                                 <!-- Task title and progress text -->
-                                                                <h3>
-                                                                    PR{{ $request->project_id }}
-                                                                    <p class="pull-right">CT{{ $request->requested_by }}</p>
-                                                                    <br><p>{{ $request->item_id }}</p>
-                                                                </h3>
+                                                                <h3><strong>
+                                                                    PR{{ $request->title }}</strong></h3>
+                                                                    <span>{{ $request->name }}</span>
+                                                                   <span class="pull-right" style="margin-right: 5px;">{{ $request->item_name }}</span> 
+                                                                
                                                                 <!-- The progress bar -->
 {{--                                                                <div class="progress xs">--}}
 {{--                                                                  --}}

@@ -107,8 +107,8 @@
             function dynamic_field(number) {
                 html = '<tr>';
                 html += '<td><input type="text" name="name[]" class="form-control"/></td>';
-                html += '<td><input type="number" name="purchase_rate[]" class="form-control"/></td>';
-                html += '<td><input type="number" name="selling_rate[]" class="form-control"/></td>';
+                html += '<td><input type="text" value="" onkeypress="return isNumber(event)" onpaste="return false;"pattern="[A-Za-z0-9\w].{0,10}"  name="purchase_rate[]" class="form-control"/></td>';
+                html += '<td><input type="text" value="" onkeypress="return isNumber(event)" onpaste="return false;"pattern="[A-Za-z0-9\w].{0,10}"  name="selling_rate[]" class="form-control"/></td>';
                 html += '<td><input type="text" name="unit[]" class="form-control"/></td>';
 
                 if (number > 1) {
@@ -167,4 +167,14 @@
             });
         });
     </script>
+<script type="text/javascript">     
+    function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if ( (charCode > 31 && charCode < 48) || charCode > 57) {
+        return false;
+    }
+        return true;
+    }
+</script>
 @stop

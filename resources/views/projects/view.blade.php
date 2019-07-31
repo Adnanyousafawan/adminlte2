@@ -17,12 +17,25 @@
                     <div
                         class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1  "
                         style="padding: 0px;">
+                        <?php   
+                                $number = $labor_project_spent_new;
+                                if ($number < 1000000) {
+                                    // Anything less than a million
+                                    $format = number_format($number);
+                                } else if ($number < 1000000000) {
+                                    // Anything less than a billion
+                                    $format = number_format($number / 1000000, 2) . 'M';
+                                } else {
+                                    // At least a billion
+                                    $format = number_format($number / 1000000000, 2) . 'B';
+                                }
+                            ?>
                         <div class="col-xs-12 col-md-3 col-sm-4 col-lg-4 col-xl-12">
                             <div class="box">
                                 <div class="box-header">
                                     <h2 class="box-title">Spent</h2>
                                     <span class="info-box-number label label-warning pull-right"
-                                          style="margin-top: 0px; font-size: 16px;">{{ $labor_project_spent_new }}</span>
+                                          style="margin-top: 0px; font-size: 16px;">{{ $format }}</span>
                                 </div>
                                 <!-- /.box-header -->
                                 <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -30,13 +43,25 @@
                             <!-- /.info-box-content -->
                             <!-- /.info-box -->
                         </div>
-
+                         <?php   
+                                $number = $labor_project_budget_new;
+                                if ($number < 1000000) {
+                                    // Anything less than a million
+                                    $format = number_format($number);
+                                } else if ($number < 1000000000) {
+                                    // Anything less than a billion
+                                    $format = number_format($number / 1000000, 2) . 'M';
+                                } else {
+                                    // At least a billion
+                                    $format = number_format($number / 1000000000, 2) . 'B';
+                                }
+                            ?>
                         <div class="col-xs-12 col-md-4 col-sm-4 col-lg-4 col-xl-12">
                             <div class="box">
                                 <div class="box-header">
                                     <h2 class="box-title">Budget Left</h2>
                                     <span class="info-box-number label label-danger pull-right"
-                                          style="margin-top: 0px; font-size: 16px;">{{ $labor_project_budget_new }}</span>
+                                          style="margin-top: 0px; font-size: 16px;">{{ $format }}</span>
                                 </div>
                                 <!-- /.box-header -->
                                 <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -46,12 +71,26 @@
                         </div>
                     {{-- {{     dd($data) }}  --}}
                     <!-- /.col -->
+                    <?php   
+                                $number = $projects->estimated_budget;
+                                if ($number < 1000000) {
+                                    // Anything less than a million
+                                    $format = number_format($number);
+                                } else if ($number < 1000000000) {
+                                    // Anything less than a billion
+                                    $format = number_format($number / 1000000, 2) . 'M';
+                                } else {
+                                    // At least a billion
+                                    $format = number_format($number / 1000000000, 2) . 'B';
+                                }
+
+                                ?>
                         <div class="col-xs-12 col-md-3 col-sm-4 col-lg-4 col-xl-12">
                             <div class="box">
                                 <div class="box-header">
                                     <h2 class="box-title">Total Budget</h2>
                                     <span class="info-box-number label label-success pull-right"
-                                          style="margin-top: 0px; font-size: 16px;"> {{ $projects->estimated_budget }}</span>
+                                          style="margin-top: 0px; font-size: 16px;">{{ $format }}</span>
                                 </div>
                                 <!-- /.box-header -->
                                 <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -138,6 +177,20 @@
             </div>
          </div>
      </div>
+                        <?php   
+                                $number = $labor_project_balance_new;
+                                if ($number < 1000000) {
+                                    // Anything less than a million
+                                    $format = number_format($number);
+                                } else if ($number < 1000000000) {
+                                    // Anything less than a billion
+                                    $format = number_format($number / 1000000, 2) . 'M';
+                                } else {
+                                    // At least a billion
+                                    $format = number_format($number / 1000000000, 2) . 'B';
+                                }
+                            ?>
+
                         <div class="col-xs-12 col-md-3 col-sm-6 col-lg-3 col-xl-12" style="margin-top: 2%;">
 
                             <div class="box">
@@ -146,7 +199,7 @@
                                     <?php   ?>
                                     @if($labor_project_balance_new >= 0)
                                         <span class="info-box-number label label-warning pull-right"
-                                              style="margin-top: 0px; font-size: 16px;">{{ $labor_project_balance_new }}</span>
+                                              style="margin-top: 0px; font-size: 16px;">{{ $format }}</span>
                                     @endif
                                     @if($labor_project_balance_new < 0)
                                         <span class="info-box-number label label-warning pull-right"
@@ -179,14 +232,40 @@
                                     <?php $check = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first(); ?>
 
                                     @if($labor_project_balance_new < 0 && $projects->status_id != $check)
+                                    <?php   
+                                        $number = $labor_project_balance_new;
+                                        if ($number < 1000000) {
+                                            // Anything less than a million
+                                            $format = number_format($number);
+                                        } else if ($number < 1000000000) {
+                                            // Anything less than a billion
+                                            $format = number_format($number / 1000000, 2) . 'M';
+                                        } else {
+                                            // At least a billion
+                                            $format = number_format($number / 1000000000, 2) . 'B';
+                                        }
+                                    ?>
                                     <span class="info-box-number label label-success pull-right"
-                                          style="margin-top: 0px; font-size: 16px;"> {{ $labor_project_balance_new }}</span>
+                                          style="margin-top: 0px; font-size: 16px;"> {{ $format }}</span>
                                     @endif
                                     @if($labor_project_balance_new >= 0 && $projects->status_id != $check)
                                     <span class="info-box-number label label-success pull-right"
                                           style="margin-top: 0px; font-size: 16px;">0</span>
                                     @endif
                                     @if($current_status == 'Completed')
+                                    <?php   
+                                        $number = $labor_project_budget_new;
+                                        if ($number < 1000000) {
+                                            // Anything less than a million
+                                            $format = number_format($number);
+                                        } else if ($number < 1000000000) {
+                                            // Anything less than a billion
+                                            $format = number_format($number / 1000000, 2) . 'M';
+                                        } else {
+                                            // At least a billion
+                                            $format = number_format($number / 1000000000, 2) . 'B';
+                                        }
+                                    ?>
                                     <span class="info-box-number label label-success pull-right"
                                           style="margin-top: 0px; font-size: 16px;"> {{ $labor_project_budget_new }}</span>
                                     @endif
@@ -578,56 +657,61 @@
                                             <div class="box-body">
 
                                                 <div
-                                                    class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-2 col-sm-12 col-xl-10 col-xl-offset-2 ">
+                                                    class="col-lg-8 col-lg-offset-2 col-md-8col-md-offset-2 col-sm-12 col-xl-10 col-xl-offset-2 ">
                                                     <div class="form-group">
+<div class="form-group">
+                                        <label for="name">Name <span style="color: red;">*</span></label>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                               pattern="[A-Za-z0-9\w].{2,50}" title="Minimum 3 letters required for Name"
+                                               placeholder="Name" required>
+                                    </div>
 
+                                    <div class="form-group">
+                                        <label for="cnic">CNIC <span style="color: red;">*</span></label>
+                                        <input type="text" class="form-control" placeholder="CNIC" value="" id="cnic" name="cnic" onkeypress="return isNumber(event)" onpaste="return false;" maxlength="13" pattern="[0-9].{12,13}"  title="Enter 13 digit CNIC Number. Example: ( 3434359324554 )" required>
+                                    </div>
 
-                                                        <label for="name">Labor Name</label>
-                                                        <input type="text" class="form-control" id="name"
-                                                               placeholder="Labor Name" name="name">
+                                    <div class="form-group">
+                                        <label for="address">Address <span style="color: red;">*</span></label>
+                                        <input type="text" class="form-control" id="address" name="address"
+                                               pattern="[A-Za-z0-9\w].{4,100}"
+                                               title=" Minimum 5 letters required"
+                                               placeholder="Home Address" required>
+                                    </div>
 
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="cnic">Labor CNIC</label>
-                                                        <input type="text" class="form-control" id="cnic"
-                                                               placeholder="Labor CNIC" name="cnic">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="phone">Labor Contact</label>
-                                                        <div class="input-group">
-                                                            <div class="input-group-addon">
-                                                                <i class="fa fa-phone"></i>
-                                                            </div>
-                                                            <input type="text" maxlength="14"
-                                                                   class="form-control"
+                                    <div class="form-group">
+                                        <label for="phone">Contact <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-phone"></i>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="Contact Number" value="" id="phone" name="phone" onkeypress="return isNumber(event)" onpaste="return false;" maxlength="11" pattern="[0-9].{10}" title="Enter 11 Digit Number. Example:(03330234334)" required>
+                                        </div>
+                                    </div>
 
-                                                                   data-inputmask="'mask': ['999-999-9999 [x99999]', '+092 99 99 9999[9]-9999']"
-                                                                   data-mask="" id="phone" name="phone">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="address">Labor Address</label>
-                                                        <input type="text" class="form-control" id="address"
-                                                               placeholder="Home Address"
-                                                               name="address">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="city">Labor City</label>
-                                                        <input type="text" class="form-control" id="city"
-                                                               placeholder="Home City" name="city">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="rate">Labor Price</label>
-                                                        <input type="text" class="form-control" id="rate"
-                                                               placeholder="Labor Rate(per Day)"
-                                                               name="rate">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="project_id">Project ID</label>
-                                                        <select class="form-control" id="project_id" name="project_id">
-                                                            <option> {{ $projects->title }} </option>
-                                                        </select>
-                                                    </div>
+                                    <div class="form-group">
+                                        <label for="city">City<span style="color: red;">*</span></label>
+                                        <input type="text" class="form-control" id="city" placeholder="Home City"
+                                               name="city" pattern="[A-Za-z0-9\w].{3,100}"
+                                               title=" Minimum 4 letters required" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="rate">Labor Rate <span style="color: red;">*</span></label>
+                                        <input  type="text" class="form-control" value="" id="rate"
+                                               placeholder="Labor Rate(per Day)" name="rate" onkeypress="return isNumber(event)" onpaste="return false;" maxlength="11" pattern="[0-9].{2,10}" title=" Minimum 3 digit number required" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="project_id">Project ID<span style="color: red;">*</span></label>
+                                        <select class="form-control" id="project_id" name="project_id" required>
+                                          <option default>Select Project</option>
+                                           
+                                                <option>{{ $projects->title }}</option>
+                                          
+                                        </select>
+                                    </div>
+
+                                                       
 
                                                     <button type="submit"
                                                             class="btn btn-block btn-primary btn-xs form-control"

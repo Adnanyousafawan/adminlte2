@@ -38,10 +38,18 @@
                            @can('isAdmin')<h4><span class="box-title col-md-8">User Record</span></h4>@endcan
                            @can('isManager')<h4><span class="box-title col-md-8">Contractor Record</span></h4>@endcan
                            <div class="box-tools pull-right">
+                            @can('isAdmin')
                                 <a type="links" {{-- href="{{ route('users.create') }}" --}}  data-toggle="modal"
-                                   data-target="#applicantADDModal"  class="btn btn-primary pul-right">Add User</a>
+                                   data-target="#applicantADDModal"  class="btn btn-primary pul-right">
+                               Add User</a>
+                            @endcan
+                            @can('isManager')
+                                <a type="links" {{-- href="{{ route('users.create') }}" --}}  data-toggle="modal"
+                                       data-target="#applicantADDModal"  class="btn btn-primary pul-right">
+                                   Add Contractor
+                                </a>
+                            @endcan
                             </div>
-                         
 </div>
                 <div style="margin-top: 10px;" 
                     class="container col-xs-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 col-xl-offset-0 style=">
@@ -80,16 +88,18 @@
                                     <th>Role</th>
                                     @endcan
                                     @can('isManager')
-                                    <th>Project ID</th>
+                                    @if($is_contractor == 1)
+                                    <th>Project Title</th>
+                                    @endif
                                     @endcan
                                     <th style="min-width: 60px;">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach ($users as $user)
-                                    <tr><?php $check = 'images/profile/userprofile.png';?>
+                                    <tr><?php $check = 'images/profile/default_user.png';?>
                                         <td>@if($user->profile_image == $check )
-                                            <img style="min-width: 40%; max-width: 40%; min-height: 20px; max-height: 50px; margin-left: 25%;" class=" img-responsive" src="/storage/{{ $user->profile_image }}" alt="User Image">
+                                            <img style="min-width: 40%; max-width: 40%; min-height: 20px; max-height: 50px; margin-left: 25%;" class=" img-responsive img-fluid" src="/storage/{{ $user->profile_image }}" alt="User Image">
                                             @endif
                                             @if($user->profile_image != $check )
                                             <img style="min-width: 48%; max-width: 48%; min-height: 20px; max-height: 100px; margin-left: 25%;" class=" img-responsive" src="/storage/{{ $user->profile_image }}" alt="User Image">
@@ -104,8 +114,10 @@
                                         @can('isAdmin')
                                         <td>{{ $user->role_name }}</td>
                                         @endcan
-                                        @can('isManager') 
-                                        <td>Project ID</td>
+                                        @can('isManager')
+                                        @if($is_contractor == 1)
+                                        <td>{{ $user->title}}</td>
+                                        @endif
                                         @endcan
 
                                         <td style="min-width: 60px;">

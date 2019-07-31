@@ -29,8 +29,6 @@ class CustomerPaymentsController extends Controller
                 'customer_payments.created_at', 'projects.estimated_budget as budget')
             ->get();
         //dd($expenses);
-
-
         return view('payments/customerpayments', compact('payments'));
     }
 

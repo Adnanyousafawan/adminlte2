@@ -62,9 +62,22 @@
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
+             <?php   
+                                        $number = $expenses;
+                                        if ($number < 1000000) {
+                                            // Anything less than a million
+                                            $format = number_format($number);
+                                        } else if ($number < 1000000000) {
+                                            // Anything less than a billion
+                                            $format = number_format($number / 1000000, 2) . 'M';
+                                        } else {
+                                            // At least a billion
+                                            $format = number_format($number / 1000000000, 2) . 'B';
+                                        }
+                                    ?>
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>{{ $expenses }}</h3> 
+              <h3>{{ $format }}</h3> 
 
               <p>Expenses History</p>
             </div>
@@ -88,12 +101,38 @@
 
                 <div class="info-box-content">
                   @if($company_balance >= 0)
+                   <?php   
+                                        $number = $company_balance;
+                                        if ($number < 1000000) {
+                                            // Anything less than a million
+                                            $format = number_format($number);
+                                        } else if ($number < 1000000000) {
+                                            // Anything less than a billion
+                                            $format = number_format($number / 1000000, 2) . 'M';
+                                        } else {
+                                            // At least a billion
+                                            $format = number_format($number / 1000000000, 2) . 'B';
+                                        }
+                                    ?>
                     <span class="info-box-text">Company Balance</span>
-                    <span class="info-box-number">{{ $company_balance }}</span>
+                    <span class="info-box-number">{{ $format }}</span>
                   @endcan
                   @if($company_balance < 0)
+                   <?php   
+                                        $number = $company_balance;
+                                        if ($number < 1000000) {
+                                            // Anything less than a million
+                                            $format = number_format($number);
+                                        } else if ($number < 1000000000) {
+                                            // Anything less than a billion
+                                            $format = number_format($number / 1000000, 2) . 'M';
+                                        } else {
+                                            // At least a billion
+                                            $format = number_format($number / 1000000000, 2) . 'B';
+                                        }
+                                    ?>
                     <span class="info-box-text">Company Receivable</span>
-                    <span class="info-box-number">{{ $company_balance }}</span>
+                    <span class="info-box-number">{{ $format }}</span>
                   @endcan
                 </div>
                 <!-- /.info-box-content -->
@@ -133,8 +172,21 @@
                 <span class="info-box-icon bg-red"><i class="ion ion-ios-browsers-outline"></i></span>
 
                 <div class="info-box-content">
+                   <?php   
+                                        $number = $company_expense;
+                                        if ($number < 1000000) {
+                                            // Anything less than a million
+                                            $format = number_format($number);
+                                        } else if ($number < 1000000000) {
+                                            // Anything less than a billion
+                                            $format = number_format($number / 1000000, 2) . 'M';
+                                        } else {
+                                            // At least a billion
+                                            $format = number_format($number / 1000000000, 2) . 'B';
+                                        }
+                                    ?>
                     <span class="info-box-text">Company Expenses</span>
-                    <span class="info-box-number">{{$company_expense}}</span>
+                    <span class="info-box-number">{{$format}}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>

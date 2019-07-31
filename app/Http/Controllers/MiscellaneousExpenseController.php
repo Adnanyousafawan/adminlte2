@@ -36,8 +36,10 @@ class MiscellaneousExpenseController extends Controller
                 ->select('miscellaneous_expenses.id', 'projects.title', 'miscellaneous_expenses.project_id', 'miscellaneous_expenses.expense', 'miscellaneous_expenses.name', 'miscellaneous_expenses.description', 'miscellaneous_expenses.created_at')
                 ->get();
         }
-        $projects = DB::table('projects')->get();
-        return view('expenses/allexpenses', compact('expenses', 'projects'));
+            $project_status_ID = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
+            $projects = DB::table('projects')->where('status_id','!=',$project_status_ID)->get();
+
+        return view('expenses/allexpenses', compact('expenses','projects' ));
     }
 
     function company_expense()
@@ -166,7 +168,6 @@ class MiscellaneousExpenseController extends Controller
                 'success' => 'Data Added successfully.']);
         }
     }
-
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -177,7 +178,6 @@ class MiscellaneousExpenseController extends Controller
         ]);
 
         $expenses = MiscellaneousExpense::find($id);
-
         $expenses->project_id = $request->input('project_id');
         $expenses->name = $request->input('name');
         $expenses->description = $request->input('description');
@@ -189,8 +189,6 @@ class MiscellaneousExpenseController extends Controller
             return redirect()->back()->with('message', "Order is not Updated");
         }
     }
-
-
     public function update_company_expense(Request $request, $id)
     {
         $request->validate([
@@ -217,10 +215,12 @@ class MiscellaneousExpenseController extends Controller
             abort(420, 'You Are not Allowed to access this site');
         }
         if (Gate::allows('isAdmin')) {
-            $projects = DB::table('projects')->get();
+            $project_status_ID = DB::table('project_status')->where('name','!=','Completed')->pluck('id')->first();
+            $projects = DB::table('projects')->where('status_id','!=',$project_status_ID)->get();
         }
         if (Gate::allows('isManager')) {
-            $projects = DB::table('projects')->where('projects.assigned_by', '=', Auth::user()->id)->get();
+            $project_status_ID = DB::table('project_status')->where('name','!=','Completed')->pluck('id')->first();
+            $projects = DB::table('projects')->where('projects.assigned_by', '=', Auth::user()->id)->where('status_id','!=',$project_status_ID)->get();
         }
         return view('expenses/create', compact('projects'));
     }

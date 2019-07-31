@@ -24,8 +24,6 @@ class CreateLaborsTable extends Migration
             $table->unsignedBigInteger('project_id')->nullable();
             $table->unsignedBigInteger('status_id')->nullable()->default(1);
 //            $table->timestamps();
-
-
             $table
                 ->foreign('project_id')
                 ->references('id')

@@ -54,7 +54,6 @@
          <select class="form-control" id="project" name="project">
           <option disabled selected value> -- select an option -- </option>
           @foreach($projects as $project)
-
           <option>{{ $project }}</option>
           @endforeach
          </select>

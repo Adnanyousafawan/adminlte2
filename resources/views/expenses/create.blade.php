@@ -110,7 +110,7 @@
        
         html += '<td><input type="text" name="name[]" class="form-control" pattern="[A-Za-z0-9\w]{2,50}" title="Minimum 2 letters required for Name"></td>';
         html += '<td><input type="text" name="description[]" class="form-control" pattern="[A-Za-z0-9\w]{4,100}" title=" Minimum 4 letters required" /></td>';
-        html += '<td><input type="number" name="expenses[]" class="form-control" pattern="[0-9]{3,100}" title=" Minimum 3 digit number required"/></td>';
+        html += '<td><input type="text" value="" onkeypress="return isNumber(event)" onpaste="return false;" name="expenses[]" class="form-control" maxlength="11" pattern="[0-9].{0,10}" title=" Minimum 3 digit number required"/></td>';
         
         if(number > 1)
         {
@@ -182,6 +182,15 @@
 
 // });
 </script>
-
+<script type="text/javascript">     
+    function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if ( (charCode > 31 && charCode < 48) || charCode > 57) {
+        return false;
+    }
+        return true; 
+    }
+</script>
 @stop
 {{--<input type="text" name="item_id[]" class="form-control"/> <select name="item_id[]" class="form-control">@foreach($items as $item)<option>{{$item->name}}</option>@endforeach </select>  --}}

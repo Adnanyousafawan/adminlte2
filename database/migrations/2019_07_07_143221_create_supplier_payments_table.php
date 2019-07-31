@@ -15,7 +15,7 @@ class CreateSupplierPaymentsTable extends Migration
     {
         Schema::create('supplier_payments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->float('paid')->nullable()->default("0");
+            $table->float('paid',25,0)->nullable()->default("0");
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->timestamps();
               $table

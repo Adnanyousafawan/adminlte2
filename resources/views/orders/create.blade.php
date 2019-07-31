@@ -80,7 +80,7 @@
                         <tr>
                             <th>Item</th>
                             <th>Quatity</th>
-                            <th>Action</th>
+                            {{-- <th>Action</th> --}}
                         </tr>
                         </thead>
                         <tbody>
@@ -88,10 +88,10 @@
                         </tbody>
                         <tfoot>
                         <tr>
-                            <td colspan="2" align="right">&nbsp;</td>
+                            <td colspan="1" align="right">&nbsp;</td>
                             <td>
                                 {{-- @csrf --}}
-                                <button type="submit" name="save" id="save" class="btn btn-primary" value="Save">Save
+                                <button type="submit" name="save" id="save" class="btn btn-primary pull-right" value="Save">Save
                                 </button>
                             </td>
                         </tr>
@@ -128,7 +128,7 @@
                     html += '<td><button type="button" name="remove" id="" class="btn btn-danger remove">Remove</button></td></tr>';
                     $('tbody').append(html);
                 } else {
-                    html += '<td><button type="button" name="add" id="add" class="btn btn-success">Add</button></td></tr>';
+                   // html += '<td><button type="button" name="add" id="add" class="btn btn-success">Add</button></td></tr>';
                     $('tbody').html(html);
                 }
             }
@@ -255,7 +255,7 @@
     if ( (charCode > 31 && charCode < 48) || charCode > 57) {
         return false;
     }
-        return true;
+        return true; 
     }
 </script>
 @stop

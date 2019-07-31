@@ -46,7 +46,7 @@
                                             <td>{{ $lproject->title }}</td>
                                             <td>
                                                 <div
-                                                    class="label label-warning col-md-8 col-md-offset-2">{{ 1000 * DB::table('labors')->where('project_id','=',$lproject->id)->count('id')  }}</div>
+                                                    class="label label-warning col-md-12">{{ 1000 * DB::table('labors')->where('project_id','=',$lproject->id)->count('id')  }}</div>
                                             </td>
                                             <td>
                                                 <div class="sparkbar" data-color="#00a65a"

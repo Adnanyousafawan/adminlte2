@@ -68,13 +68,14 @@
                                     <label for="plot_size">Plot Size <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" name="plot_size" id="plot_size"
                                            pattern="[A-Za-z0-9\w].{2,50}"
-                                           title=" Minimum 3 letters required"
+                                           title=" Example: 1 Kanal. "
                                            placeholder="Project plot size" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="floor">Project Floors <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" name="floor" id="floor"
+                                            value="" onkeypress="return isNumber(event)" onpaste="return false;"
                                            pattern="[A-Za-z0-9\w].{0,10}"
                                            title=" Minimum 1 letters required"
                                            placeholder="Enter number of floors" required>
@@ -129,11 +130,19 @@
                                             style="color: red;">*</span></label>
                                     <select class="form-control" id="estimated_completion_time"
                                             name="estimated_completion_time" required>
+                                        <option> 6 month</option>
+                                        <option> 8 month</option>
+                                        <option>10 month</option>
                                         <option>1 year</option>
                                         <option>2 year</option>
                                         <option>3 year</option>
                                         <option>4 year</option>
                                         <option>5 year</option>
+                                        <option>6 year</option>
+                                        <option>8 year</option>
+                                        <option>9 year</option>
+                                        <option>10 year</option>
+
                                     </select>
                                 </div>
 
@@ -144,7 +153,9 @@
                                            class="form-control"
                                            pattern="[0-9].{3,100}"
                                            title=" Minimum 4 digit number required"
-                                           placeholder="Home Address" required>
+                                           placeholder="Estimated Budget" 
+                                           value="" onkeypress="return isNumber(event)" onpaste="return false;" maxlength="11" pattern="[0-9].{0,10}" title="Enter quantity minimum 1" 
+                                           required>
                                 </div>
 
                                 <div class="form-group">

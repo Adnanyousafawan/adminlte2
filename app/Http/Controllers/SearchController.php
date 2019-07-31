@@ -34,10 +34,10 @@ class SearchController extends Controller
      */
     public function search(Request $request)
     {
-
         $searchterm = $request->input('query');
-
-        $searchResults = (new Search())
+        if($searchterm != null)
+        {
+              $searchResults = (new Search())
             ->registerModel(Project::class, 'title')
             ->registerModel(OrderDetail::class, 'invoice_number')
             ->registerModel(User::class, 'name')
@@ -45,8 +45,12 @@ class SearchController extends Controller
             ->registerModel(Customer::class, 'name')
             ->perform($request->input('query'));
         //dd($searchResults);
-
-        return view('search', compact('searchResults', 'searchterm'));
+            return view('search', compact('searchResults', 'searchterm'));
+        }
+        else
+        {
+            return redirect()->back();
+        }
     }
 
 }
