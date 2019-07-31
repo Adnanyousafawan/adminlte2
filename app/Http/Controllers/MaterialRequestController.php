@@ -82,17 +82,19 @@ class MaterialRequestController extends Controller
                 }
                 $seentstatus->save();
             }
+            $request_status = DB::table('material_request_statuses')->where('name', '=', 'approved')->pluck('id')->first();
+
             $materialrequests = DB::table('material_requests')
                 ->leftjoin('items', 'items.id', '=', 'material_requests.item_id')
                 ->leftjoin('material_request_statuses', 'material_request_statuses.id', '=', 'material_requests.request_status_id')
                 ->leftjoin('projects', 'projects.id', '=', 'material_requests.project_id')
                 ->leftjoin('users', 'users.id', '=', 'material_requests.requested_by')
                 ->where('projects.assigned_by', '=', Auth::user()->id)
+                ->where('request_status_id', '=', $request_status)
                 ->select('material_requests.id', 'material_request_statuses.name as status_name', 'material_request_statuses.id as request_status_id', 'material_requests.quantity', 'material_requests.seen', 'material_requests.instructions', 'projects.title', 'items.name as item_name', 'users.name as contractor_name')->get();
         }
         if (Gate::allows('isAdmin')) {
 
-            $request_status = DB::table('material_request_statuses')->where('name', '=', 'approved')->pluck('id')->first();
 
             $materialrequests = DB::table('material_requests')
                 ->leftjoin('items', 'items.id', '=', 'material_requests.item_id')
@@ -124,18 +126,20 @@ class MaterialRequestController extends Controller
                 }
                 $seentstatus->save();
             }
+            $request_status = DB::table('material_request_statuses')->where('name', '=', 'Rejected')->pluck('id')->first();
+
             $materialrequests = DB::table('material_requests')
                 ->leftjoin('items', 'items.id', '=', 'material_requests.item_id')
                 ->leftjoin('material_request_statuses', 'material_request_statuses.id', '=', 'material_requests.request_status_id')
                 ->leftjoin('projects', 'projects.id', '=', 'material_requests.project_id')
                 ->leftjoin('users', 'users.id', '=', 'material_requests.requested_by')
                 ->where('projects.assigned_by', '=', Auth::user()->id)
+                ->where('request_status_id', '=', $request_status)
                 ->select('material_requests.id', 'material_request_statuses.name as status_name', 'material_request_statuses.id as request_status_id', 'material_requests.quantity', 'material_requests.seen', 'material_requests.instructions', 'projects.title', 'items.name as item_name', 'users.name as contractor_name')->get();
         }
 
         if (Gate::allows('isAdmin')) {
 
-            $request_status = DB::table('material_request_statuses')->where('name', '=', 'Rejected')->pluck('id')->first();
 
             $materialrequests = DB::table('material_requests')
                 ->leftjoin('items', 'items.id', '=', 'material_requests.item_id')
@@ -164,18 +168,20 @@ class MaterialRequestController extends Controller
                 }
                 $seentstatus->save();
             }
+            $request_status = DB::table('material_request_statuses')->where('name', '=', 'Pending')->pluck('id')->first();
+
             $materialrequests = DB::table('material_requests')
                 ->leftjoin('items', 'items.id', '=', 'material_requests.item_id')
                 ->leftjoin('material_request_statuses', 'material_request_statuses.id', '=', 'material_requests.request_status_id')
                 ->leftjoin('projects', 'projects.id', '=', 'material_requests.project_id')
                 ->leftjoin('users', 'users.id', '=', 'material_requests.requested_by')
                 ->where('projects.assigned_by', '=', Auth::user()->id)
+                ->where('request_status_id', '=', $request_status)
                 ->select('material_requests.id', 'material_request_statuses.name as status_name', 'material_request_statuses.id as request_status_id', 'material_requests.quantity', 'material_requests.seen', 'material_requests.instructions', 'projects.title', 'items.name as item_name', 'users.name as contractor_name')->get();
         }
 
         if (Gate::allows('isAdmin')) {
 
-            $request_status = DB::table('material_request_statuses')->where('name', '=', 'Pending')->pluck('id')->first();
 
             $materialrequests = DB::table('material_requests')
                 ->leftjoin('items', 'items.id', '=', 'material_requests.item_id')

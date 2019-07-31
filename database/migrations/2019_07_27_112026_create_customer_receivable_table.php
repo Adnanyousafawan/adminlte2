@@ -16,7 +16,7 @@ class CreateCustomerReceivableTable extends Migration
         Schema::create('customer_receivable', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('project_id')->nullable();
-            $table->float('receivable')->nullable()->default("0");
+            $table->float('receivable',25,0)->nullable()->default("0");
             $table->timestamps();
                $table
                 ->foreign('project_id')

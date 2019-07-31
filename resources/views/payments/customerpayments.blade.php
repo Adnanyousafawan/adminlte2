@@ -77,11 +77,12 @@
                     <div class="btn-group">
 
                     {{-- <button class="btn btn-success" type="button">Action</button> --}}
-                    <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
+                   {{--  <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
                       <span class="caret"></span>
                       <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-
+                    </button> --}}
+<div class="btn-group">
+                        <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action<span class="glyphicon glyphicon-triangle-bottom"></span></button>
                     <ul role="menu" class="dropdown-menu">
                       <li><a type="links" data-toggle="modal" data-target="#EditModal-{{ $payment->id }}"><i class="fa fa-edit"></i>Edit</a></li>
                        

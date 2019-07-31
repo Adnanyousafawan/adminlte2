@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Auth;
 use PDF;
 use Carbon;
+use Gate;
 
 class ProjectReportController extends Controller
 {
@@ -41,8 +42,9 @@ class ProjectReportController extends Controller
             'proj_name' => '',
             'last_invoice' => $last_invoice
         ];
-
-        $orders = DB::table('order_details')
+       if (Gate::allows('isAdmin'))
+        {
+            $orders = DB::table('order_details')
             ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
             ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
             ->where('order_details.created_at', '<=', $now)
@@ -50,11 +52,22 @@ class ProjectReportController extends Controller
             ->select('order_details.invoice_number', 'order_details.set_rate', 'order_details.quantity',
                 'suppliers.name as supplier_name', 'items.name', 'items.selling_rate', 'order_details.created_at')
             ->get();
-        // dd($orders);
-
-
-        $projects = DB::table('projects')->pluck('title')->all();
-
+             $projects = DB::table('projects')->pluck('title')->all();
+       }
+        if (Gate::allows('isManager'))
+        {
+            $orders = DB::table('order_details')
+            ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
+            ->leftJoin('projects','projects.id','=','order_details.project_id')
+            ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
+            ->where('projects.assigned_by','=',Auth::user()->id)
+            ->where('order_details.created_at', '<=', $now)
+            ->where('order_details.created_at', '>=', $to)
+            ->select('order_details.invoice_number', 'order_details.set_rate', 'order_details.quantity',
+                'suppliers.name as supplier_name', 'items.name', 'items.selling_rate', 'order_details.created_at')
+            ->get();
+             $projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->pluck('title')->all();
+       }
 
         return view('reports/index_by_project', ['orders' => $orders, 'projects' => $projects, 'searchingVals' => $constraints]);
     }

@@ -70,28 +70,107 @@ public function UpdateName(Request $request,$id)
     public function profile($id)
     {
 
-        $users = DB::table('users')->where('id', '=', $id)->get()->first();
+        $users = DB::table('users')
+        ->leftjoin('roles','roles.id','=','users.role_id')
+        ->where('users.id', '=', $id)
+        ->select('users.profile_image','users.id','users.name','users.role_id','users.address','users.phone','users.email','users.cnic','users.created_at','roles.name as role_name')
+        ->get()
+        ->first();
 
         if ($users->role_id == 2) {
 
-            $projects = DB::table('projects')->where('assigned_by', '=', $id)->get()->all();
+            $projects = DB::table('projects')
+            ->leftjoin('customers','customers.id','=','projects.customer_id')
+            ->where('assigned_by', '=', $id)
+            ->select('projects.id','projects.title','projects.estimated_budget','projects.area','projects.assigned_by','customers.name as customer_name','customers.phone','customers.address')
+            ->get()->all();
+
+            $proj_status = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
+            $completed_projects = DB::table('projects')->where('assigned_by','=',$id)->where('status_id','=',$proj_status)
+            ->count();
+            $proj_status = DB::table('project_status')->where('name','=','In Progress')->pluck('id')->first();
+            $current_projects = DB::table('projects')->where('assigned_by','=',$id)->where('status_id','=',$proj_status)
+            ->count();
+            $proj_status = DB::table('project_status')->where('name','=','Stopped')->pluck('id')->first();
+            $stopped_projects = DB::table('projects')->where('assigned_by','=',$id)->where('status_id','=',$proj_status)
+            ->count();
+            $proj_status = DB::table('project_status')->where('name','=','Halt')->pluck('id')->first();
+            $halt_projects = DB::table('projects')->where('assigned_by','=',$id)->where('status_id','=',$proj_status)
+            ->count();
+            $proj_status = DB::table('project_status')->where('name','=','Not Started')->pluck('id')->first();
+            $not_started_projects = DB::table('projects')->where('assigned_by','=',$id)->where('status_id','=',$proj_status)
+            ->count();
+
+            $loss = DB::table('projects')
+            ->where('assigned_by','=',$id)
+            ->where('status_id','!=',1)
+            ->where('status_id','!=',2)
+            ->where('project_balance','<',0)
+            ->sum('project_balance');
+
+            $profit = DB::table('projects')
+            ->where('assigned_by','=',$id)
+            ->where('status_id','=',1)
+            ->where('project_balance','>',0)
+            ->sum('project_balance');
+
             $pie_chart = Charts::create('pie', 'highcharts')
                 ->title('Pie Chart Demo')
-                ->labels(['Completed', 'Loss', 'Cancelled'])
-                ->values([60, 30, 10])
-                ->dimensions(1000, 500)
+                ->labels(['Profit', 'Loss'])
+                ->values([$profit, $loss])
+                ->dimensions(1000, 500) 
                 ->responsive(true);
-            return view('users/profile', ['users' => $users], compact('projects', 'pie_chart'));
+
+            return view('users/profile', ['users' => $users], compact('projects', 'pie_chart','halt_projects','not_started_projects','stopped_projects','current_projects','completed_projects','assigned_by'));
         }
         if ($users->role_id == 3) {
-            $projects = DB::table('projects')->where('assigned_to', '=', $id)->get()->all();
+
+            $projects = DB::table('projects')->where('assigned_by', '=', $id)->get()->all();
+            $proj_status = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
+            $completed_projects = DB::table('projects')->where('assigned_to','=',$id)->where('status_id','=',$proj_status)
+            ->count();
+            $proj_status = DB::table('project_status')->where('name','=','In Progress')->pluck('id')->first();
+            $current_projects = DB::table('projects')->where('assigned_to','=',$id)->where('status_id','=',$proj_status)
+            ->count();
+            $proj_status = DB::table('project_status')->where('name','=','Stopped')->pluck('id')->first();
+            $stopped_projects = DB::table('projects')->where('assigned_to','=',$id)->where('status_id','=',$proj_status)
+            ->count();
+            $proj_status = DB::table('project_status')->where('name','=','Halt')->pluck('id')->first();
+            $halt_projects = DB::table('projects')->where('assigned_to','=',$id)->where('status_id','=',$proj_status)
+            ->count();
+            $proj_status = DB::table('project_status')->where('name','=','Not Started')->pluck('id')->first();
+            $not_started_projects = DB::table('projects')->where('assigned_to','=',$id)->where('status_id','=',$proj_status)
+            ->count();
+
+            $loss = DB::table('projects')
+            ->where('assigned_to','=',$id)
+            ->where('status_id','!=',1)
+            ->where('status_id','!=',2)
+            ->where('project_balance','<',0)
+            ->sum('project_balance');
+
+            $profit = DB::table('projects')
+            ->where('assigned_to','=',$id)
+            ->where('status_id','=',1)
+            ->where('project_balance','>',0)
+            ->sum('project_balance');
+            
             $pie_chart = Charts::create('pie', 'highcharts')
                 ->title('Pie Chart Demo')
-                ->labels(['Current', 'Loss', 'Profit'])
-                ->values([60, 30, 10])
+                ->labels(['Profit', 'Loss'])
+                ->values([$profit, abs($loss)])
                 ->dimensions(1000, 500)
                 ->responsive(true);
-            return view('users/profile', ['users' => $users], compact('projects', 'pie_chart'));
+           
+            $projects = DB::table('projects')
+                ->leftjoin('customers','customers.id','=','projects.customer_id')
+                ->where('assigned_to', '=', $id)
+                ->select('projects.id','projects.title','projects.estimated_budget','projects.area','customers.name as customer_name','customers.phone','customers.address','projects.assigned_by')
+                ->get()->all();
+
+
+            return view('users/profile', ['users' => $users], compact('projects', 'pie_chart','halt_projects','not_started_projects','stopped_projects','current_projects','completed_projects','assigned_by'));
+
         }
 
 
@@ -99,6 +178,7 @@ public function UpdateName(Request $request,$id)
 
     public function manager()
     {
+        $is_contractor = 0;
         if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
         };
@@ -110,7 +190,7 @@ public function UpdateName(Request $request,$id)
             ->select('users.id','users.name','users.profile_image','users.phone','users.address','users.cnic','users.email','roles.id as role_id','roles.name as role_name')
             ->get();
             $roles = DB::table('roles')->where('id', '=',$roleID)->get();
-            return view('users/index', compact('users', 'roles'));
+            return view('users/index', compact('users', 'roles','is_contractor'));
         }
         if (Gate::allows('isManager')) {
             abort(404, "Sorry, You cant  Access this Page");
@@ -119,6 +199,7 @@ public function UpdateName(Request $request,$id)
 
     public function contractor()
     {
+        $is_contractor = 1;
         if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
         }
@@ -126,25 +207,33 @@ public function UpdateName(Request $request,$id)
             $roleID = DB::table('roles')->where('name','=','Contractor')->pluck('id')->first();
             $users = DB::table('users')
             ->leftjoin('roles','users.role_id','=','roles.id')
+            ->leftjoin('projects','projects.assigned_to','=','users.id')
             ->where('users.role_id','=',$roleID)
-            ->select('users.id','users.name','users.profile_image','users.phone','users.address','users.cnic','users.email','roles.id as role_id','roles.name as role_name')
+            ->select('users.id','users.name','users.profile_image','users.phone','users.address','users.cnic','users.email','roles.id as role_id','roles.name as role_name','projects.title')
             ->get();
             $roles = DB::table('roles')->where('id', '=',$roleID)->get();
-            return view('users/index', compact('users', 'roles'));
+            return view('users/index', compact('users', 'roles','is_contractor'));
         }
          if (Gate::allows('isManager')) {
-            abort(404, "Sorry, You cant  Access this Page");
+            $roleID = DB::table('roles')->where('name','=','Contractor')->pluck('id')->first();
+            $users = DB::table('users')
+            ->leftjoin('roles','users.role_id','=','roles.id')
+            ->leftjoin('projects','projects.assigned_to','=','users.id')
+            ->where('users.role_id','=',$roleID)
+            ->select('users.id','users.name','users.profile_image','users.phone','users.address','users.cnic','users.email','roles.id as role_id','roles.name as role_name','projects.title')
+            ->get();
+            $roles = DB::table('roles')->where('id', '=',$roleID)->get();
+            return view('users/index', compact('users', 'roles','is_contractor'));
         }
     }
  
     public function all()
     {
-       
+        $is_contractor = 0;
             if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
         
         } 
-       
         if (Gate::allows('isAdmin')) {
             $roleID = DB::table('roles')->where('name','=','Admin')->pluck('id')->first();
             $users = DB::table('users')
@@ -164,7 +253,7 @@ public function UpdateName(Request $request,$id)
             ->get();
             $roles = DB::table('roles')->where('id', '=',$roleID)->get();
         }
-            return view('users/index', compact('users', 'roles'));
+            return view('users/index', compact('users', 'roles','is_contractor'));
     }
 
     /**
@@ -253,7 +342,7 @@ public function UpdateName(Request $request,$id)
         }
         else 
         { 
-            $user->profile_image = 'images/profile/userprofile.png';
+            $user->profile_image = 'images/profile/default_user.png';  
         }
 
         // Persist user record to database

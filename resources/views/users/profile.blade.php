@@ -20,7 +20,7 @@
                             <div class="box-body box-profile">
                                  <img style="min-width: 50%; max-width: 50%; min-height: 100px; max-height: 200px; margin-top: 20px; margin-left: 25%;" class=" img-responsive" src="/storage/{{ $users->profile_image }}" alt="User Image">
                                 <h3 class="profile-username text-center"> {{ $users->name }}</h3>
-                                <p class="text-muted text-center"> {{ $users->role_id }} </p>
+                                <p class="text-muted text-center"> {{ $users->role_name }} </p>
                                 
                                 <hr>
                                 <strong><i class="fa fa-book margin-r-5"></i>Address</strong>
@@ -45,7 +45,7 @@
                                             </li>
                                             <li class="list-group-item">
                                                 <b>Joining Date</b> <a
-                                                    class="pull-right"> {{ $users->created_at }}</a>
+                                                    class="pull-right">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$users->created_at)->format('d-m-Y') }}</a>
                                             </li>
                                         </ul>
                                         <!-- /.box-body -->
@@ -63,7 +63,7 @@
                {!! 
                 $pie_chart->html() 
                 !!}
-    </div>
+    </div> 
  <div class="col-md-7 col-lg-7 col-sm-7">
                         <div class="box box-primary" style="">
                             <div class="box-header with-border">
@@ -74,17 +74,21 @@
 
                                 <ul class="list-group list-group-unbordered">
                                     <li class="list-group-item">
-                                        <b>Current Project</b> <a class="pull-right">5</a>
+                                        <b>Current Project</b> <a class="pull-right">{{ $current_projects }}</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <b>Previous Projects</b> <a class="pull-right">In Progress</a>
+                                        <b>Completed Projects</b> <a class="pull-right">{{ $completed_projects }}</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <b>Completed Projects</b> <a class="pull-right">2</a>
+                                        <b>Halt Projects</b> <a class="pull-right">{{ $halt_projects }}</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <b>Projects Overtime</b> <a class="pull-right">5</a>
+                                        <b>Stopped Projects</b> <a class="pull-right">{{ $stopped_projects }}</a>
                                     </li>
+                                     <li class="list-group-item">
+                                        <b>Not Started Projects</b> <a class="pull-right">{{ $not_started_projects }}</a>
+                                    </li>
+
 
 
                                 </ul>
@@ -183,37 +187,44 @@
                     <thead>
                     <tr>
                         {{-- <th style="max-width: 10px;"></th> --}}
-                        
                         <th>Project ID</th>
                         <th>Project Title</th>
-                        <th>Owner Name</th>
-                        <th>Status</th>
+                        <th>Location</th>
                         <th>Budget</th>
-                        <th>Cost Spent</th>
+                        <th>Owner</th>
+                        <th>Phone</th>
+                        <th>Address</th>
                         <th style="min-width: 65px;">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-
+ 
                     @foreach ($projects as $project)
                         <tr>
                             {{-- <td style="max-width: 10px;"><b>PR-</b></td> --}}
-                            <td>0000{{ $project->id }}</td>
+                            @if(Auth::user()->id == $project->assigned_by)
+                           <td><a type='links' href="{{ route('projects.view', ['id' => $project->id]) }}">PR0000{{ $project->id }}</a></td>
+                           @endcan
+                           @if(Auth::user()->id != $project->assigned_by)
+                            <td>PR0000{{ $project->id }}</td>
+                           @endcan
                             <td>{{ $project->title }}</td>
-                            <td>{{ $project->customer_id }}</td>
-                            <td>{{ $project->status_id}}</td>
-                            <td>{{ $project->estimated_budget}}</td>
-                            <td>25000</td>
-                            <td style="min-width: 65px;">
-
-                                <div class="btn-group">
-
+                            <td>{{ $project->area }}</td>
+                            <td>{{ $project->estimated_budget }}</td>
+                            <td>{{ $project->customer_name }}</td>
+                            <td>{{ $project->phone }}</td>
+                            <td>{{ $project->address}}</td>
+                            <td>
+                    <div class="btn-group">
+                        <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action<span class="glyphicon glyphicon-triangle-bottom"></span></button>
+                                {{-- <div class="btn-group">
+ 
                                     <button class="btn btn-sm btn-success" type="button">Action</button>
                                     <button data-toggle="dropdown" class="btn btn-success dropdown-toggle"
                                             type="button">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
+                                    </button> --}}
                                     <ul role="menu" class="dropdown-menu">
                                         <li><a type="links" href="{{ route('projects.view', ['id' => $project->id]) }}"><i
                                                     class="fa fa-edit"></i>View</a></li>

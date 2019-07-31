@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Auth;
 use PDF;
 use Carbon;
+use Gate;
 
 class ExpenseReportController extends Controller
 {
@@ -50,8 +51,14 @@ class ExpenseReportController extends Controller
                 'miscellaneous_expenses.expense', 'miscellaneous_expenses.created_at')
             ->get();
 
-        $projects = DB::table('projects')->pluck('title')->all();
-
+        if (Gate::allows('isAdmin'))
+       {
+            $projects = DB::table('projects')->pluck('title')->all();
+       }
+        if (Gate::allows('isManager'))
+       {
+            $projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->pluck('title')->all();
+       }    
 
         return view('expenses/report/project_expenses', ['expenses' => $expenses, 'projects' => $projects, 'searchingVals' => $constraints]);
     }
@@ -70,10 +77,11 @@ class ExpenseReportController extends Controller
         ];
 
         $projects = DB::table('projects')->pluck('title')->all();
-
         $expenses = $this->getExportingData($constraints);// DB::table('order_details')->get();
         $pdf = PDF::loadView('expenses/report/pdf_project_expense', ['expenses' => $expenses, 'searchingVals' => $constraints]);
         return $pdf->download('project' . $request['project_id'] . 'report_from_' . $request['from'] . '_to_' . $request['to'] . 'pdf');
+
+
         return view('expenses/report/project_expenses', ['expenses' => $expenses, 'projects' => $projects, 'searchingVals' => $constraints]);
     }
 

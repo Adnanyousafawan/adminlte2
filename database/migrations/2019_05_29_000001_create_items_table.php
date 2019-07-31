@@ -16,8 +16,8 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->String('name')->nullable();
-            $table->float('purchase_rate')->nullable();
-            $table->float('selling_rate')->nullable()->default("0");
+            $table->float('purchase_rate',25,0)->nullable();
+            $table->float('selling_rate',25,0)->nullable()->default("0");
             $table->string('unit')->nullable();
             $table->unsignedBigInteger('supplier_id');
             $table->timestamps();
