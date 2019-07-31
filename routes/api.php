@@ -62,6 +62,7 @@ Route::post('/update/project/phase/store', 'APIController@api_update_project_pha
 Route::post('/orders/all', 'APIController@api_orders_all');
 Route::post('/orders/pending', 'APIController@api_orders_pending');
 Route::post('/orders/received', 'APIController@api_orders_received');
+Route::post('/order/receive', 'APIController@api_order_receive');
 Route::post('/orders/partially-received', 'APIController@api_orders_partially_received');
 Route::post('/orders/details', 'APIController@api_orders_details');
 Route::post('/labor/details/', 'APIController@api_labor_details');
@@ -71,6 +72,8 @@ Route::post('/get/note', 'APIController@api_get_note');
 Route::post('/update/note', 'APIController@api_update_note');
 Route::post('/delete/note', 'APIController@api_delete_note');
 Route::post('/all/notes', 'APIController@api_all_notes');
+Route::post('/orders/details/invoice', 'APIController@api_orders_details_invoice');
+Route::post('/get/labor/attendance/id', 'APIController@api_get_labor_attendance_id');
 
 //________________________Conflict was occurred on this Route looks fine__________________________
 Route::post('/add/expense', 'APIController@api_add_expense');
