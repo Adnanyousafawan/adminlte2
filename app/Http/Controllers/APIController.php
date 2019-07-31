@@ -9,6 +9,7 @@ use App\LaborStatus;
 use App\MaterialRequest;
 use App\MiscellaneousExpense;
 use App\Note;
+use App\OrderDetail;
 use App\Project;
 use App\ProjectPhase;
 use App\ProjectStatus;
@@ -729,12 +730,19 @@ class APIController extends Controller
             $project_starting_mm = substr($project_starting_date, 5, 2);
             $project_starting_dd = substr($project_starting_date, 8, 2);
 
-//            dd($project_starting_yyyy . '  ' . $project_starting_mm . '    ' . $project_starting_dd);
+//            return ($project_starting_yyyy . '  ' . $project_starting_mm . '    ' . $project_starting_dd);
 
             if (($selected_yyyy < $project_starting_yyyy) ||
-                (($selected_yyyy >= $project_starting_yyyy) && ($selected_mm < $project_starting_mm)) ||
-                (($selected_yyyy >= $project_starting_yyyy) && ($selected_mm >= $project_starting_mm) && ($selected_dd < $project_starting_dd))) {
+                (($selected_yyyy <= $project_starting_yyyy) && ($selected_mm < $project_starting_mm)) ||
+                (($selected_yyyy <= $project_starting_yyyy) && ($selected_mm <= $project_starting_mm) && ($selected_dd < $project_starting_dd))) {
+
                 return "Attendance can not be added because you have selected a date which is before the starting date of this project.";
+            }
+
+            if (($selected_yyyy > $current_yyyy) ||
+                (($selected_yyyy >= $current_yyyy) && ($selected_mm > $current_mm)) ||
+                (($selected_yyyy >= $current_yyyy) && ($selected_mm >= $current_mm) && ($selected_dd > $current_dd))) {
+                return "Attendance can not be added in advance.";
             }
 
 
@@ -1233,16 +1241,22 @@ class APIController extends Controller
 
         $path = '/public' . $imageName;
 
-        $previousImage = '/public' . DB::table('users')
-                ->where('email', '=', $email)
-                ->pluck('profile_image')
-                ->first();
+        $profile_image = DB::table('users')
+            ->where('email', '=', $email)
+            ->pluck('profile_image')
+            ->first();
+
+        $previousImage = '/public' . $profile_image;
 
         Storage::disk('local')->put($path, $base64_image);
 
         DB::table('users')
             ->where('email', '=', $email)
             ->update(['profile_image' => $imageName]);
+
+        if ($profile_image == "images/profile/default_user.png") {
+            return "Your profile picture is successfully updated.";
+        }
 
         if (Storage::disk('local')->delete($previousImage)) {
             return "Your profile picture is successfully updated.";
@@ -1869,7 +1883,6 @@ class APIController extends Controller
         }
     }
 
-
     public function api_labor_details_update(Request $request)
     {
         $id = $request->get('labor_id');
@@ -2031,5 +2044,73 @@ class APIController extends Controller
         } else {
             return "Error occurred.";
         }
+    }
+
+    function api_orders_details_invoice(Request $request)
+    {
+        $invoice_number = $request->get('invoice');
+
+        $itemID = DB::table('order_details')
+            ->where('invoice_number', '=', $invoice_number)
+            ->pluck('item_id')
+            ->first();
+
+        $itemQuantity = DB::table('order_details')
+            ->where('invoice_number', '=', $invoice_number)
+            ->pluck('quantity')
+            ->first();
+
+        $itemName = DB::table('items')
+            ->where('id', '=', $itemID)->pluck('name')->first();
+
+        $itemUnit = DB::table('items')
+            ->where('id', '=', $itemID)
+            ->pluck('unit')
+            ->first();
+
+        return $itemQuantity . ' ' . $itemUnit . ' of ' . $itemName;
+
+    }
+
+    function api_order_receive(Request $request)
+    {
+        $invoice_number = $request->get('invoice');
+        $status = $request->get('status');
+
+        $order_id = DB::table('order_details')
+            ->where('invoice_number', '=', $invoice_number)
+            ->pluck('id')
+            ->first();
+
+
+        $record = OrderDetail::findOrFail($order_id);
+
+        $record->status = $status;
+
+
+        if ($record->save()){
+            return "success";
+        } else {
+            return "Error occurred while updating order status. Please try again later.";
+        }
+
+    }
+
+    function api_get_labor_attendance_id(Request $request)
+    {
+        $labor_id = $request->get('labor_id');
+
+        $paid = DB::table('labor_attendances')
+            ->where('labor_id', '=', $labor_id)
+            ->select(['paid', 'date'])
+            ->get();
+
+        $status = DB::table('labor_attendances')
+            ->where('labor_id', '=', $labor_id)
+            ->select(['status', 'date'])
+            ->get();
+
+
+        return response()->json(['paid' => $paid, 'status' => $status]);
     }
 }
