@@ -151,9 +151,9 @@ class APIController extends Controller
 
         $id = Project::all()
             ->where('title', '=', $request->input('project_id'))
-            ->pluck('id')->first();
+            ->first();
 
-        if ($id->pluck('title')->first() != $request->input('project_id')) {
+        if ($id->title != $request->input('project_id')) {
             return "Error";
         }
 
@@ -164,8 +164,7 @@ class APIController extends Controller
             'city' => $request->input('city'),
             'phone' => $request->input('phone'),
             'cnic' => $request->input('cnic'),
-            'project_id' => $id->pluck('id')
-                ->first()
+            'project_id' => $id->id
         ]);
 
         if ($labor->save()) {
@@ -492,11 +491,14 @@ class APIController extends Controller
             ->pluck('name')
             ->first();
 
+        $total_phases = ProjectPhase::all()->count();
+
+
         if ($project->phase_id == 0) {
-            $progress = (($project->phase_id) / 6) * 100;
+            $progress = (($project->phase_id) / $total_phases) * 100;
 
         } else {
-            $progress = (($project->phase_id - 1) / 6) * 100;
+            $progress = (($project->phase_id - 1) / $total_phases) * 100;
         }
 
 
@@ -688,6 +690,7 @@ class APIController extends Controller
     {
         $response = "";
         $action = "";
+
         // selected date
         $selected_dd = $request->get('selected_dd');
         $selected_mm = $request->get('selected_mm');
@@ -708,6 +711,32 @@ class APIController extends Controller
                 ->where('name', '=', $labor_attendance['attendance'][$i]['labor'])
                 ->pluck('id')
                 ->first();
+
+            $project_id = DB::table('labors')
+                ->where('id', '=', $labor_id)
+                ->pluck('project_id')
+                ->first();
+
+
+            //starting date of project
+            $project_starting_date = DB::table('projects')
+                ->where('id', '=', $project_id)
+                ->pluck('created_at')
+                ->first();
+
+
+            $project_starting_yyyy = substr($project_starting_date, 0, 4);
+            $project_starting_mm = substr($project_starting_date, 5, 2);
+            $project_starting_dd = substr($project_starting_date, 8, 2);
+
+//            dd($project_starting_yyyy . '  ' . $project_starting_mm . '    ' . $project_starting_dd);
+
+            if (($selected_yyyy < $project_starting_yyyy) ||
+                (($selected_yyyy >= $project_starting_yyyy) && ($selected_mm < $project_starting_mm)) ||
+                (($selected_yyyy >= $project_starting_yyyy) && ($selected_mm >= $project_starting_mm) && ($selected_dd < $project_starting_dd))) {
+                return "Attendance can not be added because you have selected a date which is before the starting date of this project.";
+            }
+
 
             if (($selected_yyyy < $current_yyyy) ||
                 (($selected_yyyy >= $current_yyyy) && ($selected_mm < $current_mm)) ||
@@ -1834,6 +1863,7 @@ class APIController extends Controller
                     ->where('paid', '=', 1)
                     ->count(),
             ];
+            return $labor_record;
         } else {
             return "Labor does not exists";
         }
@@ -1858,6 +1888,7 @@ class APIController extends Controller
             return "Error Saving!";
         }
     }
+
     function api_add_note(Request $request)
     {
         $id = DB::table('users')
@@ -1965,8 +1996,8 @@ class APIController extends Controller
             ->first();
 
         $projectID = DB::table('projects')
-            ->where('title','=', $request->get('project'))
-            ->where('assigned_to','=', $id)
+            ->where('title', '=', $request->get('project'))
+            ->where('assigned_to', '=', $id)
             ->pluck('id')
             ->first();
 
@@ -1974,18 +2005,28 @@ class APIController extends Controller
         $description = $request->get('expense_description');
         $amount = $request->get('expense_amount');
 
+        $expense_number = DB::table('miscellaneous_expenses')
+            ->pluck('expense_number')
+            ->last();
+
+        if ($expense_number == 0) {
+            $expense_number = 1000;
+        } else {
+            $expense_number++;
+        }
+
         $obj = new MiscellaneousExpense([
             'name' => $name,
             'description' => $description,
             'expense' => $amount,
-            'expense_number' => 0,
+            'expense_number' => $expense_number,
             'others' => 0,
             'project_id' => $projectID,
         ]);
 
 //        dd($obj);
 
-        if ($obj->save()){
+        if ($obj->save()) {
             return "New expense successfully saved.";
         } else {
             return "Error occurred.";
