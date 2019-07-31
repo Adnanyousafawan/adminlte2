@@ -1603,7 +1603,8 @@ class APIController extends Controller
 
         $orders = DB::table('order_details')
             ->distinct()
-            ->pluck('invoice_number');
+            ->orderBy('id')
+            ->pluck('id');
 
         $in_progress = DB::table('project_status')
             ->where('name', '=', 'In Progress')
@@ -1615,8 +1616,8 @@ class APIController extends Controller
 
         for ($i = 0; $i < $orders->count(); $i++) {
             $record = DB::table('order_details')
-                ->where('invoice_number', '=', $orders[$i])
-                ->select('project_id', 'created_at', 'supplier_id', 'status')
+                ->where('id', '=', $orders[$i])
+                ->select('project_id', 'created_at', 'supplier_id', 'status', 'id')
                 ->first();
 
             $project_title = DB::table('projects')
@@ -1628,7 +1629,7 @@ class APIController extends Controller
 
             if ($project_title != null) {
                 $response[$index] = [
-                    'invoice_number' => $orders[$i],
+                    'id' => $orders[$i],
                     'project_title' => $project_title,
                     'supplier_name' => DB::table('suppliers')
                         ->where('id', '=', $record->supplier_id)
@@ -1705,10 +1706,10 @@ class APIController extends Controller
 
     public function api_orders_details(Request $request)
     {
-        $invoice_number = $request->get('invoice_number');
+        $id = $request->get('id');
 
         $items = DB::table('order_details')
-            ->where('invoice_number', '=', $invoice_number)
+            ->where('id', '=', $id)
             ->get();
 
         if ($items != null) {
@@ -1716,7 +1717,7 @@ class APIController extends Controller
             $index = 0;
             foreach ($items as $item) {
                 $order_details[$index] = [
-                    'invoice_number' => $item->invoice_number,
+                    'id' => $item->id,
                     'item_name' => DB::table('items')
                         ->where('id', '=', $item->item_id)
                         ->pluck('name')
@@ -1734,6 +1735,8 @@ class APIController extends Controller
                 ];
                 $index++;
             }
+
+            return $order_details;
         } else {
             return "No item in this order";
         }
@@ -1748,7 +1751,8 @@ class APIController extends Controller
 
         $orders = DB::table('order_details')
             ->distinct()
-            ->pluck('invoice_number');
+            ->orderBy('id')
+            ->pluck('id');
 
         $in_progress = DB::table('project_status')
             ->where('name', '=', 'In Progress')
@@ -1760,7 +1764,7 @@ class APIController extends Controller
 
         for ($i = 0; $i < $orders->count(); $i++) {
             $record = DB::table('order_details')
-                ->where('invoice_number', '=', $orders[$i])
+                ->where('id', '=', $orders[$i])
                 ->where('status', '=', 'Received')
                 ->select('project_id', 'created_at', 'supplier_id', 'status')
                 ->first();
@@ -1775,7 +1779,7 @@ class APIController extends Controller
 
                 if ($project_title != null) {
                     $response[$index] = [
-                        'invoice_number' => $orders[$i],
+                        'id' => $orders[$i],
                         'project_title' => $project_title,
                         'supplier_name' => DB::table('suppliers')
                             ->where('id', '=', $record->supplier_id)
@@ -1803,7 +1807,8 @@ class APIController extends Controller
 
         $orders = DB::table('order_details')
             ->distinct()
-            ->pluck('invoice_number');
+            ->orderBy('id')
+            ->pluck('id');
 
         $in_progress = DB::table('project_status')
             ->where('name', '=', 'In Progress')
@@ -1816,7 +1821,7 @@ class APIController extends Controller
         for ($i = 0; $i < $orders->count(); $i++) {
 
             $record = DB::table('order_details')
-                ->where('invoice_number', '=', $orders[$i])
+                ->where('id', '=', $orders[$i])
                 ->where('status', '=', 'Pending')
                 ->select('project_id', 'created_at', 'supplier_id', 'status')
                 ->first();
@@ -1831,7 +1836,7 @@ class APIController extends Controller
 
                 if ($project_title != null) {
                     $response[$index] = [
-                        'invoice_number' => $orders[$i],
+                        'id' => $orders[$i],
                         'project_title' => $project_title,
                         'supplier_name' => DB::table('suppliers')
                             ->where('id', '=', $record->supplier_id)
@@ -2048,15 +2053,15 @@ class APIController extends Controller
 
     function api_orders_details_invoice(Request $request)
     {
-        $invoice_number = $request->get('invoice');
+        $id = $request->get('id');
 
         $itemID = DB::table('order_details')
-            ->where('invoice_number', '=', $invoice_number)
+            ->where('id', '=', $id)
             ->pluck('item_id')
             ->first();
 
         $itemQuantity = DB::table('order_details')
-            ->where('invoice_number', '=', $invoice_number)
+            ->where('id', '=', $id)
             ->pluck('quantity')
             ->first();
 
@@ -2074,16 +2079,10 @@ class APIController extends Controller
 
     function api_order_receive(Request $request)
     {
-        $invoice_number = $request->get('invoice');
+        $id = $request->get('id');
         $status = $request->get('status');
 
-        $order_id = DB::table('order_details')
-            ->where('invoice_number', '=', $invoice_number)
-            ->pluck('id')
-            ->first();
-
-
-        $record = OrderDetail::findOrFail($order_id);
+        $record = OrderDetail::findOrFail($id);
 
         $record->status = $status;
 
