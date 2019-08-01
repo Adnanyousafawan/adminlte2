@@ -27,42 +27,55 @@
                             <h3 class="box-title">Labor By Projects</h3>
                         </div>
                         <!-- /.box-header -->
-                        <div class="box-body">
-                            <div class="table-responsive">
-                                <table class="table no-margin table-bordered table-striped">
-                                    <tr>
-                                        <th>Project ID</th>
-                                        <th>Title</th>
-                                        <th>Labor</th>
-                                        <th>Cost</th>
-                                        <th>Contractor</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($labor_by_projects as $lproject)
-                                        <tr>
-                                            <td><a href=" {{ route('projects.view', ['id' => $lproject->id])   }}"
-                                                   type="links">0000{{ $lproject->id }}</a></td>
-                                            <td>{{ $lproject->title }}</td>
-                                            <td>
-                                                <div
-                                                    class="label label-warning col-md-12">{{ 1000 * DB::table('labors')->where('project_id','=',$lproject->id)->count('id')  }}</div>
-                                            </td>
-                                            <td>
-                                                <div class="sparkbar" data-color="#00a65a"
-                                                     data-height="20">2000
-                                                </div>
-                                            </td>
-                                            <td>{{ $lproject->contractor_name }}
-                                                {{-- {{ DB::table('projects')->where('assigned_to','=', $contractors->id ) }} --}}</td>
-
-                                        </tr>
-                                    @endforeach
-
-                                    {{-- @yield('labor_by_projects') --}}
-                                </table>
-                            </div>
-                        </div>
+                       <div class="box-body">
+        <div class="table-responsive">
+            <table class="table no-margin table-bordered table-striped">
+                <thead>
+                <tr> 
+                    <th>Project ID</th> 
+                    <th>Title</th>
+                    <th>Labor</th>
+                    <th>Cost</th>
+                    <th>Contractor</th>
+                </tr>
+                </thead>
+                <tbody>
+    <?php 
+    $paid = 0; 
+    $temp =0; ?>
+    @foreach ($labor_by_projects as $project)
+    <?php 
+        $labors = DB::table('labors')->where('project_id','=',$project->id)->get();
+    ?>
+        @foreach($labors as $labor)
+        <?php 
+            //$presents =  DB::table('labor_attendances')->where('labor_id','=',$labor->id)->where('status','=',1)->sum('status');
+            $attendances = DB::table('labor_attendances')->where('labor_id','=',$labor->id)->where('status','=',1)->where('paid','=',1)->sum('paid');
+            $temp = $attendances * $labor->rate;
+            $paid = $paid + $temp;
+        
+        ?>
+        @endforeach
+                    <tr>
+                        <td><a href=" {{ route('projects.view', ['id' => $project->id])   }}"
+                               type="links">PR0000{{ $project->id }}</a></td>
+                        <td>{{ $project->title }}</td>
+                        <td>
+                            <div class="sparkbar" data-color="#00a65a"
+                                 data-height="20">{{DB::table('labors')->where('project_id','=',$project->id)->count('id') }}</div>
+                        </td>
+                        <td>
+                            <div
+                                class="label label-warning col-md-12">{{ $paid }}</div>
+                        </td>
+                        <td>{{ DB::table('users')->where('id','=',$project->assigned_to)->pluck('name')->first() }}</td>
+                          </td>
+                    </tr>
+            @endforeach
+                </tbody>
+            </table>
+        </div><!-- /.table-responsive -->
+    </div><!-- /.box-body -->
 
                         <div class="box-footer clearfix">
                             <a href="{{ route('projects.labor_by_projects')}}"
@@ -86,7 +99,83 @@
                             <div class="box-header">
                                 <h2 class="box-title">Total Labor</h2>
                                 <span class="info-box-number label label-primary pull-right"
-                                      style="margin-top: 0px; font-size: 16px;">112</span>
+                                      style="margin-top: 0px; font-size: 16px;">{{DB::table('labors')->count('id') }}</span>
+                            </div>
+                            <!-- /.box-header -->
+                            <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
+                        </div>
+                        <!-- /.info-box-content -->
+                        <!-- /.info-box -->
+                    </div>
+
+                    <!-- /.col -->
+@can('isAdmin')
+<?php 
+$paid = 0;
+$all_project_paid = 0;
+$unpaid =0;
+$all_project_unpaid = 0;
+
+    $project = DB::table('projects')->where('status_id','!=',3)->get();
+    foreach ($projects as $project) {
+        $labors = DB::table('labors')->where('project_id','=',$project->id)->get();
+        foreach ($labors as $labor)
+        {
+        //$presents =  DB::table('labor_attendances')->where('labor_id','=',$labor->id)->where('status','=',1)->sum('status');                
+        $attendances = DB::table('labor_attendances')->where('labor_id','=',$labor->id)->where('status','=',1)->where('paid','=',1)->sum('paid');
+        $paid = $attendances * $labor->rate;
+        }
+    $all_project_paid = $all_project_paid + $paid;
+    }
+     foreach ($projects as $project) {
+        $labors = DB::table('labors')->where('project_id','=',$project->id)->get();
+        foreach ($labors as $labor)
+        {
+        //$presents =  DB::table('labor_attendances')->where('labor_id','=',$labor->id)->where('status','=',1)->sum('status');                
+        $attendances = DB::table('labor_attendances')->where('labor_id','=',$labor->id)->where('status','=',1)->where('paid','=',0)->sum('paid');
+        $unpaid = $attendances * $labor->rate;
+        }
+    $all_project_unpaid = $all_project_unpaid + $unpaid;
+    }
+?>
+@endcan
+@can('isManager')
+<?php 
+$paid = 0;
+$all_project_paid = 0;
+$unpaid =0;
+$all_project_unpaid = 0;
+
+    $project = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->where('status_id','!=',3)->get();
+    foreach ($projects as $project) {
+        $labors = DB::table('labors')->where('project_id','=',$project->id)->get();
+        foreach ($labors as $labor)
+        {
+        //$presents =  DB::table('labor_attendances')->where('labor_id','=',$labor->id)->where('status','=',1)->sum('status');                
+        $attendances = DB::table('labor_attendances')->where('labor_id','=',$labor->id)->where('status','=',1)->where('paid','=',1)->sum('paid');
+        $paid = $attendances * $labor->rate;
+        }
+    $all_project_paid = $all_project_paid + $paid;
+    }
+     foreach ($projects as $project) {
+        $labors = DB::table('labors')->where('project_id','=',$project->id)->get();
+        foreach ($labors as $labor)
+        {
+        //$presents =  DB::table('labor_attendances')->where('labor_id','=',$labor->id)->where('status','=',1)->sum('status');                
+        $attendances = DB::table('labor_attendances')->where('labor_id','=',$labor->id)->where('status','=',1)->where('paid','=',0)->sum('paid');
+        $unpaid = $attendances * $labor->rate;
+        }
+    $all_project_unpaid = $all_project_unpaid + $unpaid;
+    }
+?>
+@endcan
+
+                    <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h2 class="box-title">Total Projects</h2>
+                                <span class="info-box-number label label-success pull-right"
+                                      style="margin-top: 0px; font-size: 16px;">{{ DB::table('projects')->count('id')}}</span>
                             </div>
                             <!-- /.box-header -->
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -95,12 +184,26 @@
                         <!-- /.info-box -->
                     </div>
                     <!-- /.col -->
-                    <div class="col-xs-12 col-md-12 col-sm-12  col-lg-12 col-xl-12">
+                    <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
                         <div class="box">
                             <div class="box-header">
-                                <h2 class="box-title">Working Labor</h2>
+                                <h2 class="box-title">Current Prokects</h2>
+                                <span class="info-box-number label label-danger pull-right"
+                                      style="margin-top: 0px; font-size: 16px;">{{ DB::table('projects')->where('status_id','=','1')->count('id')}}</span>
+                            </div>
+                            <!-- /.box-header -->
+                            <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
+                        </div>
+                        <!-- /.info-box-content -->
+                        <!-- /.info-box -->
+                    </div>
+
+ <div class="col-xs-12 col-md-12 col-sm-12  col-lg-12 col-xl-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h2 class="box-title">Total Paid</h2>
                                 <span class="info-box-number label label-warning pull-right"
-                                      style="margin-top: 0px; font-size: 16px;">80</span>
+                                      style="margin-top: 0px; font-size: 16px;">{{ $all_project_paid }}</span>
                             </div>
                             <!-- /.box-header -->
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -112,36 +215,9 @@
                     <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
                         <div class="box">
                             <div class="box-header">
-                                <h2 class="box-title">Available Labor</h2>
-                                <span class="info-box-number label label-success pull-right"
-                                      style="margin-top: 0px; font-size: 16px;">32</span>
-                            </div>
-                            <!-- /.box-header -->
-                            <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
-                        </div>
-                        <!-- /.info-box-content -->
-                        <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                        <div class="box">
-                            <div class="box-header">
-                                <h2 class="box-title">Total Cost</h2>
-                                <span class="info-box-number label label-danger pull-right"
-                                      style="margin-top: 0px; font-size: 16px;">20,0000</span>
-                            </div>
-                            <!-- /.box-header -->
-                            <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
-                        </div>
-                        <!-- /.info-box-content -->
-                        <!-- /.info-box -->
-                    </div>
-                    <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                        <div class="box">
-                            <div class="box-header">
-                                <h2 class="box-title">Total Projects</h2>
+                                <h2 class="box-title">Total Unpaid</h2>
                                 <span class="info-box-number label label-info pull-right"
-                                      style="margin-top: 0px; font-size: 16px;">20</span>
+                                      style="margin-top: 0px; font-size: 16px;">{{ $all_project_unpaid }}</span>
                             </div>
                             <!-- /.box-header -->
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
@@ -169,28 +245,34 @@
                         <table class="table no-margin table-bordered table-striped project">
                             <thead>
                             <tr>
-
                                 <th>Labor ID</th>
                                 <th>Name</th>
                                 <th>Project Id</th>
                                 <th>Present</th>
                                 <th>Labor Rate</th>
+                                <th>Paid</th>
                                 <th>Cost</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-
+ 
                             @foreach ($labors as $labor)
-                                <tr>
-                                    <td>lb0000{{ $labor->id }}</td>
-                                    <td>{{ $labor->name }}</td>
-                                    <td>PR0000{{ $labor->project_id}}</td>
-                                    <td>23</td>
-                                    <td>{{ $labor->rate }}</td>
-                                    <td>25000</td>
-                                    <td>
+                               <?php 
+                                $presents =  DB::table('labor_attendances')->where('labor_id','=',$labor->id)->where('status','=',1)->sum('status');
+                                $attendances = DB::table('labor_attendances')->where('labor_id','=',$labor->id)->where('status','=',1)->where('paid','=',1)->sum('paid');
+                                $paid = $attendances * $labor->rate;
+                                ?>
+                                    <tr>
+                                        <td>lb0000{{ $labor->id }}</td>
+                                        <td>{{ $labor->name }}</td>
+                                        <td><a href="{{ route('projects.view',['id' => $labor->project_id]) }}" type="links">PR0000{{ $labor->project_id }}</td>
+                                        <td>{{$presents}}</td>
+                                        <td>{{ $labor->rate }}</td>
+                                        <td>{{ $attendances }}</td>
+                                        <td>{{ $paid }}</td>
 
+                                        <td>  
                                         <div class="btn-group">
                                             <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">
                                                 Action

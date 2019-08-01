@@ -316,7 +316,7 @@
                            
                                @foreach($orders as $order)
                                  <tr>
-                                  <td><a href=" ">OR1000{{ $order->id }}</a></td>
+                                  <td>OR1000{{ $order->id }}</td>
                                   <td>{{ $order->item_id }}</td>
                                   <td>{{ $order->quantity }}</td>
 
@@ -341,7 +341,7 @@
         </div>
 
 
-<div class="col-md-4">
+<div class="col-md-6">
 <div class="box box-solid">
       <div class="box-header with-border">
         @can('isAdmin')

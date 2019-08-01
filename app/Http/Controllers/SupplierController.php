@@ -6,7 +6,7 @@ use App\supplier;
 use Illuminate\Http\Request;
 use DB;
 use Gate;
-
+ 
 class SupplierController extends Controller
 {
     public function __construct()
@@ -24,8 +24,12 @@ class SupplierController extends Controller
         if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
         }
-        $suppliers = DB::table('suppliers')->paginate(10);
-        return view('suppliers/index', compact('suppliers'));
+        $suppliers = DB::table('suppliers')->get();
+        $total_suppliers_payable = DB::table('suppliers')->where('balance','<',0)->sum('balance');
+        $total_suppliers_balance = DB::table('suppliers')->where('balance','>',0)->sum('balance');
+        $total_paid = DB::table('supplier_payments')->sum('paid');
+        
+        return view('suppliers/index', compact('suppliers','total_suppliers_balance','total_suppliers_payable','total_paid'));
     }
 
     /**
@@ -153,7 +157,16 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
-        Supplier::where('id', $id)->delete();
+        $supplier_items = DB::table('items')->where('supplier_id','=',$id)->count();
+        if($supplier_items > 0)
+        {
+            return redirect()->back()->with('message','Please delete supplier items first');
+        }
+        else
+        {
+             Supplier::where('id', $id)->delete();
         return redirect()->intended('suppliers/index');
+        }
+       
     }
 }

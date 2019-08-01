@@ -757,9 +757,9 @@
 @endcan 
 <footer class="main-footer">
     <div class="pull-right hidden-xs">
-        <b>Version</b> 1.0
+        <b></b> 
     </div>
-    <strong>Copyright &copy; 2015-2019 <a href="#">Company & Friends</a>.</strong> All rights reserved.
+    <strong><a href="#"> Construction Site Tracking & Management </a>.</strong> All rights reserved.
 </footer>
     </div>
 

@@ -227,7 +227,7 @@ class MiscellaneousExpenseController extends Controller
             $stopped_status_ID = DB::table('project_status')->where('name','=','Stopped')->pluck('id')->first();
             $not_started_status_ID = DB::table('project_status')->where('name','=','Not Started')->pluck('id')->first();
 
-            $projects = DB::table('projects')->where('projects.assigned_by', '=', Auth::user()->id)->where('status_id','!=',$project_status_ID)->where('status_id','!=',$stopped_status_ID)->where('status_id','!=',$not_started_status_ID)->get(); 
+            $projects = DB::table('projects')->where('projects.assigned_by', '=', Auth::user()->id)->where('status_id','!=',$project_status_ID)->where('status_id','!=',$stopped_status_ID)->where('status_id','!=',$not_started_status_ID)->get();  
         }
         return view('expenses/create', compact('projects'));
     }

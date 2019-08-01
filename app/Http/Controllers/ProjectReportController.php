@@ -41,7 +41,7 @@ class ProjectReportController extends Controller
             'proj' => '',
             'proj_name' => '',
             'last_invoice' => $last_invoice
-        ];
+        ]; 
        if (Gate::allows('isAdmin'))
         {
             $orders = DB::table('order_details')
@@ -76,8 +76,6 @@ class ProjectReportController extends Controller
     {
         $proj_name = DB::table('projects')->where('id', '=', $request->input('project_id'))->pluck('title')->first();
         $last_invoice = DB::table('order_details')->pluck('invoice_number')->last();
-
-
         $constraints = [
             'from' => $request['from'],
             'to' => $request['to'],

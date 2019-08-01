@@ -48,6 +48,8 @@ class ProjectController extends Controller
             ->get();
             $projects_receivables = DB::table('projects')->where('project_balance','<',0)->sum('project_balance');
             $completed_projects = DB::table('projects')->where('status_id','=',3)->count();
+            $labor_by_projects = DB::table('projects')->paginate(5);
+
         }
 
         if (Gate::allows('isManager')) {
@@ -59,13 +61,17 @@ class ProjectController extends Controller
             ->get();
             $completed_projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->where('status_id','=',3)->count();
             $projects_receivables = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->where('project_balance','<',0)->sum('project_balance');
+            $labor_by_projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->paginate(5);
 
         }
+
+        /*
             $labor_by_projects = DB::table('projects')
             ->leftjoin('users','projects.assigned_to','=','users.id')
             ->leftjoin('labors','labors.project_id','=','projects.id')
             ->select('labors.id','projects.id','projects.title','labors.rate','users.name as contractor_name')
             ->paginate(5);
+            */
             $contractors = User::all()->where('role_id', '=', 3);
             
             return view('projects/index', compact('projects', 'contractors', 'labor_by_projects','completed_projects','projects_receivables'));
@@ -282,8 +288,17 @@ class ProjectController extends Controller
             abort(420, 'You Are not Allowed to access this site');
         }
         //dd('in labor by projects');
-        $labor_by_projects = DB::table('projects')->where('projects.assigned_by', '=', Auth::user()->id)->get();
-        return view('projects/laborbyprojects', compact('labor_by_projects'));
+    //$labor_by_projects = DB::table('projects')->where('projects.assigned_by', '=', Auth::user()->id)->get();
+        if(Gate::allows('isAdmin'))
+        {
+            $projects = DB::table('projects')->get();
+        }
+        if(Gate::allows('isManager'))
+        {
+            $projects = DB::table('projects')->where('assigned_by','=',Auth::user())->get();
+        }
+                               
+        return view('projects/laborbyprojects', compact('projects')); 
     }
 
 
@@ -916,6 +931,6 @@ class ProjectController extends Controller
 
 
     }
-
+ 
 
 }

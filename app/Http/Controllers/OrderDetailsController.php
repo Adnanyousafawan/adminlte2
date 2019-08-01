@@ -75,36 +75,51 @@ class OrderDetailsController extends Controller
             $quantity = $request['quantity'];
             $proj_ID = DB::table('projects')->where('title', '=', $project_id)->pluck('id')->first();
 
-            
+           /*) 
             $orders_all =  DB::table('order_details')->where('order_details.project_id','=',$proj_ID)->get();
             foreach ($orders_all as $order) {
                 $last_order_id = $order->id;
             }
+
             $last_invoice_date = DB::table('order_details')->where('id','=',$last_order_id)->pluck('created_at')->first();
+            */
             $last_project_invoice_number = DB::table('order_details')->where('project_id','=',$proj_ID)->pluck('invoice_number')->last();
-          
-    $invoice = DB::table('order_details')->pluck('invoice_number')->last();
-
-            $today = Carbon\Carbon::today();
-
+            $invoice = DB::table('order_details')->pluck('invoice_number')->last();
             if ($invoice == 0) 
             {
                 $invoice = 1000;
-
             } 
             else 
             {
+                $invoice++;
+            }
+    
+         /* 
+   
 
+            //$today = Carbon\Carbon::today();
+             $format = 'Y/m/d';
+        //$now = date($format);
+        // $now = Carbon\Carbon::now()->format('d/m/Y');
+        $today = date($format);
+      
+           // dd($today);
+            if ($invoice == 0) 
+            {
+                $invoice = 1000;
+            } 
+            else 
+            {
                 if($last_invoice_date == $today)
                 {
                     $invoice = $last_project_invoice_number;
                 }
                 else
                 {
-
                      $invoice++;
                 }
             }
+            */
             for ($count = 0; $count < count($item_id); $count++) {
 
                 $set_rate = DB::table('items')->where('id', '=', $item_id[$count])->pluck('selling_rate')->first();
@@ -120,16 +135,17 @@ class OrderDetailsController extends Controller
                    
                 ]);
                 $obj->save();
-                
+             /*   
                 $last_order_id = DB::table('order_details')->pluck('id')->last();
                 $set_rate = DB::table('order_details')->where('id', '=', $last_order_id)->pluck('set_rate')->first();
                 $purchase_rate = DB::table('order_details')->where('id', '=', $last_order_id)->pluck('purchase_rate')->first();
 
+            
                 DB::table('order_details')->where('id','=',$last_order_id)
                 ->update([
                     'created_at' => $today , 'set_rate' => $set_rate,
                     'purchase_rate' => $purchase_rate,]);
-
+*/
 
                 $check = DB::table('company_balance')->count();
                 $order_cost = $purchase_rate * $quantity[$count];

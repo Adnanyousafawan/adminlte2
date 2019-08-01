@@ -30,18 +30,30 @@ class LaborController extends Controller
             $project_status_ID = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
             $stopped_status_ID = DB::table('project_status')->where('name','=','Stopped')->pluck('id')->first();
             $not_started_status_ID = DB::table('project_status')->where('name','=','Not Started')->pluck('id')->first();
+            $labor_by_projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->get();
 
+             /*
              $labor_by_projects = DB::table('projects')
             ->leftjoin('users','projects.assigned_to','=','users.id')
             ->leftjoin('labors','labors.project_id','=','projects.id')
             ->where('projects.assigned_by','=',Auth::user()->id)
             ->select('labors.id','projects.id','projects.title','labors.rate','users.name as contractor_name')
             ->paginate(5);
+            */
+           /*
             $labors = DB::table('labors')
             ->leftjoin('projects','projects.id','=','labors.project_id')
             ->where('projects.assigned_by','=',Auth::user()->id)
             ->select('labors.id','labors.name','labors.project_id','labors.rate')
             ->get();
+            */
+
+            $labors = DB::table('labors')
+                ->leftjoin('projects','projects.id','=','labors.project_id')
+                ->where('projects.assigned_by', '=', Auth::user()->id)
+                ->select('labors.name','labors.id','labors.rate','labors.address','labors.phone','projects.id as project_id')
+                ->get()
+                ->all();
             $totallabor = DB::table('labors')->count();
             $projects = DB::table('projects')->where('assigned_by', '=', Auth::user()->id)->where('status_id','!=',$project_status_ID)->where('status_id','!=',$stopped_status_ID)->where('status_id','!=',$not_started_status_ID)->get();
             return view('labors/index', compact('labors', 'totallabors', 'projects', 'labor_by_projects'));
@@ -52,13 +64,21 @@ class LaborController extends Controller
             $project_status_ID = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
             $stopped_status_ID = DB::table('project_status')->where('name','=','Stopped')->pluck('id')->first();
             $not_started_status_ID = DB::table('project_status')->where('name','=','Not Started')->pluck('id')->first();
+            $labor_by_projects = DB::table('projects')->get();
+            /*
             $labor_by_projects = DB::table('projects')
             ->leftjoin('users','projects.assigned_to','=','users.id')
             ->leftjoin('labors','labors.project_id','=','projects.id')
             ->select('labors.id','projects.id','projects.title','labors.rate','users.name as contractor_name')
             ->paginate(5);
-             $labors = DB::table('labors')->get();
+            */
+            //$labors = DB::table('labors')->get();
             $totallabor = DB::table('labors')->count();
+             $labors = DB::table('labors')
+                ->leftjoin('projects','projects.id','=','labors.project_id')
+                ->select('labors.name','labors.id','labors.rate','labors.address','labors.phone','projects.id as project_id')
+                ->get()
+                ->all();
             $projects = DB::table('projects')->where('status_id','!=',$project_status_ID)->where('status_id','!=',$stopped_status_ID)->where('status_id','!=',$not_started_status_ID)->get();
             return view('labors/index', compact('labors', 'totallabors', 'projects','labor_by_projects'));
         }

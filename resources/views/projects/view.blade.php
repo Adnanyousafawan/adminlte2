@@ -619,6 +619,7 @@
                                     <th>Project Id</th>
                                     <th>Present</th>
                                     <th>Labor Rate</th>
+                                    <th>Paid</th>
                                     <th>Cost</th>
                                     <th>Action</th>
                                 </tr>
@@ -627,18 +628,20 @@
 
                                 @foreach ($labors as $labor)
                                 <?php 
-                                $attendances = DB::table('labor_attendances')->where('labor_id','=',$labor->id)->sum('status');
-                                $cost = $attendances * $labor->rate;
+                                $presents =  DB::table('labor_attendances')->where('labor_id','=',$labor->id)->where('status','=',1)->sum('status');
+                                $attendances = DB::table('labor_attendances')->where('labor_id','=',$labor->id)->where('status','=',1)->where('paid','=',1)->sum('paid');
+                                $paid = $attendances * $labor->rate;
                                 ?>
                                     <tr>
                                         <td>lb0000{{ $labor->id }}</td>
                                         <td>{{ $labor->name }}</td>
                                         <td>PR0000{{ $labor->project_id}}</td>
-                                        <td>{{$attendances}}</td>
+                                        <td>{{$presents}}</td>
                                         <td>{{ $labor->rate }}</td>
-                                        <td>{{ $cost }}</td>
+                                        <td>{{ $attendances }}</td>
+                                        <td>{{ $paid }}</td>
 
-                                        <td> 
+                                        <td>  
 
                                             <div class="btn-group">
                                                 <button data-toggle="dropdown" class="btn btn-success btn-sm" type="button">Action</button>

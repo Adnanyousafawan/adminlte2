@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'logo' => '<b>Construction</b>TMS',
+    'logo' => '<b>Construction</b>STM',
 
     'logo_mini' => 'TMS',
 /*<b>CS</b>*/
@@ -317,7 +317,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'View All Supplier',
-                    'url' => 'suppliers/all',
+                    'url' => 'suppliers',
                     'icon' => 'ion ion-ios-list-outline'
                 ],
                 [
