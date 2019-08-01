@@ -379,6 +379,7 @@ public function UpdateName(Request $request,$id)
         if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
         }
+
         $check = DB::table('users')->where('email','=',$request->input('email'))->count();
            if($check == 1)
            {
@@ -386,6 +387,10 @@ public function UpdateName(Request $request,$id)
            }
            else
            {
+            $cnic_check = User::where('cnic', '=', $request->input('cnic'))->count();
+            if ($cnic_check == 1) {
+            return redirect()->back()->with('message', 'There is already User with this CNIC');
+        } else {
         $request->validate([
             'name' => 'required',
             'email' => 'required',
@@ -448,6 +453,7 @@ public function UpdateName(Request $request,$id)
             return redirect()->route('users.all')->with(['error' => 'User not added successfully.']);
         }
         }
+    }
     }
 
     /**

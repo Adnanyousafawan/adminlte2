@@ -140,6 +140,9 @@
                                     @if($supplier->balance < 0)
                                         <td>{{ abs($supplier->balance) }} <span style="color: red;" class="glyphicon glyphicon-arrow-down"></span></td>
                                     @endif
+                                    @if($supplier->balance == 0)
+                                        <td>0</td>
+                                    @endif
                                     <td>{{ $supplier->material_cost}}</td>
 
                      

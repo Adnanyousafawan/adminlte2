@@ -565,8 +565,31 @@ class ProjectController extends Controller
         
         if(Gate::allows('isAdmin'))
         {
+            $total_labor_cost =0;
+            $cost = 0;
+            $temp =0;
+            $expense = 0;
+            $projects = 0;
+            $labors =0;
+            $orders =0;
+            $total_orders_count = 0;
+            $working_labors =0;
+            $customers = 0;
+            $contractors = 0;
+            $total_orders  =0;
+            $current_project_Phase_ID = 0;
+            $current_phase = 0;
+            $budget_left =0;
+            $received_payments = 0;
+            $request_status = 0;
+            $materialrequests = 0;
+            $labor_project_balance_new = 0;
+            $labor_project_spent_new =0;
+            $labor_project_budget_new =0;
+            $percent =0;
+            $received_payments_perncent =0;
+            $total_pending_requests =0;
 
-            $total_labor_cost = 0;
             $projects = DB::table('projects')->where('id', '=', $id)->get()->first();
 
             $labors = DB::table('labors')->where('project_id', '=', $id)->get()->all();
@@ -616,6 +639,7 @@ class ProjectController extends Controller
             $spent = $orders_sum + $expense;
             
     */
+            dd($orders_sum);
             $budget_left = $projects->estimated_budget - $projects->project_spent;
 
             $received_payments = DB::table('customer_payments')->where('project_id','=',$id)->sum('received');
@@ -639,6 +663,29 @@ class ProjectController extends Controller
             $total_labor_cost =0;
             $cost = 0;
             $temp =0;
+            $expense = 0;
+            $projects = 0;
+            $labors =0;
+            $orders =0;
+            $total_orders_count = 0;
+            $working_labors =0;
+            $customers = 0;
+            $contractors = 0;
+            $total_orders  =0;
+            $current_project_Phase_ID = 0;
+            $current_phase = 0;
+            $budget_left =0;
+            $received_payments = 0;
+            $request_status = 0;
+            $materialrequests = 0;
+            $labor_project_balance_new = 0;
+            $labor_project_spent_new =0;
+            $labor_project_budget_new =0;
+            $percent =0;
+            $received_payments_perncent =0;
+            $total_pending_requests =0;
+
+
             $projects = DB::table('projects')
             ->where('id', '=', $id)
             ->where('projects.assigned_by', '=', Auth::user()->id)
@@ -703,6 +750,7 @@ class ProjectController extends Controller
             $spent = $orders_sum + $expense;
             
     */
+
             $budget_left = $projects->estimated_budget - $projects->project_spent;
 
             $received_payments = DB::table('customer_payments')->where('project_id','=',$id)->sum('received');

@@ -148,76 +148,85 @@ class OrderDetailsController extends Controller
 */
 
                 $check = DB::table('company_balance')->count();
-                $order_cost = $purchase_rate * $quantity[$count];
-                $diff = $set_rate - $purchase_rate;
-                $temp = $diff * $quantity[$count];
-                $order_cost_for_project = $set_rate * $quantity[$count];
-
-
-                $comp_blnc_ID = DB::table('company_balance')->pluck('id')->last();
-                $comp_blnc = DB::table('company_balance')->where('id','=',$comp_blnc_ID)->pluck('balance')->first();
                 if($check != 0)
                 {
-                    $company_balance = $comp_blnc - $order_cost;
-                    DB::table('company_balance')->where('id','=',$comp_blnc_ID)->update([
-                        'balance' => $company_balance]);
+                    $order_cost = $purchase_rate * $quantity[$count];
+                    $diff = $set_rate - $purchase_rate;
+                    $temp = $diff * $quantity[$count];
+                    $order_cost_for_project = $set_rate * $quantity[$count];
+
+
                     $comp_blnc_ID = DB::table('company_balance')->pluck('id')->last();
                     $comp_blnc = DB::table('company_balance')->where('id','=',$comp_blnc_ID)->pluck('balance')->first();
-                    $company_balance = $comp_blnc + $temp;
-                    DB::table('company_balance')->where('id','=',$comp_blnc_ID)->update([
-                        'balance' => $company_balance]);
+                        $company_balance = $comp_blnc - $order_cost;
+                        DB::table('company_balance')->where('id','=',$comp_blnc_ID)->update([
+                            'balance' => $company_balance]);
+                        $comp_blnc_ID_2 = DB::table('company_balance')->pluck('id')->last();
+                        $comp_blnc_2 = DB::table('company_balance')->where('id','=',$comp_blnc_ID_2)->pluck('balance')->first();
+                        $company_balance_2 = $comp_blnc_2 + $temp;
+                        DB::table('company_balance')->where('id','=',$comp_blnc_ID_2)->update([
+                            'balance' => $company_balance_2]);
 
-                    $proj_spent = DB::table('projects')->where('id','=',$proj_ID)->pluck('project_spent')->first();
-                    $proj_balance_available = DB::table('projects')->where('id','=',$proj_ID)->pluck('project_balance')->first();
+                        $proj_spent = DB::table('projects')->where('id','=',$proj_ID)->pluck('project_spent')->first();
+                        $proj_balance_available = DB::table('projects')->where('id','=',$proj_ID)->pluck('project_balance')->first();
 
-                    $project_spent = $proj_spent + $order_cost_for_project;
+                        $project_spent = $proj_spent + $order_cost_for_project;
 
-                    $proj_balance_available = $proj_balance_available - $order_cost_for_project;
+                        $proj_balance_available = $proj_balance_available - $order_cost_for_project;
 
-                    DB::table('projects')->where('id','=',$proj_ID)->update([
-                        'project_spent' => $project_spent , 'project_balance' => $proj_balance_available]);
+                        DB::table('projects')->where('id','=',$proj_ID)->update([
+                            'project_spent' => $project_spent , 'project_balance' => $proj_balance_available]);
 
 
-                    $supplier_blnc = DB::table('suppliers')->where('id','=',$supplier_id)->pluck('balance')->first();
-                    $mat_cost = DB::table('suppliers')->where('id','=',$supplier_id)->pluck('material_cost')->first();
-                    $material_cost = $mat_cost + $order_cost;
+                        $supplier_blnc = DB::table('suppliers')->where('id','=',$supplier_id)->pluck('balance')->first();
+                        $mat_cost = DB::table('suppliers')->where('id','=',$supplier_id)->pluck('material_cost')->first();
+                        $material_cost = $mat_cost + $order_cost;
 
-                    $supplier_balance = $supplier_blnc - $order_cost;
+                        $supplier_balance = $supplier_blnc - $order_cost;
 
-                    DB::table('suppliers')->where('id','=',$supplier_id)->update([
-                                    'material_cost' => $material_cost, 'balance' => $supplier_balance]);
+                        DB::table('suppliers')->where('id','=',$supplier_id)->update([
+                                        'material_cost' => $material_cost, 'balance' => $supplier_balance]);
 
                 } 
                 else
                 {
-                    $company_balance = $comp_blnc - $order_cost;
-                    DB::table('company_balance')->insert(['balance' =>  $company_balance]);
-                    $comp_blnc_ID = DB::table('company_balance')->pluck('id')->last();
-                    $comp_blnc = DB::table('company_balance')->where('id','=',$comp_blnc_ID)->pluck('balance')->first();
-                    $company_balance = $comp_blnc + $temp;
-                    DB::table('company_balance')->where('id','=',$comp_blnc_ID)->update([
-                        'balance' => $company_balance]);
 
-                    $proj_spent = DB::table('projects')->where('id','=',$proj_ID)->pluck('project_spent')->first();
-                    $project_spent = $proj_spent + $order_cost_for_project;
-
-                    $proj_balance_available = DB::table('projects')->where('id','=',$proj_ID)->pluck('project_balance')->first();
-                    
-                    $proj_balance_available = $proj_balance_available - $order_cost_for_project;
-
-                    DB::table('projects')->where('id','=',$proj_ID)->update([
-                        'project_spent' => $project_spent, 'project_balance' => $proj_balance_available]);
+                    $order_cost_2 = $purchase_rate * $quantity[$count];
+                    $diff_2 = $set_rate - $purchase_rate;
+                    $temp_2 = $diff_2 * $quantity[$count];
+                    $order_cost_for_project = $set_rate * $quantity[$count];
 
 
-                    $supplier_blnc = DB::table('suppliers')->where('id','=',$supplier_id)->pluck('balance')->first();
-                    $mat_cost = DB::table('suppliers')->where('id','=',$supplier_id)->pluck('material_cost')->first();
-                    $material_cost = $mat_cost + $order_cost;
+                    $comp_blnc_ID_3 = DB::table('company_balance')->pluck('id')->last();
+                    $comp_blnc_3 = DB::table('company_balance')->where('id','=',$comp_blnc_ID_3)->pluck('balance')->first();
+                        $company_balance_3 = $comp_blnc_3 - $order_cost_2;
+                        DB::table('company_balance')->insert(['balance' =>  $company_balance_3]);
+                        $comp_blnc_ID_4 = DB::table('company_balance')->pluck('id')->last();
+                        $comp_blnc_4 = DB::table('company_balance')->where('id','=',$comp_blnc_ID_4)->pluck('balance')->first();
+                        $company_balance_4 = $comp_blnc_4 + $temp_2;
+                        DB::table('company_balance')->where('id','=',$comp_blnc_ID_4)->update([
+                            'balance' => $company_balance_4]);
 
-                    $supplier_balance = $supplier_blnc - $order_cost;
+                        $proj_spent = DB::table('projects')->where('id','=',$proj_ID)->pluck('project_spent')->first();
+                        $project_spent = $proj_spent + $order_cost_for_project;
 
-                    DB::table('suppliers')->where('id','=',$supplier_id)->update([
-                                    'material_cost' => $material_cost,'balance' => $supplier_balance]); 
-                } 
+                        $proj_balance_available = DB::table('projects')->where('id','=',$proj_ID)->pluck('project_balance')->first();
+                        
+                        $proj_balance_available = $proj_balance_available - $order_cost_for_project;
+
+                        DB::table('projects')->where('id','=',$proj_ID)->update([
+                            'project_spent' => $project_spent, 'project_balance' => $proj_balance_available]);
+
+
+                        $supplier_blnc = DB::table('suppliers')->where('id','=',$supplier_id)->pluck('balance')->first();
+                        $mat_cost = DB::table('suppliers')->where('id','=',$supplier_id)->pluck('material_cost')->first();
+                        $material_cost = $mat_cost + $order_cost;
+
+                        $supplier_balance = $supplier_blnc - $order_cost;
+
+                        DB::table('suppliers')->where('id','=',$supplier_id)->update([
+                                        'material_cost' => $material_cost,'balance' => $supplier_balance]); 
+                    } 
             }
             return response()->json([
                     'success' => 'Order Added successfully.']
