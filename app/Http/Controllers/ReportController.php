@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Auth;
 use PDF;
 use Carbon;
+use Gate;
 
 class ReportController extends Controller
 {
@@ -47,14 +48,30 @@ class ReportController extends Controller
                 return redirect()->intended('home')->with('message', "Cant Generate reports. As there are no Items");
             } else {
                 */
-                $orders = DB::table('order_details')
-                    ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
-                    ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
-                    ->where('order_details.created_at', '<=', $now)
-                    ->where('order_details.created_at', '>=', $to)
-                    ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
-                        'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
-                    ->get();
+        if(Gate::allows('isAdmin'))
+        {
+            $orders = DB::table('order_details')
+            ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
+            ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
+            ->where('order_details.created_at', '<=', $now)
+            ->where('order_details.created_at', '>=', $to)
+            ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
+                'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
+            ->get();
+        }
+        if(Gate::allows('isManager'))
+        {
+            $orders = DB::table('order_details')
+            ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
+            ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
+            ->leftJoin('projects','projects.id','=','order_details.project_id')
+            ->where('projects.assigned_by','=',Auth::user()->id)
+            ->where('order_details.created_at', '<=', $now)
+            ->where('order_details.created_at', '>=', $to)
+            ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
+                'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
+            ->get();
+        }
          /*      
             }
         }
@@ -86,8 +103,9 @@ class ReportController extends Controller
             return redirect()->intended('firstview')->with('message', "Cant Generate reports. No Project exist");
         }
         */
-
-        $orders = DB::table('order_details')
+        if(Gate::allows('isAdmin'))
+        {
+            $orders = DB::table('order_details')
             ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
             ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
             ->where('order_details.created_at', '<=', $now)
@@ -95,8 +113,21 @@ class ReportController extends Controller
             ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
                 'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
             ->get();
-
-
+        }
+        if(Gate::allows('isManager'))
+        {
+            $orders = DB::table('order_details')
+            ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
+            ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
+            ->leftJoin('projects','projects.id','=','order_details.project_id')
+            ->where('projects.assigned_by','=',Auth::user()->id)
+            ->where('order_details.created_at', '<=', $now)
+            ->where('order_details.created_at', '>=', $to)
+            ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
+                'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
+            ->get();
+        }
+    
         return view('reports/index', ['orders' => $orders, 'searchingVals' => $constraints]);
 
     }
@@ -123,7 +154,9 @@ class ReportController extends Controller
             return redirect()->intended('firstview')->with('message', "Cant Generate reports. No Project exist");
         }
         */
-        $orders = DB::table('order_details')
+       if(Gate::allows('isAdmin'))
+        {
+            $orders = DB::table('order_details')
             ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
             ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
             ->where('order_details.created_at', '<=', $now)
@@ -131,6 +164,20 @@ class ReportController extends Controller
             ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
                 'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
             ->get();
+        }
+        if(Gate::allows('isManager'))
+        {
+            $orders = DB::table('order_details')
+            ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
+            ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
+            ->leftJoin('projects','projects.id','=','order_details.project_id')
+            ->where('projects.assigned_by','=',Auth::user()->id)
+            ->where('order_details.created_at', '<=', $now)
+            ->where('order_details.created_at', '>=', $to)
+            ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
+                'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
+            ->get();
+        }
 
         return view('reports/index', ['orders' => $orders, 'searchingVals' => $constraints]);
     }
@@ -180,8 +227,9 @@ class ReportController extends Controller
 
     private function getOrderList($constraints)
     {
-
-        $orders = OrderDetail::leftJoin('items', 'order_details.item_id', '=', 'items.id')
+        if(Gate::allows('isAdmin'))
+        {
+             $orders = OrderDetail::leftJoin('items', 'order_details.item_id', '=', 'items.id')
             ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
             ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
                 'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
@@ -189,13 +237,30 @@ class ReportController extends Controller
             ->where('order_details.created_at', '>=', $constraints['to'])
             //->where('order_details.project_id','=',$constraints['proj'])
             ->get();
-        return $orders;
+            return $orders;
+        }
+        if(Gate::allows('isManager'))
+        {
+             $orders = OrderDetail::leftJoin('items', 'order_details.item_id', '=', 'items.id')
+            ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
+            ->leftJoin('projects','projects.id','=','order_details.project_id')
+            ->where('projects.assigned_by','=',Auth::user()->id)
+            ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
+                'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
+            ->where('order_details.created_at', '<=', $constraints['from'])
+            ->where('order_details.created_at', '>=', $constraints['to'])
+            //->where('order_details.project_id','=',$constraints['proj'])
+            ->get();
+            return $orders;
+        }
+       
     }
 
     private function getExportingData($constraints)
     {
-
-        return DB::table('order_details')
+        if(Gate::allows('isAdmin'))
+        {
+            return DB::table('order_details')
             ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
             ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
             ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
@@ -208,5 +273,25 @@ class ReportController extends Controller
                 return (array)$item;
             })
             ->all();
+        }
+        if(Gate::allows('isManager'))
+        {
+            return DB::table('order_details')
+            ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
+            ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
+            ->leftJoin('projects','projects.id','=','order_details.project_id')
+            ->where('projects.assigned_by','=',Auth::user()->id)
+            ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
+                'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
+            ->where('order_details.created_at', '<=', $constraints['from'])
+            ->where('order_details.created_at', '>=', $constraints['to'])
+            //->where('order_details.project_id','=',$constraints['proj'])
+            ->get()
+            ->map(function ($item, $key) {
+                return (array)$item;
+            })
+            ->all();
+        }
+            
     }
 }

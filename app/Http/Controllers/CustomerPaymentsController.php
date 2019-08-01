@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Gate;
 use DB;
 use Validator;
+use Auth;
 class CustomerPaymentsController extends Controller
 {
     /**
@@ -23,11 +24,23 @@ class CustomerPaymentsController extends Controller
         // $payments = DB::table('customer_payments')->get();
 
         //$projects = DB::table('Projects')->where('id','=',$payment->project_id)->pluck('title')->first()
-        $payments = DB::table('customer_payments')
+       if(Gate::allows('isAdmin'))
+       {
+         $payments = DB::table('customer_payments')
             ->leftJoin('projects', 'customer_payments.project_id', '=', 'projects.id')
             ->select('customer_payments.id', 'projects.id as project_id', 'projects.title', 'customer_payments.received', 
                 'customer_payments.created_at', 'projects.estimated_budget as budget')
             ->get();
+       }
+       if(Gate::allows('isManager'))
+       {
+         $payments = DB::table('customer_payments')
+            ->leftJoin('projects', 'customer_payments.project_id', '=', 'projects.id')
+            ->where('projects.assigned_by','=',Auth::user()->id)
+            ->select('customer_payments.id', 'projects.id as project_id', 'projects.title', 'customer_payments.received', 
+                'customer_payments.created_at', 'projects.estimated_budget as budget')
+            ->get();
+       }
         //dd($expenses);
         return view('payments/customerpayments', compact('payments'));
     }
@@ -97,7 +110,14 @@ class CustomerPaymentsController extends Controller
      */
     public function create()
     {
-        $projects = DB::table('projects')->get();
+        if(Gate::allows('isAdmin'))
+        {
+             $projects = DB::table('projects')->get();
+        }
+        if(Gate::allows('isManager'))
+        {
+             $projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->get();
+        }
         return view('payments/create', ['projects' => $projects]);
     }
 

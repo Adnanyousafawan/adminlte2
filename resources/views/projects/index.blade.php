@@ -70,7 +70,7 @@
                         <td>{{ DB::table('users')->where('id','=',$project->assigned_to)->pluck('name')->first() }}</td>
                           </td>
                     </tr>
-               
+                
             @endforeach
                 </tbody>
             </table>
@@ -126,7 +126,7 @@
                             <div class="box-header">
                                 <h2 class="box-title">Total Projects</h2>
                                 <span class="info-box-number label label-info pull-right"
-                                      style="margin-top: 0px; font-size: 16px;">\
+                                      style="margin-top: 0px; font-size: 16px;">
                                       @can('isAdmin'){{ DB::table('projects')->count('id')}}@endcan
                                       @can('isManager'){{ DB::table('projects')->where('assigned_by','=',Auth::user()->id)->count('id')}}@endcan
                                   </span>

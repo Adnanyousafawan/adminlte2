@@ -95,7 +95,7 @@
                                     <td>{{ $expense->name }}</td>
                                     <td>{{ $expense->description }}</td>
                                     <td>{{ $expense->expense }}</td>
-                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $expense->created_at)->format('Y-m-d') }}</td> 
+                                    <td>{{ Carbon\Carbon::parse($expense->created_at)->format('d/M/Y') }}</td> 
 
                                     <td>
                                         <a style="color: red; " type="links" data-toggle="modal" data-target="#applicantDeleteModal-{{ $expense->id }}"><i class="fa fa-remove"></i>Delete</a>

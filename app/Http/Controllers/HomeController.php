@@ -17,7 +17,7 @@ use Project;
 use Gate;
 use Charts; 
 
-
+ 
 class HomeController extends Controller
 {
     use UploadTrait;
@@ -86,7 +86,17 @@ class HomeController extends Controller
                     //$completed_projects = DB::table('projects')->where('status_id', '=', $status_id)->count();
 
                     //_______________________________________________________________________________________
-                    $orders = DB::table('order_details')->paginate(5);
+                $orders = DB::table('order_details')
+                ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
+                ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
+                ->leftJoin('projects', 'order_details.project_id', '=', 'projects.id')
+                ->where('projects.assigned_by', '=', Auth::user()->id)
+                ->select('order_details.id', 'projects.title as project_title', 'projects.id as project_id', 'order_details.invoice_number', 'order_details.quantity',
+                    'suppliers.name as supplier_name', 'suppliers.id as supplier_id', 'items.id as item_id', 'items.name as item_name', 'items.selling_rate', 'order_details.created_at',
+                    'order_details.status')
+                ->paginate(5);
+
+                    //$orders = DB::table('order_details')->paginate(5);
 
 
                     //_________________________ Monthly Graph _______________________________________________

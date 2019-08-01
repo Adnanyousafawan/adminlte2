@@ -316,17 +316,22 @@
                                     @endif
                                     @if($current_status == 'Completed')
                                     <?php   
-                                    $receivable_after_completion =0;
-                                    if($labor_project_balance_new < 0)
-                                    {
-                                     $receivable_after_completion = $labor_project_balance_new - $labor_project_budget_new;
-                                    }
-                                    if($labor_project_balance_new < 0)
-                                    {
-                                     $receivable_after_completion = $labor_project_balance_new - $labor_project_budget_new;
-                                    }
+                                    $receivable_after_completion = 0;
 
-                                       $final_amount = $labor_project_budget_new - $balance_after_completion;
+                                    if($labor_project_balance_new < 0)
+                                    {
+                                     $receivable_after_completion = $labor_project_balance_new - $labor_project_budget_new;
+                                    }
+                                    if($labor_project_balance_new > 0)
+                                    {
+                                     $receivable_after_completion = $labor_project_balance_new - $labor_project_budget_new;
+                                    }
+                                    if($labor_project_balance_new == 0)
+                                    {
+                                     $receivable_after_completion = $labor_project_balance_new - $labor_project_budget_new;
+                                    }
+                                       //$final_amount = $receivable_after_completion;
+                                     $final_amount=  $labor_project_balance_new - $labor_project_budget_new;
                                        
                                        if($final_amount > 0)
                                        {
@@ -337,7 +342,6 @@
                                             $final_amount = 0;
                                        }
 
-                                       
                                         $number = $final_amount;
                                         if ($number < 1000000) {
                                             // Anything less than a million

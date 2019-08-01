@@ -96,7 +96,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($users as $user)
+                                @foreach ($users->unique('id') as $user)
                                     <tr><?php $check = 'images/profile/default_user.png';?>
                                         <td>@if($user->profile_image == $check )
                                             <img style="min-width: 40%; max-width: 40%; min-height: 20px; max-height: 50px; margin-left: 25%;" class=" img-responsive img-fluid" src="/storage/{{ $user->profile_image }}" alt="User Image">

@@ -102,7 +102,11 @@ class LaborController extends Controller
             $stopped_status_ID = DB::table('project_status')->where('name','=','Stopped')->pluck('id')->first();
             $not_started_status_ID = DB::table('project_status')->where('name','=','Not Started')->pluck('id')->first();
 
-            $projects = DB::table('projects')->where('assigned_by', '=', Auth::user()->where('status_id','!=',$project_status_ID)->where('status_id','!=',$stopped_status_ID)->where('status_id','!=',$not_started_status_ID)->id)->get();
+            $projects = DB::table('projects')->where('assigned_by','=', Auth::user())->where('status_id','!=',$project_status_ID)
+            ->where('status_id','!=',$stopped_status_ID)
+            ->where('status_id','!=',$not_started_status_ID)
+            ->get();
+
         }
         if(Gate::allows('isAdmin'))
         {

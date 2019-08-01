@@ -43,20 +43,28 @@ class ExpenseReportController extends Controller
             'last_expense' => $last_expense
         ];
 
-        $expenses = DB::table('miscellaneous_expenses')
+        if (Gate::allows('isAdmin'))
+       {
+            $expenses = DB::table('miscellaneous_expenses')
             ->leftJoin('projects', 'miscellaneous_expenses.project_id', '=', 'projects.id')
             ->where('miscellaneous_expenses.created_at', '<=', $now)
             ->where('miscellaneous_expenses.created_at', '>=', $to)
             ->select('miscellaneous_expenses.id', 'miscellaneous_expenses.expense_number', 'miscellaneous_expenses.name', 'miscellaneous_expenses.description',
                 'miscellaneous_expenses.expense', 'miscellaneous_expenses.created_at')
             ->get();
-
-        if (Gate::allows('isAdmin'))
-       {
             $projects = DB::table('projects')->pluck('title')->all();
        }
         if (Gate::allows('isManager'))
        {
+             $expenses = DB::table('miscellaneous_expenses')
+            ->leftJoin('projects', 'miscellaneous_expenses.project_id', '=', 'projects.id')
+            ->where('projects.assigned_by','=',Auth::user()->id)
+            ->where('miscellaneous_expenses.project_id','!=',Null)
+            ->where('miscellaneous_expenses.created_at', '<=', $now)
+            ->where('miscellaneous_expenses.created_at', '>=', $to)
+            ->select('miscellaneous_expenses.id', 'miscellaneous_expenses.expense_number', 'miscellaneous_expenses.name', 'miscellaneous_expenses.description',
+                'miscellaneous_expenses.expense', 'miscellaneous_expenses.created_at')
+            ->get();
             $projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->pluck('title')->all();
        }    
 
@@ -112,8 +120,9 @@ class ExpenseReportController extends Controller
 
     private function getOrderList($constraints)
     {
-
-        $expenses = DB::table('miscellaneous_expenses')
+        if(Gate::allows('isAdmin'))
+        {
+             $expenses = DB::table('miscellaneous_expenses')
             ->leftJoin('projects', 'miscellaneous_expenses.project_id', '=', 'projects.id')
             ->where('miscellaneous_expenses.created_at', '<=', $constraints['from'])
             ->where('miscellaneous_expenses.created_at', '>=', $constraints['to'])
@@ -121,13 +130,29 @@ class ExpenseReportController extends Controller
             ->select('miscellaneous_expenses.id', 'miscellaneous_expenses.expense_number', 'miscellaneous_expenses.name', 'miscellaneous_expenses.description',
                 'miscellaneous_expenses.expense', 'miscellaneous_expenses.created_at')
             ->get();
-        return $expenses;
+            return $expenses;
+        }
+        if(Gate::allows('isManager'))
+        {
+             $expenses = DB::table('miscellaneous_expenses')
+            ->leftJoin('projects', 'miscellaneous_expenses.project_id', '=', 'projects.id')
+            ->where('projects.assigned_by','=',Auth::user()->id)
+            ->where('miscellaneous_expenses.project_id','!=',Null)
+            ->where('miscellaneous_expenses.created_at', '<=', $constraints['from'])
+            ->where('miscellaneous_expenses.created_at', '>=', $constraints['to'])
+            ->where('miscellaneous_expenses.project_id', '=', $constraints['proj'])
+            ->select('miscellaneous_expenses.id', 'miscellaneous_expenses.expense_number', 'miscellaneous_expenses.name', 'miscellaneous_expenses.description','miscellaneous_expenses.expense', 'miscellaneous_expenses.created_at')
+            ->get();
+            return $expenses;
+        }
+
     }
 
     private function getExportingData($constraints)
     {
-
-        return DB::table('miscellaneous_expenses')
+        if(Gate::allows('isAdmin'))
+        {
+             return DB::table('miscellaneous_expenses')
             ->leftJoin('projects', 'miscellaneous_expenses.project_id', '=', 'projects.id')
             ->where('miscellaneous_expenses.created_at', '<=', $constraints['from'])
             ->where('miscellaneous_expenses.created_at', '>=', $constraints['to'])
@@ -139,5 +164,24 @@ class ExpenseReportController extends Controller
                 return (array)$item;
             })
             ->all();
+        }
+        if(Gate::allows('isManager'))
+        {
+             return DB::table('miscellaneous_expenses')
+            ->leftJoin('projects', 'miscellaneous_expenses.project_id', '=', 'projects.id')
+            ->where('projects.assigned_by','=',Auth::user()->id)
+            ->where('miscellaneous_expenses.project_id','!=',Null)
+            ->where('miscellaneous_expenses.created_at', '<=', $constraints['from'])
+            ->where('miscellaneous_expenses.created_at', '>=', $constraints['to'])
+            ->where('miscellaneous_expenses.project_id', '=', $constraints['proj'])
+            ->select('miscellaneous_expenses.id', 'miscellaneous_expenses.expense_number', 'miscellaneous_expenses.name', 'miscellaneous_expenses.description',
+                'miscellaneous_expenses.expense', 'miscellaneous_expenses.created_at')
+            ->get()
+            ->map(function ($item, $key) {
+                return (array)$item;
+            })
+            ->all();
+        }
+
     }
 }

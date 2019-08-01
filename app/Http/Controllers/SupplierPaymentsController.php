@@ -30,7 +30,7 @@ class SupplierPaymentsController extends Controller
         //$projects = DB::table('Projects')->where('id','=',$payment->project_id)->pluck('title')->first()
         $payments = DB::table('supplier_payments')
             ->leftJoin('suppliers', 'supplier_payments.supplier_id', '=', 'suppliers.id')
-            ->select('supplier_payments.id', 'suppliers.id as supplier_id', 'suppliers.name', 'supplier_payments.paid',
+            ->select('supplier_payments.id', 'suppliers.id as supplier_id', 'suppliers.name as supplier_name', 'supplier_payments.paid',
                 'suppliers.balance as balance_status', 'supplier_payments.created_at')
             ->get();
 
@@ -60,13 +60,10 @@ class SupplierPaymentsController extends Controller
 
             for ($count = 0; $count < count($paid_amount); $count++) {
                 //  return response()->json($item_id[$count]);
-                $obj = new SupplierPayment([
-                    'paid' => $paid_amount[$count],
-                    'supplier_id' => $supplier_id[$count],
-                ]);
-                //dd($obj);
-                $obj->save();
-
+                DB::table('supplier_payments')->insert([
+                        'paid' => $paid_amount[$count] , 'supplier_id' => $supplier_id[$count] ]);
+                
+            
                 $supplier_blnc = DB::table('suppliers')->where('id','=',$supplier_id)->pluck('balance')->first();
                 $supplier_blnc = $supplier_blnc + $paid_amount[$count];
 

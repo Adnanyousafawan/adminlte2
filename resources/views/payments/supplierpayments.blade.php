@@ -52,8 +52,8 @@
                                 <th>Payment ID</th>
                                 <th>Supplier ID</th>
                                 <th>Supplier Name</th>
-                                <th>Balance</th>
                                 <th>Paid</th>
+                                <th>Balance</th>
                                 <th>Payable</th>
                                 <th>Action</th>
                             </tr>
@@ -62,9 +62,9 @@
 
                             @foreach($payments as $payment)
                                 <tr>
-                                    <td>0000{{ $payment->id }}</td>
-                                    <td>0000{{ $payment->supplier_id }}</td>
-                                    <td>{{ $payment->name }}</td>
+                                    <td>P0000{{ $payment->id }}</td>
+                                    <td>SP0000{{ $payment->supplier_id }}</td>
+                                    <td>{{ $payment->supplier_name }}</td>
                                     <td>{{ $payment->paid }}</td>
                                     @if($payment->balance_status > 0)
                                     <td>{{ $payment->balance_status }}</td>
