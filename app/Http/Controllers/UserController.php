@@ -159,7 +159,7 @@ public function UpdateName(Request $request,$id)
             ->sum('project_balance');
 */
             $pie_chart = Charts::create('pie', 'highcharts')
-                ->title('Pie Chart Demo')
+                ->title('Comparison')
                 ->labels(['Profit', 'Loss'])
                 ->values([$ProjectsProfit, $ProjectsLoss])
                 ->dimensions(1000, 500) 
