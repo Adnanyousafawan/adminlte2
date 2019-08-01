@@ -498,6 +498,11 @@ class ProjectController extends Controller
             {
                 $progress = (($project_for_progress->phase_id-1)/$total_phases)*100;
             }
+        $completed_project = DB::table('projects')->where('id','=',$id)->pluck('status_id')->first();
+        if($completed_project == 3)
+        {
+            $progress = 100;
+        }
         
         if(Gate::allows('isAdmin'))
         {
@@ -735,9 +740,7 @@ class ProjectController extends Controller
 
         ]);
 
-
         $projects = Project::find($id);
-        
         $projects->title = $request->input('title');
         $projects->area = $request->input('area');
         $projects->city = $request->input('city');

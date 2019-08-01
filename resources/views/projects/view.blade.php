@@ -17,6 +17,7 @@
                     <div
                         class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-10 col-md-offset-1 col-lg-offset-1 col-xl-offset-1  "
                         style="padding: 0px;">
+
                         <?php   
                                 $number = $labor_project_spent_new;
                                 if ($number < 1000000) {
@@ -157,13 +158,65 @@
                                         <p style=" word-wrap: break-word; "> {{ $projects->description }}</p>
                                  
                                     </div>
-
-                                    <a href="{{ route('projects.edit', ['id' => $projects->id]) }}"
-                                       class="btn btn-primary btn-block"><b>Edit</b></a>
+                                     <div class="row">
+                                        <a href="{{ route('projects.edit', ['id' => $projects->id]) }}"
+                                       class="btn btn-primary col-md-5 col-md-offset-1"><b>Edit</b></a>
+                                    <a type="links" {{-- href="{{ route('labors.create') }}" --}}  data-toggle="modal"
+                                   data-target="#applicantViewImage" class="btn btn-primary col-md-5 col-md-offset-0 ">View Contract</a>
+                                 
+                                       </div>
                                 </b>
                             </div>
                         </div>
                     </div>
+
+                      {{--____________________________   This is View Contract Modal  ______________________________ --}}
+
+
+                <div id="applicantViewImage" class="modal fade" tabindex="-1" role="dialog"
+                     aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog" style="min-width:70%; max-width: 80%; align-content: center;">
+                        <div class="modal-content">
+                        
+
+                         <div class="modal-header">
+                                    <button type="button" class="close pull-right" data-dismiss="modal"
+                                            aria-hidden="true">x
+                                    </button>
+                                    <strong><h3 class="modal-title text-center" id="custom-width-modalLabel">Project
+                                            Contract</h3></strong>
+                                </div>
+                                <div class="modal-body">
+                                    <div style=" width: 100%;">
+                                        <div class="row" style="margin-top: 5px; margin-left: 1%;">
+                                            <div class="box-body">
+                                                <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-10 col-xl-10 col-xl-offset-1 col-sm-offset-1 ">
+                            <div class="img-div">
+                                <img  class="profile-user-img img-responsive" src="/storage/{{$projects->contract_image}}"
+                                 alt="" style="min-width: 100%; min-height: 450px; max-height: 500px; max-width: 100%; ">
+                             </div>
+                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                        <button type="button" class="btn btn-default waves-effect"
+                                                data-dismiss="modal">Close
+                                                    </button>
+                                                   {{--  <button type="submit"
+                                                            class="btn btn-danger waves-effect remove-data-from-delete-form">
+                                                        Delete
+                                                    </button> --}}
+                                                </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
         <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
             <div class="row" style="margin-top: 3%;">
             <div class="col-md-4"> 
@@ -726,6 +779,7 @@
                         </div>
                     </div>
                 </div>
+
 
             </div>
         </div>

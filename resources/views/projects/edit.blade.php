@@ -21,7 +21,7 @@
                         class="col-md-3 col-md-offset-0 col-xl-3 col-xl-offset-0 {{-- col-lg-offset-1 col-xl-offset-1  col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-0 col-lg-3 col-xl-3 --}}">
                         <!-- Profile Image -->
 
-                        <div class="user-profile">
+                        <div class="user-profile col-md-offset-1">
                             <div class="img-div">
                                 <img  class="profile-user-img img-responsive" src="/storage/{{$projects->contract_image}}"
                                  alt="" style="min-width: 250px; min-height: 200px; max-height: 200px; max-width: 260px; "></div>
@@ -35,7 +35,7 @@
                     </div>
 
 
-    <div class="col-md-8 col-md-offset-0 col-sm-8 col-sm-offset-0 col-lg-8 col-lg-offset-0"> 
+    <div class="col-md-7 col-md-offset-1 col-sm-7 col-sm-offset-1 col-lg-7 col-lg-offset-1"> 
                     <div class="col-lg-12 col-lg-offset-0">
 
                         <div class="form-group {{ $errors->has('title') ? ' has-error' : '' }}">

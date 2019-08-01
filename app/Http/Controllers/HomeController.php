@@ -269,10 +269,10 @@ class HomeController extends Controller
             // Make a file path where image will be stored [ folder path + file name + file extension]
             $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
             //delete previously stored image
-            if(Auth::user()->profile_image != 'images/profile/default_user.jpg')
+            if(Auth::user()->profile_image != 'images/profile/default_user.png')
             {
                 $this->deleteOne('public', Auth::user()->profile_image);
-            }
+            } 
             // Upload image
             $this->uploadOne($image, $folder, 'public', $name);
             // Set user profile image path in database to filePath

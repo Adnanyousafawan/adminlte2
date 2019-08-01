@@ -25,7 +25,7 @@ class CreateProjectsTable extends Migration
             $table->string('floor')->nullable();
             $table->string('current_developed_floor')->nullable()->default("0");
             $table->string('description', "1000")->nullable();
-            $table->string('contract_image')->nullable()->default('images/contract/deafult.png');
+            $table->string('contract_image')->nullable()->default('images/contract/default.png');
             $table->unsignedBigInteger('assigned_to')->nullable();
             $table->unsignedBigInteger('assigned_by')->nullable();
             $table->unsignedBigInteger('status_id')->nullable()->default(1);
