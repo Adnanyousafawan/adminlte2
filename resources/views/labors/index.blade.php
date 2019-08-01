@@ -175,10 +175,12 @@ $all_project_unpaid = 0;
                             <div class="box-header">
                                 <h2 class="box-title">Total Projects</h2>
                                 <span class="info-box-number label label-success pull-right"
-                                      style="margin-top: 0px; font-size: 16px;">{{ DB::table('projects')->count('id')}}</span>
+                                      style="margin-top: 0px; font-size: 16px;">  
+                                      @can('isAdmin'){{ DB::table('projects')->count('id')}}@endcan
+                                      @can('isManager'){{ DB::table('projects')->where('assigned_by','=',Auth::user()->id)->count('id')}}@endcan</span>
                             </div>
                             <!-- /.box-header -->
-                            <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
+                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
                         </div>
                         <!-- /.info-box-content -->
                         <!-- /.info-box -->
@@ -189,7 +191,9 @@ $all_project_unpaid = 0;
                             <div class="box-header">
                                 <h2 class="box-title">Current Projects</h2>
                                 <span class="info-box-number label label-danger pull-right"
-                                      style="margin-top: 0px; font-size: 16px;">{{ DB::table('projects')->where('status_id','=','1')->count('id')}}</span>
+                                      style="margin-top: 0px; font-size: 16px;">
+                                     @can('isAdmin'){{ DB::table('projects')->where('status_id','=','1')->count('id')}}@endcan
+                                      @can('isManager'){{ DB::table('projects')->where('assigned_by','=',Auth::user()->id)->where('status_id','=','1')->count('id')}}@endcan
                             </div>
                             <!-- /.box-header -->
                             <!-- <span class="info-box-number" style=" float: right;">102000/RS.</span> -->
