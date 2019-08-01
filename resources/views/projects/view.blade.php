@@ -321,6 +321,10 @@
                                     {
                                      $receivable_after_completion = $labor_project_balance_new - $labor_project_budget_new;
                                     }
+                                    if($labor_project_balance_new < 0)
+                                    {
+                                     $receivable_after_completion = $labor_project_balance_new - $labor_project_budget_new;
+                                    }
 
                                        $final_amount = $labor_project_budget_new - $balance_after_completion;
                                        
@@ -332,6 +336,7 @@
                                        {
                                             $final_amount = 0;
                                        }
+
                                        
                                         $number = $final_amount;
                                         if ($number < 1000000) {

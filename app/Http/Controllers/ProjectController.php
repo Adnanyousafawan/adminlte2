@@ -56,13 +56,13 @@ class ProjectController extends Controller
             $projects = DB::table('projects')
             ->leftjoin('users','projects.assigned_to','=','users.id')
             ->leftjoin('customers','projects.customer_id','=','customers.id')
-            ->where('projects.assigned_by', '=', Auth::user()->id)
+            ->where('projects.assigned_by','=', Auth::user()->id)
             ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
             ->get();
             $completed_projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->where('status_id','=',3)->count();
             $projects_receivables = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->where('project_balance','<',0)->sum('project_balance');
             $labor_by_projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->paginate(5);
-
+ 
         }
 
         /*
@@ -258,9 +258,49 @@ class ProjectController extends Controller
         if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
         }
+       
+        if (Gate::allows('isAdmin')) {
+            $projects = DB::table('projects')
+            ->leftjoin('users','projects.assigned_to','=','users.id')
+            ->leftjoin('customers','projects.customer_id','=','customers.id')
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
+            ->get();
+            $projects_receivables = DB::table('projects')->where('project_balance','<',0)->sum('project_balance');
+            $completed_projects = DB::table('projects')->where('status_id','=',3)->count();
+            $labor_by_projects = DB::table('projects')->paginate(5);
+
+        }
+
+        if (Gate::allows('isManager')) {
+            $projects = DB::table('projects')
+            ->leftjoin('users','projects.assigned_to','=','users.id')
+            ->leftjoin('customers','projects.customer_id','=','customers.id')
+            ->where('projects.assigned_by','=', Auth::user()->id)
+            ->select('projects.id','projects.title','projects.city','projects.estimated_budget as budget','customers.name as customer_name','customers.phone as customer_phone','users.name as contractor_name','projects.project_balance','projects.project_spent')
+            ->get();
+            $completed_projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->where('status_id','=',3)->count();
+            $projects_receivables = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->where('project_balance','<',0)->sum('project_balance');
+            $labor_by_projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->paginate(5);
+ 
+        }
+
+        /*
+            $labor_by_projects = DB::table('projects')
+            ->leftjoin('users','projects.assigned_to','=','users.id')
+            ->leftjoin('labors','labors.project_id','=','projects.id')
+            ->select('labors.id','projects.id','projects.title','labors.rate','users.name as contractor_name')
+            ->paginate(5);
+            */
+            $contractors = User::all()->where('role_id', '=', 3);
+            
+            return view('projects/index', compact('projects', 'contractors', 'labor_by_projects','completed_projects','projects_receivables'));
+    
+
+
+/*
         $projects = DB::table('projects')
-            /*->join('users', 'users.id', '=', 'projects.assigned_to')
-            ->join('customers', 'customers.id', '=', 'projects.customer_id')*/
+            ->join('users', 'users.id', '=', 'projects.assigned_to')
+            ->join('customers', 'customers.id', '=', 'projects.customer_id')
             ->get();
 
 
@@ -271,15 +311,17 @@ class ProjectController extends Controller
 
         //dd($projects);
         //Project::paginate(10);
+
         $projectstotal = DB::table('projects')->get();//Project::all();
         $contractors = DB::table('users')->where('role_id', '=', '3')->get();
+           */
         //$customers = DB::table('customers')->where('id','=','projects.customer_id')->pluck('name')->first();
         //$customers = DB::table('projects')->join('customers','customers.id','=','projects.customer_id')->pluck('name')->all();
         //dd($projects);
         //dd($customers);
         //join('customers','customers.id','=','projects.customer_id')->take(10)->get();
         //$customers = DB::table('customers')->get();// \App\Customer::all();
-        return view('projects/create', compact('projects', 'contractors'));
+       // return view('projects/create', compact('projects', 'contractors'));
     }
 
     public function labors_by_projects()
@@ -639,7 +681,6 @@ class ProjectController extends Controller
             $spent = $orders_sum + $expense;
             
     */
-            dd($orders_sum);
             $budget_left = $projects->estimated_budget - $projects->project_spent;
 
             $received_payments = DB::table('customer_payments')->where('project_id','=',$id)->sum('received');
