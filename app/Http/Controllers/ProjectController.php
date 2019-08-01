@@ -281,7 +281,6 @@ class ProjectController extends Controller
             $completed_projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->where('status_id','=',3)->count();
             $projects_receivables = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->where('project_balance','<',0)->sum('project_balance');
             $labor_by_projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->paginate(5);
- 
         }
 
         /*
