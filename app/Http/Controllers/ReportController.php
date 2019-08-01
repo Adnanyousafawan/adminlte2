@@ -38,7 +38,7 @@ class ReportController extends Controller
             'from' => $now,
             'to' => $to,
         ];
-        $check = DB::table('projects')->get()->count();
+       /* $check = DB::table('projects')->get()->count();
         if ($check == 0) {
             return redirect()->intended('home')->with('message', "Cant Generate reports. No Project exist");
         } else {
@@ -46,6 +46,7 @@ class ReportController extends Controller
             if ($check == 0) {
                 return redirect()->intended('home')->with('message', "Cant Generate reports. As there are no Items");
             } else {
+                */
                 $orders = DB::table('order_details')
                     ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
                     ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')
@@ -54,9 +55,11 @@ class ReportController extends Controller
                     ->select('project_id', 'order_details.invoice_number', 'order_details.quantity',
                         'suppliers.name as supplier_name', 'items.name', 'order_details.set_rate', 'order_details.created_at')
                     ->get();
-                return view('reports/index', ['orders' => $orders, 'searchingVals' => $constraints]);
+         /*      
             }
         }
+        */
+         return view('reports/index', ['orders' => $orders, 'searchingVals' => $constraints]);
     }
 
     public function weekly()
@@ -75,11 +78,14 @@ class ReportController extends Controller
             'to' => $to,
         ];
         //dd($constraints['type']);
+       
+       /*
         $check = DB::table('projects')->get()->count();
 
         if ($check == 0) {
             return redirect()->intended('firstview')->with('message', "Cant Generate reports. No Project exist");
         }
+        */
 
         $orders = DB::table('order_details')
             ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
@@ -110,11 +116,13 @@ class ReportController extends Controller
             'from' => $now,
             'to' => $to,
         ];
+       /* 
         $check = DB::table('projects')->get()->count();
 
         if ($check == 0) {
             return redirect()->intended('firstview')->with('message', "Cant Generate reports. No Project exist");
         }
+        */
         $orders = DB::table('order_details')
             ->leftJoin('items', 'order_details.item_id', '=', 'items.id')
             ->leftJoin('suppliers', 'order_details.supplier_id', '=', 'suppliers.id')

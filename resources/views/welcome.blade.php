@@ -88,7 +88,7 @@
         {{-- <div class="title m-b-md"> --}}
         <div class="title">
             <h5>
-            Construction Site<br> Tracking & Management System</h5>
+            Construction Site<br> Tracking & Management</h5>
         </div>
 
         <div class="links">

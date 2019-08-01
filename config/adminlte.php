@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'title' => 'CSTMS',
+    'title' => 'CSTM',
 
     'title_prefix' => '',
 
@@ -31,7 +31,7 @@ return [
 
     'logo' => '<b>Construction</b>STM',
 
-    'logo_mini' => 'TMS',
+    'logo_mini' => 'STM',
 /*<b>CS</b>*/
     /*
     |--------------------------------------------------------------------------

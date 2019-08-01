@@ -202,7 +202,7 @@ Route::get('/labors/create', 'LaborController@create')->name('labors.create');
 
 Route::resource('suppliers', 'SupplierController');
 Route::get('/search_supplier', 'SupplierController@search_supplier');
-Route::get('suppliers', 'SupplierController@index')->name('suppliers.all');
+Route::get('suppliers', 'SupplierController@index')->name('suppliers');
 Route::get('user/table', 'HomeController@datatable');
 
 //_______________________________User Management___________________________________//
