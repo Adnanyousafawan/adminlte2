@@ -91,7 +91,7 @@
                                 <div class="form-group">
                                     <label for="cnic">Customer CNIC <span style="color: red;">*</span></label>
                                     <input  type="text" class="form-control" placeholder="CNIC" value="" id="cnic" name="cnic" onkeypress="return isNumber(event)" onpaste="return false;"
-                        maxlength="13" pattern="[0-9].{12,13}"  title="Enter 13 digit CNIC Number. Example: ( 3434359324554 )" 
+                                    maxlength="13" pattern="[0-9].{12,13}"  title="Enter 13 digit CNIC Number. Example: ( 3434359324554 )" 
                                            required>
                                 </div>
 
@@ -114,7 +114,18 @@
                                            title=" Minimum 5 letters word required"
                                            placeholder="Home Address" required>
                                 </div>
-
+                                @can('isAdmin')
+                                 <div class="form-group">
+                                    <label for="assigned_by">Select Project Manager<span
+                                            style="color: red;">*</span></label>
+                                    <select class="form-control" id="assigned_by" name="assigned_by" required="">
+                                        @foreach($managers as $manager)
+                                            <option value="{{ $manager->id }}">{{ $manager->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @endcan
+ 
                                 <div class="form-group">
                                     <label for="assigned_to">Select Contractor <span
                                             style="color: red;">*</span></label>
@@ -154,7 +165,7 @@
                                            pattern="[0-9].{3,100}"
                                            title=" Minimum 4 digit number required"
                                            placeholder="Estimated Budget" 
-                                           value="" onkeypress="return isNumber(event)" onpaste="return false;" maxlength="11" pattern="[0-9].{0,10}" title="Enter quantity minimum 1" 
+                                           value="" onkeypress="return isNumber(event)" onpaste="return false;" maxlength="11" pattern="[0-9].{0,10}" title="Enter deal amount Example: 100000" 
                                            required>
                                 </div>
 

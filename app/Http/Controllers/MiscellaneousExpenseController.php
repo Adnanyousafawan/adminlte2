@@ -215,12 +215,19 @@ class MiscellaneousExpenseController extends Controller
             abort(420, 'You Are not Allowed to access this site');
         }
         if (Gate::allows('isAdmin')) {
-            $project_status_ID = DB::table('project_status')->where('name','!=','Completed')->pluck('id')->first();
-            $projects = DB::table('projects')->where('status_id','!=',$project_status_ID)->get();
+            $project_status_ID = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
+            $stopped_status_ID = DB::table('project_status')->where('name','=','Stopped')->pluck('id')->first();
+            $not_started_status_ID = DB::table('project_status')->where('name','=','Not Started')->pluck('id')->first();
+
+            $projects = DB::table('projects')->where('status_id','!=',$project_status_ID)->where('status_id','!=',$stopped_status_ID)->where('status_id','!=',$not_started_status_ID)->get();
         }
-        if (Gate::allows('isManager')) {
-            $project_status_ID = DB::table('project_status')->where('name','!=','Completed')->pluck('id')->first();
-            $projects = DB::table('projects')->where('projects.assigned_by', '=', Auth::user()->id)->where('status_id','!=',$project_status_ID)->get();
+        if (Gate::allows('isManager')) 
+        {
+            $project_status_ID = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
+            $stopped_status_ID = DB::table('project_status')->where('name','=','Stopped')->pluck('id')->first();
+            $not_started_status_ID = DB::table('project_status')->where('name','=','Not Started')->pluck('id')->first();
+
+            $projects = DB::table('projects')->where('projects.assigned_by', '=', Auth::user()->id)->where('status_id','!=',$project_status_ID)->where('status_id','!=',$stopped_status_ID)->where('status_id','!=',$not_started_status_ID)->get(); 
         }
         return view('expenses/create', compact('projects'));
     }

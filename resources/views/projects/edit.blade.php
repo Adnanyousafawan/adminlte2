@@ -23,13 +23,14 @@
 
                         <div class="user-profile col-md-offset-1">
                             <div class="img-div">
-                                <img  class="profile-user-img img-responsive" src="/storage/{{$projects->contract_image}}"
-                                 alt="" style="min-width: 250px; min-height: 200px; max-height: 200px; max-width: 260px; "></div>
+                                <img class="profile-user-img img-responsive" src="/storage/{{$projects->contract_image}}"
+                                 alt="" style="min-width: 250px; min-height: 200px; max-height: 200px; max-width: 260px; ">
+                             </div>
                             <br>
                             <div class="form-group">
                                 <input type="file" name="contract_image"
-                                       class="btn btn-default btn-sm profile-picture-uploader" id="contract_image"> {{-- data-toggle="modal" data-target="#uploadprofilepicture"  class="btn btn-default btn-sm profile-picture-uploader" id="cont_image"
-                                                                   name="cont_image"--}}
+                                       class="btn btn-default btn-sm profile-picture-uploader" id="contract_image" value="{{$projects->contract_image}}"> {{-- data-toggle="modal" data-target="#uploadprofilepicture"  class="btn btn-default btn-sm profile-picture-uploader" id="cont_image"
+                                                                name="cont_image"--}}
                             </div>
                         </div>
                     </div>
@@ -80,8 +81,8 @@
                             <input type="text" class="form-control" name="plot_size" id="plot_size"
                                    value="{{ $projects->plot_size }}"
                                    placeholder="Project plot size"
-                                    pattern="[A-Za-z0-9\w].{1,50}"
-                                           title=" Minimum 2 letters required" required>
+                                    pattern="[A-Za-z0-9\w].{2,50}"
+                                    title=" Example: 1 Kanal. " required>
                             @if ($errors->has('plot_size'))
                                 <span class="help-block">
                                 <strong style="color: red; float: right;">{{ $errors->first('plot_size') }}</strong>                              
@@ -92,9 +93,10 @@
                         <div class="form-group {{ $errors->has('floor') ? ' has-error' : '' }}">
                             <label for="floor">Project Floors <span style="color: red;">*</span></label>
                             <input type="text" class="form-control" name="floor" id="floor"
-                                   value="{{ $projects->floor }}"
-                                   placeholder="Enter number of floors"  pattern="[A-Za-z0-9\w].{0,10}"
-                                           title=" Minimum 1 letters required" required>
+                                   value="{{ $projects->floor }}" 
+                                   onkeypress="return isNumber(event)" onpaste="return false;"
+                                    pattern="[A-Za-z0-9\w].{0}"
+                                           title=" Minimum 1 digit required Example: 2" required>
                             @if ($errors->has('floor'))
                                 <span class="help-block">
                             <strong style="color: red; float: right;">{{ $errors->first('floor') }}</strong>                              
@@ -158,6 +160,21 @@
                             @endif
                         </div>
 
+                        @can('isAdmin')
+                            <div class="form-group">
+                                    <label for="assigned_by">Select Project Manager<span
+                                            style="color: red;">*</span></label>
+                                <select class="form-control" id="assigned_by" name="assigned_by" required="">
+                                <option default style="color: red;" value="{{ $projects->assigned_by  }}">{{ $current_manager }}</option>
+                                    @foreach($managers as $manager)
+                                        @if($manager->name != $current_manager)
+                                            <option value="{{ $manager->id }}">{{ $manager->name}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div> 
+                        @endcan
+
                         <div class="form-group {{ $errors->has('assigned_to') ? ' has-error' : '' }}">
                             <label for="assigned_to">Select Contractor <span style="color: red;">*</span></label>
                             <select class="form-control" id="assigned_to" name="assigned_to" required="">
@@ -181,11 +198,18 @@
                             <select class="form-control" id="estimated_completion_time" name="estimated_completion_time"
                                     value="{{ $projects->estimated_completion_time }}" required="">
                             <option default style="color: red;">{{ $projects->estimated_completion_time }}</option>
-                                <option>1 year</option>
-                                <option>2 year</option>
-                                <option>3 year</option>
-                                <option>4 year</option>
-                                <option>5 year</option>
+                                        <option> 6 month</option>
+                                        <option> 8 month</option>
+                                        <option>10 month</option>
+                                        <option>1 year</option>
+                                        <option>2 year</option>
+                                        <option>3 year</option>
+                                        <option>4 year</option>
+                                        <option>5 year</option>
+                                        <option>6 year</option>
+                                        <option>8 year</option>
+                                        <option>9 year</option>
+                                        <option>10 year</option>
                             </select>
                             @if ($errors->has('estimated_completion_time'))
                                 <span class="help-block">
@@ -198,9 +222,8 @@
                         <div class="form-group {{ $errors->has('estimated_budget') ? ' has-error' : '' }}">
                             <label for="estimated_budget">Estimated Budget <span style="color: red;">*</span></label>
                             <input type="text" name="estimated_budget" id="estimated_budget" class="form-control"
-                                   placeholder="Estimated budget cost(in Millions)"
-                                   value="{{ $projects->estimated_budget }}" pattern="[0-9]{4,100}"
-                                           title=" Minimum 4 digit number required">
+                                   onkeypress="return isNumber(event)" onpaste="return false;" maxlength="11" pattern="[0-9].{0,10}" title="Enter deal amount Example: 100000" placeholder="Estimated budget cost(in Millions)"
+                                   value="{{ $projects->estimated_budget }}" onkeypress="return isNumber(event)" onpaste="return false;" maxlength="11" pattern="[0-9].{0,10}" title="Enter Estimated Budget, Example: 100000" placeholder="Estimated budget">
                             @if ($errors->has('estimated_budget'))
                                 <span class="help-block">
                                 <strong

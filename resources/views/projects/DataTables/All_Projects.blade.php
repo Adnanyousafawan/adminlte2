@@ -8,8 +8,10 @@
                 <div class="row">
                 <h4><span class="box-title col-md-8">Project Record</span></h4>
                 <div class="box-tools pull-right" style="margin-right: 10px;">
+                   
                     <a type="links" data-toggle="modal"
                        data-target="#applicantADDModal" class="btn btn-primary pull-right">Add Project</a>
+                    
                 </div>
                 </div>
                 <div class="col-md-offset-0 col-lg-offset-0 col-xl-offset-0" style="margin-top: 10px;">

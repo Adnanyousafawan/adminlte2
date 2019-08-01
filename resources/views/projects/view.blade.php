@@ -60,7 +60,12 @@
                         <div class="col-xs-12 col-md-4 col-sm-4 col-lg-4 col-xl-12">
                             <div class="box">
                                 <div class="box-header">
+                                    @if($projects->status_id == 3)
+                                        <h2 class="box-title">Difference</h2>
+                                    @endif
+                                    @if($projects->status_id !=3)
                                     <h2 class="box-title">Budget Left</h2>
+                                    @endif 
                                     <span class="info-box-number label label-danger pull-right"
                                           style="margin-top: 0px; font-size: 16px;">{{ $format }}</span>
                                 </div>
@@ -230,7 +235,7 @@
             </div>
          </div>
      </div>
-                        <?php   
+                        <?php   $balance_after_completion = 0;
                                 $number = $labor_project_balance_new;
                                 if ($number < 1000000) {
                                     // Anything less than a million
@@ -248,9 +253,11 @@
 
                             <div class="box">
                                 <div class="box-header">
+                                    
                                     <h2 class="box-title">Balance</h2>
-                                    <?php   ?>
+                                    
                                     @if($labor_project_balance_new >= 0)
+
                                         <span class="info-box-number label label-warning pull-right"
                                               style="margin-top: 0px; font-size: 16px;">{{ $format }}</span>
                                     @endif
@@ -285,7 +292,9 @@
                                     <?php $check = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first(); ?>
 
                                     @if($labor_project_balance_new < 0 && $projects->status_id != $check)
+
                                     <?php   
+
                                         $number = $labor_project_balance_new;
                                         if ($number < 1000000) {
                                             // Anything less than a million
@@ -307,7 +316,24 @@
                                     @endif
                                     @if($current_status == 'Completed')
                                     <?php   
-                                        $number = $labor_project_budget_new;
+                                    $receivable_after_completion =0;
+                                    if($labor_project_balance_new < 0)
+                                    {
+                                     $receivable_after_completion = $labor_project_balance_new - $labor_project_budget_new;
+                                    }
+
+                                       $final_amount = $labor_project_budget_new - $balance_after_completion;
+                                       
+                                       if($final_amount > 0)
+                                       {
+                                            $final_amount = $final_amount;
+                                       }
+                                       if($final_amount < 0)
+                                       {
+                                            $final_amount = 0;
+                                       }
+                                       
+                                        $number = $final_amount;
                                         if ($number < 1000000) {
                                             // Anything less than a million
                                             $format = number_format($number);
@@ -318,9 +344,10 @@
                                             // At least a billion
                                             $format = number_format($number / 1000000000, 2) . 'B';
                                         }
+
                                     ?>
                                     <span class="info-box-number label label-success pull-right"
-                                          style="margin-top: 0px; font-size: 16px;"> {{ $labor_project_budget_new }}</span>
+                                          style="margin-top: 0px; font-size: 16px;"> {{ abs($format)  }}</span>
                                     @endif
                                 </div>
                                 <!-- /.box-header -->
@@ -399,7 +426,7 @@
                         <div class="box box-primary" style="margin-bottom: 10px;">
                             <div class="box-header with-border">
                                 <h3 class="box-title">Material Requests</h3>
-
+                         @if($current_status != 'Completed')
                                 <div class="box-tools pull-right">
                                     <a href="{{ route('order.create')}}"
                                        class="btn btn-sm btn-primary btn-flat pull-left">Place
@@ -410,6 +437,7 @@
                                                  class="fa fa-minus"></i>
                                      </button> --}}
                                 </div>
+                        @endif
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
@@ -574,10 +602,12 @@
                     <div class="box" style="margin-bottom: 10px; margin-top: 1%;">
                         <div class="box-header with-border ">
                             <h4><span class="box-title col-md-8">Labor Record</span></h4>
+                             @if($current_status != 'Completed')
                             <div class="box-tools pull-right">
                                 <a type="links" {{-- href="{{ route('labors.create') }}" --}}  data-toggle="modal"
                                    data-target="#applicantADDModal" class="btn btn-primary pul-right">Add Labor</a>
                             </div>
+                            @endif
                         </div>
                         <div class="table-responsive" style="margin-top: 10px; padding: 10px;">
                             <table class="table no-margin table-bordered table-striped labor">

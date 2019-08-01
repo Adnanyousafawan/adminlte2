@@ -20,7 +20,7 @@
             <div class="inner">
               <h3>{{ $current_projects }}</h3>
 
-              <p>Current Projects</p> 
+              <p style=" word-wrap: break-word; " >Current Projects</p> 
             </div>
             <div class="icon">
               <i class="ion ion-home"></i>
@@ -35,7 +35,7 @@
             <div class="inner">
               <h3> {{ $completed_projects }}</h3>
 
-              <p>Completed Projects</p>
+              <p style=" word-wrap: break-word; ">Completed Projects</p>
             </div>
             <div class="icon">
               <i class="fa fa-check-square"></i>
@@ -51,7 +51,7 @@
             <div class="inner">
               <h3>{{ $total_contractors }}</h3> 
 
-              <p>Total Contrators</p>
+              <p style=" word-wrap: break-word; ">Total Contrators</p>
             </div>
             <div class="icon">
               <i class="ion ion-ios-people-outline"></i>
@@ -79,7 +79,7 @@
             <div class="inner">
               <h3>{{ $format }}</h3> 
 
-              <p>Expenses History</p>
+              <p style=" word-wrap: break-word; ">Expenses History</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
@@ -131,8 +131,8 @@
                                             $format = number_format($number / 1000000000, 2) . 'B';
                                         }
                                     ?>
-                    <span class="info-box-text">Company Receivable</span>
-                    <span class="info-box-number">{{ $format }}</span>
+                    <span class="info-box-text"><p style=" word-wrap: break-word;">Company Receivable</p></span>
+                    <span class="info-box-number"><p style=" word-wrap: break-word;">{{ $format }}</p></span>
                   @endcan
                 </div>
                 <!-- /.info-box-content -->
@@ -146,26 +146,31 @@
                 <span class="info-box-icon bg-green"><i class="ion ion-ios-people-outline"></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text">Total Customers</span>
-                    <span class="info-box-number">{{ DB::table('customers')->count('id') }}</span>
+                    <span class="info-box-text"><p style=" word-wrap: break-word;">Total Customers</p></span>
+                    <span class="info-box-number"><p style=" word-wrap: break-word;">{{ DB::table('customers')->count('id') }}</p></span>
                 </div>
                 <!-- /.info-box-content -->
             </div> 
             <!-- /.info-box -->
         </div>
         <!-- /.col -->
+        
+        @can('isAdmin')
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text">Total Labor</span>
-                    <span class="info-box-number">{{ DB::table('labors')->count('id') }}</span>
+                    <span class="info-box-text"><p style=" word-wrap: break-word;">Total Manager</p></span>
+                    <span class="info-box-number"><p style=" word-wrap: break-word;">{{ DB::table('users')->where('role_id','=',2)->count('id') }}</p></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
         </div>
+        @endcan
+
+
         <!-- /.col -->
          <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
@@ -185,8 +190,8 @@
                                             $format = number_format($number / 1000000000, 2) . 'B';
                                         }
                                     ?>
-                    <span class="info-box-text">Company Expenses</span>
-                    <span class="info-box-number">{{$format}}</span>
+                    <span class="info-box-text"><p style=" word-wrap: break-word;">Company Expenses</p></span>
+                    <span class="info-box-number"><p style=" word-wrap: break-word;">{{$format}}</p></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>

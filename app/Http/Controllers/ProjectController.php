@@ -82,7 +82,8 @@ class ProjectController extends Controller
         if (Gate::allows('isContractor')) {
             abort(420, 'You Are not Allowed to access this site');
         }
-        if (Gate::allows('isManager') || Gate::allows('isAdmin')) {
+
+        if (Gate::allows('isManager')) {
             $check = DB::table('project_phase')->get()->count();
             if ($check != 0) {
                 $check = DB::table('project_status')->get()->count();
@@ -94,6 +95,37 @@ class ProjectController extends Controller
                         return view('projects/create')->with('contractors', $contractors);
                     } else {
                         return redirect()->intended('home')->with('message', "Please Add Contractors before Adding New Projects ");
+                    }
+
+                } else {
+                    return redirect()->intended('home')->with('message', "Please Add Project Status before Adding New Projects ");
+                }
+            } else {
+                return redirect()->intended('home')->with('message', "Please Add Project Phases before creating new Projects");
+            }
+        }
+        if (Gate::allows('isAdmin')) {
+            $check = DB::table('project_phase')->get()->count();
+            if ($check != 0) {
+                $check = DB::table('project_status')->get()->count();
+                if ($check != 0) {
+                    $rollID = DB::table('roles')->where('name', '=', 'Contractor')->pluck('id')->first();
+                    $check = DB::table('users')->where('role_id', '=', $rollID)->get()->count();
+                    if ($check != 0) {
+                        $rollID = DB::table('roles')->where('name', '=', 'Manager')->pluck('id')->first();
+                        $check = DB::table('users')->where('role_id', '=', $rollID)->get()->count();
+                            if ($check != 0) {
+                                $managers = DB::table('users')->where('role_id', '=', 2)->get();
+                                $contractors = DB::table('users')->where('role_id', '=', 3)->get();
+                                return view('projects/create',compact('contractors','managers'));
+                            }
+                            else
+                            {
+                                return redirect()->intended('home')->with('message', "Please add Manager before adding new projects ");
+                            }
+                    } 
+                    else {
+                        return redirect()->intended('home')->with('message', "Please add Contractor before adding new projects ");
                     }
 
                 } else {
@@ -138,6 +170,14 @@ class ProjectController extends Controller
                 ->where('name', '=', $request->input('assigned_to'))
                 ->select('id')
                 ->get();
+            if(Gate::allows('isAdmin'))
+            {
+                $project_assigned_to = $request->input('assigned_by');
+            }
+             if(Gate::allows('isManager'))
+            {
+                $project_assigned_to = Auth::user()->id;
+            }
 
 
             // dd($contractor[0]->id);
@@ -168,7 +208,7 @@ class ProjectController extends Controller
                 'assigned_to' => DB::table('users')->where('name', '=', $request->input('assigned_to'))->pluck('id')->first(),
                 'status_id' => $project_status,
                 'phase_id' => $project_phase,
-                'assigned_by' => Auth::id(),
+                'assigned_by' => $project_assigned_to,
                 'estimated_completion_time' => $request->input('estimated_completion_time'),
                 'estimated_budget' => $request->input('estimated_budget'),
                 'description' => $request->input('description'),
@@ -467,6 +507,7 @@ class ProjectController extends Controller
 
         $projects = Project::find($id);
         $contractors = DB::table('users')->where('role_id', '=', 3)->get();
+        $managers = DB::table('users')->where('role_id', '=', 2)->get();
 
         $customer = DB::table('customers')
             ->where('id', '=', $projects->customer_id)
@@ -475,9 +516,12 @@ class ProjectController extends Controller
         $current_contractor = DB::table('users')
             ->where('id', '=', $projects->assigned_to)
             ->pluck('name')->first();
+         $current_manager = DB::table('users')
+            ->where('id', '=', $projects->assigned_by)
+            ->pluck('name')->first();
         // Redirect to user list if updating user wasn't existed
         //$users = User::paginate(10);
-        return view('projects/edit', compact('customer','contractors','projects','current_contractor'));
+        return view('projects/edit', compact('customer','contractors','projects','current_contractor','current_manager','managers'));
     }
 
 
@@ -572,7 +616,7 @@ class ProjectController extends Controller
 
                 $labor_project_balance_new = $projects->project_balance - $total_labor_cost;
                 $labor_project_spent_new = $projects->project_spent + $total_labor_cost;
-                $labor_project_budget_new = $budget_left - $total_labor_cost;
+                $labor_project_budget_new = $budget_left - $total_labor_cost; 
         }
 
         if(Gate::allows('isManager'))
@@ -660,7 +704,7 @@ class ProjectController extends Controller
 
                 $labor_project_balance_new = $projects->project_balance - $total_labor_cost;
                 $labor_project_spent_new = $projects->project_spent + $total_labor_cost;
-                $labor_project_budget_new = $budget_left - $total_labor_cost;
+                $labor_project_budget_new = $budget_left - $total_labor_cost; 
         }
          
             $expense_chart = MiscellaneousExpense::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))
@@ -711,7 +755,6 @@ class ProjectController extends Controller
             ->responsive(true)
             ->height(300)
             ->width(0);
-
         $total_pending_requests = DB::table('material_requests')->where('request_status_id', '=', $request_status)->count();
 
         return view('projects/view', compact('projects', 'customers', 'labors', 'orders', 'contractors', 'total_orders_count','spent','budget_left', 'expense_chart', 'materialrequests', 'total_pending_requests', 'pie_chart','chart','percentage_chart','percentage_chart_budget','received_payments','percentage_chart_received','current_phase','current_status','expense','working_labors','total_labor_cost','labor_project_balance_new','labor_project_spent_new','labor_project_budget_new','projects'));
@@ -740,6 +783,29 @@ class ProjectController extends Controller
 
         ]);
 
+        if(Gate::allows('isAdmin'))
+            {
+                $project_assigned_to = $request->input('assigned_by');
+            }
+
+        if(Gate::allows('isManager'))
+            {
+                $project_assigned_to = Auth::user()->id;
+            }
+       /*  
+            
+*/
+       $contract = 0;
+            $old_contract = DB::table('projects')->where('id','=',$id)->pluck('contract_image')->first();
+            if($request->input('contract_image') == Null)
+            {
+                $contract = $old_contract;
+            }
+            else
+            {
+                $contract = $request->input('contract_image');
+            }
+
         $projects = Project::find($id);
         $projects->title = $request->input('title');
         $projects->area = $request->input('area');
@@ -747,25 +813,52 @@ class ProjectController extends Controller
         $projects->plot_size = $request->input('plot_size');
         $projects->floor = $request->input('floor');
         $projects->assigned_to = $request->input('assigned_to');
+        $projects->assigned_by = $project_assigned_to;
         $projects->estimated_completion_time = $request->input('estimated_completion_time');
         $projects->estimated_budget = $request->input('estimated_budget');
         $projects->description = $request->input('description');
-        $projects->contract_image = $request->input('contract_image');
+        $projects->contract_image = $contract;
 
-        $projects->contract_image = $request->input('contract_image');
+/*
 
 
-        if ($request->has('contract_image')) {
+        if ($request->has('profile_image')) {
+            // Get image file
+            $image = $request->file('profile_image');
+            // Make a image name based on user name and current timestamp
+            $name = Str::slug($request->input('name')) . '-' . time();
+            // Define folder path
+            $folder = 'images/profile/';
+            // Make a file path where image will be stored [ folder path + file name + file extension]
+            $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+            //delete previously stored image
+            if(Auth::user()->profile_image != 'images/profile/default_user.png')
+            {
+                $this->deleteOne('public', Auth::user()->profile_image);
+            } 
+            // Upload image
+            $this->uploadOne($image, $folder, 'public', $name);
+            // Set user profile image path in database to filePath
+            $user->profile_image = $filePath;
+        }
+
+
+*/
+        if ($request->has('contract_image')) 
+        {
             // Get image file
             $image = $request->file('contract_image');
             // Make a image name based on user name and current timestamp
             $name = Str::slug($projects->title . '-' . time());
             // Define folder path
-            $folder = '/images/';
+            $folder = '/images/contract/';
             // Make a file path where image will be stored [ folder path + file name + file extension]
             $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
             //delete previously stored image
-//            $this->deleteOne( 'public', $project->contract_image);
+            if($projects->contract_image != 'images/contract/default.png')
+            {
+                $this->deleteOne( 'public', $projects->contract_image);
+            }
             // Upload image
             $this->uploadOne($image, $folder, 'public', $name);
             // Set user profile image path in database to filePath

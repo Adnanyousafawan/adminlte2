@@ -149,11 +149,48 @@ class HomeController extends Controller
       
 
         //_________________ Profit From Projects ___________________________________
-
+            
         $ProjectsProfit = 0;
+        $ProjectsLoss =0;
+        $ProjectsProfit_OR_Loss =0;
         $spent = 0;
         $ProjStatusID = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
-        $all_projects = DB::table('projects')->where('status_id','=',$ProjStatusID)->get();
+        $Comp_projects = DB::table('projects')->where('status_id','=',$ProjStatusID)->get();
+       
+        
+    $total_labor_cost = 0;
+       
+       foreach ($Comp_projects as $proj)
+        {
+            $labors = DB::table('labors')->where('project_id', '=', $proj->id)->get()->all();
+            foreach ($labors as $labor) 
+            {
+                $temp = DB::table('labor_attendances')
+                ->where('labor_id','=',$labor->id)
+                ->where('status','=',1)
+                ->where('paid','=',1)
+                ->count();
+                $cost = $temp * $labor->rate;
+                $total_labor_cost = $total_labor_cost + $cost;
+            }
+       }
+       //dd($total_labor_cost);
+        $all_projects = DB::table('projects')
+        ->where('status_id','=',$ProjStatusID)
+        ->where('project_balance','>=',0)
+        ->sum('project_balance');
+        $ProjectsProfit_OR_Loss = $all_projects - $total_labor_cost;
+        //dd($ProjectsProfit);
+        if($ProjectsProfit_OR_Loss > 0)
+        {
+            $ProjectsProfit = $ProjectsProfit_OR_Loss;
+        }
+        if($ProjectsProfit_OR_Loss < 0)
+        {
+            $ProjectsLoss = $ProjectsProfit_OR_Loss;
+        }
+ 
+        /*
         foreach ($all_projects as $project) 
         {
             $total_orders = DB::table('order_details')->where('order_details.project_id','=',$project->id)->get();
@@ -169,6 +206,7 @@ class HomeController extends Controller
             $spent = $orders_sum + $expense;
             $ProjectsProfit = $projects->estimated_budget - $spent;
         }
+        */
            // $received_payments = DB::table('customer_payments')->where('project_id','=',$id)->sum('received');
             $company_balance = DB::table('company_balance')->sum('balance'); 
 

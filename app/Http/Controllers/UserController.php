@@ -101,6 +101,50 @@ public function UpdateName(Request $request,$id)
             $not_started_projects = DB::table('projects')->where('assigned_by','=',$id)->where('status_id','=',$proj_status)
             ->count();
 
+        $ProjectsProfit = 0;
+        $ProjectsLoss =0;
+        $ProjectsProfit_OR_Loss =0;
+        $spent = 0;
+        $ProjStatusID = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
+        $Comp_projects = DB::table('projects')->where('assigned_by','=',$id)->where('status_id','=',$ProjStatusID)->get();
+       
+        
+    $total_labor_cost = 0;
+       
+       foreach ($Comp_projects as $proj)
+        {
+            $labors = DB::table('labors')->where('project_id', '=', $proj->id)->get()->all();
+            foreach ($labors as $labor) 
+            {
+                $temp = DB::table('labor_attendances')
+                ->where('labor_id','=',$labor->id)
+                ->where('status','=',1)
+                ->where('paid','=',1)
+                ->count();
+                $cost = $temp * $labor->rate;
+                $total_labor_cost = $total_labor_cost + $cost;
+            }
+       }
+       //dd($total_labor_cost);
+        $all_projects = DB::table('projects')
+        ->where('assigned_by','=',$id)
+        ->where('status_id','=',$ProjStatusID)
+        ->where('project_balance','>=',0)
+        ->sum('project_balance');
+        $ProjectsProfit_OR_Loss = $all_projects - $total_labor_cost;
+        //dd($ProjectsProfit);
+        if($ProjectsProfit_OR_Loss > 0)
+        {
+            $ProjectsProfit = $ProjectsProfit_OR_Loss;
+        }
+        if($ProjectsProfit_OR_Loss < 0)
+        {
+            $ProjectsLoss = $ProjectsProfit_OR_Loss;
+        }
+ 
+
+
+/*
             $loss = DB::table('projects')
             ->where('assigned_by','=',$id)
             ->where('status_id','!=',1)
@@ -113,19 +157,20 @@ public function UpdateName(Request $request,$id)
             ->where('status_id','=',1)
             ->where('project_balance','>',0)
             ->sum('project_balance');
-
+*/
             $pie_chart = Charts::create('pie', 'highcharts')
                 ->title('Pie Chart Demo')
                 ->labels(['Profit', 'Loss'])
-                ->values([$profit, $loss])
+                ->values([$ProjectsProfit, $ProjectsLoss])
                 ->dimensions(1000, 500) 
                 ->responsive(true);
+
 
             return view('users/profile', ['users' => $users], compact('projects', 'pie_chart','halt_projects','not_started_projects','stopped_projects','current_projects','completed_projects','assigned_by'));
         }
         if ($users->role_id == 3) {
 
-            $projects = DB::table('projects')->where('assigned_by', '=', $id)->get()->all();
+            $projects = DB::table('projects')->where('assigned_to', '=', $id)->get()->all();
             $proj_status = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
             $completed_projects = DB::table('projects')->where('assigned_to','=',$id)->where('status_id','=',$proj_status)
             ->count();
@@ -142,6 +187,49 @@ public function UpdateName(Request $request,$id)
             $not_started_projects = DB::table('projects')->where('assigned_to','=',$id)->where('status_id','=',$proj_status)
             ->count();
 
+
+        $ProjectsProfit = 0;
+        $ProjectsLoss =0;
+        $ProjectsProfit_OR_Loss =0;
+        $spent = 0;
+        $ProjStatusID = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
+        $Comp_projects = DB::table('projects')->where('assigned_to','=',$id)->where('status_id','=',$ProjStatusID)->get();
+       
+        
+    $total_labor_cost = 0;
+       
+       foreach ($Comp_projects as $proj)
+        {
+            $labors = DB::table('labors')->where('project_id', '=', $proj->id)->get()->all();
+            foreach ($labors as $labor) 
+            {
+                $temp = DB::table('labor_attendances')
+                ->where('labor_id','=',$labor->id)
+                ->where('status','=',1)
+                ->where('paid','=',1)
+                ->count();
+                $cost = $temp * $labor->rate;
+                $total_labor_cost = $total_labor_cost + $cost;
+            }
+       }
+       //dd($total_labor_cost);
+        $all_projects = DB::table('projects')
+        ->where('assigned_to','=',$id)
+        ->where('status_id','=',$ProjStatusID)
+        ->where('project_balance','>=',0)
+        ->sum('project_balance');
+        $ProjectsProfit_OR_Loss = $all_projects - $total_labor_cost;
+        //dd($ProjectsProfit);
+        if($ProjectsProfit_OR_Loss > 0)
+        {
+            $ProjectsProfit = $ProjectsProfit_OR_Loss;
+        }
+        if($ProjectsProfit_OR_Loss < 0)
+        {
+            $ProjectsLoss = $ProjectsProfit_OR_Loss;
+        }
+ 
+/*
             $loss = DB::table('projects')
             ->where('assigned_to','=',$id)
             ->where('status_id','!=',1)
@@ -154,11 +242,11 @@ public function UpdateName(Request $request,$id)
             ->where('status_id','=',1)
             ->where('project_balance','>',0)
             ->sum('project_balance');
-            
+        */
             $pie_chart = Charts::create('pie', 'highcharts')
                 ->title('Pie Chart Demo')
                 ->labels(['Profit', 'Loss'])
-                ->values([$profit, abs($loss)])
+                ->values([$ProjectsProfit, abs($ProjectsLoss)])
                 ->dimensions(1000, 500)
                 ->responsive(true);
            

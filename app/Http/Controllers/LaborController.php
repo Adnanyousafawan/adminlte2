@@ -27,6 +27,9 @@ class LaborController extends Controller
         }
         if (Gate::allows('isManager')) {
             // ____________________________ADD query to show just record of specific manager projects labors____________
+            $project_status_ID = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
+            $stopped_status_ID = DB::table('project_status')->where('name','=','Stopped')->pluck('id')->first();
+            $not_started_status_ID = DB::table('project_status')->where('name','=','Not Started')->pluck('id')->first();
 
              $labor_by_projects = DB::table('projects')
             ->leftjoin('users','projects.assigned_to','=','users.id')
@@ -40,13 +43,15 @@ class LaborController extends Controller
             ->select('labors.id','labors.name','labors.project_id','labors.rate')
             ->get();
             $totallabor = DB::table('labors')->count();
-            $projects = DB::table('projects')->where('assigned_by', '=', Auth::user()->id)->get();
+            $projects = DB::table('projects')->where('assigned_by', '=', Auth::user()->id)->where('status_id','!=',$project_status_ID)->where('status_id','!=',$stopped_status_ID)->where('status_id','!=',$not_started_status_ID)->get();
             return view('labors/index', compact('labors', 'totallabors', 'projects', 'labor_by_projects'));
 
         }
         if (Gate::allows('isAdmin')) 
         {
-           
+            $project_status_ID = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
+            $stopped_status_ID = DB::table('project_status')->where('name','=','Stopped')->pluck('id')->first();
+            $not_started_status_ID = DB::table('project_status')->where('name','=','Not Started')->pluck('id')->first();
             $labor_by_projects = DB::table('projects')
             ->leftjoin('users','projects.assigned_to','=','users.id')
             ->leftjoin('labors','labors.project_id','=','projects.id')
@@ -54,7 +59,7 @@ class LaborController extends Controller
             ->paginate(5);
              $labors = DB::table('labors')->get();
             $totallabor = DB::table('labors')->count();
-            $projects = DB::table('projects')->get();
+            $projects = DB::table('projects')->where('status_id','!=',$project_status_ID)->where('status_id','!=',$stopped_status_ID)->where('status_id','!=',$not_started_status_ID)->get();
             return view('labors/index', compact('labors', 'totallabors', 'projects','labor_by_projects'));
         }
              
@@ -73,11 +78,19 @@ class LaborController extends Controller
         }
         if(Gate::allows('isManager'))
         {
-            $projects = DB::table('projects')->where('assigned_by', '=', Auth::user()->id)->get();
+            $project_status_ID = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
+            $stopped_status_ID = DB::table('project_status')->where('name','=','Stopped')->pluck('id')->first();
+            $not_started_status_ID = DB::table('project_status')->where('name','=','Not Started')->pluck('id')->first();
+
+            $projects = DB::table('projects')->where('assigned_by', '=', Auth::user()->where('status_id','!=',$project_status_ID)->where('status_id','!=',$stopped_status_ID)->where('status_id','!=',$not_started_status_ID)->id)->get();
         }
         if(Gate::allows('isAdmin'))
         {
-            $projects = DB::table('projects')->get();
+            $project_status_ID = DB::table('project_status')->where('name','=','Completed')->pluck('id')->first();
+            $stopped_status_ID = DB::table('project_status')->where('name','=','Stopped')->pluck('id')->first();
+            $not_started_status_ID = DB::table('project_status')->where('name','=','Not Started')->pluck('id')->first();
+
+            $projects = DB::table('projects')->where('status_id','!=',$project_status_ID)->where('status_id','!=',$stopped_status_ID)->where('status_id','!=',$not_started_status_ID)->get();
         }
         return view('labors/add_labor',compact('projects'));
     }
