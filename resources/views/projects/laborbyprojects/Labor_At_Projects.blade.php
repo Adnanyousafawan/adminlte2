@@ -9,7 +9,7 @@
                     <th>Project ID</th> 
                     <th>Title</th>
                     <th>Labor</th>
-                    <th>Cost</th>
+{{--                    <th>Cost</th>--}}
                     <th>Contractor</th>
                 </tr>
                 </thead>
@@ -38,10 +38,10 @@
                             <div class="sparkbar" data-color="#00a65a"
                                  data-height="20">{{DB::table('labors')->where('project_id','=',$project->id)->count('id') }}</div>
                         </td>
-                        <td>
-                            <div
-                                class="label label-warning col-md-8 col-md-offset-2">{{ $paid }}</div>
-                        </td>
+{{--                        <td>--}}
+{{--                            <div--}}
+{{--                                class="label label-warning col-md-8 col-md-offset-2">{{ $paid }}</div>--}}
+{{--                        </td>--}}
                         <td>{{ DB::table('users')->where('id','=',$project->assigned_to)->pluck('name')->first() }}</td>
                           </td>
                     </tr>

@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'AdminLTE')
+@section('title', 'Project Details')
 @include('materialrequest.MaterialRequest_Table.material_request_datatable')
 @include('common')
 

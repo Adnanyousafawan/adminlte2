@@ -336,7 +336,7 @@ class ProjectController extends Controller
         }
         if(Gate::allows('isManager'))
         {
-            $projects = DB::table('projects')->where('assigned_by','=',Auth::user())->get();
+            $projects = DB::table('projects')->where('assigned_by','=',Auth::user()->id)->get();
         }
                                
         return view('projects/laborbyprojects', compact('projects')); 
